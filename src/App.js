@@ -1,6 +1,7 @@
-import './container.css';
+import './App.css';
 import React, { Component } from 'react';
 import { StickyContainer, Sticky } from 'react-sticky';
+import { tabBarHeight } from './tab-bar-height.json';
 
 import Nav1Content from './components/Nav1Content';
 
@@ -21,17 +22,12 @@ const TabPane = Tabs.TabPane;
 
 class App extends Component {
 	render() {
-		const renderTabBar = (props, DefaultTabBar) => (
-			<Affix offsetTop={0}>
-				<DefaultTabBar {...props} style={{background: 'white'}} />
-			</Affix>
-		);
 		return (
 			<div>
-				<Tabs defaultActiveKey="1" renderTabBar={renderTabBar}>
+				<Tabs size="large" defaultActiveKey="1" tabBarStyle={{ position: 'fixed', top: 0, width: '100%' }}>
 					<TabPane tab={<span><Icon spin type="setting" />Configure</span>} key="1">
 						Tab 1
-    					</TabPane>
+					</TabPane>
 					<TabPane tab={<span><Icon type="rise" />Promoter</span>} key="2">
 						<Nav1Content />
 					</TabPane>
