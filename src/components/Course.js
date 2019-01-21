@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 import {
-	Avatar,
 	Card,
 	Icon,
-	Skeleton,
+	Skeleton
 } from 'antd';
-const Meta = Card.Meta;
 
 const plusIconStyle = {
 	fontSize: '2.6rem',
@@ -40,9 +39,11 @@ class Course extends Component {
 						</Skeleton>
 					</Card>
 				</div>
-				<Icon type="plus-circle" theme="filled" style={plusIconStyle} />
+				<Link to="/add-course">
+					<Icon type="plus-circle" theme="filled" style={plusIconStyle} />
+				</Link>
 			</>
-		)
+		);
 	}
 }
 

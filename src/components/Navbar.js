@@ -1,14 +1,13 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { Redirect, withRouter } from 'react-router-dom';
 
 import {
 	Avatar,
-	Button,
 	Card,
 	Drawer,
 	Icon,
 	List,
-	Row,
-	Col
+	Row
 } from 'antd';
 const { Meta } = Card;
 
@@ -25,7 +24,7 @@ const DrawerHeader = <Meta
 	avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
 	title="IMS Pitampura"
 	description="Role: Admin"
-/>
+/>;
 
 const NavListItem = props => (
 	<Row type="flex" align="middle" className="my-3" style={cursorStyle}>
@@ -35,18 +34,17 @@ const NavListItem = props => (
 );
 
 class Navbar extends Component {
-
 	state = { visible: false };
 
 	showDrawer = () => {
 		this.setState({
-			visible: true,
+			visible: true
 		});
 	};
 
 	onClose = () => {
 		this.setState({
-			visible: false,
+			visible: false
 		});
 	};
 
@@ -58,7 +56,7 @@ class Navbar extends Component {
 					<div className="container text-center">
 						{
 							renderBackBtn ? (
-								<Icon style={cursorStyle} type="arrow-left" />
+								<Icon style={cursorStyle} type="arrow-left" onClick={this.props.history.goBack} />
 							) : (
 									<Icon style={cursorStyle} type="menu-fold" onClick={this.showDrawer} />
 								)
@@ -80,8 +78,8 @@ class Navbar extends Component {
 					</List>
 				</Drawer>
 			</>
-		)
+		);
 	}
 }
 
-export default Navbar;
+export default withRouter(Navbar);
