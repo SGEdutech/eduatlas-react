@@ -1,12 +1,9 @@
+import './core/css/material-kit.css';
 import './App.css';
 import React, { Component } from 'react';
 
 import Nav1Content from './components/Nav1Content';
-
-import {
-	Icon,
-	Tabs
-} from 'antd';
+import { Icon, Tabs } from 'antd';
 const TabPane = Tabs.TabPane;
 
 class App extends Component {
