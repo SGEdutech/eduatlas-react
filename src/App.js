@@ -19,21 +19,20 @@ class App extends Component {
 					</TabPane>
 					<TabPane tab={<span><Icon type="message" />Communicator</span>} key="3">
 						Tab 2
-    					</TabPane>
+					</TabPane>
 					<TabPane tab={<span><Icon type="calendar" />Schedule</span>} key="4">
 						Tab 2
-    					</TabPane>
+					</TabPane>
 					<TabPane tab={<span><Icon type="team" />Attendance</span>} key="5">
 						Tab 2
-    					</TabPane>
+					</TabPane>
 					<TabPane tab={<span><Icon type="file-search" />Report</span>} key="6">
 						Tab 2
-    					</TabPane>
+					</TabPane>
 					<TabPane tab={<span><Icon type="paper-clip" />Study Meterial</span>} key="7">
 						Tab 2
-    					</TabPane>
+					</TabPane>
 				</Tabs>
-				{/* <Content style={{ height: 2000 }}>Content</Content> */}
 			</div>
 		);
 	}
