@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { StickyContainer, Sticky } from 'react-sticky';
 
-
-import { Affix, Tabs, Select } from 'antd';
+import { Tabs } from 'antd';
 
 const TabPane = Tabs.TabPane;
 

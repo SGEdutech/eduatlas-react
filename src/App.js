@@ -1,22 +1,12 @@
 import './App.css';
 import React, { Component } from 'react';
-import { StickyContainer, Sticky } from 'react-sticky';
 
 import Nav1Content from './components/Nav1Content';
 
 import {
-	Affix,
-	Breadcrumb,
-	Col,
 	Icon,
-	Layout,
-	Menu,
-	Radio,
-	Row,
-	Tabs,
+	Tabs
 } from 'antd';
-const { Header, Content, Footer, Sider } = Layout;
-const { SubMenu } = Menu;
 const TabPane = Tabs.TabPane;
 
 class App extends Component {
