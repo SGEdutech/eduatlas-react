@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 
-import Course from './Course';
 import AddCourse from './AddCourse';
+import AddBatch from './AddBatch';
+import Course from './Course';
+import Batch from './Batch';
 
 import {
 	Tabs,
@@ -21,13 +23,18 @@ class Nav1Content extends Component {
 	render() {
 		return (
 			<Tabs size="large" tabPosition="bottom" tabBarStyle={innerTabs}>
-				<TabPane style={({ height: 1500 })} tab="Courses" key="1">
+				<TabPane tab="Courses" key="1">
 					<Course />
 				</TabPane>
 				<TabPane tab="Add Course" key="4">
 					<AddCourse />
 				</TabPane>
-				<TabPane tab="Batches" key="2">Batches</TabPane>
+				<TabPane tab="Batches" key="2">
+					<Batch />
+				</TabPane>
+				<TabPane tab="Add Batch" key="5">
+					<AddBatch />
+				</TabPane>
 				<TabPane tab="Discounts" key="3">Discounts</TabPane>
 			</Tabs>
 		);

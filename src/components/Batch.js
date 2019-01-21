@@ -24,7 +24,7 @@ const colLayout = {
 	xxl: 4
 }
 
-class Course extends Component {
+class Batch extends Component {
 	render() {
 		return (
 			<>
@@ -32,45 +32,45 @@ class Course extends Component {
 					<Row gutter={16}>
 						<Col {...colLayout}>
 							<Card className="mb-2"
-								title="JEE Maths"
+								title="MM1"
 								actions={[<Icon type="edit" />, <Icon type="delete" />]}>
 								<Skeleton loading={false} avatar active>
-									<p>This is some desciprtion of the course given uptil some specific characters</p>
-									<p><span className="font-weight-bold">Number Of Batches:</span> 5</p>
-									<p><span className="font-weight-bold">Course Fee:</span> 40000</p>
+									<p>This is some desciprtion of the batch given uptil some specific characters</p>
+									<p><span className="font-weight-bold">Course:</span> JEE Maths</p>
+									<p><span className="font-weight-bold">Number Of Students:</span> 5</p>
 								</Skeleton>
 							</Card>
 						</Col>
 						<Col {...colLayout}>
 							<Card className="mb-2"
-								title="JEE Maths"
+								title="MM1"
 								actions={[<Icon type="edit" />, <Icon type="delete" />]}>
 								<Skeleton loading={false} avatar active>
-									<p>This is some desciprtion of the course given uptil some specific characters</p>
-									<p><span className="font-weight-bold">Number Of Batches:</span> 5</p>
-									<p><span className="font-weight-bold">Course Fee:</span> 40000</p>
+									<p>This is some desciprtion of the batch given uptil some specific characters</p>
+									<p><span className="font-weight-bold">Course:</span> JEE Maths</p>
+									<p><span className="font-weight-bold">Number Of Students:</span> 5</p>
 								</Skeleton>
 							</Card>
 						</Col>
 						<Col {...colLayout}>
 							<Card className="mb-2"
-								title="JEE Maths"
+								title="MM1"
 								actions={[<Icon type="edit" />, <Icon type="delete" />]}>
 								<Skeleton loading={false} avatar active>
-									<p>This is some desciprtion of the course given uptil some specific characters</p>
-									<p><span className="font-weight-bold">Number Of Batches:</span> 5</p>
-									<p><span className="font-weight-bold">Course Fee:</span> 40000</p>
+									<p>This is some desciprtion of the batch given uptil some specific characters</p>
+									<p><span className="font-weight-bold">Course:</span> JEE Maths</p>
+									<p><span className="font-weight-bold">Number Of Students:</span> 5</p>
 								</Skeleton>
 							</Card>
 						</Col>
 						<Col {...colLayout}>
 							<Card className="mb-2"
-								title="JEE Maths"
+								title="MM1"
 								actions={[<Icon type="edit" />, <Icon type="delete" />]}>
 								<Skeleton loading={false} avatar active>
-									<p>This is some desciprtion of the course given uptil some specific characters</p>
-									<p><span className="font-weight-bold">Number Of Batches:</span> 5</p>
-									<p><span className="font-weight-bold">Course Fee:</span> 40000</p>
+									<p>This is some desciprtion of the batch given uptil some specific characters</p>
+									<p><span className="font-weight-bold">Course:</span> JEE Maths</p>
+									<p><span className="font-weight-bold">Number Of Students:</span> 5</p>
 								</Skeleton>
 							</Card>
 						</Col>
@@ -82,4 +82,4 @@ class Course extends Component {
 	}
 }
 
-export default Course;
+export default Batch;
