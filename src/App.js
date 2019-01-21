@@ -1,7 +1,6 @@
 import './App.css';
 import React, { Component } from 'react';
 import { StickyContainer, Sticky } from 'react-sticky';
-import { tabBarHeight } from './tab-bar-height.json';
 
 import Nav1Content from './components/Nav1Content';
 
