@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 import {
 	Card,
@@ -76,9 +77,11 @@ class Course extends Component {
 						</Col>
 					</Row>
 				</div>
-				<Icon type="plus-circle" theme="filled" style={plusIconStyle} />
+				<Link to="/add-course">
+					<Icon type="plus-circle" theme="filled" style={plusIconStyle} />
+				</Link>
 			</>
-		)
+		);
 	}
 }
 
