@@ -4,10 +4,19 @@ import { Tabs } from 'antd';
 
 const TabPane = Tabs.TabPane;
 
+const innerTabs = {
+	position: 'fixed',
+	bottom: 0,
+	width: '100%',
+	background: '#fff',
+	textAlign: 'center',
+	zIndex: 1
+}
+
 class Nav1Content extends Component {
 	render() {
 		return (
-			<Tabs size="large" tabPosition="bottom" tabBarStyle={{ position: 'fixed', bottom: 0, width: '100%', background: '#fff', textAlign: 'center' }}>
+			<Tabs size="large" tabPosition="bottom" tabBarStyle={innerTabs}>
 				<TabPane style={({ height: 1500 })} tab="Tab 1" key="1">asdasd</TabPane>
 				<TabPane tab="Tab 2" key="2">Content of Tab 2</TabPane>
 				<TabPane tab="Tab 3" key="3">Content of Tab 3</TabPane>
