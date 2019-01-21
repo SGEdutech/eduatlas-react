@@ -1,8 +1,18 @@
+:root {
+	--nav-height: 40px;
+	--top-tab-bar-height: 56px;
+	--bottom-tab-bar-height: 56px;
+}
+
 * {
 	margin: 0 0;
 	padding: 0 0;
 }
 
-.stupid-class {
-	margin: 110px 0 60px 0;
+.below-nav-and-tab {
+	margin: calc(var(--nav-height) + var(--top-tab-bar-height)) 0 var(--bottom-tab-bar-height) 0;
+}
+
+.below-nav {
+	margin-top: var(--nav-height);
 }

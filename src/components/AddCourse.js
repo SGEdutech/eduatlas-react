@@ -53,7 +53,7 @@ class AddCourse extends Component {
 		return (
 			<>
 				<Navbar renderBackBtn={true} />
-				<div className="container">
+				<div className="container below-nav">
 					<Form>
 						<Col {...colLayout}>
 							<Form.Item
