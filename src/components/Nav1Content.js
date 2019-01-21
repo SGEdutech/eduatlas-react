@@ -7,7 +7,7 @@ const TabPane = Tabs.TabPane;
 class Nav1Content extends Component {
 	render() {
 		return (
-			<Tabs size="large" tabPosition="bottom" tabBarStyle={{ position: 'fixed', bottom: 0, width: '100%' }}>
+			<Tabs size="large" tabPosition="bottom" tabBarStyle={{ position: 'fixed', bottom: 0, width: '100%', background: '#fff', textAlign: 'center' }}>
 				<TabPane style={({ height: 1500 })} tab="Tab 1" key="1">asdasd</TabPane>
 				<TabPane tab="Tab 2" key="2">Content of Tab 2</TabPane>
 				<TabPane tab="Tab 3" key="3">Content of Tab 3</TabPane>

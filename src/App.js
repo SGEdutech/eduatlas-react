@@ -10,7 +10,7 @@ class App extends Component {
 	render() {
 		return (
 			<div>
-				<Tabs size="large" defaultActiveKey="1" tabBarStyle={{ position: 'fixed', top: 0, width: '100%' }}>
+				<Tabs size="large" defaultActiveKey="1" tabBarStyle={{ position: 'fixed', top: 0, width: '100%', background: '#fff', textAlign: 'center' }}>
 					<TabPane tab={<span><Icon spin type="setting" />Configure</span>} key="1">
 						Tab 1
 					</TabPane>
