@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 
-import { Tabs } from 'antd';
+import Course from './Course';
+import AddCourse from './AddCourse';
 
+import {
+	Tabs,
+} from 'antd';
 const TabPane = Tabs.TabPane;
 
 const innerTabs = {
@@ -10,19 +14,21 @@ const innerTabs = {
 	width: '100%',
 	background: '#fff',
 	textAlign: 'center',
-	zIndex: 1
+	zIndex: 100
 }
 
 class Nav1Content extends Component {
 	render() {
 		return (
 			<Tabs size="large" tabPosition="bottom" tabBarStyle={innerTabs}>
-				<TabPane style={({ height: 1500 })} tab="Tab 1" key="1">asdasd</TabPane>
-				<TabPane tab="Tab 2" key="2">Content of Tab 2</TabPane>
-				<TabPane tab="Tab 3" key="3">Content of Tab 3</TabPane>
-				<TabPane tab="Tab 3" key="4">Content of Tab 3</TabPane>
-				<TabPane tab="Tab 3" key="5">Content of Tab 3</TabPane>
-				<TabPane tab="Tab 3" key="6">Content of Tab 3</TabPane>
+				<TabPane style={({ height: 1500 })} tab="Courses" key="1">
+					<Course />
+				</TabPane>
+				<TabPane tab="Add Course" key="4">
+					<AddCourse />
+				</TabPane>
+				<TabPane tab="Batches" key="2">Batches</TabPane>
+				<TabPane tab="Discounts" key="3">Discounts</TabPane>
 			</Tabs>
 		);
 	}
