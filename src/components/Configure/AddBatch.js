@@ -1,18 +1,18 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+
+import Navbar from '../Navbar';
 
 import Highlighter from 'react-highlight-words';
 
 import {
 	Button,
-	Checkbox,
 	Col,
 	Form,
 	Icon,
 	Input,
-	InputNumber,
 	Row,
 	Select,
-	Table,
+	Table
 } from 'antd';
 const { TextArea } = Input;
 const { Option } = Select;
@@ -43,7 +43,7 @@ const studentTableLayout = {
 const colLayout = {
 	xs: 24,
 	md: 12
-}
+};
 
 const STUDENTS = [{
 	_id: "4",
@@ -74,16 +74,16 @@ class AddBatch extends Component {
 		searchText: '',
 		selectedRowKeys: [],
 		confirmDirty: false,
-		autoCompleteResult: [],
+		autoCompleteResult: []
 	};
 
 	enterLoading = () => {
 		this.setState({ loading: true });
 	}
 
-	getColumnSearchProps = (dataIndex) => ({
+	getColumnSearchProps = dataIndex => ({
 		filterDropdown: ({
-			setSelectedKeys, selectedKeys, confirm, clearFilters,
+			setSelectedKeys, selectedKeys, confirm, clearFilters
 		}) => (
 				<div style={{ padding: 8 }}>
 					<Input
@@ -160,20 +160,20 @@ class AddBatch extends Component {
 				dataIndex: 'name',
 				key: 'name',
 				...this.getColumnSearchProps('name'),
-				width: 150,
+				width: 150
 			},
 			{
 				title: 'Roll-no.',
 				dataIndex: 'rollNumber',
 				key: 'rollNumber',
 				...this.getColumnSearchProps('rollNumber'),
-				width: 120,
+				width: 120
 			},
 			{
 				title: 'Email',
 				dataIndex: 'email',
 				key: 'email',
-				...this.getColumnSearchProps('email'),
+				...this.getColumnSearchProps('email')
 			}
 		];
 		const { getFieldDecorator } = this.props.form;
@@ -185,75 +185,77 @@ class AddBatch extends Component {
 		};
 
 		return (
-			<div className="container">
-				<Form>
-					<Col {...colLayout}>
-						<Form.Item
-							{...formItemLayout}
-							label="Course"
-							hasFeedback
-						>
-							<Select defaultValue="1">
-								<Option value="1">JEE Maths</Option>
-								<Option value="2">JEE Physics</Option>
-								<Option value="3">JEE Chemistry</Option>
-							</Select>
-						</Form.Item>
-					</Col>
-					<Col {...colLayout}>
-						<Form.Item
-							{...formItemLayout}
-							label="Batch Code">
-							{getFieldDecorator('confirm', {
-								rules: [{
-									required: true, message: 'Please give some name!',
-								}],
-							})(
-								<Input placeholder="batch code" />
-							)}
-						</Form.Item>
-					</Col>
-					<Col {...colLayout}>
-						<Form.Item
-							{...formItemLayout}
-							label="Description"
-						>
-							<TextArea rows={4} />
-						</Form.Item>
-					</Col>
-					<Col span={24}>
-						<Form.Item
-							{...studentTableLayout}
-						>
-							<Table
-								title={() => 'Add students to batch'}
-								bordered
-								pagination={false}
-								scroll={{ y: 500, x: 500 }}
-								rowKey="_id"
-								rowSelection={rowSelection}
-								columns={columns}
-								dataSource={STUDENTS}
-								onRow={record => ({
-									onClick: () => {
-										this.selectRow(record);
-									}
-								})}
-							/>
-						</Form.Item>
-					</Col>
-					<Col span={24}>
-						<Row type="flex" justify="end">
-							<Form.Item>
-								<Button type="primary" loading={this.state.loading} onClick={this.enterLoading}>
-									Click me!
-        						</Button>
+			<>
+				<Navbar renderBackBtn={true} />
+				<div className="container below-nav">
+					<Form>
+						<Col {...colLayout}>
+							<Form.Item
+								{...formItemLayout}
+								label="Course"
+								hasFeedback>
+								<Select defaultValue="1">
+									<Option value="1">JEE Maths</Option>
+									<Option value="2">JEE Physics</Option>
+									<Option value="3">JEE Chemistry</Option>
+								</Select>
 							</Form.Item>
-						</Row>
-					</Col>
-				</Form>
-			</div >
-		)
+						</Col>
+						<Col {...colLayout}>
+							<Form.Item
+								{...formItemLayout}
+								label="Batch Code">
+								{getFieldDecorator('confirm', {
+									rules: [{
+										required: true, message: 'Please give some name!',
+									}],
+								})(
+									<Input placeholder="batch code" />
+								)}
+							</Form.Item>
+						</Col>
+						<Col {...colLayout}>
+							<Form.Item
+								{...formItemLayout}
+								label="Description"
+							>
+								<TextArea rows={4} />
+							</Form.Item>
+						</Col>
+						<Col span={24}>
+							<Form.Item
+								{...studentTableLayout}
+							>
+								<Table
+									title={() => 'Add students to batch'}
+									bordered
+									pagination={false}
+									scroll={{ y: 500, x: 500 }}
+									rowKey="_id"
+									rowSelection={rowSelection}
+									columns={columns}
+									dataSource={STUDENTS}
+									onRow={record => ({
+										onClick: () => {
+											this.selectRow(record);
+										}
+									})}
+								/>
+							</Form.Item>
+						</Col>
+						<Col span={24}>
+							<Row type="flex" justify="end">
+								<Form.Item>
+									<Button type="primary" loading={this.state.loading} onClick={this.enterLoading}>
+										Click me!
+        						</Button>
+								</Form.Item>
+							</Row>
+						</Col>
+					</Form>
+				</div >
+			</>
+		);
 	}
 }
 

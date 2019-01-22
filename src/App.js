@@ -6,7 +6,9 @@ import { Route, Switch } from 'react-router-dom';
 import Router from './Router';
 
 import TuitionManager from './components/TuitionManeger';
-import AddCourse from './components/AddCourse';
+import AddCourse from './components/Configure/AddCourse';
+import AddBatch from './components/Configure/AddBatch';
+import AddDiscount from './components/Configure/AddDiscount';
 
 class App extends Component {
 	render() {
@@ -15,6 +17,8 @@ class App extends Component {
 				<Switch>
 					<Route exact path="/" component={TuitionManager}></Route>
 					<Route exact path="/add-course" component={AddCourse}></Route>
+					<Route exact path="/add-batch" component={AddBatch}></Route>
+					<Route exact path="/add-discount" component={AddDiscount}></Route>
 				</Switch>
 			</Router>
 		);

@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 
-import AddCourse from './AddCourse';
-import AddBatch from './AddBatch';
-import AddDiscount from './AddDiscount';
-import Course from './Course';
-import Batch from './Batch';
-import Discount from './Discount';
+import AddBatch from './Configure/AddBatch';
+import AddDiscount from './Configure/AddDiscount';
+import Course from './Configure/Course';
+import Batch from './Configure/Batch';
+import Discount from './Configure/Discount';
 
 import { Tabs } from 'antd';
 const TabPane = Tabs.TabPane;
@@ -19,7 +18,7 @@ const innerTabs = {
 	zIndex: 100
 };
 
-class Nav1Content extends Component {
+class Configure extends Component {
 	render() {
 		return (
 			<Tabs size="large" tabPosition="bottom" tabBarStyle={innerTabs}>
@@ -29,18 +28,12 @@ class Nav1Content extends Component {
 				<TabPane tab="Batches" key="2">
 					<Batch />
 				</TabPane>
-				<TabPane tab="Add Batch" key="3">
-					<AddBatch />
-				</TabPane>
-				<TabPane tab="Discounts" key="4">
+				<TabPane tab="Discounts" key="3">
 					<Discount />
-				</TabPane>
-				<TabPane tab="Add Discount" key="5">
-					<AddDiscount />
 				</TabPane>
 			</Tabs>
 		);
 	}
 }
 
-export default Nav1Content;
+export default Configure;

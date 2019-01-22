@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import Navbar from './Navbar';
+import Navbar from '../Navbar';
 
 import {
 	Button,
@@ -9,9 +9,8 @@ import {
 	Form,
 	Input,
 	InputNumber,
-	Row,
+	Row
 } from 'antd';
-const { TextArea } = Input;
 
 const formItemLayout = {
 	labelCol: {
@@ -44,7 +43,7 @@ const colLayout = {
 	md: 12
 };
 
-class AddCourse extends Component {
+class AddDiscount extends Component {
 	state = {
 		confirmDirty: false,
 		autoCompleteResult: []
@@ -60,7 +59,7 @@ class AddCourse extends Component {
 						<Col {...colLayout}>
 							<Form.Item
 								{...formItemLayout}
-								label="Course Code">
+								label="Discount Code">
 								{getFieldDecorator('confirm', {
 									rules: [{
 										required: true, message: 'Please give some name!'
@@ -68,45 +67,29 @@ class AddCourse extends Component {
 										validator: this.compareToFirstPassword
 									}]
 								})(
-									<Input placeholder="course code" />
+									<Input placeholder="discount code" />
 								)}
 							</Form.Item>
 						</Col>
 						<Col {...colLayout}>
 							<Form.Item
 								{...formItemLayout}
-								label="Course Fee"
+								label="Discount Amount"
 							>
-								<InputNumber className="w-100" decimalSeparator="." precision={2} step={1000} min={0} max={10000000} defaultValue={0} />
+								<InputNumber className="w-100" step={100} min={0} max={10000000} defaultValue={0} />
 							</Form.Item>
 						</Col>
 						<Col {...colLayout}>
 							<Form.Item
 								{...formItemLayout}
-								label="Description"
+								label="Discount Percentage"
 							>
-								<TextArea rows={4} />
-							</Form.Item>
-						</Col>
-						<Col {...colLayout}>
-							<Form.Item
-								{...formItemLayout}
-								label="GST %"
-							>
-								<InputNumber className="w-100" min={0} max={100} defaultValue={0} formatter={value => `${value}%`} />
+								<InputNumber disabled className="w-100" min={0} max={100} defaultValue={0} formatter={value => `${value}%`} />
 							</Form.Item>
 						</Col>
 						<Col {...colLayout}>
 							<Form.Item {...tailFormItemLayout}>
-								<Checkbox>Inclusive Of Taxes</Checkbox>
-							</Form.Item>
-						</Col>
-						<Col {...colLayout}>
-							<Form.Item
-								{...formItemLayout}
-								label="Total Fee"
-							>
-								<Input disabled placeholder="fee" />
+								<Checkbox>Save Discount as Percentage</Checkbox>
 							</Form.Item>
 						</Col>
 						<Col span={24}>
@@ -114,7 +97,7 @@ class AddCourse extends Component {
 								<Form.Item>
 									<Button type="primary" loading={this.state.loading} onClick={this.enterLoading}>
 										Click me!
-        							</Button>
+									</Button>
 								</Form.Item>
 							</Row>
 						</Col>
@@ -125,4 +108,4 @@ class AddCourse extends Component {
 	}
 }
 
-export default Form.create({ name: 'add-course' })(AddCourse);
+export default Form.create({ name: 'add-discount' })(AddDiscount);
