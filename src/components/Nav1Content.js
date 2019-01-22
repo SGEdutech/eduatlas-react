@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 
 import AddCourse from './AddCourse';
 import AddBatch from './AddBatch';
+import AddDiscount from './AddDiscount';
 import Course from './Course';
 import Batch from './Batch';
+import Discount from './Discount';
 
 import {
 	Tabs,
@@ -35,7 +37,12 @@ class Nav1Content extends Component {
 				<TabPane tab="Add Batch" key="5">
 					<AddBatch />
 				</TabPane>
-				<TabPane tab="Discounts" key="3">Discounts</TabPane>
+				<TabPane tab="Discounts" key="3">
+					<Discount />
+				</TabPane>
+				<TabPane tab="Add Discount" key="6">
+					<AddDiscount />
+				</TabPane>
 			</Tabs>
 		);
 	}
