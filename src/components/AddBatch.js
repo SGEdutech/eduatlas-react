@@ -20,14 +20,14 @@ const { Option } = Select;
 const formItemLayout = {
 	labelCol: {
 		xs: { span: 24 },
-		sm: { span: 5 },
-		md: { span: 5 },
+		sm: { span: 7 },
+		md: { span: 9 }
 	},
 	wrapperCol: {
 		xs: { span: 24 },
-		sm: { span: 16 },
-		md: { span: 16 },
-	},
+		sm: { span: 14 },
+		md: { span: 12 }
+	}
 };
 
 const studentTableLayout = {
@@ -134,12 +134,12 @@ class AddBatch extends Component {
 		this.setState({ searchText: selectedKeys[0] });
 	}
 
-	handleReset = (clearFilters) => {
+	handleReset = clearFilters => {
 		clearFilters();
 		this.setState({ searchText: '' });
 	}
 
-	selectRow = (record) => {
+	selectRow = record => {
 		const selectedRowKeys = [...this.state.selectedRowKeys];
 		if (selectedRowKeys.indexOf(record._id) >= 0) {
 			selectedRowKeys.splice(selectedRowKeys.indexOf(record._id), 1);
@@ -149,8 +149,8 @@ class AddBatch extends Component {
 		this.setState({ selectedRowKeys });
 	}
 
-	onselectedRowKeysChange = (selectedRowKeys) => {
-		this.setState({ selectedRowKeys: selectedRowKeys });
+	onselectedRowKeysChange = selectedRowKeys => {
+		this.setState({ selectedRowKeys });
 	}
 
 	render() {
@@ -167,7 +167,7 @@ class AddBatch extends Component {
 				dataIndex: 'rollNumber',
 				key: 'rollNumber',
 				...this.getColumnSearchProps('rollNumber'),
-				width: 100,
+				width: 120,
 			},
 			{
 				title: 'Email',
@@ -234,10 +234,10 @@ class AddBatch extends Component {
 								rowSelection={rowSelection}
 								columns={columns}
 								dataSource={STUDENTS}
-								onRow={(record) => ({
+								onRow={record => ({
 									onClick: () => {
 										this.selectRow(record);
-									},
+									}
 								})}
 							/>
 						</Form.Item>
@@ -247,7 +247,7 @@ class AddBatch extends Component {
 							<Form.Item>
 								<Button type="primary" loading={this.state.loading} onClick={this.enterLoading}>
 									Click me!
-        					</Button>
+        						</Button>
 							</Form.Item>
 						</Row>
 					</Col>

@@ -3,24 +3,26 @@ import React, { Component } from 'react';
 import Navbar from './Navbar';
 
 import {
+	Button,
 	Checkbox,
 	Col,
 	Form,
 	Input,
-	InputNumber
+	InputNumber,
+	Row,
 } from 'antd';
 const { TextArea } = Input;
 
 const formItemLayout = {
 	labelCol: {
 		xs: { span: 24 },
-		sm: { span: 5 },
-		md: { span: 5 }
+		sm: { span: 7 },
+		md: { span: 9 }
 	},
 	wrapperCol: {
 		xs: { span: 24 },
-		sm: { span: 16 },
-		md: { span: 16 }
+		sm: { span: 14 },
+		md: { span: 12 }
 	}
 };
 
@@ -106,6 +108,15 @@ class AddCourse extends Component {
 							>
 								<Input disabled placeholder="fee" />
 							</Form.Item>
+						</Col>
+						<Col span={24}>
+							<Row type="flex" justify="end">
+								<Form.Item>
+									<Button type="primary" loading={this.state.loading} onClick={this.enterLoading}>
+										Click me!
+        							</Button>
+								</Form.Item>
+							</Row>
 						</Col>
 					</Form>
 				</div>

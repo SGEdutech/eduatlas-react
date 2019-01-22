@@ -7,9 +7,7 @@ import Course from './Course';
 import Batch from './Batch';
 import Discount from './Discount';
 
-import {
-	Tabs,
-} from 'antd';
+import { Tabs } from 'antd';
 const TabPane = Tabs.TabPane;
 
 const innerTabs = {
@@ -19,7 +17,7 @@ const innerTabs = {
 	background: '#fff',
 	textAlign: 'center',
 	zIndex: 100
-}
+};
 
 class Nav1Content extends Component {
 	render() {
@@ -28,19 +26,16 @@ class Nav1Content extends Component {
 				<TabPane tab="Courses" key="1">
 					<Course />
 				</TabPane>
-				<TabPane tab="Add Course" key="4">
-					<AddCourse />
-				</TabPane>
 				<TabPane tab="Batches" key="2">
 					<Batch />
 				</TabPane>
-				<TabPane tab="Add Batch" key="5">
+				<TabPane tab="Add Batch" key="3">
 					<AddBatch />
 				</TabPane>
-				<TabPane tab="Discounts" key="3">
+				<TabPane tab="Discounts" key="4">
 					<Discount />
 				</TabPane>
-				<TabPane tab="Add Discount" key="6">
+				<TabPane tab="Add Discount" key="5">
 					<AddDiscount />
 				</TabPane>
 			</Tabs>
