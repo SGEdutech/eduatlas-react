@@ -85,7 +85,7 @@ class AddStudent extends Component {
 		}, 1000);
 	}
 
-	handleSubmit = (e) => {
+	handleSubmit = e => {
 		e.preventDefault();
 		this.props.form.validateFieldsAndScroll((err, values) => {
 			if (!err) {

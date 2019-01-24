@@ -22,6 +22,7 @@ const innerTabs = {
 
 class Configure extends Component {
 	componentDidMount() {
+		if (this.props.messageInfo.fetched) return;
 		this.props.fetchAll();
 	}
 
@@ -48,7 +49,8 @@ class Configure extends Component {
 function mapStateToProps(state) {
 	return {
 		batch: state.batch,
-		course: state.course
+		course: state.course,
+		messageInfo: state.messageInfo
 	};
 }
 

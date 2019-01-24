@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-export function fetchTodos() {
-	return function (dispatch) {
+export function addCourse(newCourse) {
+	return dispatch => {
 		dispatch({
-			type: 'FETCH_TODOS',
-			payload: axios.get('http://rest.learncode.academy/api/robo/todos')
+			type: 'ADD_COURSE',
+			payload: axios.post('https://eduatlas.com/tuition/5bbe191a64512a2f77b84c70/course', newCourse)
 		});
 	};
 }
@@ -17,7 +17,7 @@ export function updateCourse(updatedCourse) {
 }
 
 export function deleteCourse(id) {
-	return function (dispatch) {
+	return dispatch => {
 		dispatch({
 			type: 'DELETE_COURSE',
 			payload: axios.delete(`https://eduatlas.com/tuition/5bbe191a64512a2f77b84c70/course/${id}`)
