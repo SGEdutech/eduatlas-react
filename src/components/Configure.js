@@ -5,7 +5,6 @@ import Course from './Configure/Course';
 import Batch from './Configure/Batch';
 import Discount from './Configure/Discount';
 
-import fetchAll from '../redux/actions/fetchAllAction';
 import { deleteCourse } from '../redux/actions/courseActions';
 
 import { Tabs } from 'antd';
@@ -21,18 +20,13 @@ const innerTabs = {
 };
 
 class Configure extends Component {
-	componentDidMount() {
-		if (this.props.messageInfo.fetched) return;
-		this.props.fetchAll();
-	}
-
 	deleteCourse = id => this.props.deleteCourse(id);
 
 	render() {
 		return (
 			<Tabs size="large" tabPosition="bottom" tabBarStyle={innerTabs}>
 				<TabPane tab="Courses" key="1">
-					<Course coursesInfo={this.props.course} deleteCourse={this.deleteCourse} />
+					<Course messageInfo={this.props.messageInfo} coursesInfo={this.props.course} deleteCourse={this.deleteCourse} />
 				</TabPane>
 				<TabPane tab="Batches" key="2">
 					<Batch batchesInfo={this.props.batch} />
@@ -54,4 +48,4 @@ function mapStateToProps(state) {
 	};
 }
 
-export default connect(mapStateToProps, { fetchAll, deleteCourse })(Configure);
+export default connect(mapStateToProps, { deleteCourse })(Configure);

@@ -47,7 +47,7 @@ class Course extends Component {
 	};
 
 	render() {
-		const { coursesInfo } = this.props;
+		const { messageInfo, coursesInfo } = this.props;
 
 		const coursesJsx = coursesInfo.courses.map(({ _id, code, description, batches, fees }) => (
 			<Col {...colLayout} key={_id}>
@@ -84,7 +84,7 @@ class Course extends Component {
 			<>
 				<div className="container">
 					<Row gutter={16}>
-						{coursesInfo.fetching ? skeletonCards : (coursesInfo.courses.length === 0 ? emptyJsx : coursesJsx)}
+						{messageInfo.fetching ? skeletonCards : (coursesInfo.courses.length === 0 ? emptyJsx : coursesJsx)}
 					</Row>
 				</div>
 				<Link to="/add-course">

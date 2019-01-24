@@ -53,6 +53,7 @@ const colLayout = {
 
 class AddCourse extends Component {
 	state = {
+		courseInfo: {},
 		inclusiveOfTaxes: false
 	}
 
@@ -103,8 +104,23 @@ class AddCourse extends Component {
 		});
 	}
 
+	// FIXME: Function being called multiple times
+	componentDidMount() {
+		if (this.props.edit) {
+			const { courseId } = this.props.match.params;
+			const courseInfo = this.props.courses.find(courseObj => courseObj._id === courseId);
+			// TODO: Implement loading for condition below
+			if (courseInfo === undefined) {
+				return;
+			}
+			this.setState({ courseInfo });
+			this.updateTotalFee();
+		}
+	}
+
 	render() {
 		const { getFieldDecorator } = this.props.form;
+		const { code, fees, gstPercentage, description } = this.state.courseInfo;
 		return (
 			<>
 				<Navbar renderBackBtn={true} />
@@ -116,6 +132,7 @@ class AddCourse extends Component {
 								label="Course Code"
 								hasFeedback={true}>
 								{getFieldDecorator('code', {
+									initialValue: code,
 									rules: [{
 										required: true, message: 'Your course must have code!'
 									}]
@@ -130,6 +147,7 @@ class AddCourse extends Component {
 								label="Course Fee"
 								hasFeedback={true}>
 								{getFieldDecorator('fees', {
+									initialValue: fees,
 									rules: [{
 										required: true, message: 'Your course must have fee!'
 									}]
@@ -143,7 +161,7 @@ class AddCourse extends Component {
 								{...formItemLayout}
 								label="Description"
 								hasFeedback={true}>
-								{getFieldDecorator('description')(
+								{getFieldDecorator('description', { initialValue: description })(
 									<TextArea rows={4} />
 								)}
 							</Form.Item>
@@ -153,7 +171,10 @@ class AddCourse extends Component {
 								{...formItemLayout}
 								label="GST %"
 								hasFeedback={true}>
-								{getFieldDecorator('gstPercentage', { rules: [{ validator: this.validateGst }] })(
+								{getFieldDecorator('gstPercentage', {
+									initialValue: gstPercentage,
+									rules: [{ validator: this.validateGst }]
+								})(
 									<InputNumber disabled={this.state.inclusiveOfTaxes} onChange={this.handleGstChange} className="w-100" formatter={value => `${value}%`} />
 								)}
 							</Form.Item>
@@ -168,7 +189,7 @@ class AddCourse extends Component {
 								{...formItemLayout}
 								label="Total Fee">
 								{getFieldDecorator('totalFees')(
-									<Input disabled placeholder="fee" />
+									<Input disabled />
 								)}
 							</Form.Item>
 						</Col>
@@ -188,4 +209,10 @@ class AddCourse extends Component {
 	}
 }
 
-export default compose(Form.create({ name: 'add-course' }), withRouter, connect(null, { addCourse }))(AddCourse);
+function mapStateToProps(state) {
+	return {
+		courses: state.course.courses
+	};
+}
+
+export default compose(Form.create({ name: 'add-course' }), withRouter, connect(mapStateToProps, { addCourse }))(AddCourse);
