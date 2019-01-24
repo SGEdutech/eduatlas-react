@@ -70,19 +70,19 @@ class Active extends Component {
 			),
 		filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined }} />,
 		onFilter: (value, record) => record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
-		onFilterDropdownVisibleChange: (visible) => {
+		onFilterDropdownVisibleChange: visible => {
 			if (visible) {
 				setTimeout(() => this.searchInput.select());
 			}
 		},
-		render: (text) => (
+		render: text => (
 			<Highlighter
 				highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
 				searchWords={[this.state.searchText]}
 				autoEscape
 				textToHighlight={text.toString()}
 			/>
-		),
+		)
 	})
 
 	handleSearch = (selectedKeys, confirm) => {
@@ -129,13 +129,9 @@ class Active extends Component {
 						<Divider type="vertical" />
 						<Icon type="delete" />
 					</Row>
-				),
+				)
 			}
 		];
-
-		const {
-			getFieldDecorator, getFieldsError, getFieldError, isFieldTouched,
-		} = this.props.form;
 
 		return (
 			<>

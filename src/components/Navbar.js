@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 
 import {
 	Avatar,
@@ -61,7 +61,7 @@ class Navbar extends Component {
 									<Icon style={cursorStyle} type="menu-fold" onClick={this.showDrawer} />
 								)
 						}
-						<a>IMS PITAMPURA</a>
+						<Link to="/">IMS PITAMPURA</Link>
 					</div>
 				</nav>
 				<Drawer

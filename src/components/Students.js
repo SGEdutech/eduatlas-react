@@ -20,14 +20,14 @@ class Students extends Component {
 	render() {
 		return (
 			<Tabs size="large" tabPosition="bottom" tabBarStyle={innerTabs}>
-				<TabPane tab="Add New Student" key="3">
-					<AddStudent />
-				</TabPane>
 				<TabPane tab="Requests" key="1">
 					<Requests />
 				</TabPane>
 				<TabPane tab="Active Students" key="2">
 					<Active />
+				</TabPane>
+				<TabPane tab="Add New Student" key="3">
+					<AddStudent />
 				</TabPane>
 			</Tabs>
 		);

@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-import Navbar from '../Navbar';
-
 import {
 	Button,
 	Cascader,
@@ -87,12 +85,22 @@ class AddStudent extends Component {
 		}, 1000);
 	}
 
+	handleSubmit = (e) => {
+		e.preventDefault();
+		this.props.form.validateFieldsAndScroll((err, values) => {
+			if (!err) {
+				console.log('Received values of form: ', values);
+			}
+		});
+	}
+
 	render() {
 		const { getFieldDecorator } = this.props.form;
+
 		return (
 			<>
 				<div className="container below-nav">
-					<Row>
+					<Row onSubmit={this.handleSubmit}>
 						<Col xs={24} md={17}>
 							<Form>
 								<Col span={24}>
@@ -102,8 +110,10 @@ class AddStudent extends Component {
 								<Col {...colLayout}>
 									<Form.Item
 										{...formItemLayout}
-										label="Roll No">
-										{getFieldDecorator('confirm', {
+										label="Roll No"
+										hasFeedback
+									>
+										{getFieldDecorator('rollNumber', {
 											rules: [{
 												required: true, message: 'Please give some Roll-number!'
 											}]
@@ -115,8 +125,10 @@ class AddStudent extends Component {
 								<Col {...colLayout}>
 									<Form.Item
 										{...formItemLayout}
-										label="Student Name">
-										{getFieldDecorator('confirm', {
+										label="Student Name"
+										hasFeedback
+									>
+										{getFieldDecorator('name', {
 											rules: [{
 												required: true, message: 'Please provide name!'
 											}]
@@ -128,9 +140,14 @@ class AddStudent extends Component {
 								<Col {...colLayout}>
 									<Form.Item
 										{...formItemLayout}
-										label="Student Email">
-										{getFieldDecorator('confirm', {
+										label="Student Email"
+										hasFeedback
+									>
+										{getFieldDecorator('email', {
 											rules: [{
+												type: 'email', message: 'The input is not valid E-mail!',
+											},
+											{
 												required: true, message: 'Please provide email!'
 											}]
 										})(
@@ -147,14 +164,20 @@ class AddStudent extends Component {
 									<Form.Item
 										{...formItemLayout}
 										label="Student Address">
-										<Input placeholder="student address" />
+										{getFieldDecorator('address', {
+										})(
+											<Input placeholder="student address" />
+										)}
 									</Form.Item>
 								</Col>
 								<Col {...colLayout}>
 									<Form.Item
 										{...formItemLayout}
 										label="Student Phone No.">
-										<Input placeholder="student number" />
+										{getFieldDecorator('phone', {
+										})(
+											<InputNumber className="w-100" max={99999999999} placeholder="student number" />
+										)}
 									</Form.Item>
 								</Col>
 								<Col span={24}>
@@ -166,12 +189,15 @@ class AddStudent extends Component {
 									<Form.Item
 										{...formItemLayout}
 										label="Select Course and Batch">
-										<Cascader
-											options={this.state.options}
-											loadData={this.loadData}
-											// onChange={this.onChange}
-											changeOnSelect
-										/>
+										{getFieldDecorator('courseAndBatch', {
+										})(
+											<Cascader
+												options={this.state.options}
+												loadData={this.loadData}
+												// onChange={this.onChange}
+												changeOnSelect
+											/>
+										)}
 									</Form.Item>
 								</Col>
 								<Col {...colLayout}>
@@ -179,11 +205,14 @@ class AddStudent extends Component {
 										{...formItemLayout}
 										label="Discount Code"
 									>
-										<Select placeholder="select discount code">
-											<Option value="1">NEWYEAR150</Option>
-											<Option value="2">NEWYEAR15</Option>
-											<Option value="3">50OFF</Option>
-										</Select>
+										{getFieldDecorator('discountCode', {
+										})(
+											<Select placeholder="select discount code">
+												<Option value="1">NEWYEAR150</Option>
+												<Option value="2">NEWYEAR15</Option>
+												<Option value="3">50OFF</Option>
+											</Select>
+										)}
 									</Form.Item>
 								</Col>
 								<Col {...colLayout}>
@@ -191,7 +220,11 @@ class AddStudent extends Component {
 										{...formItemLayout}
 										label="Additional Discount"
 									>
-										<InputNumber className="w-100" step={100} min={0} max={10000000} defaultValue={0} />
+										{getFieldDecorator('additionalDiscount', {
+											initialValue:0
+										})(
+											<InputNumber className="w-100" step={100} min={0} max={10000000} />
+										)}
 									</Form.Item>
 								</Col>
 								<Col span={24}>
@@ -204,26 +237,37 @@ class AddStudent extends Component {
 										{...formItemLayout}
 										label="Fee Collected"
 									>
-										<InputNumber className="w-100" step={500} min={0} max={100000} defaultValue={0} formatter={value => `₹${value}`} />
+										{getFieldDecorator('feeCollected', {
+											initialValue:0
+										})(
+											<InputNumber className="w-100" step={500} min={0} max={100000} formatter={value => `₹${value}`} />
+										)}
 									</Form.Item>
 								</Col>
 								<Col {...colLayout}>
 									<Form.Item
 										{...formItemLayout}
 										label="Mode Of Payment">
-										<Select defaultValue="1">
-											<Option value="1">Cash</Option>
-											<Option value="2">Card</Option>
-											<Option value="2">Cheque</Option>
-											<Option value="3">Others</Option>
-										</Select>
+										{getFieldDecorator('modeOfPayment', {
+											initialValue:"cash"
+										})(
+											<Select>
+												<Option value="cash">Cash</Option>
+												<Option value="card">Card</Option>
+												<Option value="cheque">Cheque</Option>
+												<Option value="others">Others</Option>
+											</Select>
+										)}
 									</Form.Item>
 								</Col>
 								<Col {...colLayout}>
 									<Form.Item
 										{...formItemLayout}
 										label="Date">
-										<DatePicker />
+										{getFieldDecorator('date', {
+										})(
+											<DatePicker />
+										)}
 									</Form.Item>
 								</Col>
 								<Col {...colLayout}>
@@ -277,13 +321,16 @@ class AddStudent extends Component {
 									<Form.Item
 										{...formItemLayout}
 										label="Next Installment Date">
-										<DatePicker />
+										{getFieldDecorator('nextInstallmentDate', {
+										})(
+											<DatePicker />
+										)}
 									</Form.Item>
 								</Col>
 								<Col span={24}>
 									<Row type="flex" justify="end">
 										<Form.Item>
-											<Button type="primary" loading={this.state.loading} onClick={this.enterLoading}>
+											<Button type="primary" htmlType="submit" loading={this.state.loading} onClick={this.enterLoading}>
 												Click me!
 											</Button>
 										</Form.Item>
@@ -345,7 +392,6 @@ class AddStudent extends Component {
 							</Form>
 						</Col>
 					</Row>
-
 				</div>
 			</>
 		);

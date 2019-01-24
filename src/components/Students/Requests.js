@@ -2,16 +2,13 @@ import React, { Component } from 'react';
 
 import {
 	Avatar,
-	Button,
 	Card,
 	Col,
 	Form,
 	Icon,
 	Input,
-	List,
 	Row,
-	Select,
-	Skeleton,
+	Select
 } from 'antd';
 const { Meta } = Card;
 const Option = Select.Option;
@@ -27,7 +24,7 @@ const colLayout = {
 class Requests extends Component {
 	render() {
 		const {
-			getFieldDecorator, getFieldsError, getFieldError, isFieldTouched,
+			getFieldDecorator
 		} = this.props.form;
 
 		return (
@@ -36,7 +33,7 @@ class Requests extends Component {
 					<Row gutter={16}>
 						<Col {...colLayout}>
 							<Card
-								className="mb-2"
+								className="mb-3"
 								actions={[<Icon type="check" />, <Icon type="close" />]}
 								title={
 									<Meta
@@ -54,7 +51,7 @@ class Requests extends Component {
 									</Form.Item>
 									<Form.Item>
 										{getFieldDecorator('userName', {
-											rules: [{ required: true, message: 'Please input roll number!' }],
+											rules: [{ required: true, message: 'Please input roll number!' }]
 										})(
 											<Input addonAfter="Roll No." />
 										)}
@@ -71,7 +68,7 @@ class Requests extends Component {
 						</Col>
 						<Col {...colLayout}>
 							<Card
-								className="mb-2"
+								className="mb-3"
 								actions={[<Icon type="check" />, <Icon type="close" />]}
 								title={
 									<Meta
@@ -89,7 +86,7 @@ class Requests extends Component {
 									</Form.Item>
 									<Form.Item>
 										{getFieldDecorator('userName', {
-											rules: [{ required: true, message: 'Please input roll number!' }],
+											rules: [{ required: true, message: 'Please input roll number!' }]
 										})(
 											<Input addonAfter="Roll No." />
 										)}
@@ -106,7 +103,7 @@ class Requests extends Component {
 						</Col>
 						<Col {...colLayout}>
 							<Card
-								className="mb-2"
+								className="mb-3"
 								actions={[<Icon type="check" />, <Icon type="close" />]}
 								title={
 									<Meta
@@ -124,7 +121,7 @@ class Requests extends Component {
 									</Form.Item>
 									<Form.Item>
 										{getFieldDecorator('userName', {
-											rules: [{ required: true, message: 'Please input roll number!' }],
+											rules: [{ required: true, message: 'Please input roll number!' }]
 										})(
 											<Input addonAfter="Roll No." />
 										)}
@@ -141,7 +138,7 @@ class Requests extends Component {
 						</Col>
 						<Col {...colLayout}>
 							<Card
-								className="mb-2"
+								className="mb-3"
 								actions={[<Icon type="check" />, <Icon type="close" />]}
 								title={
 									<Meta
@@ -159,7 +156,7 @@ class Requests extends Component {
 									</Form.Item>
 									<Form.Item>
 										{getFieldDecorator('userName', {
-											rules: [{ required: true, message: 'Please input roll number!' }],
+											rules: [{ required: true, message: 'Please input roll number!' }]
 										})(
 											<Input addonAfter="Roll No." />
 										)}
@@ -176,7 +173,7 @@ class Requests extends Component {
 						</Col>
 						<Col {...colLayout}>
 							<Card
-								className="mb-2"
+								className="mb-3"
 								actions={[<Icon type="check" />, <Icon type="close" />]}
 								title={
 									<Meta
@@ -194,7 +191,7 @@ class Requests extends Component {
 									</Form.Item>
 									<Form.Item>
 										{getFieldDecorator('userName', {
-											rules: [{ required: true, message: 'Please input roll number!' }],
+											rules: [{ required: true, message: 'Please input roll number!' }]
 										})(
 											<Input addonAfter="Roll No." />
 										)}
@@ -211,7 +208,7 @@ class Requests extends Component {
 						</Col>
 						<Col {...colLayout}>
 							<Card
-								className="mb-2"
+								className="mb-3"
 								actions={[<Icon type="check" />, <Icon type="close" />]}
 								title={
 									<Meta
@@ -229,7 +226,7 @@ class Requests extends Component {
 									</Form.Item>
 									<Form.Item>
 										{getFieldDecorator('userName', {
-											rules: [{ required: true, message: 'Please input roll number!' }],
+											rules: [{ required: true, message: 'Please input roll number!' }]
 										})(
 											<Input addonAfter="Roll No." />
 										)}

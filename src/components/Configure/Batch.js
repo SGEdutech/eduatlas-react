@@ -4,11 +4,9 @@ import { Link } from 'react-router-dom';
 import BatchCard from './Batch/BatchCard';
 
 import {
-	Card,
 	Col,
 	Icon,
-	Row,
-	Skeleton
+	Row
 } from 'antd';
 
 const plusIconStyle = {
@@ -34,7 +32,7 @@ class Batch extends Component {
 				<div className="container">
 					<Row gutter={16}>
 						<Col {...colLayout}>
-							<div className="mb-2">
+							<div className="mb-3">
 								<BatchCard code="Some Batch"
 									discription="Best freaking batch ever"
 									courseCode="Some Course"
@@ -42,7 +40,7 @@ class Batch extends Component {
 							</div>
 						</Col>
 						<Col {...colLayout}>
-							<div className="mb-2">
+							<div className="mb-3">
 								<BatchCard code="Some Batch"
 									discription="Best freaking batch ever"
 									courseCode="Some Course"
@@ -50,7 +48,7 @@ class Batch extends Component {
 							</div>
 						</Col>
 						<Col {...colLayout}>
-							<div className="mb-2">
+							<div className="mb-3">
 								<BatchCard code="Some Batch"
 									discription="Best freaking batch ever"
 									courseCode="Some Course"
@@ -58,7 +56,7 @@ class Batch extends Component {
 							</div>
 						</Col>
 						<Col {...colLayout}>
-							<div className="mb-2">
+							<div className="mb-3">
 								<BatchCard code="Some Batch"
 									discription="Best freaking batch ever"
 									courseCode="Some Course"
@@ -66,7 +64,7 @@ class Batch extends Component {
 							</div>
 						</Col>
 						<Col {...colLayout}>
-							<div className="mb-2">
+							<div className="mb-3">
 								<BatchCard code="Some Batch"
 									discription="Best freaking batch ever"
 									courseCode="Some Course"
@@ -74,7 +72,7 @@ class Batch extends Component {
 							</div>
 						</Col>
 						<Col {...colLayout}>
-							<div className="mb-2">
+							<div className="mb-3">
 								<BatchCard code="Some Batch"
 									discription="Best freaking batch ever"
 									courseCode="Some Course"
@@ -82,7 +80,7 @@ class Batch extends Component {
 							</div>
 						</Col>
 						<Col {...colLayout}>
-							<div className="mb-2">
+							<div className="mb-3">
 								<BatchCard code="Some Batch"
 									discription="Best freaking batch ever"
 									courseCode="Some Course"

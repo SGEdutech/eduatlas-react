@@ -12,7 +12,7 @@ const iconsArray = [
 function BatchCard(props) {
 	const { code, discription, courseCode, numberOfStudents } = props;
 	return (
-		<Card className="mb-2"
+		<Card className="mb-3"
 			title={code}
 			actions={iconsArray}>
 			<p>{discription}</p>

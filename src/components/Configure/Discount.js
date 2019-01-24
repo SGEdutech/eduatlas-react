@@ -4,11 +4,9 @@ import { Link } from 'react-router-dom';
 import DiscountCards from './Discounts/DiscountCards';
 
 import {
-	Card,
 	Col,
 	Icon,
-	Row,
-	Skeleton
+	Row
 } from 'antd';
 
 const plusIconStyle = {
@@ -34,55 +32,55 @@ class Discount extends Component {
 				<div className="container">
 					<Row gutter={16}>
 						<Col {...colLayout}>
-							<div className="mb-2">
+							<div className="mb-3">
 								<DiscountCards code="attractiveDiscountCoupon"
 									amount="46" />
 							</div>
 						</Col>
 						<Col {...colLayout}>
-							<div className="mb-2">
+							<div className="mb-3">
 								<DiscountCards code="attractiveDiscountCoupon"
 									amount="46" />
 							</div>
 						</Col>
 						<Col {...colLayout}>
-							<div className="mb-2">
+							<div className="mb-3">
 								<DiscountCards code="attractiveDiscountCoupon"
 									amount="46" />
 							</div>
 						</Col>
 						<Col {...colLayout}>
-							<div className="mb-2">
+							<div className="mb-3">
 								<DiscountCards code="attractiveDiscountCoupon"
 									amount="46" />
 							</div>
 						</Col>
 						<Col {...colLayout}>
-							<div className="mb-2">
+							<div className="mb-3">
 								<DiscountCards code="attractiveDiscountCoupon"
 									amount="46" />
 							</div>
 						</Col>
 						<Col {...colLayout}>
-							<div className="mb-2">
+							<div className="mb-3">
 								<DiscountCards code="attractiveDiscountCoupon"
 									amount="46" />
 							</div>
 						</Col>
 						<Col {...colLayout}>
-							<div className="mb-2">
+							<div className="mb-3">
 								<DiscountCards code="attractiveDiscountCoupon"
 									amount="46" />
 							</div>
 						</Col>
 						<Col {...colLayout}>
-							<div className="mb-2">
+							<div className="mb-3">
 								<DiscountCards code="attractiveDiscountCoupon"
 									amount="46" />
 							</div>
 						</Col>
 						<Col {...colLayout}>
-							<div className="mb-2">
+							<div className="mb-3">
 								<DiscountCards code="attractiveDiscountCoupon"
 									amount="46" />
 							</div>
