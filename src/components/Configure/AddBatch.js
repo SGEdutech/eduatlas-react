@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 
+import { addBatch, editBatch } from '../../redux/actions/batchActions';
+
+import sanatizeFormObj from '../../scripts/sanatize-form-obj';
+
 import Navbar from '../Navbar';
-
 import Highlighter from 'react-highlight-words';
-
 import {
 	Button,
 	Col,
@@ -16,6 +18,7 @@ import {
 } from 'antd';
 const { TextArea } = Input;
 const { Option } = Select;
+
 
 const formItemLayout = {
 	labelCol: {
@@ -32,10 +35,10 @@ const formItemLayout = {
 
 const studentTableLayout = {
 	labelCol: {
-		xs: { span: 24 },
+		xs: { span: 24 }
 	},
 	wrapperCol: {
-		xs: { span: 24 },
+		xs: { span: 24 }
 	},
 };
 
@@ -50,30 +53,13 @@ const STUDENTS = [{
 	name: 'aman singh rajput',
 	email: 'coolboy@gmail.com',
 	rollNumber: 'm0001',
-}, {
-	_id: "1",
-	name: 'rahul',
-	email: 'mahi@gmail.com',
-	rollNumber: 'm0002',
-}, {
-	_id: "2",
-	name: 'ajay',
-	email: 'dangi.pratap@gmail.com',
-	rollNumber: 'm0003',
-}, {
-	_id: "3",
-	name: 'prabhu',
-	email: 'godisreal@gmail.com',
-	rollNumber: 'm0004',
 }];
 
 
 class AddBatch extends Component {
 	state = {
-		loading: false,
 		searchText: '',
 		selectedRowKeys: [],
-		confirmDirty: false,
 		autoCompleteResult: []
 	};
 
@@ -82,6 +68,7 @@ class AddBatch extends Component {
 	}
 
 	getColumnSearchProps = dataIndex => ({
+		// don't touch this shit, its mineeeee
 		filterDropdown: ({
 			setSelectedKeys, selectedKeys, confirm, clearFilters
 		}) => (
@@ -102,31 +89,31 @@ class AddBatch extends Component {
 						style={{ width: 90, marginRight: 8 }}
 					>
 						Search
-			</Button>
+				</Button>
 					<Button
 						onClick={() => this.handleReset(clearFilters)}
 						size="small"
 						style={{ width: 90 }}
 					>
 						Reset
-			</Button>
+				</Button>
 				</div>
 			),
 		filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined }} />,
 		onFilter: (value, record) => record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
-		onFilterDropdownVisibleChange: (visible) => {
+		onFilterDropdownVisibleChange: visible => {
 			if (visible) {
 				setTimeout(() => this.searchInput.select());
 			}
 		},
-		render: (text) => (
+		render: text => (
 			<Highlighter
 				highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
 				searchWords={[this.state.searchText]}
 				autoEscape
 				textToHighlight={text.toString()}
 			/>
-		),
+		)
 	})
 
 	handleSearch = (selectedKeys, confirm) => {
@@ -153,7 +140,23 @@ class AddBatch extends Component {
 		this.setState({ selectedRowKeys });
 	}
 
+	handleSubmit = e => {
+		e.preventDefault();
+		const { form, addBatch, editBatch, history, edit, match } = this.props;
+		form.validateFieldsAndScroll((err, values) => {
+			if (err) {
+				console.error(err);
+				return;
+			}
+			sanatizeFormObj(values);
+			edit ? editBatch(match.params.batchId, values) : addBatch(values);
+			history.goBack();
+		});
+	}
+
 	render() {
+		const { getFieldDecorator } = this.props.form;
+		// const { code, description, students } = this.state.batchInfo;
 		const columns = [
 			{
 				title: 'Name',
@@ -176,39 +179,46 @@ class AddBatch extends Component {
 				...this.getColumnSearchProps('email')
 			}
 		];
-		const { getFieldDecorator } = this.props.form;
-
 		const { selectedRowKeys } = this.state;
 		const rowSelection = {
 			selectedRowKeys,
-			onChange: this.onselectedRowKeysChange,
+			onChange: this.onselectedRowKeysChange
 		};
 
 		return (
 			<>
 				<Navbar renderBackBtn={true} />
 				<div className="container below-nav">
-					<Form>
+					<Form onSubmit={this.handleSubmit} className="pt-3">
 						<Col {...colLayout}>
 							<Form.Item
 								{...formItemLayout}
-								label="Course"
-								hasFeedback>
-								<Select defaultValue="1">
-									<Option value="1">JEE Maths</Option>
-									<Option value="2">JEE Physics</Option>
-									<Option value="3">JEE Chemistry</Option>
-								</Select>
+								label="Parent Course"
+								hasFeedback={true}>
+								{getFieldDecorator('courseId', {
+									// initialValue: courseId,
+									rules: [{
+										required: true, message: 'Batch must have a parent Course!'
+									}]
+								})(
+									<Select placeholder="select parent course">
+										<Option value="1">JEE Maths</Option>
+										<Option value="2">JEE Physics</Option>
+										<Option value="3">JEE Chemistry</Option>
+									</Select>
+								)}
 							</Form.Item>
 						</Col>
 						<Col {...colLayout}>
 							<Form.Item
 								{...formItemLayout}
-								label="Batch Code">
-								{getFieldDecorator('confirm', {
+								label="Batch Code"
+								hasFeedback={true}>
+								{getFieldDecorator('code', {
+									// initialValue: code,
 									rules: [{
-										required: true, message: 'Please give some name!',
-									}],
+										required: true, message: 'Batch must have some code!'
+									}]
 								})(
 									<Input placeholder="batch code" />
 								)}
@@ -218,8 +228,12 @@ class AddBatch extends Component {
 							<Form.Item
 								{...formItemLayout}
 								label="Description"
-							>
-								<TextArea rows={4} />
+								hasFeedback={true}>
+								{getFieldDecorator('description',{
+									// initialValue: description,
+								})(
+									<TextArea rows={4} />
+								)}
 							</Form.Item>
 						</Col>
 						<Col span={24}>
@@ -246,9 +260,9 @@ class AddBatch extends Component {
 						<Col span={24}>
 							<Row type="flex" justify="end">
 								<Form.Item>
-									<Button type="primary" loading={this.state.loading} onClick={this.enterLoading}>
-										Click me!
-        						</Button>
+									<Button type="primary" htmlType="submit">
+										Add Batch
+									</Button>
 								</Form.Item>
 							</Row>
 						</Col>

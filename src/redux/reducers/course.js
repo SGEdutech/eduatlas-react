@@ -8,9 +8,10 @@ function courseReducer(state = initState, action) {
 			return { ...state, courses: action.payload.data.courses };
 		case 'ADD_COURSE_FULFILLED':
 			return { ...state.courses, courses: [...state.courses, action.payload.data] };
-		case 'UPDATE_COURSE': {
-			const { _id } = action.payload;
-			const newCourses = state.courses.map(course => course._id === _id ? action.payload : course);
+		case 'EDIT_COURSE_FULFILLED': {
+			const editedCourse = action.payload.data;
+			const { _id } = editedCourse;
+			const newCourses = state.courses.map(course => course._id === _id ? editedCourse : course);
 			return { ...state, courses: newCourses };
 		}
 		case 'DELETE_COURSE_PENDING':

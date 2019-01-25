@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
-import { addCourse } from '../../redux/actions/courseActions';
+
+import { addCourse, editCourse } from '../../redux/actions/courseActions';
+
+import sanatizeFormObj from '../../scripts/sanatize-form-obj';
 
 import Navbar from '../Navbar';
-
 import {
 	Button,
 	Checkbox,
@@ -15,10 +17,8 @@ import {
 	InputNumber,
 	Row
 } from 'antd';
-
-import sanatizeFormObj from '../../scripts/sanatize-form-obj';
-
 const { TextArea } = Input;
+
 
 const formItemLayout = {
 	labelCol: {
@@ -51,70 +51,65 @@ const colLayout = {
 	md: 12
 };
 
+const calculateTotalFee = (fees, gst) => fees + (fees * (gst / 100));
+
+
 class AddCourse extends Component {
 	state = {
 		courseInfo: {},
-		inclusiveOfTaxes: false
+		inclusiveOfTaxes: false,
+		totalFees: 0
 	}
 
-	validateGst = (rule, value, callback) => {
-		if (value < 0) {
-			callback('GST must be more than 0%');
-		} else {
-			callback();
-		}
-	}
-
-	calculateTotalFee = (fees, gst) => fees + (fees * (gst / 100));
-
-	updateTotalFee = (fees, gst) => {
-		const form = this.props.form;
-		fees = fees || form.getFieldValue('fees') || 0;
-		gst = gst || form.getFieldValue('gstPercentage') || 0;
-		form.setFieldsValue({ totalFees: this.calculateTotalFee(fees, gst) });
-	}
+	validateGst = (rule, value, callback) => value < 0 ? callback('GST must be more than 0%') : callback();
 
 	handleFeeChange = fees => {
-		fees = fees || 0;
-		this.updateTotalFee(fees);
+		const { form } = this.props;
+		const gst = form.getFieldValue('gstPercentage') || 0;
+		this.setState({ totalFees: calculateTotalFee(fees, gst) });
 	}
 
 	handleGstChange = gst => {
-		gst = gst || 0;
-		this.updateTotalFee(null, gst);
+		const { form } = this.props;
+		const fees = form.getFieldValue('fees') || 0;
+		this.setState({ totalFees: calculateTotalFee(fees, gst) });
 	}
 
 	handleInclusiveTaxChange = e => {
+		const { form } = this.props;
 		const isChecked = e.target.checked;
-		this.setState({ inclusiveOfTaxes: isChecked });
 		if (isChecked) this.props.form.setFieldsValue({ 'gstPercentage': 0 });
-		this.updateTotalFee();
+		const fees = form.getFieldValue('fees') || 0;
+		const gst = form.getFieldValue('gstPercentage') || 0;
+		this.setState({ inclusiveOfTaxes: isChecked, totalFees: calculateTotalFee(fees, gst) });
 	}
 
 	handleSubmit = e => {
 		e.preventDefault();
-		this.props.form.validateFieldsAndScroll((err, values) => {
+		const { form, addCourse, editCourse, history, edit, match } = this.props;
+		form.validateFieldsAndScroll((err, values) => {
 			if (err) {
 				console.error(err);
 				return;
 			}
 			sanatizeFormObj(values);
-			this.props.addCourse(values);
-			this.props.history.goBack();
+			edit ? editCourse(match.params.courseId, values) : addCourse(values);
+			history.goBack();
 		});
 	}
 
-	componentDidMount() {
-		if (this.props.edit) {
-			const { courseId } = this.props.match.params;
-			const courseInfo = this.props.courses.find(courseObj => courseObj._id === courseId);
-			// TODO: Implement loading for condition below
-			if (courseInfo === undefined) {
-				return;
-			}
-			this.setState({ courseInfo });
-			this.updateTotalFee();
-		}
+	static getDerivedStateFromProps(props, state) {
+		if (props.edit === false) return state;
+		const { courseId } = props.match.params;
+		const courseInfo = props.courses.find(courseObj => courseObj._id === courseId);
+		// TODO: Implement loading for condition below
+		if (courseInfo === undefined) return state;
+		// Don't update totalfee if there is no change in course info as it will override "onChange" changes
+		if (JSON.stringify(courseInfo) === JSON.stringify(state.courseInfo)) return state;
+		const { fees = 0 } = courseInfo;
+		const { gstPercentage = 0 } = courseInfo;
+		const totalFees = calculateTotalFee(fees, gstPercentage);
+		return { ...state, courseInfo, totalFees };
 	}
 
 	render() {
@@ -124,7 +119,7 @@ class AddCourse extends Component {
 			<>
 				<Navbar renderBackBtn={true} />
 				<div className="container below-nav">
-					<Form onSubmit={this.handleSubmit}>
+					<Form onSubmit={this.handleSubmit} className="pt-3">
 						<Col {...colLayout}>
 							<Form.Item
 								{...formItemLayout}
@@ -187,16 +182,14 @@ class AddCourse extends Component {
 							<Form.Item
 								{...formItemLayout}
 								label="Total Fee">
-								{getFieldDecorator('totalFees')(
-									<Input disabled />
-								)}
+								<Input value={this.state.totalFees} disabled />
 							</Form.Item>
 						</Col>
 						<Col span={24}>
 							<Row type="flex" justify="end">
 								<Form.Item>
-									<Button htmlType="submit" type="primary" onClick={this.enterLoading}>
-										Add Course
+									<Button htmlType="submit" type="primary">
+										{this.props.edit ? 'Edit Course' : 'Add Course'}
 									</Button>
 								</Form.Item>
 							</Row>
@@ -214,4 +207,4 @@ function mapStateToProps(state) {
 	};
 }
 
-export default compose(Form.create({ name: 'add-course' }), withRouter, connect(mapStateToProps, { addCourse }))(AddCourse);
+export default compose(Form.create({ name: 'add-course' }), withRouter, connect(mapStateToProps, { addCourse, editCourse }))(AddCourse);

@@ -1,29 +1,29 @@
 import axios from 'axios';
 
-export function addCourse(newCourse) {
+export function addBatch(newBatch) {
 	return dispatch => {
 		dispatch({
-			type: 'ADD_COURSE',
-			payload: axios.post('https://eduatlas.com/tuition/5bbe191a64512a2f77b84c70/course', newCourse)
+			type: 'ADD_BATCH',
+			payload: axios.post('https://eduatlas.com/tuition/5bbe191a64512a2f77b84c70/course', newBatch)
 		});
 	};
 }
 
-export function editCourse(courseId, editedData) {
+export function editBatch(courseId, editedData) {
 	console.log(courseId);
 	console.log(editedData);
 	return dispatch => {
 		dispatch({
-			type: 'EDIT_COURSE',
+			type: 'EDIT_BATCH',
 			payload: axios.put(`https://eduatlas.com/tuition/5bbe191a64512a2f77b84c70/course/${courseId}`, editedData)
 		});
 	};
 }
 
-export function deleteCourse(id) {
+export function deleteBatch(id) {
 	return dispatch => {
 		dispatch({
-			type: 'DELETE_COURSE',
+			type: 'DELETE_BATCH',
 			payload: axios.delete(`https://eduatlas.com/tuition/5bbe191a64512a2f77b84c70/course/${id}`)
 		});
 	};
