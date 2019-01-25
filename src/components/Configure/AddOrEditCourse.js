@@ -104,7 +104,6 @@ class AddCourse extends Component {
 		});
 	}
 
-	// FIXME: Function being called multiple times
 	componentDidMount() {
 		if (this.props.edit) {
 			const { courseId } = this.props.match.params;

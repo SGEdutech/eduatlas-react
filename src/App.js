@@ -39,7 +39,7 @@ class App extends Component {
 					<Route exact path="/add-course" component={AddOrEditCourse}></Route>
 					<Route exact path="/add-batch" component={AddBatch}></Route>
 					<Route exact path="/add-discount" component={AddDiscount}></Route>
-					<Route exact path="/edit-course/:courseId" component={() => <AddOrEditCourse edit={true} />}></Route>
+					<Route exact path="/edit-course/:courseId" render={() => <AddOrEditCourse edit={true} />}></Route>
 				</Switch>
 			</Router>
 		);
