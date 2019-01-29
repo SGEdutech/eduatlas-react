@@ -8,8 +8,8 @@ import Router from './Router';
 
 import TuitionManager from './components/TuitionManager';
 import AddOrEditCourse from './components/Configure/AddOrEditCourse';
-import AddBatch from './components/Configure/AddBatch';
-import AddDiscount from './components/Configure/AddDiscount';
+import AddOrEditBatch from './components/Configure/AddOrEditBatch';
+import AddOrEditDiscount from './components/Configure/AddOrEditDiscount';
 import { message } from 'antd';
 
 import fetchAll from './redux/actions/fetchAllAction';
@@ -37,9 +37,11 @@ class App extends Component {
 				<Switch>
 					<Route exact path="/" component={TuitionManager}></Route>
 					<Route exact path="/add-course" component={AddOrEditCourse}></Route>
-					<Route exact path="/add-batch" component={AddBatch}></Route>
-					<Route exact path="/add-discount" component={AddDiscount}></Route>
+					<Route exact path="/add-batch" component={AddOrEditBatch}></Route>
+					<Route exact path="/add-discount" component={AddOrEditDiscount}></Route>
 					<Route exact path="/edit-course/:courseId" render={() => <AddOrEditCourse edit={true} />}></Route>
+					<Route exact path="/edit-batch/:batchId" render={() => <AddOrEditBatch edit={true} />}></Route>
+					<Route exact path="/edit-discount/:discountId" render={() => <AddOrEditDiscount edit={true} />}></Route>
 				</Switch>
 			</Router>
 		);
@@ -48,7 +50,8 @@ class App extends Component {
 
 function mapStateToProps(state) {
 	return {
-		messageInfo: state.messageInfo
+		messageInfo: state.messageInfo,
+		student: state.student
 	};
 }
 

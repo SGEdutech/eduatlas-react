@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { compose } from 'redux';
 
 import { addBatch, editBatch } from '../../redux/actions/batchActions';
 
@@ -49,10 +52,10 @@ const colLayout = {
 };
 
 const STUDENTS = [{
-	_id: "4",
+	_id: '4',
 	name: 'aman singh rajput',
 	email: 'coolboy@gmail.com',
-	rollNumber: 'm0001',
+	rollNumber: 'm0001'
 }];
 
 
@@ -60,7 +63,8 @@ class AddBatch extends Component {
 	state = {
 		searchText: '',
 		selectedRowKeys: [],
-		autoCompleteResult: []
+		autoCompleteResult: [],
+		batchInfo: {}
 	};
 
 	enterLoading = () => {
@@ -68,7 +72,7 @@ class AddBatch extends Component {
 	}
 
 	getColumnSearchProps = dataIndex => ({
-		// don't touch this shit, its mineeeee
+		// don't touch this shit, its mineeeee -ANTD TABLE
 		filterDropdown: ({
 			setSelectedKeys, selectedKeys, confirm, clearFilters
 		}) => (
@@ -79,24 +83,21 @@ class AddBatch extends Component {
 						value={selectedKeys[0]}
 						onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
 						onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
-						style={{ width: 188, marginBottom: 8, display: 'block' }}
-					/>
+						style={{ width: 188, marginBottom: 8, display: 'block' }} />
 					<Button
 						type="primary"
 						onClick={() => this.handleSearch(selectedKeys, confirm)}
 						icon="search"
 						size="small"
-						style={{ width: 90, marginRight: 8 }}
-					>
+						style={{ width: 90, marginRight: 8 }}>
 						Search
-				</Button>
+					</Button>
 					<Button
 						onClick={() => this.handleReset(clearFilters)}
 						size="small"
-						style={{ width: 90 }}
-					>
+						style={{ width: 90 }}>
 						Reset
-				</Button>
+					</Button>
 				</div>
 			),
 		filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined }} />,
@@ -149,14 +150,27 @@ class AddBatch extends Component {
 				return;
 			}
 			sanatizeFormObj(values);
-			edit ? editBatch(match.params.batchId, values) : addBatch(values);
+			values.students = this.state.selectedRowKeys;
+			const { courseId } = values;
+			delete values.courseId;
+			edit ? editBatch(courseId, match.params.batchId, values) : addBatch(courseId, values);
 			history.goBack();
 		});
 	}
 
+	static getDerivedStateFromProps(props, state) {
+		if (props.edit === false) return state;
+		const { batchId } = props.match.params;
+		const batchInfo = props.batches.find(courseObj => courseObj._id === batchId);
+		// TODO: Implement loading for condition below
+		if (batchInfo === undefined || JSON.stringify(batchInfo) === JSON.stringify(state.batchInfo)) return state;
+		return { ...state, batchInfo, selectedRowKeys: [...batchInfo.students] };
+	}
+
 	render() {
 		const { getFieldDecorator } = this.props.form;
-		// const { code, description, students } = this.state.batchInfo;
+		const { courses, studentsOfTuition } = this.props;
+		const { code, description, courseId, students } = this.state.batchInfo;
 		const columns = [
 			{
 				title: 'Name',
@@ -190,21 +204,22 @@ class AddBatch extends Component {
 				<Navbar renderBackBtn={true} />
 				<div className="container below-nav">
 					<Form onSubmit={this.handleSubmit} className="pt-3">
+						<Col span={24}>
+							<h3>{this.props.edit ? 'Edit Batch:' : 'Add Batch:'}</h3>
+						</Col>
 						<Col {...colLayout}>
 							<Form.Item
 								{...formItemLayout}
 								label="Parent Course"
 								hasFeedback={true}>
 								{getFieldDecorator('courseId', {
-									// initialValue: courseId,
+									initialValue: courseId,
 									rules: [{
 										required: true, message: 'Batch must have a parent Course!'
 									}]
 								})(
-									<Select placeholder="select parent course">
-										<Option value="1">JEE Maths</Option>
-										<Option value="2">JEE Physics</Option>
-										<Option value="3">JEE Chemistry</Option>
+									<Select placeholder="select parent course" disabled={this.props.edit}>
+										{courses.map(course => <Option key={course._id} value={course._id}>{course.code}</Option>)}
 									</Select>
 								)}
 							</Form.Item>
@@ -215,7 +230,7 @@ class AddBatch extends Component {
 								label="Batch Code"
 								hasFeedback={true}>
 								{getFieldDecorator('code', {
-									// initialValue: code,
+									initialValue: code,
 									rules: [{
 										required: true, message: 'Batch must have some code!'
 									}]
@@ -229,17 +244,12 @@ class AddBatch extends Component {
 								{...formItemLayout}
 								label="Description"
 								hasFeedback={true}>
-								{getFieldDecorator('description',{
-									// initialValue: description,
-								})(
-									<TextArea rows={4} />
-								)}
+								{getFieldDecorator('description', { initialValue: description })(<TextArea rows={4} />)}
 							</Form.Item>
 						</Col>
 						<Col span={24}>
 							<Form.Item
-								{...studentTableLayout}
-							>
+								{...studentTableLayout}>
 								<Table
 									title={() => 'Add students to batch'}
 									bordered
@@ -248,20 +258,15 @@ class AddBatch extends Component {
 									rowKey="_id"
 									rowSelection={rowSelection}
 									columns={columns}
-									dataSource={STUDENTS}
-									onRow={record => ({
-										onClick: () => {
-											this.selectRow(record);
-										}
-									})}
-								/>
+									dataSource={studentsOfTuition}
+									onRow={record => ({ onClick: () => this.selectRow(record) })} />
 							</Form.Item>
 						</Col>
 						<Col span={24}>
 							<Row type="flex" justify="end">
 								<Form.Item>
 									<Button type="primary" htmlType="submit">
-										Add Batch
+										{this.props.edit ? 'Edit Batch' : 'Add Batch'}
 									</Button>
 								</Form.Item>
 							</Row>
@@ -273,4 +278,12 @@ class AddBatch extends Component {
 	}
 }
 
-export default Form.create({ name: 'add-batch' })(AddBatch);
+function mapStateToProps(state) {
+	return {
+		batches: state.batch.batches,
+		courses: state.course.courses,
+		studentsOfTuition: state.student.students
+	};
+}
+
+export default compose(Form.create({ name: 'add-batch' }), withRouter, connect(mapStateToProps, { addBatch, editBatch }))(AddBatch);

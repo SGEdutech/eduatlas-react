@@ -15,7 +15,7 @@ function CourseCard(props) {
 	];
 
 	return (
-		<Card title={code}
+		<Card title={<span className="text-uppercase">{code}</span>}
 			actions={iconsArray}>
 			<Row>
 				<Col>

@@ -12,6 +12,7 @@ import {
 	Button,
 	Checkbox,
 	Col,
+	Divider,
 	Form,
 	Input,
 	InputNumber,
@@ -51,7 +52,11 @@ const colLayout = {
 	md: 12
 };
 
-const calculateTotalFee = (fees, gst) => fees + (fees * (gst / 100));
+const calculateTotalFee = (fees, gst) => {
+	fees = parseFloat(fees);
+	gst = parseFloat(gst);
+	return fees + (fees * (gst / 100));
+};
 
 
 class AddCourse extends Component {
@@ -120,6 +125,10 @@ class AddCourse extends Component {
 				<Navbar renderBackBtn={true} />
 				<div className="container below-nav">
 					<Form onSubmit={this.handleSubmit} className="pt-3">
+						<Col span={24}>
+							<h3>{this.props.edit ? 'Edit Course:' : 'Add Course:'}</h3>
+						</Col>
+						<Divider />
 						<Col {...colLayout}>
 							<Form.Item
 								{...formItemLayout}

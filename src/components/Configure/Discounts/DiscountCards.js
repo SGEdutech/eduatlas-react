@@ -1,20 +1,26 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import IconsWithTooltip from '../../SharedComponents/IconsWithTooltip';
 
-import { Card } from 'antd';
-
-const iconsArray = [
-	<IconsWithTooltip tooltipMessage="Edit" iconType="edit" />,
-	<IconsWithTooltip tooltipMessage="Delete" iconType="delete" />
-];
+import { Card, Col, Row } from 'antd';
 
 function DiscountCard(props) {
-	const { code, amount } = props;
+	const { id, code, amount, isPercent, deleteDiscount } = props;
+
+	const iconsArray = [
+		<Link to={'/edit-discount/' + id}><IconsWithTooltip tooltipMessage="Edit" iconType="edit" /></Link>,
+		<IconsWithTooltip tooltipMessage="Delete" iconType="delete" onClick={() => deleteDiscount(id)} />
+	];
+
 	return (
-		<Card title={code}
+		<Card title={<span className="text-uppercase">{code}</span>}
 			actions={iconsArray}>
-			<p><span className="font-weight-bold">Discount Amount:</span> {amount}</p>
+			<Row>
+				<Col>
+					<div><span className="font-weight-bold">Discount {isPercent ? '%' : 'Amount'}:</span> {amount}</div>
+				</Col>
+			</Row>
 		</Card>
 	);
 }

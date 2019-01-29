@@ -6,6 +6,8 @@ import Batch from './Configure/Batch';
 import Discount from './Configure/Discount';
 
 import { deleteCourse } from '../redux/actions/courseActions';
+import { deleteBatch } from '../redux/actions/batchActions';
+import { deleteDiscount } from '../redux/actions/discountActions';
 
 import { Tabs } from 'antd';
 const TabPane = Tabs.TabPane;
@@ -20,19 +22,17 @@ const innerTabs = {
 };
 
 class Configure extends Component {
-	deleteCourse = id => this.props.deleteCourse(id);
-
 	render() {
 		return (
 			<Tabs size="large" tabPosition="bottom" tabBarStyle={innerTabs}>
 				<TabPane tab="Courses" key="1">
-					<Course messageInfo={this.props.messageInfo} coursesInfo={this.props.course} deleteCourse={this.deleteCourse} />
+					<Course messageInfo={this.props.messageInfo} coursesInfo={this.props.course} deleteCourse={this.props.deleteCourse} />
 				</TabPane>
 				<TabPane tab="Batches" key="2">
-					<Batch batchesInfo={this.props.batch} />
+					<Batch messageInfo={this.props.messageInfo} batchesInfo={this.props.batch} deleteBatch={this.props.deleteBatch} />
 				</TabPane>
 				<TabPane tab="Discounts" key="3">
-					<Discount />
+					<Discount messageInfo={this.props.messageInfo} discountsInfo={this.props.discount} deleteDiscount={this.props.deleteDiscount} />
 				</TabPane>
 			</Tabs>
 		);
@@ -44,8 +44,10 @@ function mapStateToProps(state) {
 	return {
 		batch: state.batch,
 		course: state.course,
-		messageInfo: state.messageInfo
+		messageInfo: state.messageInfo,
+		student: state.student,
+		discount: state.discount
 	};
 }
 
-export default connect(mapStateToProps, { deleteCourse })(Configure);
+export default connect(mapStateToProps, { deleteCourse, deleteBatch, deleteDiscount })(Configure);

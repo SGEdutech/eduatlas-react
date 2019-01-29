@@ -33,9 +33,9 @@ const colLayout = {
 
 class Course extends Component {
 	showDeleteConfirm = id => {
-		const deleteCourse = this.props.deleteCourse;
+		const { deleteCourse } = this.props;
 		confirm({
-			title: 'Are You Sure ?',
+			title: 'Are You Sure?',
 			content: 'This action is permanent!',
 			okText: 'Yes',
 			okType: 'danger',
@@ -47,24 +47,23 @@ class Course extends Component {
 	};
 
 	render() {
-		const { messageInfo, coursesInfo } = this.props;
+		const { coursesInfo, messageInfo } = this.props;
 
-		const coursesJsx = coursesInfo.courses.map(({ _id, code, description, batches, fees }) => (
+		const coursesJsx = coursesInfo.courses.map(({ _id, code, description, numberOfBatches, fees }) => (
 			<Col {...colLayout} key={_id}>
 				<div className="mb-3">
 					<CourseCard
 						id={_id}
 						code={code}
 						discription={description}
-						numberOfBatches={batches}
+						numberOfBatches={numberOfBatches}
 						courseFee={fees}
 						deleteCourse={this.showDeleteConfirm} />
 				</div>
 			</Col>
 		));
 
-		const emptyJsx = <Empty
-			className="mt-4"
+		const emptyJsx = <Empty className="mt-4"
 			image="https://gw.alipayobjects.com/mdn/miniapp_social/afts/img/A*pevERLJC9v0AAAAAAAAAAABjAQAAAQ/original"
 			description={<span>Nothing is better than something...</span>}></Empty>;
 
