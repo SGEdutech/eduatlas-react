@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 
 import {
 	Button,
@@ -12,22 +14,9 @@ import {
 	Row,
 	Select
 } from 'antd';
-const { Option } = Select;
+import ColumnGroup from 'antd/lib/table/ColumnGroup';
 
-const options = [{
-	isLeaf: false,
-	label: 'JEE Maths',
-	value: 'JEE Maths',
-}, {
-	isLeaf: false,
-	label: 'JEE Physics',
-	value: 'JEE Physics',
-},
-{
-	value: 'JEE Chemistry',
-	label: 'JEE Chemistry',
-	isLeaf: false,
-}];
+const { Option } = Select;
 
 const formItemLayout = {
 	labelCol: {
@@ -44,15 +33,6 @@ const formItemLayout = {
 	}
 };
 
-const disabledFormItemLayout = {
-	labelCol: {
-		xs: { span: 24 }
-	},
-	wrapperCol: {
-		xs: { span: 24 }
-	}
-};
-
 const colLayout = {
 	xs: 24,
 	lg: 12
@@ -60,29 +40,67 @@ const colLayout = {
 
 class AddStudent extends Component {
 	state = {
-		confirmDirty: false,
-		autoCompleteResult: [],
-		options,
+		modeOfPayment: 'cash',
+		baseFee: 0,
+		discountInfo: {
+			code: '',
+			amount: 0,
+			isPercent: false
+		},
+		additionalDiscount: 0,
+		gstPercentage: 0,
+		feeCollected: 0
 	};
 
-	loadData = selectedOptions => {
-		const targetOption = selectedOptions[selectedOptions.length - 1];
-		targetOption.loading = true;
+	getBaseFee = courseId => {
+		// TODO: Handle this error
+		const courseInfo = this.props.courses.find(course => course._id === courseId);
+		if (Boolean(courseInfo) === false) return 0;
+		return courseInfo.fees;
+	}
 
-		// load options lazily
-		setTimeout(() => {
-			targetOption.loading = false;
-			targetOption.children = [{
-				label: `${targetOption.label} Batch 1`,
-				value: 'dynamic1',
-			}, {
-				label: `${targetOption.label} Batch 2`,
-				value: 'dynamic2',
-			}];
-			this.setState({
-				options: [...this.state.options],
-			});
-		}, 1000);
+	calcDiscountAmount = (baseFee, discountAmount, isPercent) => {
+		if (isPercent) return baseFee * (discountAmount / 100);
+		return discountAmount;
+	}
+
+	calcNetFee = (baseFee, discountAmount, additionalDiscount) => {
+		return baseFee - (discountAmount + additionalDiscount)
+	}
+
+	getTotalDiscountAmount = () => {
+		const { additionalDiscount, baseFee, discountInfo } = this.state;
+		const discountAmount = this.calcDiscountAmount(baseFee, discountInfo.amount, discountInfo.isPercent);
+		return discountAmount + additionalDiscount;
+	}
+
+	getDiscountReason = () => {
+		const { additionalDiscount, baseFee, discountInfo } = this.state;
+		let amountReason = '';
+		let additionalReason = '';
+		const code = discountInfo.code.toUpperCase();
+		const discountAmount = this.calcDiscountAmount(baseFee, discountInfo.amount, discountInfo.isPercent);
+		if (discountAmount) amountReason = `${code}(${discountAmount})`;
+		if (additionalDiscount) additionalReason = `ADDITIONAL(${additionalDiscount})`;
+		if (amountReason && additionalReason) return amountReason + ' + ' + additionalReason;
+		if (amountReason) return amountReason;
+		if (additionalReason) return additionalReason;
+		return '';
+	}
+
+	getNetFee = () => {
+		const { additionalDiscount, baseFee, discountInfo } = this.state;
+		const discountAmount = this.calcDiscountAmount(baseFee, discountInfo.amount, discountInfo.isPercent);
+		return this.calcNetFee(baseFee, discountAmount, additionalDiscount);
+	}
+
+	getTaxAmount = () => {
+		const { additionalDiscount, baseFee, discountInfo, gstPercentage } = this.state;
+		const discountAmount = this.calcDiscountAmount(baseFee, discountInfo.amount, discountInfo.isPercent);
+		const netFee = this.calcNetFee(baseFee, discountAmount, additionalDiscount);
+		let tax = netFee * (gstPercentage / 100);
+		if (tax < 0) tax = 0;
+		return tax;
 	}
 
 	handleSubmit = e => {
@@ -94,15 +112,64 @@ class AddStudent extends Component {
 		});
 	}
 
+	handleModeOfPaymentChange = value => this.setState({ modeOfPayment: value })
+
+	handleCourseChange = ([courseId]) => {
+		if (Boolean(courseId) === false) {
+			this.setState({ baseFee: 0, gstPercentage: 0 });
+			return;
+		}
+		const courseInfo = this.props.courses.find(course => course._id === courseId);
+		if (Boolean(courseInfo) === false) throw new Error('Course with this id could not be found');
+		const { fees, gstPercentage } = courseInfo;
+		this.setState({ baseFee: fees, gstPercentage });
+	}
+
+	handleDiscountCodeChange = discountId => {
+		if (Boolean(discountId) === false) {
+			this.setState({ discountInfo: { code: '', amount: 0, isPercent: false } });
+			return;
+		}
+		const discountInfo = this.props.discounts.find(discount => discount._id === discountId);
+		if (Boolean(discountInfo) === false) throw new Error('Discount with this id could not be found');
+		const { amount, code, isPercent } = discountInfo;
+		this.setState({ discountInfo: { amount, code, isPercent } });
+	}
+
+	handleAdditionalDiscountChange = additionalDiscount => {
+		additionalDiscount = additionalDiscount || 0;
+		this.setState({ additionalDiscount });
+	}
+
+	handleFeeCollectedChange = feeCollected => {
+		feeCollected = feeCollected || 0;
+		this.setState({ feeCollected });
+	}
+
 	render() {
 		const { getFieldDecorator } = this.props.form;
+		const { batches, courses, discounts } = this.props;
+		const { baseFee, discountAmount, additionalDiscount, tax } = this.state;
+
+		const coursesAndbatchesOpts = courses.map(course => (
+			{
+				value: course._id,
+				label: course.code,
+				children: batches.filter(batch => batch.courseId === course._id).map(batch => (
+					{
+						value: batch._id,
+						label: batch.code
+					}
+				))
+			}
+		));
 
 		return (
 			<>
 				<div className="container below-nav">
-					<Row onSubmit={this.handleSubmit}>
-						<Col xs={24} md={17}>
-							<Form>
+					<Form onSubmit={this.handleSubmit}>
+						<Row>
+							<Col xs={24} md={17}>
 								<Col span={24}>
 									<h3>Compulsary Fields</h3>
 									<Divider />
@@ -111,8 +178,7 @@ class AddStudent extends Component {
 									<Form.Item
 										{...formItemLayout}
 										label="Roll No"
-										hasFeedback
-									>
+										hasFeedback={true}>
 										{getFieldDecorator('rollNumber', {
 											rules: [{
 												required: true, message: 'Please give some Roll-number!'
@@ -126,8 +192,7 @@ class AddStudent extends Component {
 									<Form.Item
 										{...formItemLayout}
 										label="Student Name"
-										hasFeedback
-									>
+										hasFeedback={true}>
 										{getFieldDecorator('name', {
 											rules: [{
 												required: true, message: 'Please provide name!'
@@ -141,8 +206,7 @@ class AddStudent extends Component {
 									<Form.Item
 										{...formItemLayout}
 										label="Student Email"
-										hasFeedback
-									>
+										hasFeedback={true}>
 										{getFieldDecorator('email', {
 											rules: [{
 												type: 'email', message: 'The input is not valid E-mail!',
@@ -163,7 +227,8 @@ class AddStudent extends Component {
 								<Col {...colLayout}>
 									<Form.Item
 										{...formItemLayout}
-										label="Student Address">
+										label="Student Address"
+										hasFeedback={true}>
 										{getFieldDecorator('address', {
 										})(
 											<Input placeholder="student address" />
@@ -173,7 +238,8 @@ class AddStudent extends Component {
 								<Col {...colLayout}>
 									<Form.Item
 										{...formItemLayout}
-										label="Student Phone No.">
+										label="Student Phone No."
+										hasFeedback={true}>
 										{getFieldDecorator('phone', {
 										})(
 											<InputNumber className="w-100" max={99999999999} placeholder="student number" />
@@ -188,15 +254,14 @@ class AddStudent extends Component {
 								<Col {...colLayout}>
 									<Form.Item
 										{...formItemLayout}
-										label="Select Course and Batch">
+										label="Select Course and Batch"
+										hasFeedback={true}>
 										{getFieldDecorator('courseAndBatch', {
 										})(
 											<Cascader
-												options={this.state.options}
-												loadData={this.loadData}
-												// onChange={this.onChange}
+												options={coursesAndbatchesOpts}
 												changeOnSelect
-											/>
+												onChange={this.handleCourseChange} />
 										)}
 									</Form.Item>
 								</Col>
@@ -204,13 +269,11 @@ class AddStudent extends Component {
 									<Form.Item
 										{...formItemLayout}
 										label="Discount Code"
-									>
+										hasFeedback={true}>
 										{getFieldDecorator('discountCode', {
 										})(
-											<Select placeholder="select discount code">
-												<Option value="1">NEWYEAR150</Option>
-												<Option value="2">NEWYEAR15</Option>
-												<Option value="3">50OFF</Option>
+											<Select allowClear={true} onChange={this.handleDiscountCodeChange} placeholder="select discount code">
+												{discounts.map(discount => <Option key={discount._id} value={discount._id}>{discount.code}</Option>)}
 											</Select>
 										)}
 									</Form.Item>
@@ -219,11 +282,9 @@ class AddStudent extends Component {
 									<Form.Item
 										{...formItemLayout}
 										label="Additional Discount"
-									>
-										{getFieldDecorator('additionalDiscount', {
-											initialValue:0
-										})(
-											<InputNumber className="w-100" step={100} min={0} max={10000000} />
+										hasFeedback={true}>
+										{getFieldDecorator('additionalDiscount')(
+											<InputNumber className="w-100" step={100} min={0} onChange={this.handleAdditionalDiscountChange} />
 										)}
 									</Form.Item>
 								</Col>
@@ -236,82 +297,118 @@ class AddStudent extends Component {
 									<Form.Item
 										{...formItemLayout}
 										label="Fee Collected"
-									>
-										{getFieldDecorator('feeCollected', {
-											initialValue:0
-										})(
-											<InputNumber className="w-100" step={500} min={0} max={100000} formatter={value => `₹${value}`} />
+										hasFeedback={true}>
+										{getFieldDecorator('feeCollected')(
+											<InputNumber className="w-100" step={500} min={0} formatter={value => `₹${value}`} />
 										)}
 									</Form.Item>
 								</Col>
 								<Col {...colLayout}>
 									<Form.Item
 										{...formItemLayout}
-										label="Mode Of Payment">
+										label="Mode Of Payment"
+										hasFeedback={true}>
 										{getFieldDecorator('modeOfPayment', {
-											initialValue:"cash"
+											initialValue: this.state.modeOfPayment
 										})(
-											<Select>
+											<Select onChange={this.handleModeOfPaymentChange}>
 												<Option value="cash">Cash</Option>
 												<Option value="card">Card</Option>
 												<Option value="cheque">Cheque</Option>
-												<Option value="others">Others</Option>
+												<Option value="other">Others</Option>
 											</Select>
 										)}
 									</Form.Item>
 								</Col>
-								<Col {...colLayout}>
-									<Form.Item
-										{...formItemLayout}
-										label="Date">
-										{getFieldDecorator('date', {
-										})(
-											<DatePicker />
-										)}
-									</Form.Item>
-								</Col>
-								<Col {...colLayout}>
-									<Form.Item
-										{...formItemLayout}
-										label="Bank Name">
-										<Input placeholder="bank name" />
-									</Form.Item>
-								</Col>
-								<Col {...colLayout}>
-									<Form.Item
-										{...formItemLayout}
-										label="Cheque Number">
-										<Input placeholder="cheque number" />
-									</Form.Item>
-								</Col>
-								<Col {...colLayout}>
-									<Form.Item
-										{...formItemLayout}
-										label="Bank Name">
-										<Input placeholder="bank name" />
-									</Form.Item>
-								</Col>
-								<Col {...colLayout}>
-									<Form.Item
-										{...formItemLayout}
-										label="Transaction Id">
-										<Input placeholder="transaction id" />
-									</Form.Item>
-								</Col>
-								<Col {...colLayout}>
-									<Form.Item
-										{...formItemLayout}
-										label="Name of Mode">
-										<Input placeholder="mode name" />
-									</Form.Item>
-								</Col>
-								<Col {...colLayout}>
-									<Form.Item
-										{...formItemLayout}
-										label="Transaction Id">
-										<Input placeholder="transaction id" />
-									</Form.Item>
-								</Col>
+								{this.state.modeOfPayment === 'cheque' &&
+									<>
+										<Col {...colLayout}>
+											<Form.Item
+												{...formItemLayout}
+												label="Date"
+												hasFeedback={true}>
+												{getFieldDecorator('dateOfCheque', {
+												})(
+													<DatePicker />
+												)}
+											</Form.Item>
+										</Col>
+										<Col {...colLayout}>
+											<Form.Item
+												{...formItemLayout}
+												label="Bank Name"
+												hasFeedback={true}>
+												{getFieldDecorator('bank', {
+												})(
+													<Input placeholder="bank name" />
+												)}
+											</Form.Item>
+										</Col>
+										<Col {...colLayout}>
+											<Form.Item
+												{...formItemLayout}
+												label="Cheque Number"
+												hasFeedback={true}>
+												{getFieldDecorator('chequeNumber', {
+												})(
+													<Input placeholder="cheque number" />
+												)}
+											</Form.Item>
+										</Col>
+									</>
+								}
+								{this.state.modeOfPayment === 'card' &&
+									<>
+										<Col {...colLayout}>
+											<Form.Item
+												{...formItemLayout}
+												label="Bank Name"
+												hasFeedback={true}>
+												{getFieldDecorator('bank', {
+												})(
+													<Input placeholder="bank name" />
+												)}
+											</Form.Item>
+										</Col>
+										<Col {...colLayout}>
+											<Form.Item
+												{...formItemLayout}
+												label="Transaction Id"
+												hasFeedback={true}>
+												{getFieldDecorator('transactionId', {
+												})(
+													<Input placeholder="transaction id" />
+												)}
+											</Form.Item>
+										</Col>
+									</>
+								}
+								{this.state.modeOfPayment === 'other' &&
+									<>
+										<Col {...colLayout}>
+											<Form.Item
+												{...formItemLayout}
+												label="Name of Mode"
+												hasFeedback={true}>
+												{getFieldDecorator('modeOfPayment', {
+												})(
+													<Input placeholder="mode name" />
+												)}
+											</Form.Item>
+										</Col>
+										<Col {...colLayout}>
+											<Form.Item
+												{...formItemLayout}
+												label="Transaction Id"
+												hasFeedback={true}>
+												{getFieldDecorator('transactionId', {
+												})(
+													<Input placeholder="transaction id" />
+												)}
+											</Form.Item>
+										</Col>
+									</>
+								}
 								<Col span={24}>
 									<Divider />
 									<h3>Installment Detail</h3>
@@ -327,75 +424,78 @@ class AddStudent extends Component {
 										)}
 									</Form.Item>
 								</Col>
-								<Col span={24}>
-									<Row type="flex" justify="end">
-										<Form.Item>
-											<Button type="primary" htmlType="submit" loading={this.state.loading} onClick={this.enterLoading}>
-												Click me!
-											</Button>
+							</Col>
+							<Col className="p-1" xs={24} md={{ offset: 1, span: 6 }} style={{ border: 'thick double #00bcd4' }}>
+								<Row>
+									<Col span={24}>
+										<Form.Item
+											label="Base Fee">
+											<Input disabled value={this.state.baseFee} />
 										</Form.Item>
-									</Row>
-								</Col>
-							</Form>
-						</Col>
-						<Col className="p-1" xs={0} md={{ offset: 1, span: 6 }} style={{ border: 'thick double #00bcd4' }}>
-							<Form layout="vertical">
-								<Col span={24}>
-									<Form.Item
-										{...disabledFormItemLayout}
-										label="Base Fee">
-										<Input disabled defaultValue="20000" />
+									</Col>
+									<Col span={24}>
+										<Form.Item
+											label="Total Discount Amount">
+											<Input disabled value={this.getTotalDiscountAmount()} />
+										</Form.Item>
+									</Col>
+									<Col span={24}>
+										<Form.Item
+											label="Discount Reason">
+											<Input disabled value={this.getDiscountReason()} />
+										</Form.Item>
+									</Col>
+									<Col span={24}>
+										<Form.Item
+											label="Net Fee">
+											<Input disabled value={this.getNetFee()} />
+										</Form.Item>
+									</Col>
+									<Col span={24}>
+										<Form.Item
+											label="Tax/GST">
+											<Input disabled value={this.getTaxAmount()} />
+										</Form.Item>
+									</Col>
+									<Col span={24}>
+										<Form.Item
+											label="Gross Fee">
+											<Input disabled value={this.getNetFee() + this.getTaxAmount()} />
+										</Form.Item>
+									</Col>
+									<Col span={24}>
+										<Form.Item
+											label="Pending Balance">
+											<Input disabled value={(this.getNetFee() + this.getTaxAmount()) - this.state.feeCollected} />
+										</Form.Item>
+									</Col>
+								</Row>
+							</Col>
+							<Col xs={24}>
+								<Row type="flex" justify="end">
+									<Form.Item>
+										<Divider />
+										<Button type="primary" htmlType="submit">
+											Add Student
+										</Button>
 									</Form.Item>
-								</Col>
-								<Col span={24}>
-									<Form.Item
-										{...disabledFormItemLayout}
-										label="Total Discount Amount">
-										<Input disabled defaultValue="2300" />
-									</Form.Item>
-								</Col>
-								<Col span={24}>
-									<Form.Item
-										{...disabledFormItemLayout}
-										label="Discount Reason">
-										<Input disabled defaultValue="50OFF + Additional" />
-									</Form.Item>
-								</Col>
-								<Col span={24}>
-									<Form.Item
-										{...disabledFormItemLayout}
-										label="Net Fee">
-										<Input disabled defaultValue="19345" />
-									</Form.Item>
-								</Col>
-								<Col span={24}>
-									<Form.Item
-										{...disabledFormItemLayout}
-										label="Tax/GST">
-										<Input disabled defaultValue="0" />
-									</Form.Item>
-								</Col>
-								<Col span={24}>
-									<Form.Item
-										{...disabledFormItemLayout}
-										label="Gross Fee">
-										<Input disabled defaultValue="19345" />
-									</Form.Item>
-								</Col>
-								<Col span={24}>
-									<Form.Item
-										{...disabledFormItemLayout}
-										label="Pending Balance">
-										<Input disabled defaultValue="10000" />
-									</Form.Item>
-								</Col>
-							</Form>
-						</Col>
-					</Row>
+								</Row>
+							</Col>
+						</Row>
+					</Form>
 				</div>
 			</>
 		);
 	}
 }
 
-export default Form.create({ name: 'add-discount' })(AddStudent);
+function mapStateToProps(state) {
+	return {
+		batches: state.batch.batches,
+		courses: state.course.courses,
+		discounts: state.discount.discounts,
+		students: state.student.students
+	};
+}
+
+export default compose(Form.create({ name: 'add-student' }), connect(mapStateToProps))(AddStudent);

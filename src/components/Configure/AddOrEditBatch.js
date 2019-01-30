@@ -51,14 +51,6 @@ const colLayout = {
 	md: 12
 };
 
-const STUDENTS = [{
-	_id: '4',
-	name: 'aman singh rajput',
-	email: 'coolboy@gmail.com',
-	rollNumber: 'm0001'
-}];
-
-
 class AddBatch extends Component {
 	state = {
 		searchText: '',
@@ -112,8 +104,7 @@ class AddBatch extends Component {
 				highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
 				searchWords={[this.state.searchText]}
 				autoEscape
-				textToHighlight={text.toString()}
-			/>
+				textToHighlight={text.toString()} />
 		)
 	})
 
@@ -156,6 +147,17 @@ class AddBatch extends Component {
 			edit ? editBatch(courseId, match.params.batchId, values) : addBatch(courseId, values);
 			history.goBack();
 		});
+	}
+
+	validateBatchCode = (rule, code = '', callback) => {
+		const { batchId } = this.props.match.params;
+		code = code.trim().toLowerCase();
+		if (!code) callback('invalid!');
+		const batchInfo = this.props.batches.filter(batch => batch._id !== batchId)
+			.find(batch => batch.code === code);
+		const isDuplicate = Boolean(batchInfo);
+		if (isDuplicate) callback('code already exists');
+		callback();
 	}
 
 	static getDerivedStateFromProps(props, state) {
@@ -215,7 +217,7 @@ class AddBatch extends Component {
 								{getFieldDecorator('courseId', {
 									initialValue: courseId,
 									rules: [{
-										required: true, message: 'Batch must have a parent Course!'
+										required: true, message: 'Batch must have Course!'
 									}]
 								})(
 									<Select placeholder="select parent course" disabled={this.props.edit}>
@@ -232,7 +234,9 @@ class AddBatch extends Component {
 								{getFieldDecorator('code', {
 									initialValue: code,
 									rules: [{
-										required: true, message: 'Batch must have some code!'
+										required: true, message: 'Batch must have code!'
+									}, {
+										validator: this.validateBatchCode
 									}]
 								})(
 									<Input placeholder="batch code" />

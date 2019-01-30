@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
+import { deleteStudent } from '../redux/actions/studentActions';
 
 import Active from './Students/Active';
 import AddStudent from './Students/AddStudent';
@@ -24,7 +27,7 @@ class Students extends Component {
 					<Requests />
 				</TabPane>
 				<TabPane tab="Active Students" key="2">
-					<Active />
+					<Active messageInfo={this.props.messageInfo} studentsInfo={this.props.student} deleteStudent={this.props.deleteStudent} />
 				</TabPane>
 				<TabPane tab="Add New Student" key="3">
 					<AddStudent />
@@ -34,4 +37,14 @@ class Students extends Component {
 	}
 }
 
-export default Students;
+function mapStateToProps(state) {
+	return {
+		batch: state.batch,
+		course: state.course,
+		messageInfo: state.messageInfo,
+		student: state.student,
+		discount: state.discount
+	};
+}
+
+export default connect(mapStateToProps, { deleteStudent })(Students);

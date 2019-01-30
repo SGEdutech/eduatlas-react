@@ -49,14 +49,14 @@ class Course extends Component {
 	render() {
 		const { coursesInfo, messageInfo } = this.props;
 
-		const coursesJsx = coursesInfo.courses.map(({ _id, code, description, numberOfBatches, fees }) => (
+		const coursesJsx = coursesInfo.courses.map(({ _id, code, description, batches, fees }) => (
 			<Col {...colLayout} key={_id}>
 				<div className="mb-3">
 					<CourseCard
 						id={_id}
 						code={code}
 						discription={description}
-						numberOfBatches={numberOfBatches}
+						numberOfBatches={batches.length}
 						courseFee={fees}
 						deleteCourse={this.showDeleteConfirm} />
 				</div>

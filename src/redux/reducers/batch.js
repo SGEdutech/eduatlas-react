@@ -18,6 +18,21 @@ function batchReducer(state = initState, action) {
 			return { ...state, batches: state.batches.filter(batch => batch._id !== action.payload.data._id) };
 		case 'DELETE_COURSE_FULFILLED':
 			return { ...state, batches: state.batches.filter(batch => batch.courseId !== action.payload.data._id) };
+		// TODO: return batchId from Backend
+		// case 'ADD_STUDENT_FULFILLED': {
+		// 	const addedStudent = action.payload.data;
+		// 	const newBatches = [...state.batches];
+		// 	const batchToEdit = newBatches.find(batch => batch._id === addedStudent.batchId);
+		// 	batchToEdit.students.push(addedStudent._id);
+		// 	return { ...state, batches: newBatches };
+		// }
+		// case 'DELETE_STUDENT_FULFILLED': {
+		// 	const deletedStudent = action.payload.data;
+		// 	const newBatches = [...state.batches];
+		// 	let batchToEdit = newBatches.find(batch => batch._id === deletedStudent.batchId);
+		// 	batchToEdit.students = batchToEdit.students.filter(studentId => studentId !== deletedStudent._id);
+		// 	return { ...state, batches: newBatches };
+		// }
 		default:
 			return state;
 	}

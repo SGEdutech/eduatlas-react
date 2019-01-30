@@ -10,6 +10,7 @@ import TuitionManager from './components/TuitionManager';
 import AddOrEditCourse from './components/Configure/AddOrEditCourse';
 import AddOrEditBatch from './components/Configure/AddOrEditBatch';
 import AddOrEditDiscount from './components/Configure/AddOrEditDiscount';
+import AddStudent from './components/Students/AddStudent';
 import { message } from 'antd';
 
 import fetchAll from './redux/actions/fetchAllAction';
@@ -42,6 +43,7 @@ class App extends Component {
 					<Route exact path="/edit-course/:courseId" render={() => <AddOrEditCourse edit={true} />}></Route>
 					<Route exact path="/edit-batch/:batchId" render={() => <AddOrEditBatch edit={true} />}></Route>
 					<Route exact path="/edit-discount/:discountId" render={() => <AddOrEditDiscount edit={true} />}></Route>
+					<Route exact path="/edit-student/:studentId" render={() => <AddStudent edit={true} />}></Route>
 				</Switch>
 			</Router>
 		);

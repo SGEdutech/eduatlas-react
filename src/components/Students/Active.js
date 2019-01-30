@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-
 import Highlighter from 'react-highlight-words';
+import { Link } from 'react-router-dom';
+
+import IconsWithTooltip from '../SharedComponents/IconsWithTooltip';
 
 import {
 	Button,
@@ -8,31 +10,11 @@ import {
 	Form,
 	Icon,
 	Input,
+	Modal,
 	Row,
 	Table
 } from 'antd';
-
-const STUDENTS = [{
-	_id: '4',
-	name: 'aman singh rajput',
-	email: 'coolboy@gmail.com',
-	rollNumber: 'm0001'
-}, {
-	_id: '1',
-	name: 'rahul',
-	email: 'mahi@gmail.com',
-	rollNumber: 'm0002'
-}, {
-	_id: '2',
-	name: 'ajay',
-	email: 'dangi.pratap@gmail.com',
-	rollNumber: 'm0003'
-}, {
-	_id: '3',
-	name: 'prabhu',
-	email: 'godisreal@gmail.com',
-	rollNumber: 'm0004'
-}];
+const confirm = Modal.confirm;
 
 class Active extends Component {
 	state = { searchText: '' };
@@ -95,7 +77,23 @@ class Active extends Component {
 		this.setState({ searchText: '' });
 	}
 
+	showDeleteConfirm = id => {
+		const { deleteStudent } = this.props;
+		confirm({
+			title: 'Are You Sure?',
+			content: 'This action is permanent!',
+			okText: 'Yes',
+			okType: 'danger',
+			cancelText: 'No',
+			onOk() {
+				deleteStudent(id);
+			}
+		});
+	};
+
 	render() {
+		const { studentsInfo, messageInfo } = this.props;
+
 		const columns = [
 			{
 				title: 'Name',
@@ -123,11 +121,11 @@ class Active extends Component {
 				key: 'action',
 				render: (text, record) => (
 					<Row type="flex" justify="space-around">
-						<Icon type="eye" />
+						<IconsWithTooltip iconType="eye" tooltipMessage="view" />
 						<Divider type="vertical" />
-						<Icon type="edit" />
+						<Link to={'/edit-student/' + record._id}><IconsWithTooltip iconType="edit" tooltipMessage="edit" /></Link>
 						<Divider type="vertical" />
-						<Icon type="delete" />
+						<IconsWithTooltip iconType="delete" tooltipMessage="delete" onClick={() => this.showDeleteConfirm(record._id)} />
 					</Row>
 				)
 			}
@@ -140,10 +138,10 @@ class Active extends Component {
 						title={() => 'Active Students'}
 						bordered
 						pagination={false}
-						scroll={{ x: 600 }}
+						scroll={{ x: 700 }}
 						rowKey="_id"
 						columns={columns}
-						dataSource={STUDENTS}
+						dataSource={studentsInfo.students}
 					/>
 				</div>
 			</>

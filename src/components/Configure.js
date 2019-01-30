@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import Course from './Configure/Course';
-import Batch from './Configure/Batch';
-import Discount from './Configure/Discount';
-
 import { deleteCourse } from '../redux/actions/courseActions';
 import { deleteBatch } from '../redux/actions/batchActions';
 import { deleteDiscount } from '../redux/actions/discountActions';
+
+import Course from './Configure/Course';
+import Batch from './Configure/Batch';
+import Discount from './Configure/Discount';
 
 import { Tabs } from 'antd';
 const TabPane = Tabs.TabPane;

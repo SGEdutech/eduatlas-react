@@ -76,7 +76,7 @@ class AddDiscount extends Component {
 			if (this.state.saveAsPercentage) {
 				values.isPercent = true;
 			}
-			edit ? editDiscount(match.params.courseId, values) : addDiscount(values);
+			edit ? editDiscount(match.params.discountId, values) : addDiscount(values);
 			history.goBack();
 		});
 	}
@@ -86,6 +86,17 @@ class AddDiscount extends Component {
 		// How the fuck is this working
 		if (isChecked) this.setState({ saveAsPercentage: isChecked, step: 1, min: 0, max: 100 });
 		else this.setState({ saveAsPercentage: isChecked, step: 500, min: 0, max: 10000000 });
+	}
+
+	validateDiscountCode = (rule, code = '', callback) => {
+		const { discountId } = this.props.match.params;
+		code = code.trim().toLowerCase();
+		if (!code) callback('invalid!');
+		const discountInfo = this.props.discounts.filter(discount => discount._id !== discountId)
+			.find(discount => discount.code === code);
+		const isDuplicate = Boolean(discountInfo);
+		if (isDuplicate) callback('code already exists');
+		callback();
 	}
 
 	static getDerivedStateFromProps(props, state) {
@@ -118,6 +129,8 @@ class AddDiscount extends Component {
 									initialValue: code,
 									rules: [{
 										required: true, message: 'Please give some name!'
+									}, {
+										validator: this.validateDiscountCode
 									}]
 								})(
 									<Input placeholder="discount code" />

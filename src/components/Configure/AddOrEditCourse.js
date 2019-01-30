@@ -53,6 +53,7 @@ const colLayout = {
 };
 
 const calculateTotalFee = (fees, gst) => {
+	gst = gst || 0;
 	fees = parseFloat(fees);
 	gst = parseFloat(gst);
 	return fees + (fees * (gst / 100));
@@ -103,6 +104,17 @@ class AddCourse extends Component {
 		});
 	}
 
+	validateCourseCode = (rule, code = '', callback) => {
+		const { courseId } = this.props.match.params;
+		code = code.trim().toLowerCase();
+		if (!code) callback('invalid!');
+		const courseInfo = this.props.courses.filter(course => course._id !== courseId)
+			.find(course => course.code === code);
+		const isDuplicate = Boolean(courseInfo);
+		if (isDuplicate) callback('this code already exists');
+		callback();
+	}
+
 	static getDerivedStateFromProps(props, state) {
 		if (props.edit === false) return state;
 		const { courseId } = props.match.params;
@@ -137,7 +149,9 @@ class AddCourse extends Component {
 								{getFieldDecorator('code', {
 									initialValue: code,
 									rules: [{
-										required: true, message: 'Your course must have code!'
+										required: true, message: 'Course must have code!'
+									}, {
+										validator: this.validateCourseCode
 									}]
 								})(
 									<Input placeholder="course code" />
@@ -152,7 +166,7 @@ class AddCourse extends Component {
 								{getFieldDecorator('fees', {
 									initialValue: fees,
 									rules: [{
-										required: true, message: 'Your course must have fee!'
+										required: true, message: 'Course must have fee!'
 									}]
 								})(
 									<InputNumber onChange={this.handleFeeChange} className="w-100" decimalSeparator="." precision={2} step={1000} min={0} max={10000000} />
@@ -176,9 +190,9 @@ class AddCourse extends Component {
 								hasFeedback={true}>
 								{getFieldDecorator('gstPercentage', {
 									initialValue: gstPercentage,
-									rules: [{ validator: this.validateGst }]
+									rules: [{ required: true, message: 'must provide gst' }, { validator: this.validateGst }]
 								})(
-									<InputNumber disabled={this.state.inclusiveOfTaxes} onChange={this.handleGstChange} className="w-100" formatter={value => `${value}%`} />
+									<InputNumber min={0} max={100} disabled={this.state.inclusiveOfTaxes} onChange={this.handleGstChange} className="w-100" formatter={value => `${value}%`} />
 								)}
 							</Form.Item>
 						</Col>
