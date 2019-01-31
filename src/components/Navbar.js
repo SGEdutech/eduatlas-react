@@ -52,7 +52,7 @@ class Navbar extends Component {
 		const { renderBackBtn = false } = this.props;
 		return (
 			<>
-				<nav className="navbar fixed-top bg-dark mb-0" style={headerStyle}>
+				<nav className="navbar fixed-top bg-info mb-0" style={headerStyle}>
 					<div className="container text-center">
 						{
 							renderBackBtn ? (
@@ -71,7 +71,7 @@ class Navbar extends Component {
 					onClose={this.onClose}
 					visible={this.state.visible}>
 					<List split={true} style={{ fontSize: 18 }}>
-						<NavListItem iconType="edit" content="Edit Profile" />
+						<Link to={'/edit-profile/5bbe191a64512a2f77b84c70'}><NavListItem iconType="edit" content="Edit Profile" /></Link>
 						<NavListItem iconType="form" content="Receipt Config" />
 						<NavListItem iconType="key" content="Change Password" />
 						<NavListItem iconType="logout" content="Logout" />

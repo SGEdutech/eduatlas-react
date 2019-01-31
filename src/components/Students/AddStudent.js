@@ -14,7 +14,8 @@ import {
 	Row,
 	Select
 } from 'antd';
-import ColumnGroup from 'antd/lib/table/ColumnGroup';
+
+import sanatizeFormObj from '../../scripts/sanatize-form-obj';
 
 const { Option } = Select;
 
@@ -65,12 +66,15 @@ class AddStudent extends Component {
 	}
 
 	calcNetFee = (baseFee, discountAmount, additionalDiscount) => {
-		return baseFee - (discountAmount + additionalDiscount)
+		return baseFee - (discountAmount + additionalDiscount);
 	}
 
 	getTotalDiscountAmount = () => {
-		const { additionalDiscount, baseFee, discountInfo } = this.state;
-		const discountAmount = this.calcDiscountAmount(baseFee, discountInfo.amount, discountInfo.isPercent);
+		const { baseFee, discountInfo } = this.state;
+		let { additionalDiscount } = this.state;
+		let discountAmount = this.calcDiscountAmount(baseFee, discountInfo.amount, discountInfo.isPercent);
+		discountAmount = parseInt(discountAmount, 10) || 0;
+		additionalDiscount = parseInt(additionalDiscount, 10) || 0;
 		return discountAmount + additionalDiscount;
 	}
 
@@ -101,15 +105,6 @@ class AddStudent extends Component {
 		let tax = netFee * (gstPercentage / 100);
 		if (tax < 0) tax = 0;
 		return tax;
-	}
-
-	handleSubmit = e => {
-		e.preventDefault();
-		this.props.form.validateFieldsAndScroll((err, values) => {
-			if (!err) {
-				console.log('Received values of form: ', values);
-			}
-		});
 	}
 
 	handleModeOfPaymentChange = value => this.setState({ modeOfPayment: value })
@@ -146,10 +141,63 @@ class AddStudent extends Component {
 		this.setState({ feeCollected });
 	}
 
+	injectBatchInfo = values => {
+		const [courseId, batchId] = values.courseAndBatch;
+		if (Boolean(batchId) === false) return;
+		values.batchInfo = { courseId, batchId };
+	}
+
+	injectInstallmentInfo = values => {
+		if (values.payments === undefined) throw new Error('Payment not initiated');
+		const installmentRegex = new RegExp('^feeCollected$|^modeOfPayment$|^bank$|^dateOfCheque$|^chequeNumber$|^cardNumber$|^transactionId$');
+		const installments = values.payments[0].installments;
+		const installmentObj = {};
+		const keys = Object.keys(values);
+		keys.forEach(key => {
+			if (installmentRegex.test(key) === false) return;
+			installmentObj[key] = values[key];
+			delete values[key];
+		});
+		if (Object.keys(installmentObj).length === 0) return false;
+		installments.push(installmentObj);
+		return true;
+	}
+
+	// Destructive- removes courses and batches field
+	injectPaymentInfo = values => {
+		const paymentRegex = new RegExp('^courseId$|^courseFee$|^courseGstPercentage$|^discountAmount$|^discountReason$|^nextInstallmentDate$|^$|^$');
+		const keys = Object.keys(values);
+		const paymentObj = { installments: [] };
+		keys.forEach(key => {
+			if (paymentRegex.test(key) === false) return;
+			paymentObj[key] = values[key];
+			delete values[key];
+		});
+		delete values.courseAndBatch;
+		if (Object.keys(paymentObj).length === 1) return false;
+		values.payments = [paymentObj];
+		return true;
+	}
+
+	handleSubmit = e => {
+		e.preventDefault();
+		const { form } = this.props;
+		form.validateFieldsAndScroll((err, values) => {
+			if (err) {
+				console.error(err);
+				return;
+			}
+			sanatizeFormObj(values);
+			this.injectBatchInfo(values);
+			const isPaymentInitiated = this.injectPaymentInfo(values);
+			if (isPaymentInitiated) this.injectInstallmentInfo(values);
+			console.log(values);
+		});
+	}
+
 	render() {
 		const { getFieldDecorator } = this.props.form;
 		const { batches, courses, discounts } = this.props;
-		const { baseFee, discountAmount, additionalDiscount, tax } = this.state;
 
 		const coursesAndbatchesOpts = courses.map(course => (
 			{
@@ -227,20 +275,20 @@ class AddStudent extends Component {
 								<Col {...colLayout}>
 									<Form.Item
 										{...formItemLayout}
-										label="Student Address"
+										label="Address"
 										hasFeedback={true}>
 										{getFieldDecorator('address', {
 										})(
-											<Input placeholder="student address" />
+											<Input placeholder="Student Address" />
 										)}
 									</Form.Item>
 								</Col>
 								<Col {...colLayout}>
 									<Form.Item
 										{...formItemLayout}
-										label="Student Phone No."
+										label="Contact Number"
 										hasFeedback={true}>
-										{getFieldDecorator('phone', {
+										{getFieldDecorator('contactNumber', {
 										})(
 											<InputNumber className="w-100" max={99999999999} placeholder="student number" />
 										)}
@@ -270,12 +318,9 @@ class AddStudent extends Component {
 										{...formItemLayout}
 										label="Discount Code"
 										hasFeedback={true}>
-										{getFieldDecorator('discountCode', {
-										})(
-											<Select allowClear={true} onChange={this.handleDiscountCodeChange} placeholder="select discount code">
-												{discounts.map(discount => <Option key={discount._id} value={discount._id}>{discount.code}</Option>)}
-											</Select>
-										)}
+										<Select allowClear={true} onChange={this.handleDiscountCodeChange} placeholder="select discount code">
+											{discounts.map(discount => <Option key={discount._id} value={discount._id}>{discount.code}</Option>)}
+										</Select>
 									</Form.Item>
 								</Col>
 								<Col {...colLayout}>
@@ -283,9 +328,7 @@ class AddStudent extends Component {
 										{...formItemLayout}
 										label="Additional Discount"
 										hasFeedback={true}>
-										{getFieldDecorator('additionalDiscount')(
-											<InputNumber className="w-100" step={100} min={0} onChange={this.handleAdditionalDiscountChange} />
-										)}
+										<InputNumber className="w-100" step={100} min={0} onChange={this.handleAdditionalDiscountChange} />
 									</Form.Item>
 								</Col>
 								<Col span={24}>
@@ -309,9 +352,9 @@ class AddStudent extends Component {
 										label="Mode Of Payment"
 										hasFeedback={true}>
 										{getFieldDecorator('modeOfPayment', {
-											initialValue: this.state.modeOfPayment
+											// initialValue: this.state.modeOfPayment
 										})(
-											<Select onChange={this.handleModeOfPaymentChange}>
+											<Select onChange={this.handleModeOfPaymentChange} placeholder="select mode">
 												<Option value="cash">Cash</Option>
 												<Option value="card">Card</Option>
 												<Option value="cheque">Cheque</Option>
@@ -430,43 +473,50 @@ class AddStudent extends Component {
 									<Col span={24}>
 										<Form.Item
 											label="Base Fee">
-											<Input disabled value={this.state.baseFee} />
+											{getFieldDecorator('courseFee', { initialValue: this.state.baseFee })(
+												<Input readOnly />
+											)}
 										</Form.Item>
 									</Col>
 									<Col span={24}>
 										<Form.Item
 											label="Total Discount Amount">
-											<Input disabled value={this.getTotalDiscountAmount()} />
+											{getFieldDecorator('discountAmount', { initialValue: this.getTotalDiscountAmount() })(
+												<Input readOnly />
+											)}
 										</Form.Item>
 									</Col>
 									<Col span={24}>
 										<Form.Item
 											label="Discount Reason">
-											<Input disabled value={this.getDiscountReason()} />
+											{getFieldDecorator('discountReason', { initialValue: this.getDiscountReason() })(
+												<Input readOnly />
+											)}
 										</Form.Item>
 									</Col>
 									<Col span={24}>
 										<Form.Item
 											label="Net Fee">
-											<Input disabled value={this.getNetFee()} />
+											<Input readOnly value={this.getNetFee()} />
 										</Form.Item>
 									</Col>
 									<Col span={24}>
-										<Form.Item
-											label="Tax/GST">
-											<Input disabled value={this.getTaxAmount()} />
+										<Form.Item label="Tax/GST">
+											{getFieldDecorator('taxAmount', { initialValue: this.getTaxAmount() })(
+												<Input readOnly />
+											)}
 										</Form.Item>
 									</Col>
 									<Col span={24}>
 										<Form.Item
 											label="Gross Fee">
-											<Input disabled value={this.getNetFee() + this.getTaxAmount()} />
+											<Input readOnly value={this.getNetFee() + this.getTaxAmount()} />
 										</Form.Item>
 									</Col>
 									<Col span={24}>
 										<Form.Item
 											label="Pending Balance">
-											<Input disabled value={(this.getNetFee() + this.getTaxAmount()) - this.state.feeCollected} />
+											<Input readOnly value={(this.getNetFee() + this.getTaxAmount()) - this.state.feeCollected} />
 										</Form.Item>
 									</Col>
 								</Row>

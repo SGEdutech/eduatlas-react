@@ -40,7 +40,7 @@ class PrimaryTabs extends Component {
 				<TabPane className="pt-3" tab={<span><Icon type="file-search" />Report</span>} key="7">
 					Tab 2
 				</TabPane>
-				<TabPane className="pt-3" tab={<span><Icon type="paper-clip" />Study Meterial</span>} key="8">
+				<TabPane className="pt-3" tab={<span><Icon type="paper-clip" />Study Material</span>} key="8">
 					Tab 2
 				</TabPane>
 			</Tabs>

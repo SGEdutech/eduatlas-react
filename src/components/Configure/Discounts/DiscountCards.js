@@ -18,7 +18,7 @@ function DiscountCard(props) {
 			actions={iconsArray}>
 			<Row>
 				<Col>
-					<div><span className="font-weight-bold">Discount {isPercent ? '%' : 'Amount'}:</span> {amount}</div>
+					<div><span className="font-weight-bold">Discount {isPercent ? 'Percentage(%)' : 'Amount'}:</span> {amount}</div>
 				</Col>
 			</Row>
 		</Card>

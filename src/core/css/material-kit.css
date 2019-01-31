@@ -10909,11 +10909,11 @@ fieldset[disabled][disabled] .btn-group-raised .btn,
   margin: 0;
 }
 
-body {
+/* body {
   background-color: #eee;
   color: #3C4858;
   font-weight: 300;
-}
+} */
 
 legend {
   border-bottom: 0;
