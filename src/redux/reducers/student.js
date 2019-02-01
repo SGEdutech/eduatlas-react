@@ -68,7 +68,7 @@ function studentReducer(state = initState, action) {
 			const students = [...state.students];
 			const studentInfo = students.find(studentObj => studentObj._id === studentId);
 			const paymentInfo = studentInfo.payments.find(paymentObj => paymentObj._id === paymentId);
-			paymentInfo.installments = paymentInfo.installments.map(installmentObj => installmentObj === editedInstallmentId ? editedInstallment : installmentObj);
+			paymentInfo.installments = paymentInfo.installments.map(installmentObj => installmentObj._id === editedInstallmentId ? editedInstallment : installmentObj);
 			return { ...state, students };
 		}
 		case 'DELETE_INSTALLMENT_FULFILLED': {

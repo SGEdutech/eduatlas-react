@@ -28,7 +28,7 @@ const colLayout = {
 	sm: 12,
 	md: 8,
 	xl: 6,
-	xxl: 4
+	xxl: 6
 };
 
 class Discount extends Component {

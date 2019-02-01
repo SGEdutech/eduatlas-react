@@ -36,10 +36,10 @@ export function addPayment(newPayment, studentId) {
 	};
 }
 
-export function editPayment(editedPayment, studentId, paymentId) {
+export function editPayment(studentId, paymentId, editedPayment) {
 	return dispatch => {
 		dispatch({
-			type: 'EDIT_STUDENT',
+			type: 'EDIT_PAYMENT',
 			payload: axios.put(`https://eduatlas.com/tuition/5bbe191a64512a2f77b84c70/student/${studentId}/payment/${paymentId}`, editedPayment)
 		});
 	};
@@ -48,13 +48,13 @@ export function editPayment(editedPayment, studentId, paymentId) {
 export function deletePayment(studentId, paymentId) {
 	return dispatch => {
 		dispatch({
-			type: 'DELETE_STUDENT',
+			type: 'DELETE_PAYMENT',
 			payload: axios.delete(`https://eduatlas.com/tuition/5bbe191a64512a2f77b84c70/student/${studentId}/payment/${paymentId}`)
 		});
 	};
 }
 
-export function addInstallment(newInstallment, studentId, paymentId) {
+export function addInstallment(studentId, paymentId, newInstallment) {
 	return dispatch => {
 		dispatch({
 			type: 'ADD_INSTALLMENT',
@@ -63,7 +63,7 @@ export function addInstallment(newInstallment, studentId, paymentId) {
 	};
 }
 
-export function editInstallment(editedInstallment, studentId, paymentId, installmentId) {
+export function editInstallment(studentId, paymentId, installmentId, editedInstallment) {
 	return dispatch => {
 		dispatch({
 			type: 'EDIT_INSTALLMENT',
@@ -72,9 +72,7 @@ export function editInstallment(editedInstallment, studentId, paymentId, install
 	};
 }
 
-
-
-export function deleteInstallment(studentId, paymentId) {
+export function deleteInstallment(studentId, paymentId, installmentId) {
 	return dispatch => {
 		dispatch({
 			type: 'DELETE_INSTALLMENT',

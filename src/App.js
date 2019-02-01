@@ -12,6 +12,7 @@ import AddOrEditBatch from './components/Configure/AddOrEditBatch';
 import AddOrEditDiscount from './components/Configure/AddOrEditDiscount';
 import AddStudent from './components/Students/AddStudent';
 import EditProfile from './components/EditProfile';
+import ViewOrEditStudent from './components/Students/ViewOrEditStudent';
 import { message } from 'antd';
 
 import fetchAll from './redux/actions/fetchAllAction';
@@ -46,6 +47,9 @@ class App extends Component {
 					<Route exact path="/edit-discount/:discountId" render={() => <AddOrEditDiscount edit={true} />}></Route>
 					<Route exact path="/edit-student/:studentId" render={() => <AddStudent edit={true} />}></Route>
 					<Route exact path="/edit-profile/:userId" render={() => <EditProfile />}></Route>
+					<Route exact path="/student/:studentId" render={() => <ViewOrEditStudent />}></Route>
+					<Route exact path="/student/:studentId/add-payment" render={() => <AddStudent task="add-payment" />}></Route>
+					<Route exact path="/student/:studentId/add-installment" render={() => <AddStudent task="add-installment" />}></Route>
 				</Switch>
 			</Router>
 		);

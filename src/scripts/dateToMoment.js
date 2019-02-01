@@ -1,14 +1,21 @@
 import moment from 'moment';
 
-function isdate(data) {
-	return data instanceof Date;
+// TODO: Write regex
+function isDate(date) {
+	if (typeof date === 'string') {
+		const splitStr = date.split('T')[0];
+		const isDate = splitStr.length === 10;
+		if (isDate === false) return false;
+		return splitStr.split('-').length === 3;
+	}
+	if (typeof date === 'object') return date instanceof Date;
 }
 
 function dateToMoment(data) {
 	if (typeof data !== 'object') return;
 	if (Array.isArray(data)) {
 		data.forEach((element, index) => {
-			if (isdate(element)) {
+			if (isDate(element)) {
 				data[index] = moment(element);
 			} else {
 				dateToMoment(element);
@@ -17,10 +24,10 @@ function dateToMoment(data) {
 		return;
 	}
 	// Data is an object
-	if (isdate(data)) throw new Error('Date can\'t be top level data');
+	if (isDate(data)) throw new Error('Date can\'t be top level data');
 	const keys = Object.keys(data);
 	keys.forEach(key => {
-		if (isdate(data[key])) {
+		if (isDate(data[key])) {
 			data[key] = moment(data[key]);
 		} else {
 			dateToMoment(data[key]);
