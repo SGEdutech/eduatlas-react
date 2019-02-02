@@ -27,7 +27,7 @@ export function deleteStudent(id) {
 	};
 }
 
-export function addPayment(newPayment, studentId) {
+export function addPayment(studentId, newPayment) {
 	return dispatch => {
 		dispatch({
 			type: 'ADD_PAYMENT',

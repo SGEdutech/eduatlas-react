@@ -14,7 +14,7 @@ function studentReducer(state = initState, action) {
 		case 'ADD_STUDENT_FULFILLED': {
 			const newStudent = action.payload.data;
 			dateToMoment(newStudent);
-			return { ...state, students: [...state.students, newStudent ] };
+			return { ...state, students: [...state.students, newStudent] };
 		}
 		case 'EDIT_STUDENT_FULFILLED': {
 			const editedStudent = action.payload.data;
@@ -32,7 +32,7 @@ function studentReducer(state = initState, action) {
 			const students = [...state.students];
 			const studentInfo = students.find(studentObj => studentObj._id === studentId);
 			studentInfo.payments.push(newPayment);
-			return { ...state, students: [...state, students] };
+			return { ...state, students };
 		}
 		case 'EDIT_PAYMENT_FULFILLED': {
 			const editedPayment = action.payload.data;
@@ -59,7 +59,7 @@ function studentReducer(state = initState, action) {
 			const studentInfo = students.find(studentObj => studentObj._id === studentId);
 			const paymentInfo = studentInfo.payments.find(paymentObj => paymentObj._id === paymentId);
 			paymentInfo.installments.push(newInstallment);
-			return [...state, students];
+			return { ...state, students };
 		}
 		case 'EDIT_INSTALLMENT_FULFILLED': {
 			const editedInstallment = action.payload.data;

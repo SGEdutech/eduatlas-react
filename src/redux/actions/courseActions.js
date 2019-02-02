@@ -10,8 +10,6 @@ export function addCourse(newCourse) {
 }
 
 export function editCourse(courseId, editedData) {
-	console.log(courseId);
-	console.log(editedData);
 	return dispatch => {
 		dispatch({
 			type: 'EDIT_COURSE',

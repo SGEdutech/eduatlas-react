@@ -26,7 +26,7 @@ function courseReducer(state = initState, action) {
 		case 'DELETE_BATCH_FULFILLED': {
 			const deletedBatch = action.payload.data;
 			const newCourses = [...state.courses];
-			let courseToEdit = newCourses.find(course => course._id === deletedBatch.courseId);
+			const courseToEdit = newCourses.find(course => course._id === deletedBatch.courseId);
 			courseToEdit.batches = courseToEdit.batches.filter(batch => batch._id !== deletedBatch._id);
 			return { ...state, courses: newCourses };
 		}

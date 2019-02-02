@@ -47,9 +47,9 @@ class App extends Component {
 					<Route exact path="/edit-discount/:discountId" render={() => <AddOrEditDiscount edit={true} />}></Route>
 					<Route exact path="/edit-student/:studentId" render={() => <AddStudent edit={true} />}></Route>
 					<Route exact path="/edit-profile/:userId" render={() => <EditProfile />}></Route>
-					<Route exact path="/student/:studentId" render={() => <ViewOrEditStudent />}></Route>
+					<Route exact path="/student/:studentId/payment/:paymentId/add-installment" render={() => <AddStudent task="add-installment" />}></Route>
 					<Route exact path="/student/:studentId/add-payment" render={() => <AddStudent task="add-payment" />}></Route>
-					<Route exact path="/student/:studentId/add-installment" render={() => <AddStudent task="add-installment" />}></Route>
+					<Route exact path="/student/:studentId" render={() => <ViewOrEditStudent />}></Route>
 				</Switch>
 			</Router>
 		);
