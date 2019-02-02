@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import moment from 'moment';
+import { withRouter } from 'react-router-dom';
 
 import Navbar from '../Navbar';
+
+import { addStudent, addPayment, addInstallment } from '../../redux/actions/studentActions';
+import sanatizeFormObj from '../../scripts/sanatize-form-obj';
 
 import {
 	Button,
@@ -17,9 +20,6 @@ import {
 	Row,
 	Select
 } from 'antd';
-
-import { addStudent, addPayment, addInstallment } from '../../redux/actions/studentActions';
-import sanatizeFormObj from '../../scripts/sanatize-form-obj';
 
 const { Option } = Select;
 
@@ -112,7 +112,7 @@ class AddStudent extends Component {
 		return tax;
 	}
 
-	handleModeOfPaymentChange = value => this.setState({ modeOfPayment: value })
+	handleModeOfPaymentChange = value => this.setState({ modeOfPayment: value });
 
 	handleCourseChange = ([courseId]) => {
 		if (Boolean(courseId) === false) {
@@ -184,9 +184,7 @@ class AddStudent extends Component {
 			if (courseId) paymentObj.courseId = courseId;
 			delete values.courseAndBatch;
 		}
-		if (Object.keys(paymentObj).length === 1) return false;
 		values.payments = [paymentObj];
-		return true;
 	}
 
 	// initAddPayment = sanatizedValues => {
@@ -196,24 +194,44 @@ class AddStudent extends Component {
 
 	// }
 
-	initAddStudent = sanatizedValues => {
+	initAddInstallment = values => {
+		const { addInstallment, match: { params: { studentId, paymentId } } } = this.props;
+		const installment = values.payments[0].installments[0];
+		addInstallment(studentId, paymentId, installment);
+	}
+
+	initAddPayment = values => {
+		const { addPayment, match: { params: { studentId } } } = this.props;
+		const payment = values.payments[0];
+		addPayment(studentId, payment);
+	}
+
+	initAddStudent = values => {
 		const { addStudent } = this.props;
-		this.injectBatchInfo(sanatizedValues);
-		const isPaymentInitiated = this.injectPaymentInfo(sanatizedValues);
-		if (isPaymentInitiated) this.injectInstallmentInfo(sanatizedValues);
-		addStudent(sanatizedValues);
+		addStudent(values);
 	}
 
 	handleSubmit = e => {
 		e.preventDefault();
-		const { form } = this.props;
+		const { form, task } = this.props;
+		const { resetFields } = form;
 		form.validateFieldsAndScroll((err, values) => {
 			if (err) {
 				console.error(err);
 				return;
 			}
 			sanatizeFormObj(values);
-			this.initAddStudent(values);
+			this.injectBatchInfo(values);
+			this.injectPaymentInfo(values);
+			this.injectInstallmentInfo(values);
+			if (task === 'add-installment') {
+				this.initAddInstallment(values);
+			} else if (task === 'add-payment') {
+				this.initAddPayment(values);
+			} else {
+				this.initAddStudent(values);
+			}
+			resetFields();
 		});
 	}
 
@@ -235,6 +253,7 @@ class AddStudent extends Component {
 		));
 
 		const studentInputs = (
+			task !== 'add-payment' && task !== 'add-installment' &&
 			<>
 				<Col span={24}>
 					<h3>Compulsary Fields</h3>
@@ -275,7 +294,7 @@ class AddStudent extends Component {
 						hasFeedback={true}>
 						{getFieldDecorator('email', {
 							rules: [{
-								type: 'email', message: 'The input is not valid E-mail!',
+								type: 'email', message: 'The input is not valid E-mail!'
 							},
 							{
 								required: true, message: 'Please provide email!'
@@ -316,6 +335,7 @@ class AddStudent extends Component {
 		);
 
 		const paymentInputs = (
+			task !== 'add-installment' &&
 			<>
 				<Col span={24}>
 					<Divider />
@@ -484,6 +504,7 @@ class AddStudent extends Component {
 		);
 
 		const dynamicInputs = (
+			task !== 'add-installment' &&
 			<>
 				<Row className="p-1" style={{ border: 'thick double #00bcd4' }}>
 					<Col span={24}>
@@ -556,13 +577,13 @@ class AddStudent extends Component {
 							<Col xs={24} md={17}>
 								{/* TODO: */}
 								{/* Static Inputs */}
-								{task !== 'add-payment' && task !== 'add-installment' && studentInputs}
-								{task !== 'add-installment' && paymentInputs}
+								{studentInputs}
+								{paymentInputs}
 								{installmentInputs}
 							</Col>
 							<Col xs={24} md={{ offset: 1, span: 6 }}>
 								{/* Dynamic Inputs */}
-								{task !== 'add-installment' && dynamicInputs}
+								{dynamicInputs}
 							</Col>
 							<Col xs={24}>
 								<Row type="flex" justify="end">
@@ -591,4 +612,4 @@ function mapStateToProps(state) {
 	};
 }
 
-export default compose(Form.create({ name: 'add-student' }), connect(mapStateToProps, { addStudent, addPayment, addInstallment }))(AddStudent);
+export default compose(Form.create({ name: 'add-student' }), withRouter, connect(mapStateToProps, { addStudent, addPayment, addInstallment }))(AddStudent);

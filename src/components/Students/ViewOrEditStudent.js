@@ -136,7 +136,7 @@ class ViewOrEditStudent extends Component {
 										{getFieldDecorator('email', {
 											initialValue: email,
 											rules: [{
-												type: 'email', message: 'Not a valid E-mail!',
+												type: 'email', message: 'Not a valid E-mail!'
 											}, {
 												required: editable, message: 'Please give email!'
 											}]

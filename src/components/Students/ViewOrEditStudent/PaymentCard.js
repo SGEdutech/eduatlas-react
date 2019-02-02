@@ -88,7 +88,7 @@ class PaymentCard extends Component {
 	render() {
 		const { editable } = this.state;
 		const { getFieldDecorator } = this.props.form;
-		const { _id, courseCode, courseFee, taxAmount = 0, discountAmount = 0, discountReason, installments } = this.props.payment;
+		const { _id: paymentId, courseCode, courseFee, taxAmount = 0, discountAmount = 0, discountReason, installments } = this.props.payment;
 		const nextInstallmentDate = moment(this.props.payment.nextInstallmentDate);
 		const totalFeeCollected = this.getTotalFeeCollected(installments);
 		return (
@@ -213,11 +213,16 @@ class PaymentCard extends Component {
 					</Form>
 					<Col span={24}>
 						{/* installment collapse will come here */}
-						<Link to={this.props.location.pathname + '/add-installment'}><Button className="mb-3" type="dashed" block={true}><Icon type="plus-circle" />Add New Installment</Button></Link>
+						<Link to={this.props.location.pathname + `/payment/${paymentId}/add-installment`}>
+							<Button className="mb-3" type="dashed" block={true}>
+								<Icon type="plus-circle" />
+								Add New Installment
+							</Button>
+						</Link>
 						<Collapse>
 							{installments && installments.map((installment, index) => (
 								<Panel key={installment._id} header={'Installment ' + (index + 1)}>
-									<InstallmentPanel index={index} paymentId={_id} installment={installment} editInstallment={this.props.editInstallment} key={installment._id} />
+									<InstallmentPanel index={index} paymentId={paymentId} installment={installment} editInstallment={this.props.editInstallment} key={installment._id} />
 								</Panel>
 							))}
 						</Collapse>
