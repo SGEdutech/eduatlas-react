@@ -95,9 +95,7 @@ class AddSchedule extends Component {
 		return moment(fromDate).endOf('isoweek');
 	}
 
-	handleDayChange = value => {
-		console.log(value);
-	}
+	handleFromDateChange = fromDate => this.setState({ fromDate });
 
 	handleSubmit = e => {
 		e.preventDefault();
