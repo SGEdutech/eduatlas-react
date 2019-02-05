@@ -46,10 +46,6 @@ const scheduleColLayout = {
 	lg: 4
 };
 
-const children = [];
-for (let i = 10; i < 36; i++) {
-	children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
-}
 const format = 'HH:mm a';
 let id = 1;
 
@@ -100,17 +96,29 @@ class AddSchedule extends Component {
 
 	handleFromDateChange = fromDate => this.setState({ fromDate });
 
+	// Time complexity is O(n^2)
+	splitSchedules = values => {
+		const keys = Object.keys(values);
+		const schedules = values.keys.map(key => {
+			const schedule = {};
+			const keyRegex = new RegExp(`_${key}$`);
+			const scheduleKeys = keys.filter(key => keyRegex.test(key));
+			scheduleKeys.forEach(scheduleKey => schedule[scheduleKey.split('_')[0]] = values[scheduleKey]);
+			return schedule;
+		});
+		return schedules;
+	}
+
 	handleSubmit = e => {
 		e.preventDefault();
-		const { form, addDiscount, editDiscount, history, edit, match } = this.props;
-		const { resetFields } = form;
+		const { form } = this.props;
 		form.validateFieldsAndScroll((err, values) => {
 			if (err) {
 				console.error(err);
 				return;
 			}
-			// sanatizeFormObj(values);
-			console.log(values)
+			values = this.splitSchedules(values);
+			console.log(values);
 		});
 	}
 
@@ -173,10 +181,11 @@ class AddSchedule extends Component {
 				<Col {...scheduleColLayout} className="p-1">
 					<Form.Item
 						{...formScheduleItemLayout}
-						label="From Time"
-						hasFeedback={true}>
-						{getFieldDecorator('fromTime_' + k)(
-							<TimePicker use12Hours format={format} minuteStep={10} className="w-100" />
+						label="From Time">
+						{getFieldDecorator('fromTime_' + k, {
+							rules: [{ required: true, message: 'Please enter dude!' }]
+						})(
+							<TimePicker use12Hours={true} format={format} minuteStep={10} className="w-100" />
 						)}
 					</Form.Item>
 				</Col>
@@ -242,14 +251,7 @@ class AddSchedule extends Component {
 						<Form.Item
 							{...formItemLayout}
 							label="From Date">
-							{getFieldDecorator('fromDate', {
-								// initialValue: code,
-								rules: [{
-									required: true, message: 'Please choose date!'
-								}]
-							})(
-								<DatePicker format="DD-MM-YYYY" onChange={this.handleFromDateChange} className="w-100" />
-							)}
+							<DatePicker format="DD-MM-YYYY" onChange={this.handleFromDateChange} className="w-100" />
 						</Form.Item>
 					</Col>
 					<Col {...colLayout} className="p-1">
@@ -280,13 +282,14 @@ class AddSchedule extends Component {
 							{getFieldDecorator('batches', {
 								// initialValue: code,
 								rules: [{
-									required: true, message: 'Please input faculty!'
+									required: true, message: 'Please input batch!'
 								}]
 							})(
 								<Select
 									mode="multiple"
 									placeholder="Please select batches">
-									{children}
+									{this.props.batches &&
+										this.props.batches.map(batch => <Option key={batch._id} value={batch._id}>{batch.code}</Option>)}
 								</Select>
 							)}
 						</Form.Item>
