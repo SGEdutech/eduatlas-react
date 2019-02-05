@@ -140,8 +140,9 @@ class AddSchedule extends Component {
 
 	handleFromDateChange = fromDate => this.setState({ fromDate });
 
-	validateToTime = value => {
-		
+	validateToTime = (rule, value, callback) => {
+		const form = this.props.form;
+		callback();
 	}
 
 	render() {
@@ -244,8 +245,7 @@ class AddSchedule extends Component {
 					<Col {...colLayout} className="p-1">
 						<Form.Item
 							{...formItemLayout}
-							label="From Date"
-							hasFeedback={true}>
+							label="From Date">
 							{getFieldDecorator('fromDate', {
 								// initialValue: code,
 								rules: [{
