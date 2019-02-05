@@ -17,6 +17,12 @@ function courseReducer(state = initState, action) {
 		case 'DELETE_SCHEDULE_FULFILLED': {
 			return { ...state, schedules: state.schedules.filter(schedule => schedule._id !== action.payload.data._id) };
 		}
+		case 'DELETE_COURSE_FULFILLED': {
+			return { ...state, schedules: state.schedules.filter(schedule => schedule.courseId === action.payload.data._id) };
+		}
+		case 'DELETE_BATCH_FULFILLED': {
+			return { ...state, schedules: state.schedules.filter(schedule => schedule.batchId === action.payload.data._id) };
+		}
 		default:
 			return state;
 	}
