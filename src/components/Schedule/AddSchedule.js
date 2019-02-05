@@ -46,70 +46,79 @@ const scheduleColLayout = {
 	lg: 4
 };
 
-const children = [];
-for (let i = 10; i < 36; i++) {
-	children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
-}
 const format = 'HH:mm a';
 let id = 1;
-
-function _addDays(date, days) {
-	if (date instanceof Date === false) throw new Error('Type of date must be a date');
-	if (typeof days !== 'number') throw new Error('Type of days must be a number');
-
-	const result = new Date(date);
-	result.setDate(result.getDate() + days);
-	return result;
-}
-
-function getDaysTillSunday(date) {
-	const resultArr = [];
-	const dayIndexToDayNameMap = {
-		0: 'sunday',
-		1: 'monday',
-		2: 'tuesday',
-		3: 'wednesday',
-		4: 'thursday',
-		5: 'friday',
-		6: 'saturday'
-	};
-	const givenDateIndex = date.getDay();
-
-	for (let i = givenDateIndex, numeberOfDaysPassed = 0; i < 8; i++ , numeberOfDaysPassed++) {
-		const dateIndex = i % 7;
-		resultArr.push({
-			day: dayIndexToDayNameMap[dateIndex],
-			date: _addDays(date, numeberOfDaysPassed)
-		});
-	}
-	return resultArr;
-}
 
 class AddSchedule extends Component {
 	state = {
 		fromDate: undefined
 	};
 
+	_addDays = (date, days) => {
+		if (date instanceof Date === false) throw new Error('Type of date must be a date');
+		if (typeof days !== 'number') throw new Error('Type of days must be a number');
+
+		const result = new Date(date);
+		result.setDate(result.getDate() + days);
+		return result.getTime();
+	}
+
+	getDaysTillSunday = () => {
+		const resultArr = [];
+		let { fromDate } = this.state;
+		if (fromDate === undefined) return resultArr;
+		fromDate = fromDate.toDate();
+		const dayIndexToDayNameMap = {
+			0: 'sunday',
+			1: 'monday',
+			2: 'tuesday',
+			3: 'wednesday',
+			4: 'thursday',
+			5: 'friday',
+			6: 'saturday'
+		};
+		const givenDateIndex = fromDate.getDay();
+
+		for (let i = givenDateIndex, numeberOfDaysPassed = 0; i < 8; i++ , numeberOfDaysPassed++) {
+			const dateIndex = i % 7;
+			resultArr.push({
+				day: dayIndexToDayNameMap[dateIndex],
+				date: this._addDays(fromDate, numeberOfDaysPassed)
+			});
+		}
+		return resultArr;
+	}
+
 	getToDate = () => {
 		const { fromDate } = this.state;
 		return moment(fromDate).endOf('isoweek');
 	}
 
-	handleDayChange = value => {
-		console.log(value);
+	handleFromDateChange = fromDate => this.setState({ fromDate });
+
+	// Time complexity is O(n^2)
+	splitSchedules = values => {
+		const keys = Object.keys(values);
+		const schedules = values.keys.map(key => {
+			const schedule = {};
+			const keyRegex = new RegExp(`_${key}$`);
+			const scheduleKeys = keys.filter(key => keyRegex.test(key));
+			scheduleKeys.forEach(scheduleKey => schedule[scheduleKey.split('_')[0]] = values[scheduleKey]);
+			return schedule;
+		});
+		return schedules;
 	}
 
 	handleSubmit = e => {
 		e.preventDefault();
-		const { form, addDiscount, editDiscount, history, edit, match } = this.props;
-		const { resetFields } = form;
+		const { form } = this.props;
 		form.validateFieldsAndScroll((err, values) => {
 			if (err) {
 				console.error(err);
 				return;
 			}
-			// sanatizeFormObj(values);
-			console.log(values)
+			values = this.splitSchedules(values);
+			console.log(values);
 		});
 	}
 
@@ -124,7 +133,7 @@ class AddSchedule extends Component {
 
 		// can use data-binding to set
 		form.setFieldsValue({
-			keys: keys.filter(key => key !== k),
+			keys: keys.filter(key => key !== k)
 		});
 	}
 
@@ -138,8 +147,6 @@ class AddSchedule extends Component {
 		form.setFieldsValue({ keys: nextKeys });
 	}
 
-	handleFromDateChange = fromDate => this.setState({ fromDate });
-
 	validateToTime = (rule, value, callback) => {
 		const form = this.props.form;
 		callback();
@@ -147,7 +154,6 @@ class AddSchedule extends Component {
 
 	render() {
 		const { getFieldDecorator, getFieldValue } = this.props.form;
-		const { schedules } = this.props;
 
 		getFieldDecorator('keys', { initialValue: [0] });
 		const keys = getFieldValue('keys');
@@ -167,9 +173,7 @@ class AddSchedule extends Component {
 							}]
 						})(
 							<Select onChange={this.handleDayChange}>
-								<Option value="jack">Sunday</Option>
-								<Option value="lucy">Sunday</Option>
-								<Option value="Yiminghe">Sunday</Option>
+								{this.getDaysTillSunday().map(daysInfo => <Option key={daysInfo.date} value={daysInfo.date}>{daysInfo.day}</Option>)}
 							</Select>
 						)}
 					</Form.Item>
@@ -177,10 +181,11 @@ class AddSchedule extends Component {
 				<Col {...scheduleColLayout} className="p-1">
 					<Form.Item
 						{...formScheduleItemLayout}
-						label="From Time"
-						hasFeedback={true}>
-						{getFieldDecorator('fromTime_' + k)(
-							<TimePicker use12Hours format={format} minuteStep={10} className="w-100" />
+						label="From Time">
+						{getFieldDecorator('fromTime_' + k, {
+							rules: [{ required: true, message: 'Please enter dude!' }]
+						})(
+							<TimePicker use12Hours={true} format={format} minuteStep={10} className="w-100" />
 						)}
 					</Form.Item>
 				</Col>
@@ -246,14 +251,7 @@ class AddSchedule extends Component {
 						<Form.Item
 							{...formItemLayout}
 							label="From Date">
-							{getFieldDecorator('fromDate', {
-								// initialValue: code,
-								rules: [{
-									required: true, message: 'Please choose date!'
-								}]
-							})(
-								<DatePicker onChange={this.handleFromDateChange} className="w-100" />
-							)}
+							<DatePicker format="DD-MM-YYYY" onChange={this.handleFromDateChange} className="w-100" />
 						</Form.Item>
 					</Col>
 					<Col {...colLayout} className="p-1">
@@ -261,9 +259,7 @@ class AddSchedule extends Component {
 							{...formItemLayout}
 							label="To Date"
 							hasFeedback={true}>
-							{getFieldDecorator('toDate')(
-								<DatePicker className="w-100" disabled={true} />
-							)}
+							<DatePicker value={this.getToDate()} format="DD-MM-YYYY" className="w-100" disabled={true} />
 						</Form.Item>
 					</Col>
 					<Col className="p-1 mb-3" span={24} style={{ border: 'thick double #00bcd4' }}>
@@ -286,13 +282,14 @@ class AddSchedule extends Component {
 							{getFieldDecorator('batches', {
 								// initialValue: code,
 								rules: [{
-									required: true, message: 'Please input faculty!'
+									required: true, message: 'Please input batch!'
 								}]
 							})(
 								<Select
 									mode="multiple"
 									placeholder="Please select batches">
-									{children}
+									{this.props.batches &&
+										this.props.batches.map(batch => <Option key={batch._id} value={batch._id}>{batch.code}</Option>)}
 								</Select>
 							)}
 						</Form.Item>
