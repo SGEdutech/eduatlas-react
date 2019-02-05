@@ -1,6 +1,6 @@
 const initState = { schedules: [] };
 
-function courseReducer(state = initState, action) {
+function scheduleReducer(state = initState, action) {
 	switch (action.type) {
 		case 'FETCH_ALL_FULFILLED': {
 			return { ...state, schedules: action.payload.data.schedules };
@@ -28,4 +28,4 @@ function courseReducer(state = initState, action) {
 	}
 }
 
-export default courseReducer;
+export default scheduleReducer;

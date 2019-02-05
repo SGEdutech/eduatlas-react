@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { deleteSchedule } from '../redux/actions/scheduleActions';
 
 import AddSchedule from './Schedule/AddSchedule';
+import ActiveSchedules from './Schedule/ActiveSchedules';
 
 import { Tabs } from 'antd';
 const TabPane = Tabs.TabPane;
@@ -27,6 +28,9 @@ class Schedule extends Component {
 				<TabPane tab="Active Students" key="2">
 					<Active messageInfo={this.props.messageInfo} studentsInfo={this.props.student} deleteStudent={this.props.deleteStudent} />
 				</TabPane> */}
+				<TabPane tab="Active Schedules" key="2">
+					<ActiveSchedules />
+				</TabPane>
 				<TabPane tab="Add Schedule" key="3">
 					<AddSchedule />
 				</TabPane>
