@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import ScheduleCard from './ActiveSchedules/ScheduleCard';
 
+import { deleteSchedule } from '../../redux/actions/scheduleActions';
 import { inverseMinutesFromMidnight } from '../../scripts/minutesToMidnight';
 
 import {
@@ -11,10 +12,13 @@ import {
 	Col,
 	DatePicker,
 	Empty,
+	Modal,
 	Row,
 	Select,
 	Skeleton
 } from 'antd';
+
+const confirm = Modal.confirm;
 const { Option } = Select;
 
 const colLayout = {
@@ -31,9 +35,23 @@ const cardColLayout = {
 };
 
 class ActiveSchedules extends Component {
+	showDeleteConfirm = (courseId, batchId, scheduleId) => {
+		const { deleteSchedule } = this.props;
+		confirm({
+			title: 'Are You Sure?',
+			content: 'This action is permanent!',
+			okText: 'Yes',
+			okType: 'danger',
+			cancelText: 'No',
+			onOk() {
+				deleteSchedule(courseId, batchId, scheduleId);
+			}
+		});
+	};
+
 	render() {
 		const { batches, schedules, messageInfo, isAttendance } = this.props;
-		const schdulesJsx = schedules.map(({ _id, date, faculty, topic, fromTime, toTime, batchId }) => (
+		const schdulesJsx = schedules.map(({ _id, date, faculty, topic, fromTime, toTime, courseId, batchId }) => (
 			<Col {...cardColLayout} key={_id}>
 				<ScheduleCard
 					id={_id}
@@ -42,9 +60,10 @@ class ActiveSchedules extends Component {
 					topic={topic}
 					fromTime={inverseMinutesFromMidnight(fromTime)}
 					toTime={inverseMinutesFromMidnight(toTime)}
+					courseId={courseId}
 					batchId={batchId}
 					isAttendance={isAttendance}
-					deleteCourse={this.showDeleteConfirm} />
+					deleteSchedule={this.showDeleteConfirm} />
 			</Col>
 		));
 
@@ -96,4 +115,4 @@ function mapStateToProps(state) {
 	};
 }
 
-export default connect(mapStateToProps)(ActiveSchedules);
+export default connect(mapStateToProps, { deleteSchedule })(ActiveSchedules);
