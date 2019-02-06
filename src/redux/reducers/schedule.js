@@ -6,7 +6,7 @@ function scheduleReducer(state = initState, action) {
 			return { ...state, schedules: action.payload.data.schedules };
 		}
 		case 'ADD_SCHEDULE_FULFILLED': {
-			return { ...state, schedules: [...state.schedules, action.payload.data] };
+			return { ...state, schedules: [...state.schedules, ...action.payload.data] };
 		}
 		case 'EDIT_SCHEDULE_FULFILLED': {
 			const editedSchedule = action.payload.data;

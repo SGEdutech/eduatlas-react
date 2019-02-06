@@ -31,10 +31,8 @@ const cardColLayout = {
 };
 
 class ActiveSchedules extends Component {
-
 	render() {
-		const { batches, schedules, messageInfo } = this.props;
-		console.log(schedules)
+		const { batches, schedules, messageInfo, isAttendance } = this.props;
 		const schdulesJsx = schedules.map(({ _id, date, faculty, topic, fromTime, toTime, batchId }) => (
 			<Col {...cardColLayout} key={_id}>
 				<ScheduleCard
@@ -45,9 +43,11 @@ class ActiveSchedules extends Component {
 					fromTime={inverseMinutesFromMidnight(fromTime)}
 					toTime={inverseMinutesFromMidnight(toTime)}
 					batchId={batchId}
+					isAttendance={isAttendance}
 					deleteCourse={this.showDeleteConfirm} />
 			</Col>
 		));
+
 
 		const emptyJsx = <Empty className="mt-4"
 			image="https://gw.alipayobjects.com/mdn/miniapp_social/afts/img/A*pevERLJC9v0AAAAAAAAAAABjAQAAAQ/original"

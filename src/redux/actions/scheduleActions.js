@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-export function addSchedule(courseId, batchId, newSchedule) {
+export function addSchedule(newSchedule) {
 	return dispatch => {
 		dispatch({
 			type: 'ADD_SCHEDULE',
-			payload: axios.post(`https://eduatlas.com/tuition/5bbe191a64512a2f77b84c70/course/${courseId}/batch/${batchId}/schedule`, newSchedule)
+			payload: axios.post('https://eduatlas.com/tuition/5bbe191a64512a2f77b84c70/schedule', newSchedule)
 		});
 	};
 }

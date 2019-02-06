@@ -5,6 +5,7 @@ import moment from 'moment';
 
 import { addSchedule } from '../../redux/actions/scheduleActions';
 import sanatizeFormObj from '../../scripts/sanatize-form-obj';
+import { minutesFromMidnight } from '../../scripts/minutesToMidnight';
 
 import {
 	Button,
@@ -96,6 +97,13 @@ class AddSchedule extends Component {
 
 	handleFromDateChange = fromDate => this.setState({ fromDate });
 
+	calibrateFromAndToTime = values => {
+		const timeRegex = new RegExp('^fromTime|^toTime');
+		const keys = Object.keys(values);
+		const timeKeys = keys.filter(key => timeRegex.test(key));
+		timeKeys.forEach(timeKey => values[timeKey] = minutesFromMidnight(values[timeKey].toDate()));
+	}
+
 	// Time complexity is O(n^2)
 	splitSchedules = values => {
 		const keys = Object.keys(values);
@@ -112,13 +120,16 @@ class AddSchedule extends Component {
 	handleSubmit = e => {
 		e.preventDefault();
 		const { form } = this.props;
+		const { resetFields } = form;
 		form.validateFieldsAndScroll((err, values) => {
 			if (err) {
 				console.error(err);
 				return;
 			}
-			values = this.splitSchedules(values);
-			console.log(values);
+			sanatizeFormObj(values);
+			this.calibrateFromAndToTime(values);
+			this.props.addSchedule({ schedules: this.splitSchedules(values), batches: values.batches });
+			resetFields();
 		});
 	}
 
@@ -166,7 +177,7 @@ class AddSchedule extends Component {
 						{...formScheduleItemLayout}
 						label="Day"
 						hasFeedback={true}>
-						{getFieldDecorator('day_' + k, {
+						{getFieldDecorator('date_' + k, {
 							// initialValue: code,
 							rules: [{
 								required: true, message: 'Please choose day!'
