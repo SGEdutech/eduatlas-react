@@ -10,7 +10,7 @@ function CourseCard(props) {
 	const { id, code, numberOfBatches, courseFee, deleteCourse } = props;
 
 	const iconsArray = [
-		<Link to={'/edit-course/' + id}><IconsWithTooltip tooltipMessage="Edit" iconType="edit" /></Link>,
+		<Link to={'/tuition/edit-course/' + id}><IconsWithTooltip tooltipMessage="Edit" iconType="edit" /></Link>,
 		<IconsWithTooltip tooltipMessage="Delete" iconType="delete" onClick={() => deleteCourse(id)} />
 	];
 

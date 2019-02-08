@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
 
 import ScheduleCard from './ActiveSchedules/ScheduleCard';
 
@@ -18,7 +19,7 @@ import {
 	Skeleton
 } from 'antd';
 
-const confirm = Modal.confirm;
+const { confirm } = Modal;
 const { Option } = Select;
 
 const colLayout = {
@@ -35,6 +36,12 @@ const cardColLayout = {
 };
 
 class ActiveSchedules extends Component {
+	state = {
+		batchId: undefined,
+		fromDate: undefined,
+		toDate: undefined
+	}
+
 	showDeleteConfirm = (courseId, batchId, scheduleId) => {
 		const { deleteSchedule } = this.props;
 		confirm({
@@ -49,19 +56,38 @@ class ActiveSchedules extends Component {
 		});
 	};
 
+	handleBatchChange = batchId => this.setState({ batchId });
+
+	handleFromDateChange = fromDate => this.setState({ fromDate });
+
+	handleToDateChange = toDate => this.setState({ toDate });
+
+	getFilteredSchedules = () => {
+		let { schedules } = this.props;
+		const { batchId, toDate } = this.state;
+		let { fromDate } = this.state;
+		if (batchId) schedules = schedules.filter(schedule => schedule.batchId === batchId);
+		fromDate = fromDate || moment();
+		schedules = schedules.filter(schedule => schedule.date.startOf('day').diff(fromDate.startOf('day'), 'days') >= 0);
+		if (toDate) schedules = schedules.filter(schedule => schedule.date.startOf('day').diff(toDate.startOf('day'), 'days') <= 0);
+		return schedules;
+	}
+
 	render() {
-		const { batches, schedules, messageInfo, isAttendance } = this.props;
-		const schdulesJsx = schedules.map(({ _id, date, faculty, topic, fromTime, toTime, courseId, batchId }) => (
+		const { batches, messageInfo, isAttendance } = this.props;
+		const filterSchedules = this.getFilteredSchedules();
+		const schdulesJsx = filterSchedules.map(({ _id, date, faculty, topic, fromTime, toTime, batchCode, courseId, batchId }) => (
 			<Col {...cardColLayout} key={_id}>
 				<ScheduleCard
 					id={_id}
 					date={date}
 					faculty={faculty}
 					topic={topic}
-					fromTime={inverseMinutesFromMidnight(fromTime)}
-					toTime={inverseMinutesFromMidnight(toTime)}
+					fromTime={inverseMinutesFromMidnight(fromTime).format('LT')}
+					toTime={inverseMinutesFromMidnight(toTime).format('LT')}
 					courseId={courseId}
 					batchId={batchId}
+					batchCode={batchCode}
 					isAttendance={isAttendance}
 					deleteSchedule={this.showDeleteConfirm} />
 			</Col>
@@ -77,8 +103,7 @@ class ActiveSchedules extends Component {
 			skeletonCards.push(
 				<Col {...cardColLayout} key={i}>
 					<Card className="mb-3">
-						<Skeleton loading={true} active>
-						</Skeleton>
+						<Skeleton loading={true} active></Skeleton>
 					</Card>
 				</Col>
 			);
@@ -88,22 +113,22 @@ class ActiveSchedules extends Component {
 			<div className="container">
 				<Row className="mb-3" type="flex" align="middle" justify="center">
 					<Col span={24} className="p-1">
-						<Select placeholder="select batch" className="w-100">
-							{batches.map(course => <Option key={course._id} value={course._id}>{course.code}</Option>)}
+						<Select name="Something" onChange={this.handleBatchChange} placeholder="Select Batch" className="w-100">
+							{batches.map(course => <Option onChange={this.handleChange} key={course._id} value={course._id}>{course.code}</Option>)}
 						</Select>
 					</Col>
 					<Col {...colLayout} className="p-1">
-						<DatePicker className="w-100" />
+						<DatePicker onChange={this.handleFromDateChange} className="w-100" />
 					</Col>
 					<Col {...colLayout} className="p-1">
-						<DatePicker className="w-100" />
+						<DatePicker onChange={this.handleToDateChange} className="w-100" />
 					</Col>
 				</Row>
 				<Row gutter={16}>
-					{messageInfo.fetching ? skeletonCards : (schedules.length === 0 ? emptyJsx : schdulesJsx)}
+					{messageInfo.fetching ? skeletonCards : (filterSchedules.length === 0 ? emptyJsx : schdulesJsx)}
 				</Row>
 			</div>
-		)
+		);
 	}
 }
 

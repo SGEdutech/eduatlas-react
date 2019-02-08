@@ -25,16 +25,8 @@ const { Option } = Select;
 
 const formItemLayout = {
 	labelCol: {
-		xs: { span: 24 },
-		sm: { span: 7 },
-		md: { span: 9 },
-		lg: { span: 10 }
 	},
 	wrapperCol: {
-		xs: { span: 24 },
-		sm: { span: 17 },
-		md: { span: 15 },
-		lg: { span: 14 }
 	}
 };
 
@@ -186,13 +178,6 @@ class AddStudent extends Component {
 		}
 		values.payments = [paymentObj];
 	}
-
-	// initAddPayment = sanatizedValues => {
-	// 	this.injectBatchInfo(sanatizedValues);
-	// 	const isPaymentInitiated = this.injectPaymentInfo(sanatizedValues);
-	// 	if (isPaymentInitiated) this.injectInstallmentInfo(sanatizedValues);
-
-	// }
 
 	initAddInstallment = values => {
 		const { addInstallment, match: { params: { studentId, paymentId } } } = this.props;
@@ -570,10 +555,11 @@ class AddStudent extends Component {
 
 		return (
 			<>
-				{(task === 'add-payment' || task === 'add-installment') && <Navbar renderBackBtn={true} />}
-				<div className="container below-nav">
+				{task === 'add-payment' && <Navbar renderBackBtn={true} navText="Add Payment" />}
+				{task === 'add-installment' && <Navbar renderBackBtn={true} navText="Add Installment" />}
+				<div className={'container' + (task === 'add-payment' || task === 'add-installment' ? ' below-nav' : '')}>
 					<Form onSubmit={this.handleSubmit}>
-						<Row>
+						<Row gutter={16}>
 							<Col xs={24} md={17}>
 								{/* TODO: */}
 								{/* Static Inputs */}

@@ -24,14 +24,8 @@ const { Panel } = Collapse;
 
 const formItemLayout = {
 	labelCol: {
-		xs: { span: 24 },
-		sm: { span: 7 },
-		md: { span: 9 }
 	},
 	wrapperCol: {
-		xs: { span: 24 },
-		sm: { span: 14 },
-		md: { span: 12 }
 	}
 };
 
@@ -95,121 +89,123 @@ class PaymentCard extends Component {
 			<>
 				<Card className="mb-3">
 					<Form onSubmit={this.handleSubmit}>
-						<Col {...colLayout} className={this.state.editable ? 'd-none' : undefined}>
-							<Form.Item
-								{...formItemLayout}
-								label="Course Code"
-								hasFeedback={editable}>
-								<Input disabled={true} value={courseCode} />
-							</Form.Item>
-						</Col>
-						<Col {...colLayout}>
-							<Form.Item
-								{...formItemLayout}
-								label="Course Fee"
-								hasFeedback={editable}>
-								{getFieldDecorator('courseFee', {
-									initialValue: courseFee,
-									rules: [{
-										required: editable, message: 'Please input fee!'
-									}]
-								})(
-									<InputNumber className="w-100" disabled={!editable} step={500} />
-								)}
-							</Form.Item>
-						</Col>
-						<Col {...colLayout}>
-							<Form.Item
-								{...formItemLayout}
-								label="Discount Amount"
-								hasFeedback={editable}>
-								{getFieldDecorator('discountAmount', {
-									initialValue: discountAmount
-								})(
-									<InputNumber className="w-100" disabled={!editable} step={100} />
-								)}
-							</Form.Item>
-						</Col>
-						<Col {...colLayout}>
-							<Form.Item
-								{...formItemLayout}
-								label="Discount Reason"
-								hasFeedback={editable}>
-								{getFieldDecorator('discountReason', {
-									initialValue: discountReason
-								})(
-									<Input disabled={!editable} />
-								)}
-							</Form.Item>
-						</Col>
-						<Col {...colLayout} className={this.state.editable ? 'd-none' : undefined}>
-							<Form.Item
-								{...formItemLayout}
-								label="Net Fee"
-								hasFeedback={editable}>
-								<InputNumber className="w-100" disabled={true} value={courseFee - discountAmount} />
-							</Form.Item>
-						</Col>
-						<Col {...colLayout}>
-							<Form.Item
-								{...formItemLayout}
-								label="Tax"
-								hasFeedback={editable}>
-								{getFieldDecorator('taxAmount', {
-									initialValue: taxAmount
-								})(
-									<InputNumber className="w-100" disabled={!editable} step={50} />
-								)}
-							</Form.Item>
-						</Col>
-						<Col {...colLayout} className={this.state.editable ? 'd-none' : undefined}>
-							<Form.Item
-								{...formItemLayout}
-								label="Gross Fee"
-								hasFeedback={editable}>
-								<InputNumber className="w-100" disabled={true} value={courseFee - discountAmount + taxAmount} />
-							</Form.Item>
-						</Col>
-						<Col {...colLayout} className={this.state.editable ? 'd-none' : undefined}>
-							<Form.Item
-								{...formItemLayout}
-								label="Pending Balance"
-								hasFeedback={editable}>
-								<Input disabled={true} placeholder="pending balance" value={(courseFee - discountAmount + taxAmount) - totalFeeCollected} />
-							</Form.Item>
-						</Col>
-						<Col {...colLayout}>
-							<Form.Item
-								{...formItemLayout}
-								label="Next Installment Date"
-								hasFeedback={editable}>
-								{getFieldDecorator('nextInstallmentDate', {
-									initialValue: nextInstallmentDate
-								})(
-									<DatePicker className="w-100" disabled={!editable} />
-								)}
-							</Form.Item>
-						</Col>
-						<Col span={24}>
-							{!editable ? (<Row type="flex" justify="end">
-								<Form.Item>
-									<Button type="primary" onClick={this.handleEditBtnClick}>
-										Edit
-									</Button>
+						<Row gutter={16}>
+							<Col {...colLayout} className={this.state.editable ? 'd-none' : undefined}>
+								<Form.Item
+									{...formItemLayout}
+									label="Course Code"
+									hasFeedback={editable}>
+									<Input disabled={true} value={courseCode} />
 								</Form.Item>
-							</Row>) : (<Row type="flex" justify="end">
-								<Form.Item>
-									<Button className="mx-3" onClick={this.handleCancelBtnClick}>
-										Cancel
-									</Button>
+							</Col>
+							<Col {...colLayout}>
+								<Form.Item
+									{...formItemLayout}
+									label="Course Fee"
+									hasFeedback={editable}>
+									{getFieldDecorator('courseFee', {
+										initialValue: courseFee,
+										rules: [{
+											required: editable, message: 'Please input fee!'
+										}]
+									})(
+										<InputNumber className="w-100" disabled={!editable} step={500} />
+									)}
 								</Form.Item>
-								<Form.Item>
-									<Button type="primary" htmlType="submit">
-										Save Changes
-									</Button>
+							</Col>
+							<Col {...colLayout}>
+								<Form.Item
+									{...formItemLayout}
+									label="Discount Amount"
+									hasFeedback={editable}>
+									{getFieldDecorator('discountAmount', {
+										initialValue: discountAmount
+									})(
+										<InputNumber className="w-100" disabled={!editable} step={100} />
+									)}
 								</Form.Item>
-							</Row>)}
-						</Col>
+							</Col>
+							<Col {...colLayout}>
+								<Form.Item
+									{...formItemLayout}
+									label="Discount Reason"
+									hasFeedback={editable}>
+									{getFieldDecorator('discountReason', {
+										initialValue: discountReason
+									})(
+										<Input disabled={!editable} />
+									)}
+								</Form.Item>
+							</Col>
+							<Col {...colLayout} className={this.state.editable ? 'd-none' : undefined}>
+								<Form.Item
+									{...formItemLayout}
+									label="Net Fee"
+									hasFeedback={editable}>
+									<InputNumber className="w-100" disabled={true} value={courseFee - discountAmount} />
+								</Form.Item>
+							</Col>
+							<Col {...colLayout}>
+								<Form.Item
+									{...formItemLayout}
+									label="Tax"
+									hasFeedback={editable}>
+									{getFieldDecorator('taxAmount', {
+										initialValue: taxAmount
+									})(
+										<InputNumber className="w-100" disabled={!editable} step={50} />
+									)}
+								</Form.Item>
+							</Col>
+							<Col {...colLayout} className={this.state.editable ? 'd-none' : undefined}>
+								<Form.Item
+									{...formItemLayout}
+									label="Gross Fee"
+									hasFeedback={editable}>
+									<InputNumber className="w-100" disabled={true} value={courseFee - discountAmount + taxAmount} />
+								</Form.Item>
+							</Col>
+							<Col {...colLayout} className={this.state.editable ? 'd-none' : undefined}>
+								<Form.Item
+									{...formItemLayout}
+									label="Pending Balance"
+									hasFeedback={editable}>
+									<Input disabled={true} placeholder="pending balance" value={(courseFee - discountAmount + taxAmount) - totalFeeCollected} />
+								</Form.Item>
+							</Col>
+							<Col {...colLayout}>
+								<Form.Item
+									{...formItemLayout}
+									label="Next Installment Date"
+									hasFeedback={editable}>
+									{getFieldDecorator('nextInstallmentDate', {
+										initialValue: nextInstallmentDate
+									})(
+										<DatePicker className="w-100" disabled={!editable} />
+									)}
+								</Form.Item>
+							</Col>
+							<Col span={24}>
+								{!editable ? (<Row type="flex" justify="end">
+									<Form.Item>
+										<Button type="primary" onClick={this.handleEditBtnClick}>
+											Edit
+									</Button>
+									</Form.Item>
+								</Row>) : (<Row type="flex" justify="end">
+									<Form.Item>
+										<Button className="mx-3" onClick={this.handleCancelBtnClick}>
+											Cancel
+									</Button>
+									</Form.Item>
+									<Form.Item>
+										<Button type="primary" htmlType="submit">
+											Save Changes
+									</Button>
+									</Form.Item>
+								</Row>)}
+							</Col>
+						</Row>
 					</Form>
 					<Col span={24}>
 						{/* installment collapse will come here */}

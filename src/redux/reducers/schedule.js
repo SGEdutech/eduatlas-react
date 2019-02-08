@@ -17,7 +17,7 @@ function scheduleReducer(state = initState, action) {
 		case 'EDIT_SCHEDULE_FULFILLED': {
 			const editedSchedule = action.payload.data;
 			const { _id: editedScheduleId } = editedSchedule;
-			const schedules = state.courses.map(schedule => schedule._id === editedScheduleId ? editedSchedule : schedule);
+			const schedules = state.schedules.map(schedule => schedule._id === editedScheduleId ? editedSchedule : schedule);
 			dateToMoment(schedules);
 			return { ...state, schedules };
 		}

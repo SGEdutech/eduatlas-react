@@ -21,27 +21,13 @@ import {
 
 const formItemLayout = {
 	labelCol: {
-		xs: { span: 24 },
-		sm: { span: 7 },
-		md: { span: 9 }
 	},
 	wrapperCol: {
-		xs: { span: 24 },
-		sm: { span: 14 },
-		md: { span: 12 }
 	}
 };
 
 const tailFormItemLayout = {
 	wrapperCol: {
-		xs: {
-			span: 24,
-			offset: 0
-		},
-		sm: {
-			span: 16,
-			offset: 8
-		}
 	}
 };
 
@@ -114,58 +100,57 @@ class AddDiscount extends Component {
 		const { code, amount } = this.state.discountInfo;
 		return (
 			<>
-				<Navbar renderBackBtn={true} />
+				<Navbar renderBackBtn={true} navText={this.props.edit ? 'Edit Discount' : 'Add Discount'} />
 				<div className="container below-nav">
 					<Form onSubmit={this.handleSubmit} className="pt-3">
-						<Col span={24}>
-							<h3>{this.props.edit ? 'Edit Discount:' : 'Add Discount:'}</h3>
-						</Col>
-						<Col {...colLayout}>
-							<Form.Item
-								{...formItemLayout}
-								label="Discount Code"
-								hasFeedback={true}>
-								{getFieldDecorator('code', {
-									initialValue: code,
-									rules: [{
-										required: true, message: 'Please give some name!'
-									}, {
-										validator: this.validateDiscountCode
-									}]
-								})(
-									<Input placeholder="discount code" />
-								)}
-							</Form.Item>
-						</Col>
-						<Col {...colLayout}>
-							<Form.Item
-								{...formItemLayout}
-								label="Discount Amount"
-								hasFeedback={true}>
-								{getFieldDecorator('amount', {
-									initialValue: amount,
-									rules: [{
-										required: true, message: 'Discount must have amount!'
-									}]
-								})(
-									<InputNumber className="w-100" step={this.state.step} min={this.state.min} max={this.state.max} formatter={this.conditionalFormatter} />
-								)}
-							</Form.Item>
-						</Col>
-						<Col {...colLayout}>
-							<Form.Item {...tailFormItemLayout}>
-								<Checkbox checked={this.state.saveAsPercentage} onChange={this.handleSaveAsPercentageChange}>Save Discount as Percentage</Checkbox>
-							</Form.Item>
-						</Col>
-						<Col span={24}>
-							<Row type="flex" justify="end">
-								<Form.Item>
-									<Button type="primary" htmlType="submit">
-										{this.props.edit ? 'Edit Discount' : 'Add Discount'}
-									</Button>
+						<Row gutter={16}>
+							<Col {...colLayout}>
+								<Form.Item
+									{...formItemLayout}
+									label="Discount Code"
+									hasFeedback={true}>
+									{getFieldDecorator('code', {
+										initialValue: code,
+										rules: [{
+											required: true, message: 'Please give some name!'
+										}, {
+											validator: this.validateDiscountCode
+										}]
+									})(
+										<Input placeholder="discount code" />
+									)}
 								</Form.Item>
-							</Row>
-						</Col>
+							</Col>
+							<Col {...colLayout}>
+								<Form.Item
+									{...formItemLayout}
+									label="Discount Amount"
+									hasFeedback={true}>
+									{getFieldDecorator('amount', {
+										initialValue: amount,
+										rules: [{
+											required: true, message: 'Discount must have amount!'
+										}]
+									})(
+										<InputNumber className="w-100" step={this.state.step} min={this.state.min} max={this.state.max} formatter={this.conditionalFormatter} />
+									)}
+								</Form.Item>
+							</Col>
+							<Col {...colLayout}>
+								<Form.Item {...tailFormItemLayout}>
+									<Checkbox checked={this.state.saveAsPercentage} onChange={this.handleSaveAsPercentageChange}>Save Discount as Percentage</Checkbox>
+								</Form.Item>
+							</Col>
+							<Col span={24}>
+								<Row type="flex" justify="end">
+									<Form.Item>
+										<Button type="primary" htmlType="submit">
+											{this.props.edit ? 'Edit Discount' : 'Add Discount'}
+										</Button>
+									</Form.Item>
+								</Row>
+							</Col>
+						</Row>
 					</Form>
 				</div>
 			</>

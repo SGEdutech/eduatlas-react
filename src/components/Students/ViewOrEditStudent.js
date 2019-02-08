@@ -26,14 +26,8 @@ const { Meta } = Card;
 
 const formItemLayout = {
 	labelCol: {
-		xs: { span: 24 },
-		sm: { span: 7 },
-		md: { span: 9 }
 	},
 	wrapperCol: {
-		xs: { span: 24 },
-		sm: { span: 14 },
-		md: { span: 12 }
 	}
 };
 
@@ -89,7 +83,7 @@ class ViewOrEditStudent extends Component {
 		const studentInfo = props.students.find(studentObj => studentObj._id === studentId);
 		// TODO: Implement loading for condition below
 		if (studentInfo === undefined) return state;
-		if (JSON.stringify(studentInfo) === JSON.stringify(state.courseInfo)) return state;
+		if (JSON.stringify(studentInfo) === JSON.stringify(state.studentInfo)) return state;
 		return { ...state, studentInfo };
 	}
 
@@ -100,9 +94,9 @@ class ViewOrEditStudent extends Component {
 
 		return (
 			<>
-				<Navbar renderBackBtn={true} />
+				<Navbar renderBackBtn={true} navText={editable ? 'Edit Student' : 'View Student'} />
 				<div className="container below-nav">
-					<Row>
+					<Row gutter={16}>
 						<Col className="pt-3">
 							<Meta
 								avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}

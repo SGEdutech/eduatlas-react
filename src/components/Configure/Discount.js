@@ -85,7 +85,7 @@ class Discount extends Component {
 						{messageInfo.fetching ? skeletonCards : (discountsInfo.discounts.length === 0 ? emptyJsx : discountsJsx)}
 					</Row>
 				</div>
-				<Link to="/add-discount">
+				<Link to="/tuition/add-discount">
 					<Icon type="plus-circle" theme="filled" style={plusIconStyle} />
 				</Link>
 			</>

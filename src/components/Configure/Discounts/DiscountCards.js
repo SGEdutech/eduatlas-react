@@ -9,7 +9,7 @@ function DiscountCard(props) {
 	const { id, code, amount, isPercent, deleteDiscount } = props;
 
 	const iconsArray = [
-		<Link to={'/edit-discount/' + id}><IconsWithTooltip tooltipMessage="Edit" iconType="edit" /></Link>,
+		<Link to={'/tuition/edit-discount/' + id}><IconsWithTooltip tooltipMessage="Edit" iconType="edit" /></Link>,
 		<IconsWithTooltip tooltipMessage="Delete" iconType="delete" onClick={() => deleteDiscount(id)} />
 	];
 

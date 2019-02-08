@@ -23,27 +23,13 @@ const { TextArea } = Input;
 
 const formItemLayout = {
 	labelCol: {
-		xs: { span: 24 },
-		sm: { span: 7 },
-		md: { span: 9 }
 	},
 	wrapperCol: {
-		xs: { span: 24 },
-		sm: { span: 14 },
-		md: { span: 12 }
 	}
 };
 
 const tailFormItemLayout = {
 	wrapperCol: {
-		xs: {
-			span: 24,
-			offset: 0
-		},
-		sm: {
-			span: 16,
-			offset: 8
-		}
 	}
 };
 
@@ -134,89 +120,87 @@ class AddCourse extends Component {
 		const { code, fees, gstPercentage, description } = this.state.courseInfo;
 		return (
 			<>
-				<Navbar renderBackBtn={true} />
+				<Navbar renderBackBtn={true} navText={this.props.edit ? 'Edit Course' : 'Add Course'} />
 				<div className="container below-nav">
 					<Form onSubmit={this.handleSubmit} className="pt-3">
-						<Col span={24}>
-							<h3>{this.props.edit ? 'Edit Course:' : 'Add Course:'}</h3>
-						</Col>
-						<Divider />
-						<Col {...colLayout}>
-							<Form.Item
-								{...formItemLayout}
-								label="Course Code"
-								hasFeedback={true}>
-								{getFieldDecorator('code', {
-									initialValue: code,
-									rules: [{
-										required: true, message: 'Course must have code!'
-									}, {
-										validator: this.validateCourseCode
-									}]
-								})(
-									<Input placeholder="course code" />
-								)}
-							</Form.Item>
-						</Col>
-						<Col {...colLayout}>
-							<Form.Item
-								{...formItemLayout}
-								label="Course Fee"
-								hasFeedback={true}>
-								{getFieldDecorator('fees', {
-									initialValue: fees,
-									rules: [{
-										required: true, message: 'Course must have fee!'
-									}]
-								})(
-									<InputNumber onChange={this.handleFeeChange} className="w-100" decimalSeparator="." precision={2} step={1000} min={0} max={10000000} />
-								)}
-							</Form.Item>
-						</Col>
-						<Col {...colLayout}>
-							<Form.Item
-								{...formItemLayout}
-								label="Description"
-								hasFeedback={true}>
-								{getFieldDecorator('description', { initialValue: description })(
-									<TextArea rows={4} />
-								)}
-							</Form.Item>
-						</Col>
-						<Col {...colLayout}>
-							<Form.Item
-								{...formItemLayout}
-								label="GST %"
-								hasFeedback={true}>
-								{getFieldDecorator('gstPercentage', {
-									initialValue: gstPercentage,
-									rules: [{ required: true, message: 'must provide gst' }, { validator: this.validateGst }]
-								})(
-									<InputNumber min={0} max={100} disabled={this.state.inclusiveOfTaxes} onChange={this.handleGstChange} className="w-100" formatter={value => `${value}%`} />
-								)}
-							</Form.Item>
-						</Col>
-						<Col {...colLayout}>
-							<Form.Item {...tailFormItemLayout}>
-								<Checkbox onChange={this.handleInclusiveTaxChange}>Inclusive Of Taxes</Checkbox>
-							</Form.Item>
-						</Col>
-						<Col {...colLayout}>
-							<Form.Item
-								{...formItemLayout}
-								label="Total Fee">
-								<Input value={this.state.totalFees} disabled />
-							</Form.Item>
-						</Col>
-						<Col span={24}>
-							<Row type="flex" justify="end">
-								<Form.Item>
-									<Button htmlType="submit" type="primary">
-										{this.props.edit ? 'Edit Course' : 'Add Course'}
-									</Button>
+						<Row gutter={16}>
+							<Col {...colLayout}>
+								<Form.Item
+									{...formItemLayout}
+									label="Course Code"
+									hasFeedback={true}>
+									{getFieldDecorator('code', {
+										initialValue: code,
+										rules: [{
+											required: true, message: 'Course must have code!'
+										}, {
+											validator: this.validateCourseCode
+										}]
+									})(
+										<Input placeholder="course code" />
+									)}
 								</Form.Item>
-							</Row>
-						</Col>
+							</Col>
+							<Col {...colLayout}>
+								<Form.Item
+									{...formItemLayout}
+									label="Course Fee"
+									hasFeedback={true}>
+									{getFieldDecorator('fees', {
+										initialValue: fees,
+										rules: [{
+											required: true, message: 'Course must have fee!'
+										}]
+									})(
+										<InputNumber onChange={this.handleFeeChange} className="w-100" decimalSeparator="." precision={2} step={1000} min={0} max={10000000} />
+									)}
+								</Form.Item>
+							</Col>
+							<Col {...colLayout}>
+								<Form.Item
+									{...formItemLayout}
+									label="Description"
+									hasFeedback={true}>
+									{getFieldDecorator('description', { initialValue: description })(
+										<TextArea rows={4} />
+									)}
+								</Form.Item>
+							</Col>
+							<Col {...colLayout}>
+								<Form.Item
+									{...formItemLayout}
+									label="GST %"
+									hasFeedback={true}>
+									{getFieldDecorator('gstPercentage', {
+										initialValue: gstPercentage,
+										rules: [{ required: true, message: 'must provide gst' }, { validator: this.validateGst }]
+									})(
+										<InputNumber min={0} max={100} disabled={this.state.inclusiveOfTaxes} onChange={this.handleGstChange} className="w-100" formatter={value => `${value}%`} />
+									)}
+								</Form.Item>
+							</Col>
+							<Col {...colLayout}>
+								<Form.Item {...tailFormItemLayout}>
+									<Checkbox onChange={this.handleInclusiveTaxChange}>Inclusive Of Taxes</Checkbox>
+								</Form.Item>
+							</Col>
+							<Col {...colLayout}>
+								<Form.Item
+									{...formItemLayout}
+									label="Total Fee">
+									<Input value={this.state.totalFees} disabled />
+								</Form.Item>
+							</Col>
+							<Col span={24}>
+								<Row type="flex" justify="end">
+									<Form.Item>
+										<Button htmlType="submit" type="primary">
+											{this.props.edit ? 'Edit Course' : 'Add Course'}
+										</Button>
+									</Form.Item>
+								</Row>
+							</Col>
+						</Row>
 					</Form>
 				</div>
 			</>

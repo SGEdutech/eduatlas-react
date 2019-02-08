@@ -86,7 +86,7 @@ class Course extends Component {
 						{messageInfo.fetching ? skeletonCards : (coursesInfo.courses.length === 0 ? emptyJsx : coursesJsx)}
 					</Row>
 				</div>
-				<Link to="/add-course">
+				<Link to="/tuition/add-course">
 					<Icon type="plus-circle" theme="filled" style={plusIconStyle} />
 				</Link>
 			</>

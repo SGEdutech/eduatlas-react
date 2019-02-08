@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import Configure from './Configure';
 import Students from './Students';
 import Schedule from './Schedule';
+import Attendance from './Attendance';
 
 import { Tabs, Icon } from 'antd';
 const TabPane = Tabs.TabPane;
@@ -20,6 +21,9 @@ class PrimaryTabs extends Component {
 	render() {
 		return (
 			<Tabs size="large" tabBarStyle={tabBarStyle}>
+				<TabPane className="pt-3" tab={<span><Icon type="team" />Attendance</span>} key="6">
+					<Attendance />
+				</TabPane>
 				<TabPane className="pt-3" tab={<span><Icon type="calendar" />Schedule</span>} key="5">
 					<Schedule />
 				</TabPane>
@@ -33,9 +37,6 @@ class PrimaryTabs extends Component {
 					promoter
 				</TabPane>
 				<TabPane className="pt-3" tab={<span><Icon type="message" />Communicator</span>} key="4">
-					Tab 2
-				</TabPane>
-				<TabPane className="pt-3" tab={<span><Icon type="team" />Attendance</span>} key="6">
 					Tab 2
 				</TabPane>
 				<TabPane className="pt-3" tab={<span><Icon type="file-search" />Report</span>} key="7">

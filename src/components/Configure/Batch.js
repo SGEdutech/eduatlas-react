@@ -86,7 +86,7 @@ class Batch extends Component {
 						{messageInfo.fetching ? skeletonCards : (batchesInfo.batches.length === 0 ? emptyJsx : batchesJsx)}
 					</Row>
 				</div>
-				<Link to="/add-batch">
+				<Link to="/tuition/add-batch">
 					<Icon type="plus-circle" theme="filled" style={plusIconStyle} />
 				</Link>
 			</>

@@ -5,9 +5,7 @@ import IconsWithTooltip from '../../SharedComponents/IconsWithTooltip';
 
 import {
 	Avatar,
-	Card,
-	Col,
-	Row
+	Card
 } from 'antd';
 const { Meta } = Card;
 
@@ -15,8 +13,8 @@ function StudentCard(props) {
 	const { id, name, rollNumber, deleteStudent } = props;
 
 	const iconsArray = [
-		<Link to={'/student/' + id}><IconsWithTooltip tooltipMessage="View" iconType="eye" /></Link>,
-		<Link to={'/student/edit/' + id}><IconsWithTooltip tooltipMessage="Edit" iconType="edit" /></Link>,
+		<Link to={'/tuition/student/' + id}><IconsWithTooltip tooltipMessage="View" iconType="eye" /></Link>,
+		<Link to={'/tuition/student/' + id}><IconsWithTooltip tooltipMessage="Edit" iconType="edit" /></Link>,
 		<IconsWithTooltip tooltipMessage="Delete" iconType="delete" onClick={() => deleteStudent(id)} />
 	];
 

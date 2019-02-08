@@ -9,7 +9,7 @@ function BatchCard(props) {
 	const { id, code, description, courseId, courseCode, numberOfStudents, deleteBatch, editBatch } = props;
 
 	const iconsArray = [
-		<Link to={'/edit-batch/' + id}><IconsWithTooltip tooltipMessage="Edit" iconType="edit" /></Link>,
+		<Link to={'/tuition/edit-batch/' + id}><IconsWithTooltip tooltipMessage="Edit" iconType="edit" /></Link>,
 		<IconsWithTooltip tooltipMessage="Delete" iconType="delete" onClick={() => deleteBatch(courseId, id)} />
 	];
 

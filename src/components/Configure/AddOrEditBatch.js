@@ -25,14 +25,8 @@ const { Option } = Select;
 
 const formItemLayout = {
 	labelCol: {
-		xs: { span: 24 },
-		sm: { span: 7 },
-		md: { span: 9 }
 	},
 	wrapperCol: {
-		xs: { span: 24 },
-		sm: { span: 14 },
-		md: { span: 12 }
 	}
 };
 
@@ -203,78 +197,77 @@ class AddBatch extends Component {
 
 		return (
 			<>
-				<Navbar renderBackBtn={true} />
+				<Navbar renderBackBtn={true} navText={this.props.edit ? 'Edit Batch' : 'Add Batch'} />
 				<div className="container below-nav">
 					<Form onSubmit={this.handleSubmit} className="pt-3">
-						<Col span={24}>
-							<h3>{this.props.edit ? 'Edit Batch:' : 'Add Batch:'}</h3>
-						</Col>
-						<Col {...colLayout}>
-							<Form.Item
-								{...formItemLayout}
-								label="Parent Course"
-								hasFeedback={true}>
-								{getFieldDecorator('courseId', {
-									initialValue: courseId,
-									rules: [{
-										required: true, message: 'Batch must have Course!'
-									}]
-								})(
-									<Select placeholder="select parent course" disabled={this.props.edit}>
-										{courses.map(course => <Option key={course._id} value={course._id}>{course.code}</Option>)}
-									</Select>
-								)}
-							</Form.Item>
-						</Col>
-						<Col {...colLayout}>
-							<Form.Item
-								{...formItemLayout}
-								label="Batch Code"
-								hasFeedback={true}>
-								{getFieldDecorator('code', {
-									initialValue: code,
-									rules: [{
-										required: true, message: 'Batch must have code!'
-									}, {
-										validator: this.validateBatchCode
-									}]
-								})(
-									<Input placeholder="batch code" />
-								)}
-							</Form.Item>
-						</Col>
-						<Col {...colLayout}>
-							<Form.Item
-								{...formItemLayout}
-								label="Description"
-								hasFeedback={true}>
-								{getFieldDecorator('description', { initialValue: description })(<TextArea rows={4} />)}
-							</Form.Item>
-						</Col>
-						<Col span={24}>
-							<Form.Item
-								{...studentTableLayout}>
-								<Table
-									title={() => 'Add students to batch'}
-									bordered
-									pagination={false}
-									scroll={{ y: 500, x: 500 }}
-									rowKey="_id"
-									rowSelection={rowSelection}
-									columns={columns}
-									dataSource={studentsOfTuition}
-									onRow={record => ({ onClick: () => this.selectRow(record) })} />
-							</Form.Item>
-						</Col>
-						<Col span={24}>
-							<Row type="flex" justify="end">
-								<Form.Item>
-									<Button type="primary" htmlType="submit">
-										{this.props.edit ? 'Edit Batch' : 'Add Batch'}
-									</Button>
+						<Row gutter={16}>
+							<Col {...colLayout}>
+								<Form.Item
+									{...formItemLayout}
+									label="Parent Course"
+									hasFeedback={true}>
+									{getFieldDecorator('courseId', {
+										initialValue: courseId,
+										rules: [{
+											required: true, message: 'Batch must have Course!'
+										}]
+									})(
+										<Select placeholder="select parent course" disabled={this.props.edit}>
+											{courses.map(course => <Option key={course._id} value={course._id}>{course.code}</Option>)}
+										</Select>
+									)}
 								</Form.Item>
-							</Row>
-						</Col>
+							</Col>
+							<Col {...colLayout}>
+								<Form.Item
+									{...formItemLayout}
+									label="Batch Code"
+									hasFeedback={true}>
+									{getFieldDecorator('code', {
+										initialValue: code,
+										rules: [{
+											required: true, message: 'Batch must have code!'
+										}, {
+											validator: this.validateBatchCode
+										}]
+									})(
+										<Input placeholder="batch code" />
+									)}
+								</Form.Item>
+							</Col>
+							<Col {...colLayout}>
+								<Form.Item
+									{...formItemLayout}
+									label="Description"
+									hasFeedback={true}>
+									{getFieldDecorator('description', { initialValue: description })(<TextArea rows={4} />)}
+								</Form.Item>
+							</Col>
+							<Col span={24}>
+								<Form.Item
+									{...studentTableLayout}>
+									<Table
+										title={() => 'Add students to batch'}
+										bordered
+										pagination={false}
+										scroll={{ y: 500, x: 500 }}
+										rowKey="_id"
+										rowSelection={rowSelection}
+										columns={columns}
+										dataSource={studentsOfTuition}
+										onRow={record => ({ onClick: () => this.selectRow(record) })} />
+								</Form.Item>
+							</Col>
+							<Col span={24}>
+								<Row type="flex" justify="end">
+									<Form.Item>
+										<Button type="primary" htmlType="submit">
+											{this.props.edit ? 'Edit Batch' : 'Add Batch'}
+										</Button>
+									</Form.Item>
+								</Row>
+							</Col>
+						</Row>
 					</Form>
 				</div >
 			</>
