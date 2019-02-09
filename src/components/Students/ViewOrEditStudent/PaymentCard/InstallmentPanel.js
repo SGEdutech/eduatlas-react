@@ -30,7 +30,7 @@ const colLayout = {
 
 class InstallmentCollapse extends Component {
 	state = {
-		editable: false,
+		editable: false
 	}
 
 	handleEditBtnClick = () => this.setState({ editable: true });
