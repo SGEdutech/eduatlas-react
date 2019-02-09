@@ -11,7 +11,7 @@ function isDate(date) {
 }
 
 function dateToMoment(data) {
-	if (typeof data !== 'object') return;
+	if (typeof data !== 'object' || data === null || data === undefined) return;
 	if (Array.isArray(data)) {
 		data.forEach((element, index) => {
 			if (isDate(element)) {
