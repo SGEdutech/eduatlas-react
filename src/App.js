@@ -6,19 +6,25 @@ import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import Router from './Router';
 
-import TuitionManager from './components/TuitionManager';
-import AddOrEditCourse from './components/Configure/AddOrEditCourse';
-import AddOrEditBatch from './components/Configure/AddOrEditBatch';
-import AddOrEditDiscount from './components/Configure/AddOrEditDiscount';
-import AddStudent from './components/Students/AddStudent';
+// tuition components
+import AddOrEditBatch from './components/TuitionComponents/Configure/AddOrEditBatch';
+import AddOrEditCourse from './components/TuitionComponents/Configure/AddOrEditCourse';
+import AddOrEditDiscount from './components/TuitionComponents/Configure/AddOrEditDiscount';
+import AddStudent from './components/TuitionComponents/Students/AddStudent';
+import AttendanceDetails from './components/TuitionComponents/Attendance/AttendanceDetails';
 import EditProfile from './components/EditProfile';
-import ViewOrEditStudent from './components/Students/ViewOrEditStudent';
-import EditSchedule from './components/Schedule/EditSchedule';
-import AttendanceDetails from './components/Attendance/AttendanceDetails';
+import EditSchedule from './components/TuitionComponents/Schedule/EditSchedule';
+import TuitionManager from './components/TuitionComponents/TuitionManager';
+import ViewOrEditStudent from './components/TuitionComponents/Students/ViewOrEditStudent';
+
+// shared components
+import Loading from './components/Loading';
 import Login from './components/Login';
 import Signup from './components/Signup';
-import Loading from './components/Loading';
-import StudentManager from './components/StudentManager';
+
+// student components
+import StudentManager from './components/StudentComponents/StudentManager';
+
 import { message } from 'antd';
 
 import fetchAll from './redux/actions/fetchAllAction';

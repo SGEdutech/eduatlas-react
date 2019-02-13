@@ -8,7 +8,6 @@ import {
 
 function Loading(props) {
 	const { messageInfo: { fetched, kaamChaluHai }, history: { replace }, user: { userInfo } } = props;
-	console.log(userInfo);
 	function redirectToLogin() {
 		replace('/login');
 	}

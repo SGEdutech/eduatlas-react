@@ -25,6 +25,7 @@ function dateToMoment(data) {
 	// Data is an object
 	if (isDate(data)) throw new Error('Date can\'t be top level data');
 	const keys = Object.keys(data);
+	if (data._isAMomentObject) return;
 	keys.forEach(key => {
 		if (isDate(data[key])) {
 			data[key] = moment(data[key]);

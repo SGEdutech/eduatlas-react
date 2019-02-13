@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export function getUserInfo(id) {
+export function getUserInfo() {
 	return dispatch => {
 		dispatch({
 			type: 'FETCH_USER',
