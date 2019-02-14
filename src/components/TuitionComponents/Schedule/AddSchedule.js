@@ -19,6 +19,9 @@ import {
 	TimePicker
 } from 'antd';
 
+import { DatePicker as DatePickerM, List } from 'antd-mobile';
+import enUs from 'antd-mobile/lib/date-picker/locale/en_US';
+
 const { Option } = Select;
 
 const formItemLayout = {
@@ -101,7 +104,7 @@ class AddSchedule extends Component {
 		const timeRegex = new RegExp('^fromTime|^toTime');
 		const keys = Object.keys(values);
 		const timeKeys = keys.filter(key => timeRegex.test(key));
-		timeKeys.forEach(timeKey => values[timeKey] = minutesFromMidnight(values[timeKey].toDate()));
+		timeKeys.forEach(timeKey => values[timeKey] = minutesFromMidnight(values[timeKey]));
 	}
 
 	// Time complexity is O(n^2)
@@ -196,19 +199,30 @@ class AddSchedule extends Component {
 						{getFieldDecorator('fromTime_' + k, {
 							rules: [{ required: true, message: 'Please enter dude!' }]
 						})(
-							<TimePicker use12Hours={true} format={format} minuteStep={10} className="w-100" />
+							<DatePickerM
+								mode="time"
+								minuteStep={2}
+								use12Hours={true}
+								locale={enUs}>
+								<List.Item arrow="horizontal">From Time</List.Item>
+							</DatePickerM>
 						)}
 					</Form.Item>
 				</Col>
 				<Col {...scheduleColLayout} className="p-1">
 					<Form.Item
 						{...formScheduleItemLayout}
-						label="To Time"
-						hasFeedback={true}>
+						label="To Time">
 						{getFieldDecorator('toTime_' + k, {
 							validator: this.validateToTime, message: 'Must be less than From-Time'
 						})(
-							<TimePicker use12Hours format={format} minuteStep={10} className="w-100" />
+							<DatePickerM
+								mode="time"
+								minuteStep={2}
+								use12Hours={true}
+								locale={enUs}>
+								<List.Item arrow="horizontal">To Time</List.Item>
+							</DatePickerM>
 						)}
 					</Form.Item>
 				</Col>
