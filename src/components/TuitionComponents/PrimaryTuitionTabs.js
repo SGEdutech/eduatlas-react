@@ -5,8 +5,9 @@ import Students from './Students';
 import Schedule from './Schedule';
 import Attendance from './Attendance';
 import Communicator from './Communicator';
+import StudyMaterial from './StudyMaterial';
 
-import { Icon, Tabs} from 'antd';
+import { Icon, Tabs } from 'antd';
 const TabPane = Tabs.TabPane;
 
 const tabBarStyle = {
@@ -44,7 +45,7 @@ class PrimaryTuitionTabs extends Component {
 					Report
 				</TabPane> */}
 				<TabPane className="pt-3" tab={<span><Icon type="paper-clip" />Study Material</span>} key="8">
-					Study Material
+					<StudyMaterial />
 				</TabPane>
 			</Tabs>
 		);

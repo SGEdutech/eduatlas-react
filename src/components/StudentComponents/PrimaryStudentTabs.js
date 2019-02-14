@@ -37,7 +37,7 @@ class PrimaryTuitionTabs extends Component {
 					<EnrollmentAndFee courses={courses} studentInfo={studentInfo} />
 				</TabPane>
 				<TabPane className="pt-3" tab={<span><Icon type="paper-clip" />Study Material</span>} key="4">
-					<Forums />
+					study material
 				</TabPane>
 			</Tabs>
 		);

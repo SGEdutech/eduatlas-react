@@ -1,20 +1,23 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { compose } from 'redux';
 
-import StudentSelector from './NewAnnouncement/StudentSelector';
+import StudentSelector from './Communicator/NewAnnouncement/StudentSelector';
+
+import sanatizeForm from '../../scripts/sanatize-form-obj';
 
 import {
 	Button,
 	Col,
 	Form,
+	Icon,
 	Input,
 	Row,
 	Select,
-	Switch
+	Switch,
+	Upload
 } from 'antd';
-
-import sanatizeForm from '../../../scripts/sanatize-form-obj';
-
-const { Option } = Select;
 const { TextArea } = Input;
 
 const colLayout = {
@@ -22,7 +25,7 @@ const colLayout = {
 	md: 12
 };
 
-class NewAnnouncement extends Component {
+class StudyMaterial extends Component {
 	filterOptions = (input, option) => {
 		if (option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0) return true;
 	}
@@ -76,24 +79,66 @@ class NewAnnouncement extends Component {
 							batches={batches}
 							handleSelectAll={this.handleSelectAll}
 							getFieldDecorator={getFieldDecorator} />
-						<Col span={24}>
+						<Col {...colLayout}>
 							<Form.Item
-								label="Announcement Text"
+								label="Title"
 								hasFeedback={true}>
-								{getFieldDecorator('message', {
-									rules: [{
-										required: true, message: 'Please provide text!'
-									}]
+								{getFieldDecorator('title', {
+									rules: [{ required: 'true', message: 'Must Provide Title' }]
 								})(
+									<Input placeholder="Title" />
+								)}
+							</Form.Item>
+						</Col>
+						<Col {...colLayout}>
+							<Form.Item
+								label="Type Of Resource"
+								hasFeedback={true}>
+								{getFieldDecorator('type', {
+									rules: [{ required: 'true', message: 'Must Choose Type' }]
+								})(
+									<Select defaultValue="reference material">
+										<option class="text-uppercase" value="reference material">Reference Material</option>
+										<option class="text-uppercase" value="homework">Homework</option>
+										<option class="text-uppercase" value="test">Assignment/Test</option>
+										<option class="text-uppercase" value="video">Video</option>
+									</Select>
+								)}
+							</Form.Item>
+						</Col>
+						<Col {...colLayout}>
+							<Form.Item
+								label="Description"
+								hasFeedback={true}>
+								{getFieldDecorator('description')(
 									<TextArea autosize={{ minRows: 4 }} />
 								)}
+							</Form.Item>
+						</Col>
+						<Col {...colLayout}>
+							<Form.Item label="Dragger">
+								<div className="dropbox">
+									{getFieldDecorator('dragger', {
+										rules: [{ required: 'true', message: 'Must Choose Type' }],
+										valuePropName: 'fileList',
+										getValueFromEvent: this.normFile,
+									})(
+										<Upload.Dragger name="files" action="/upload.do">
+											<p className="ant-upload-drag-icon">
+												<Icon type="inbox" />
+											</p>
+											<p className="ant-upload-text">Click or drag file to this area to upload</p>
+											<p className="ant-upload-hint">Support for a single or bulk upload.</p>
+										</Upload.Dragger>
+									)}
+								</div>
 							</Form.Item>
 						</Col>
 						<Col span={24}>
 							<Row type="flex" justify="end">
 								<Form.Item>
 									<Button type="primary" htmlType="submit">
-										Send Announcement
+										Upload And Share
 									</Button>
 								</Form.Item>
 							</Row>
@@ -105,4 +150,11 @@ class NewAnnouncement extends Component {
 	}
 }
 
-export default Form.create({ name: 'new-announcement' })(NewAnnouncement);
+function mapStateToProps(state) {
+	return {
+		batches: state.batch.batches,
+		students: state.student.students,
+	};
+}
+
+export default compose(Form.create({ name: 'new-study-material' }), withRouter, connect(mapStateToProps, {}))(StudyMaterial);
