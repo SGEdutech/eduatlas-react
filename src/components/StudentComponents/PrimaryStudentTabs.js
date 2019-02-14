@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import Attendance from './Attendance';
 import EnrollmentAndFee from './EnrollmentAndFee';
@@ -19,6 +20,7 @@ const tabBarStyle = {
 
 class PrimaryTuitionTabs extends Component {
 	render() {
+		const { students, user } = this.props;
 		return (
 			<Tabs size="large" tabBarStyle={tabBarStyle}>
 				<TabPane className="pt-3" tab={<span><Icon type="notification" />Notifications</span>} key="1">
@@ -28,7 +30,7 @@ class PrimaryTuitionTabs extends Component {
 					<Attendance />
 				</TabPane>
 				<TabPane className="pt-3" tab={<span><Icon type="idcard" />Enrollment and Fee</span>} key="5">
-					<EnrollmentAndFee />
+					<EnrollmentAndFee user={user} students={students} />
 				</TabPane>
 				<TabPane className="pt-3" tab={<span><Icon type="message" />Forums</span>} key="3">
 					<Forums />
@@ -41,4 +43,9 @@ class PrimaryTuitionTabs extends Component {
 	}
 }
 
-export default PrimaryTuitionTabs;
+const mapStateToProps = state => ({
+	students: state.student.students,
+	user: state.user.userInfo
+});
+
+export default connect(mapStateToProps)(PrimaryTuitionTabs);

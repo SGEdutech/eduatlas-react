@@ -11,7 +11,7 @@ import {
 	Icon,
 	Input,
 	InputNumber,
-	Row,
+	Row
 } from 'antd';
 const { Meta } = Card;
 
@@ -33,6 +33,8 @@ class EnrollmentAndFee extends Component {
 	}
 
 	render() {
+		const { primaryEmail } = this.props.user;
+
 		const { name, rollNumber, email, contactNumber, address, payments } = this.state.studentInfo;
 
 		return (
@@ -51,40 +53,35 @@ class EnrollmentAndFee extends Component {
 							<Col {...colLayout}>
 								<Form.Item
 									{...formItemLayout}
-									label="Name"
-									>
+									label="Name">
 									<Input disabled={true} placeholder="name of student" />
 								</Form.Item>
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
 									{...formItemLayout}
-									label="Email"
-									>
+									label="Email">
 									<Input disabled={true} placeholder="email of student" />
 								</Form.Item>
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
 									{...formItemLayout}
-									label="Roll Number"
-									>
+									label="Roll Number">
 									<Input disabled={true} placeholder="roll-number" />
 								</Form.Item>
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
 									{...formItemLayout}
-									label="Phone Number"
-									>
+									label="Phone Number">
 									<InputNumber disabled={true} className="w-100" max={99999999999} />
 								</Form.Item>
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
 									{...formItemLayout}
-									label="Address"
-									>
+									label="Address">
 									<Input disabled={true} />
 								</Form.Item>
 							</Col>

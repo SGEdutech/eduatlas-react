@@ -7,13 +7,11 @@ import { compose } from 'redux';
 import InstallmentCollapse from './PaymentCard/InstallmentCollapse';
 
 import {
-	Button,
 	Card,
 	Col,
 	Collapse,
 	DatePicker,
 	Form,
-	Icon,
 	Input,
 	InputNumber,
 	Row
