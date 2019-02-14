@@ -20,7 +20,7 @@ const tabBarStyle = {
 
 class PrimaryTuitionTabs extends Component {
 	render() {
-		const { batches, courses, schedule, students, user } = this.props;
+		const { batches, courses, schedules, students, user } = this.props;
 		const { primaryEmail } = user;
 		const studentInfo = students.find(student => student.email === primaryEmail);
 		if (Boolean(studentInfo) === false) return <></>; // TODO: Handle this!!!!
@@ -31,7 +31,7 @@ class PrimaryTuitionTabs extends Component {
 					<Notifications />
 				</TabPane>
 				<TabPane className="pt-3" tab={<span><Icon type="team" />Attendance</span>} key="2">
-					<Attendance batches={batches} schedule={schedule} studentInfo={studentInfo} students={students} />
+					<Attendance batches={batches} schedules={schedules} studentInfo={studentInfo} />
 				</TabPane>
 				<TabPane className="pt-3" tab={<span><Icon type="idcard" />Enrollment and Fee</span>} key="5">
 					<EnrollmentAndFee courses={courses} studentInfo={studentInfo} />
@@ -50,7 +50,7 @@ class PrimaryTuitionTabs extends Component {
 const mapStateToProps = state => ({
 	batches: state.batch.batches,
 	courses: state.course.courses,
-	schedules: state.schedule.schedule,
+	schedules: state.schedule.schedules,
 	students: state.student.students,
 	user: state.user.userInfo
 });

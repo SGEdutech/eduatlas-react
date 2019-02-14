@@ -6,7 +6,7 @@ import Schedule from './Schedule';
 import Attendance from './Attendance';
 import Communicator from './Communicator';
 
-import { Tabs, Icon } from 'antd';
+import { Icon, Tabs} from 'antd';
 const TabPane = Tabs.TabPane;
 
 const tabBarStyle = {

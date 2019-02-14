@@ -119,7 +119,7 @@ class AddSchedule extends Component {
 
 	handleSubmit = e => {
 		e.preventDefault();
-		const { form } = this.props;
+		const { form, addSchedule } = this.props;
 		const { resetFields } = form;
 		form.validateFieldsAndScroll((err, values) => {
 			if (err) {
@@ -128,7 +128,7 @@ class AddSchedule extends Component {
 			}
 			sanatizeFormObj(values);
 			this.calibrateFromAndToTime(values);
-			this.props.addSchedule({ schedules: this.splitSchedules(values), batches: values.batches });
+			addSchedule({ schedules: this.splitSchedules(values), batches: values.batches });
 			resetFields();
 		});
 	}
