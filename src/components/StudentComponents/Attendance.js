@@ -64,7 +64,7 @@ export default class Attendance extends Component {
 								<Row>
 									<Col span={24}>
 										Batch
-							</Col>
+									</Col>
 									<Col span={24} className="mt-1">
 										<span className="display-4">M-1</span>
 									</Col>
@@ -74,10 +74,10 @@ export default class Attendance extends Component {
 								<Row>
 									<Col span={24}>
 										% Attendance
-							</Col>
+									</Col>
 									<Col span={24} className="mt-1">
 										<span className="display-4">23</span><span className="mx-1">/</span>100
-							</Col>
+									</Col>
 								</Row>
 							</Col>
 						</Row>}
@@ -95,7 +95,7 @@ export default class Attendance extends Component {
 								<Row>
 									<Col span={24}>
 										Batch
-							</Col>
+									</Col>
 									<Col span={24} className="mt-1">
 										<span className="display-4">M-1</span>
 									</Col>
@@ -105,10 +105,10 @@ export default class Attendance extends Component {
 								<Row>
 									<Col span={24}>
 										% Attendance
-							</Col>
+									</Col>
 									<Col span={24} className="mt-1">
 										<span className="display-4">23</span><span className="mx-1">/</span>100
-							</Col>
+									</Col>
 								</Row>
 							</Col>
 						</Row>}
@@ -126,7 +126,7 @@ export default class Attendance extends Component {
 								<Row>
 									<Col span={24}>
 										Batch
-							</Col>
+									</Col>
 									<Col span={24} className="mt-1">
 										<span className="display-4">M-1</span>
 									</Col>
@@ -136,10 +136,10 @@ export default class Attendance extends Component {
 								<Row>
 									<Col span={24}>
 										% Attendance
-							</Col>
+									</Col>
 									<Col span={24} className="mt-1">
 										<span className="display-4">23</span><span className="mx-1">/</span>100
-							</Col>
+									</Col>
 								</Row>
 							</Col>
 						</Row>}

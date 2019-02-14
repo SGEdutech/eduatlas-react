@@ -20,21 +20,25 @@ const tabBarStyle = {
 
 class PrimaryTuitionTabs extends Component {
 	render() {
-		const { students, user } = this.props;
+		const { batches, courses, schedule, students, user } = this.props;
+		const { primaryEmail } = user;
+		const studentInfo = students.find(student => student.email === primaryEmail);
+		if (Boolean(studentInfo) === false) return <></>; // TODO: Handle this!!!!
+
 		return (
 			<Tabs size="large" tabBarStyle={tabBarStyle}>
 				<TabPane className="pt-3" tab={<span><Icon type="notification" />Notifications</span>} key="1">
 					<Notifications />
 				</TabPane>
 				<TabPane className="pt-3" tab={<span><Icon type="team" />Attendance</span>} key="2">
-					<Attendance />
+					<Attendance batches={batches} schedule={schedule} studentInfo={studentInfo} students={students} />
 				</TabPane>
 				<TabPane className="pt-3" tab={<span><Icon type="idcard" />Enrollment and Fee</span>} key="5">
-					<EnrollmentAndFee user={user} students={students} />
+					<EnrollmentAndFee courses={courses} studentInfo={studentInfo} />
 				</TabPane>
-				<TabPane className="pt-3" tab={<span><Icon type="message" />Forums</span>} key="3">
+				{/* <TabPane className="pt-3" tab={<span><Icon type="message" />Forums</span>} key="3">
 					<Forums />
-				</TabPane>
+				</TabPane> */}
 				<TabPane className="pt-3" tab={<span><Icon type="paper-clip" />Study Material</span>} key="4">
 					<Forums />
 				</TabPane>
@@ -44,6 +48,9 @@ class PrimaryTuitionTabs extends Component {
 }
 
 const mapStateToProps = state => ({
+	batches: state.batch.batches,
+	courses: state.course.courses,
+	schedules: state.schedule.schedule,
 	students: state.student.students,
 	user: state.user.userInfo
 });

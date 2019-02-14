@@ -28,14 +28,9 @@ const colLayout = {
 };
 
 class EnrollmentAndFee extends Component {
-	state = {
-		studentInfo: {},
-	}
-
 	render() {
-		const { primaryEmail } = this.props.user;
-
-		const { name, rollNumber, email, contactNumber, address, payments } = this.state.studentInfo;
+		const { courses, studentInfo } = this.props;
+		const { name, rollNumber, email, contactNumber, address, payments } = studentInfo;
 
 		return (
 			<div className="container">
@@ -44,8 +39,7 @@ class EnrollmentAndFee extends Component {
 						<Meta
 							avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
 							title={<span className="text-capitalize" style={{ fontWeight: 'bold' }}>{name}</span>}
-							description={<small>EA ID: DWAD2324DAD</small>}
-						/>
+							description={<small>EA ID: DWAD2324DAD</small>}/>
 						<Divider orientation="left"><small>Personal Details<Icon type="arrow-down" /></small></Divider>
 					</Col>
 					<Col>
@@ -54,42 +48,42 @@ class EnrollmentAndFee extends Component {
 								<Form.Item
 									{...formItemLayout}
 									label="Name">
-									<Input disabled={true} placeholder="name of student" />
+									<Input disabled={true} value={name} placeholder="name of student" />
 								</Form.Item>
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
 									{...formItemLayout}
 									label="Email">
-									<Input disabled={true} placeholder="email of student" />
+									<Input disabled={true} value={email} placeholder="email of student" />
 								</Form.Item>
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
 									{...formItemLayout}
 									label="Roll Number">
-									<Input disabled={true} placeholder="roll-number" />
+									<Input disabled={true} value={rollNumber} placeholder="roll-number" />
 								</Form.Item>
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
 									{...formItemLayout}
 									label="Phone Number">
-									<InputNumber disabled={true} className="w-100" max={99999999999} />
+									<InputNumber value={contactNumber} disabled={true} className="w-100" max={99999999999} />
 								</Form.Item>
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
 									{...formItemLayout}
 									label="Address">
-									<Input disabled={true} />
+									<Input value={address} disabled={true} />
 								</Form.Item>
 							</Col>
 						</Form>
 						<Divider orientation="left"><small>Course Payments<Icon type="arrow-down" /></small></Divider>
 					</Col>
 					<Col className="mb-3">
-						{payments && payments.map(payment => <PaymentCard courses={this.props.courses} payment={payment} editPayment={this.props.editPayment} editInstallment={this.props.editInstallment} key={payment._id} />)}
+						{payments && payments.map(payment => <PaymentCard courses={courses} payment={payment} key={payment._id} />)}
 					</Col>
 				</Row>
 			</div>

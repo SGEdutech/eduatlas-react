@@ -41,9 +41,10 @@ class PaymentCard extends Component {
 	}
 
 	render() {
-		const { _id: paymentId, courseCode, courseFee, taxAmount = 0, discountAmount = 0, discountReason, installments } = this.props.payment;
+		const { _id: paymentId, courseId, courseCode, courseFee, taxAmount = 0, discountAmount = 0, discountReason, installments } = this.props.payment;
 		const nextInstallmentDate = moment(this.props.payment.nextInstallmentDate);
 		const totalFeeCollected = this.getTotalFeeCollected(installments);
+
 		return (
 			<>
 				<Card className="mb-3">
@@ -62,63 +63,56 @@ class PaymentCard extends Component {
 									{...formItemLayout}
 									label="Course Fee"
 								>
-									<InputNumber className="w-100" disabled={true} step={500} />
+									<InputNumber value={courseFee} className="w-100" disabled={true} step={500} />
 								</Form.Item>
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
 									{...formItemLayout}
-									label="Discount Amount"
-								>
-									<InputNumber className="w-100" disabled={true} step={100} />
+									label="Discount Amount">
+									<InputNumber value={discountAmount} className="w-100" disabled={true} step={100} />
 								</Form.Item>
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
 									{...formItemLayout}
-									label="Discount Reason"
-								>
-									<Input disabled={true} />
+									label="Discount Reason">
+									<Input value={discountReason} disabled={true} />
 								</Form.Item>
 							</Col>
-							<Col {...colLayout} className={this.state.editable ? 'd-none' : undefined}>
+							<Col {...colLayout}>
 								<Form.Item
 									{...formItemLayout}
-									label="Net Fee"
-								>
+									label="Net Fee">
 									<InputNumber className="w-100" disabled={true} value={courseFee - discountAmount} />
 								</Form.Item>
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
 									{...formItemLayout}
-									label="Tax"
-								>
-									<InputNumber className="w-100" disabled={true} step={50} />
+									label="Tax">
+									<InputNumber value={taxAmount} className="w-100" disabled={true} step={50} />
 								</Form.Item>
 							</Col>
-							<Col {...colLayout} className={this.state.editable ? 'd-none' : undefined}>
+							<Col {...colLayout}>
 								<Form.Item
 									{...formItemLayout}
-									label="Gross Fee"
-								>
+									label="Gross Fee">
 									<InputNumber className="w-100" disabled={true} value={courseFee - discountAmount + taxAmount} />
 								</Form.Item>
 							</Col>
-							<Col {...colLayout} className={this.state.editable ? 'd-none' : undefined}>
+							<Col {...colLayout}>
 								<Form.Item
 									{...formItemLayout}
-									label="Pending Balance"
-								>
+									label="Pending Balance">
 									<Input disabled={true} placeholder="pending balance" value={(courseFee - discountAmount + taxAmount) - totalFeeCollected} />
 								</Form.Item>
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
 									{...formItemLayout}
-									label="Next Installment Date"
-								>
-									<DatePicker className="w-100" disabled={true} />
+									label="Next Installment Date">
+									<DatePicker value={nextInstallmentDate} className="w-100" disabled={true} />
 								</Form.Item>
 							</Col>
 						</Row>
