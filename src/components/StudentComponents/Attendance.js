@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 
 import AttendanceTable from './Attendance/AttendanceTable';
 
@@ -9,8 +10,32 @@ import {
 	Tag,
 	Table
 } from 'antd';
+
 const { Panel } = Collapse;
 
+const columns = [{
+	title: 'Date',
+	dataIndex: 'date',
+	key: 'date',
+	width: '100'
+}, {
+	title: 'Topic',
+	dataIndex: 'topic',
+	key: 'topic'
+}, {
+	title: 'Status',
+	dataIndex: 'status',
+	key: 'status',
+	width: '50',
+	render: status => {
+		if (status === 'present') {
+			return <Tag color={'green'}>Present</Tag>;
+		} else if (status === 'absent') {
+			return <Tag color={'volcano'}>Absent</Tag>;
+		}
+		return <Tag color={'blue'}>Scheduled</Tag>;
+	}
+}];
 
 export default class Attendance extends Component {
 	render() {
@@ -19,6 +44,25 @@ export default class Attendance extends Component {
 
 		const panelsJsx = studentBatches.map(batch => {
 			const schedulesOfThisBatch = schedules.filter(schedule => schedule.batchId === batch._id);
+
+			schedulesOfThisBatch.sort((a, b) => {
+				const daysDiff = a.date.startOf('day').diff(b.date.startOf('day'), 'days');
+				if (daysDiff !== 0) return daysDiff;
+				return a.fromTime > b.fromTime;
+			});
+			schedulesOfThisBatch.forEach(schedule => {
+				// Injecting status
+				if (moment().startOf('day').diff(schedule.date.startOf('day'), 'days') < 0) {
+					schedule.status = 'scheduled';
+				} else if (schedule.studentsAbsent.find(studentAbsent => studentAbsent === studentInfo._id)) {
+					schedule.status = 'absent';
+				} else {
+					schedule.status = 'present';
+				}
+				schedule.date = schedule.date.format('DD/MM/YY');
+			});
+
+
 			return <Panel
 				key="1"
 				header={<Row>
@@ -43,7 +87,13 @@ export default class Attendance extends Component {
 						</Row>
 					</Col>
 				</Row>}>
-				<AttendanceTable studentId={studentInfo._id} schedulesOfThisBatch={schedulesOfThisBatch} />
+				<Table
+					rowKey="_id"
+					className="mb-3"
+					bordered={true}
+					pagination={false}
+					dataSource={schedulesOfThisBatch}
+					columns={columns} />
 			</Panel>;
 		});
 
