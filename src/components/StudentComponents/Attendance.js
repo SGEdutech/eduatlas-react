@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 
-import AttendanceTable from './Attendance/AttendanceTable';
-
 import {
 	Col,
 	Collapse,
@@ -43,25 +41,27 @@ export default class Attendance extends Component {
 		const studentBatches = batches.filter(batch => Boolean(batch.students.find(student => student === studentInfo._id)));
 
 		const panelsJsx = studentBatches.map(batch => {
-			const schedulesOfThisBatch = schedules.filter(schedule => schedule.batchId === batch._id);
+			let schedulesOfThisBatch = schedules.filter(schedule => schedule.batchId === batch._id);
 
-			schedulesOfThisBatch.sort((a, b) => {
-				const daysDiff = a.date.startOf('day').diff(b.date.startOf('day'), 'days');
-				if (daysDiff !== 0) return daysDiff;
-				return a.fromTime > b.fromTime;
-			});
+			// TODO: Further sort via time
+			schedulesOfThisBatch = schedulesOfThisBatch.sort((a, b) => a.date.startOf('day').diff(b.date.startOf('day'), 'days'));
+
+			let daysAbsent = 0;
+			let totalClassesPassed = 0;
 			schedulesOfThisBatch.forEach(schedule => {
 				// Injecting status
 				if (moment().startOf('day').diff(schedule.date.startOf('day'), 'days') < 0) {
 					schedule.status = 'scheduled';
 				} else if (schedule.studentsAbsent.find(studentAbsent => studentAbsent === studentInfo._id)) {
+					totalClassesPassed++;
+					daysAbsent++;
 					schedule.status = 'absent';
 				} else {
+					totalClassesPassed++;
 					schedule.status = 'present';
 				}
 				schedule.date = schedule.date.format('DD/MM/YY');
 			});
-
 
 			return <Panel
 				key="1"
@@ -82,7 +82,7 @@ export default class Attendance extends Component {
 								Attendance
 							</Col>
 							<Col span={24} className="mt-1">
-								<span className="display-4">23</span><span className="mx-1">/</span>100
+								<span className="display-4">{daysAbsent}</span><span className="mx-1">/</span>{totalClassesPassed}
 							</Col>
 						</Row>
 					</Col>

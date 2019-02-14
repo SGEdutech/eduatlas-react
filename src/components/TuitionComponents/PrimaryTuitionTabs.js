@@ -37,12 +37,12 @@ class PrimaryTuitionTabs extends Component {
 				<TabPane className="pt-3" tab={<span><Icon type="team" />Attendance</span>} key="6">
 					<Attendance />
 				</TabPane>
-				<TabPane className="pt-3" tab={<span><Icon type="rise" />Promoter</span>} key="3">
+				{/* <TabPane className="pt-3" tab={<span><Icon type="rise" />Promoter</span>} key="3">
 					promoter
 				</TabPane>
 				<TabPane className="pt-3" tab={<span><Icon type="file-search" />Report</span>} key="7">
 					Report
-				</TabPane>
+				</TabPane> */}
 				<TabPane className="pt-3" tab={<span><Icon type="paper-clip" />Study Material</span>} key="8">
 					Study Material
 				</TabPane>

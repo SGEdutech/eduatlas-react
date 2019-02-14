@@ -1,41 +1,26 @@
 import React, { Component } from 'react';
 
 import {
-	Alert,
-	Col,
-	Icon,
-	Row
+	Alert
 } from 'antd';
 
 export default class Notifications extends Component {
 	render() {
+		const { notifications, studentEmail } = this.props;
+
+		const notificationsOfThisStudent = notifications.filter(notification => notification.receivers.find(receiver => receiver.userEmail === studentEmail));
+		const notificationJsx = notificationsOfThisStudent.map(notification => (
+			<Alert
+				key={notification._id}
+				className="mb-3"
+				message="IMS Pitampura"
+				description={notification.message}
+				type="info"
+				showIcon />
+		));
+
 		return (
-			<div className="container">
-				<Alert
-					className="mb-3"
-					closable
-					message="IMS Pitampura"
-					description="Schedule for your batches has been updated."
-					type="info"
-					showIcon
-				/>
-				<Alert
-					className="mb-3"
-					closable
-					message="IMS Pitampura"
-					description="Your request for batch assignment has been accepted"
-					type="success"
-					showIcon
-				/>
-				<Alert
-					className="mb-3"
-					closable
-					message="Eduatlas"
-					description="Your Fee is due next week."
-					type="warning"
-					showIcon
-				/>
-			</div>
-		)
+			<div className="container">{notificationJsx}</div>
+		);
 	}
 }

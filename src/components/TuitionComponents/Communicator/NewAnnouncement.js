@@ -68,7 +68,7 @@ class NewAnnouncement extends Component {
 					<Row gutter={16}>
 						<Col {...colLayout}>
 							<Form.Item
-								label="students"
+								label="Students"
 								hasFeedback={true}>
 								{getFieldDecorator('receivers', {
 									rules: [{
