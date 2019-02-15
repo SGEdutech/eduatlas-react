@@ -1,6 +1,7 @@
 const initState = {
 	fetching: false,
 	fetched: false,
+	fetchFailed: false,
 	kaamChaluHai: false,
 	kaamHoGaya: false,
 	lifafa: {}
@@ -12,10 +13,11 @@ const fulfilledRegex = new RegExp('_FULFILLED$');
 
 function messageReducer(state = initState, action) {
 	if (action.type === 'FETCH_ALL_PENDING') {
-		return { ...state, fetching: true };
+		return { ...state, fetching: true, fetchFailed: false };
 	} else if (action.type === 'FETCH_ALL_REJECTED') {
 		return {
 			...state,
+			fetchFailed: true,
 			fetching: false,
 			lifafa: {
 				sandesh: 'There was a problem connecting to the server.',
@@ -25,6 +27,7 @@ function messageReducer(state = initState, action) {
 	} else if (action.type === 'FETCH_ALL_FULFILLED') {
 		return {
 			...state,
+			fetchedFailed: false,
 			fetched: true,
 			fetching: false
 		};

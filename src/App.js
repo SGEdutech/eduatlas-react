@@ -34,14 +34,16 @@ import { resetSandesh } from './redux/actions/mesageActions';
 class App extends Component {
 	componentDidMount() {
 		if (this.props.messageInfo.fetched) return;
-		this.FetchInterval = setInterval(this.props.fetchAll, 1000);
+		this.props.fetchAll();
 	}
 
 	componentDidUpdate() {
 		const { messageInfo } = this.props;
-		if (messageInfo.kaamChaluHai) message.loading('Action in progress..', 0);
-		if (messageInfo.kaamHoGaya) {
-			if (this.FetchInterval) clearInterval(this.FetchInterval);
+		if (messageInfo.kaamChaluHai) {
+			message.loading('Action in progress..', 0);
+		} else if (messageInfo.fetchFailed) {
+			setTimeout(this.props.fetchAll, 5000);
+		} else if (messageInfo.kaamHoGaya) {
 			message.destroy();
 			message[messageInfo.lifafa.level](messageInfo.lifafa.sandesh);
 			this.props.resetSandesh();
