@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { useSwipeable, Swipeable } from 'react-swipeable'
+
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 
 import Attendance from './Attendance';
 import EnrollmentAndFee from './EnrollmentAndFee';
 import Forums from './Forums';
 import Notifications from './Notifications';
 
-import { Tabs, Icon } from 'antd';
-const TabPane = Tabs.TabPane;
 
 const tabBarStyle = {
 	position: 'fixed',
@@ -19,27 +22,64 @@ const tabBarStyle = {
 };
 
 class PrimaryTuitionTabs extends Component {
+	state = { value: 0 };
+
+	handleChange = (e, value) => this.setState({ value });
+
+	leftSwipe = () => {
+		this.setState(prevState => {
+			const minValue = 0;
+			const maxValue = 5;
+			let value = prevState.value + 1;
+			if (value < minValue) value = maxValue;
+			if (value > maxValue) value = minValue;
+			return { value };
+		});
+	}
+
+	rightSwipe = () => {
+		this.setState(prevState => {
+			const minValue = 0;
+			const maxValue = 5;
+			let value = prevState.value - 1;
+			if (value < minValue) value = maxValue;
+			if (value > maxValue) value = minValue;
+			return { value };
+		});
+	}
+
 	render() {
+		const { value } = this.state;
 		const { batches, courses, notifications, schedules, students, user } = this.props;
 		const { primaryEmail } = user;
 		const studentInfo = students.find(student => student.email === primaryEmail);
 		if (Boolean(studentInfo) === false) return <></>; // TODO: Handle this!!!!
 
 		return (
-			<Tabs size="large" tabBarStyle={tabBarStyle}>
-				<TabPane className="pt-3" tab={<span><Icon type="notification" />Notifications</span>} key="1">
-					<Notifications notifications={notifications} studentEmail={studentInfo.email} />
-				</TabPane>
-				<TabPane className="pt-3" tab={<span><Icon type="team" />Attendance</span>} key="2">
-					<Attendance batches={batches} schedules={schedules} studentInfo={studentInfo} />
-				</TabPane>
-				<TabPane className="pt-3" tab={<span><Icon type="idcard" />Enrollment and Fee</span>} key="5">
-					<EnrollmentAndFee courses={courses} studentInfo={studentInfo} />
-				</TabPane>
-				<TabPane className="pt-3" tab={<span><Icon type="paper-clip" />Study Material</span>} key="4">
-					study material
-				</TabPane>
-			</Tabs>
+			<>
+				<AppBar position="fixed" style={{ top: 40 }} className="z101">
+					<Tabs
+						style={{ background: '#f6f6f6' }}
+						value={value}
+						onChange={this.handleChange}
+						indicatorColor="primary"
+						textColor="primary"
+						variant="scrollable">
+						<Tab label="Notifications" />
+						<Tab label="Attendance" />
+						<Tab label="Enrollment and Fee" />
+						<Tab label="Study Material" />
+					</Tabs>
+				</AppBar>
+				<Swipeable delta={20} onSwipedLeft={this.leftSwipe} onSwipedRight={this.rightSwipe}>
+					<div className="py-3">
+						{value === 0 && <Notifications notifications={notifications} studentEmail={studentInfo.email} />}
+						{value === 1 && <Attendance batches={batches} schedules={schedules} studentInfo={studentInfo} />}
+						{value === 2 && <EnrollmentAndFee courses={courses} studentInfo={studentInfo} />}
+						{value === 3 && <>study material</>}
+					</div>
+				</Swipeable>
+			</>
 		);
 	}
 }

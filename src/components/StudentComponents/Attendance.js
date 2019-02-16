@@ -13,8 +13,8 @@ const { Panel } = Collapse;
 
 const columns = [{
 	title: 'Date',
-	dataIndex: 'date',
-	key: 'date',
+	dataIndex: 'parsedDate',
+	key: 'parsedDate',
 	width: '100'
 }, {
 	title: 'Topic',
@@ -40,7 +40,7 @@ export default class Attendance extends Component {
 		const { batches, schedules, studentInfo } = this.props;
 		const studentBatches = batches.filter(batch => Boolean(batch.students.find(student => student === studentInfo._id)));
 
-		const panelsJsx = studentBatches.map(batch => {
+		const panelsJsx = studentBatches.map((batch, index) => {
 			let schedulesOfThisBatch = schedules.filter(schedule => schedule.batchId === batch._id);
 
 			// TODO: Further sort via time
@@ -60,11 +60,11 @@ export default class Attendance extends Component {
 					totalClassesPassed++;
 					schedule.status = 'present';
 				}
-				schedule.date = schedule.date.format('DD/MM/YY');
+				schedule.parsedDate = schedule.date.format('DD/MM/YY');
 			});
 
 			return <Panel
-				key="1"
+				key={index + 1}
 				header={<Row>
 					<Col span={12}>
 						<Row>
