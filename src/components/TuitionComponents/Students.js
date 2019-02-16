@@ -27,11 +27,10 @@ class Students extends Component {
 						onChange={this.handleChange}
 						indicatorColor="primary"
 						textColor="primary"
-						variant="scrollable"
-						scrollButtons="auto">
+						variant="fullWidth">
 						<Tab label="Requests" />
-						<Tab label="Active Students" />
-						<Tab label="Add New Student" />
+						<Tab label="Active" />
+						<Tab label="Add" />
 					</Tabs>
 				</AppBar>
 				{value === 0 && <Requests />}

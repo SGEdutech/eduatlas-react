@@ -26,14 +26,13 @@ class Communicator extends Component {
 						onChange={this.handleChange}
 						indicatorColor="primary"
 						textColor="primary"
-						variant="scrollable"
-						scrollButtons="auto">
-						<Tab label="New Announcement" />
-						<Tab label="Announcements" />
+						variant="fullWidth">
+						<Tab label="View" />
+						<Tab label="Add" />
 					</Tabs>
 				</AppBar>
-				{value === 0 && <NewAnnouncement messageInfo={this.props.messageInfo} batches={this.props.batches} students={this.props.students} addNotification={this.props.addNotification} />}
-				{value === 1 && <Announcements messageInfo={this.props.messageInfo} announcements={[]} />}
+				{value === 0 && <Announcements messageInfo={this.props.messageInfo} announcements={[]} />}
+				{value === 1 && <NewAnnouncement messageInfo={this.props.messageInfo} batches={this.props.batches} students={this.props.students} addNotification={this.props.addNotification} />}
 			</>
 		);
 	}

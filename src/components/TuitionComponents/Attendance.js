@@ -23,9 +23,8 @@ class Attendance extends Component {
 						onChange={this.handleChange}
 						indicatorColor="primary"
 						textColor="primary"
-						variant="scrollable"
-						scrollButtons="auto">
-						<Tab label="Courses" />
+						variant="fullWidth">
+						<Tab label="All" />
 					</Tabs>
 				</AppBar>
 				{value === 0 && <ActiveSchedules isAttendance={true} />}

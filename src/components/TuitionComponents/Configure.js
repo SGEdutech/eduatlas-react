@@ -29,7 +29,7 @@ class Configure extends Component {
 						onChange={this.handleChange}
 						indicatorColor="primary"
 						textColor="primary"
-						variant="scrollable"
+						variant="fullWidth"
 						scrollButtons="auto">
 						<Tab label="Courses" />
 						<Tab label="Batches" />

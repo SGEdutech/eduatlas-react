@@ -26,8 +26,7 @@ class PrimaryTuitionTabs extends Component {
 						onChange={this.handleChange}
 						indicatorColor="primary"
 						textColor="primary"
-						variant="scrollable"
-						scrollButtons="auto">
+						variant="scrollable">
 						<Tab label="Configure" />
 						<Tab label="Students" />
 						<Tab label="Communicator" />

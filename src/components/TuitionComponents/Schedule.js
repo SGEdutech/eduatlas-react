@@ -19,14 +19,6 @@ class Schedule extends Component {
 	render() {
 		const { value } = this.state;
 		return (
-			// <Tabs size="large" tabPosition="bottom" tabBarStyle={innerTabs}>
-			// 	<TabPane tab="Active Schedules" key="2">
-			// 		<ActiveSchedules />
-			// 	</TabPane>
-			// 	<TabPane tab="Add Schedule" key="3">
-			// 		<AddSchedule />
-			// 	</TabPane>
-			// </Tabs>
 			<>
 				<AppBar position="fixed" color="default">
 					<Tabs
@@ -35,10 +27,9 @@ class Schedule extends Component {
 						onChange={this.handleChange}
 						indicatorColor="primary"
 						textColor="primary"
-						variant="scrollable"
-						scrollButtons="auto">
-						<Tab label="Active Schedules" />
-						<Tab label="Add Schedule" />
+						variant="fullWidth">
+						<Tab label="Active" />
+						<Tab label="Add" />
 					</Tabs>
 				</AppBar>
 				{value === 0 && <ActiveSchedules />}
