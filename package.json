@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^3.9.2",
     "antd": "^3.10.1",
     "antd-mobile": "^2.2.8",
     "axios": "^0.18.0",

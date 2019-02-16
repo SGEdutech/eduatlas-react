@@ -1,48 +1,59 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 
-import Configure from './TuitionComponents/Configure';
-import Students from './TuitionComponents/Students';
-import Schedule from './TuitionComponents/Schedule';
-import Attendance from './TuitionComponents/Attendance';
-import Communicator from './TuitionComponents/Communicator';
+const styles = () => ({
+	stickToBottom: {
+		width: '100%',
+		position: 'fixed',
+		bottom: 0
+	}
+});
 
-import { Tabs } from 'antd-mobile';
-// const TabPane = Tabs.TabPane;
+class ScrollableTabsButtonAuto extends React.Component {
+	state = {
+		value: 0
+	};
 
-const tabBarStyle = {
-	position: 'fixed',
-	top: 40,
-	width: '100%',
-	background: '#fff',
-	textAlign: 'center',
-	zIndex: 101
-};
-
-const tabs = [
-	{ title: '1st Tab', body: <Configure /> },
-	{ title: '2nd Tab' },
-	{ title: '3rd Tab' },
-	{ title: '4th Tab' },
-	{ title: '5th Tab' },
-	{ title: '6th Tab' },
-	{ title: '7th Tab' },
-	{ title: '8th Tab' },
-	{ title: '9th Tab' }
-];
-
-export default class TabsTest extends Component {
-	renderContent = tab =>
-		(<div style={{ height: 5000 }}>
-			{tab.body}
-		</div>);
+	handleChange = (event, value) => {
+		this.setState({ value });
+	};
 
 	render() {
+		const { classes } = this.props;
+		const { value } = this.state;
+
 		return (
-			<div style={tabBarStyle}>
-				<Tabs tabs={tabs} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={3} />}>
-					{this.renderContent}
-				</Tabs>
-			</div>
-		)
+			<>
+				<AppBar position="fixed" color="default" style={{ top: 40 }}>
+					<Tabs
+						// className={classes.stickToBottom}
+						value={value}
+						onChange={this.handleChange}
+						indicatorColor="primary"
+						textColor="primary"
+						variant="scrollable"
+						scrollButtons="auto">
+						<Tab label="Item Oneeeeee" />
+						<Tab label="Item Two" />
+						<Tab label="Item Three" />
+						<Tab label="Item Four" />
+						<Tab label="Item Five" />
+						<Tab label="Item Six" />
+					</Tabs>
+				</AppBar>
+				{value === 0 && <div style={{ height: 2500 }}>Supp Nigga</div>}
+				{value === 1 && <div>Item Two</div>}
+				{value === 2 && <div>Item Three</div>}
+				{value === 3 && <div>Item Four</div>}
+				{value === 4 && <div>Item Five</div>}
+				{value === 5 && <div>Item Six</div>}
+				{value === 6 && <div>Item Seven</div>}
+			</>
+		);
 	}
 }
+
+export default withStyles(styles)(ScrollableTabsButtonAuto);
