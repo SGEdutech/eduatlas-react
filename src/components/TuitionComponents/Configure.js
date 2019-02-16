@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+
 import { deleteCourse } from '../../redux/actions/courseActions';
 import { deleteBatch } from '../../redux/actions/batchActions';
 import { deleteDiscount } from '../../redux/actions/discountActions';
@@ -9,32 +13,33 @@ import Course from './Configure/Course';
 import Batch from './Configure/Batch';
 import Discount from './Configure/Discount';
 
-import { Tabs } from 'antd';
-const TabPane = Tabs.TabPane;
-
-const innerTabs = {
-	position: 'fixed',
-	bottom: 0,
-	width: '100%',
-	background: '#fff',
-	textAlign: 'center',
-	zIndex: 100
-};
-
 class Configure extends Component {
+	state = { value: 0 };
+
+	handleChange = (e, value) => this.setState({ value });
+
 	render() {
+		const { value } = this.state;
 		return (
-			<Tabs size="large" tabPosition="bottom" tabBarStyle={innerTabs}>
-				<TabPane tab="Courses" key="1">
-					<Course messageInfo={this.props.messageInfo} coursesInfo={this.props.course} deleteCourse={this.props.deleteCourse} />
-				</TabPane>
-				<TabPane tab="Batches" key="2">
-					<Batch messageInfo={this.props.messageInfo} batchesInfo={this.props.batch} deleteBatch={this.props.deleteBatch} />
-				</TabPane>
-				<TabPane tab="Discounts" key="3">
-					<Discount messageInfo={this.props.messageInfo} discountsInfo={this.props.discount} deleteDiscount={this.props.deleteDiscount} />
-				</TabPane>
-			</Tabs>
+			<>
+				<AppBar position="fixed" color="default">
+					<Tabs
+						style={{ width: '100%',	position: 'fixed', bottom: 0, background: 'white' }}
+						value={value}
+						onChange={this.handleChange}
+						indicatorColor="primary"
+						textColor="primary"
+						variant="scrollable"
+						scrollButtons="auto">
+						<Tab label="Courses" />
+						<Tab label="Batches" />
+						<Tab label="Discounts" />
+					</Tabs>
+				</AppBar>
+				{value === 0 && <Course messageInfo={this.props.messageInfo} coursesInfo={this.props.course} deleteCourse={this.props.deleteCourse} />}
+				{value === 1 && <Batch messageInfo={this.props.messageInfo} batchesInfo={this.props.batch} deleteBatch={this.props.deleteBatch} />}
+				{value === 2 && <Discount messageInfo={this.props.messageInfo} discountsInfo={this.props.discount} deleteDiscount={this.props.deleteDiscount} />}
+			</>
 		);
 	}
 }

@@ -1,39 +1,41 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { deleteSchedule } from '../../redux/actions/scheduleActions';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 
-import AddSchedule from './Schedule/AddSchedule';
 import ActiveSchedules from './Schedule/ActiveSchedules';
 
-import { Tabs } from 'antd';
-const TabPane = Tabs.TabPane;
-
-const innerTabs = {
-	position: 'fixed',
-	bottom: 0,
-	width: '100%',
-	background: '#fff',
-	textAlign: 'center',
-	zIndex: 100
-};
-
 class Attendance extends Component {
+	state = { value: 0 };
+
+	handleChange = (e, value) => this.setState({ value });
+
 	render() {
+		const { value } = this.state;
 		return (
-			<Tabs size="large" tabPosition="bottom" tabBarStyle={innerTabs}>
-				<TabPane tab="Active Schedules" key="2">
-					<ActiveSchedules isAttendance={true} />
-				</TabPane>
-			</Tabs>
+			<>
+				<AppBar position="fixed" color="default">
+					<Tabs
+						style={{ width: '100%', position: 'fixed', bottom: 0, background: 'white' }}
+						value={value}
+						onChange={this.handleChange}
+						indicatorColor="primary"
+						textColor="primary"
+						variant="scrollable"
+						scrollButtons="auto">
+						<Tab label="Courses" />
+					</Tabs>
+				</AppBar>
+				{value === 0 && <ActiveSchedules isAttendance={true} />}
+			</>
 		);
 	}
 }
 
 function mapStateToProps(state) {
-	return {
-		schedule: state.schedule
-	};
+	return { schedule: state.schedule };
 }
 
-export default connect(mapStateToProps, {  })(Attendance);
+export default connect(mapStateToProps)(Attendance);

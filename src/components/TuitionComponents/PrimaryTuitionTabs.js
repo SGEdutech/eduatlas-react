@@ -22,7 +22,6 @@ class PrimaryTuitionTabs extends Component {
 			<>
 				<AppBar position="fixed" color="default" style={{ top: 40 }}>
 					<Tabs
-						// className={classes.stickToBottom}
 						value={value}
 						onChange={this.handleChange}
 						indicatorColor="primary"

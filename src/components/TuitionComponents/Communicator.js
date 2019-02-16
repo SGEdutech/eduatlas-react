@@ -1,41 +1,40 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+
 import NewAnnouncement from './Communicator/NewAnnouncement';
 import Announcements from './Communicator/Announcements';
 
 import { addNotification } from '../../redux/actions/notificationActions';
 
-import { Tabs } from 'antd';
-const TabPane = Tabs.TabPane;
-
-const innerTabs = {
-	position: 'fixed',
-	bottom: 0,
-	width: '100%',
-	background: '#fff',
-	textAlign: 'center',
-	zIndex: 100
-};
-
-const testAnnouncementArr = [{
-	_id: 1,
-	message: 'hi test ann here. here is something to make this message long',
-	receivers: ['1', '2', '3'],
-	createdAt: '23 days ago'
-}];
-
 class Communicator extends Component {
+	state = { value: 0 };
+
+	handleChange = (e, value) => this.setState({ value });
+
 	render() {
+		const { value } = this.state;
 		return (
-			<Tabs size="large" tabPosition="bottom" tabBarStyle={innerTabs}>
-				<TabPane tab="New Announcement" key="new-announcement">
-					<NewAnnouncement messageInfo={this.props.messageInfo} batches={this.props.batches} students={this.props.students} addNotification={this.props.addNotification} />
-				</TabPane>
-				<TabPane tab="Announcements" key="announcements">
-					<Announcements messageInfo={this.props.messageInfo} announcements={testAnnouncementArr} />
-				</TabPane>
-			</Tabs>
+			<>
+				<AppBar position="fixed" color="default">
+					<Tabs
+						style={{ width: '100%', position: 'fixed', bottom: 0, background: 'white' }}
+						value={value}
+						onChange={this.handleChange}
+						indicatorColor="primary"
+						textColor="primary"
+						variant="scrollable"
+						scrollButtons="auto">
+						<Tab label="New Announcement" />
+						<Tab label="Announcements" />
+					</Tabs>
+				</AppBar>
+				{value === 0 && <NewAnnouncement messageInfo={this.props.messageInfo} batches={this.props.batches} students={this.props.students} addNotification={this.props.addNotification} />}
+				{value === 1 && <Announcements messageInfo={this.props.messageInfo} announcements={[]} />}
+			</>
 		);
 	}
 }
