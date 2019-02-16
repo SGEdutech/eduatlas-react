@@ -20,7 +20,7 @@ class PrimaryTuitionTabs extends Component {
 		const { value } = this.state;
 		return (
 			<>
-				<AppBar position="fixed" style={{ top: 40 }}>
+				<AppBar position="fixed" style={{ top: 40 }} className="z101">
 					<Tabs
 						style={{ background: '#f6f6f6' }}
 						value={value}
@@ -36,7 +36,7 @@ class PrimaryTuitionTabs extends Component {
 						<Tab label="Study Material" />
 					</Tabs>
 				</AppBar>
-				<div>
+				<div className="py-3">
 					{value === 0 && <Configure />}
 					{value === 1 && <Students />}
 					{value === 2 && <Communicator />}

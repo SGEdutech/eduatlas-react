@@ -16,3 +16,7 @@
 .below-nav {
 	margin-top: var(--nav-height);
 }
+
+.z101 {
+	z-index: 101 !important;
+}

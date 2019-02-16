@@ -21,7 +21,7 @@ class Communicator extends Component {
 		const { value } = this.state;
 		return (
 			<>
-				<AppBar color="default">
+				<AppBar color="default" className="z101">
 					<Tabs
 						className="tabBar"
 						value={value}
