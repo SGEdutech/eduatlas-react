@@ -20,8 +20,9 @@ class PrimaryTuitionTabs extends Component {
 		const { value } = this.state;
 		return (
 			<>
-				<AppBar position="fixed" color="default" style={{ top: 40 }}>
+				<AppBar position="fixed" style={{ top: 40 }}>
 					<Tabs
+						style={{ background: '#f6f6f6' }}
 						value={value}
 						onChange={this.handleChange}
 						indicatorColor="primary"
@@ -35,12 +36,14 @@ class PrimaryTuitionTabs extends Component {
 						<Tab label="Study Material" />
 					</Tabs>
 				</AppBar>
-				{value === 0 && <Configure />}
-				{value === 1 && <Students />}
-				{value === 2 && <Communicator />}
-				{value === 3 && <Schedule />}
-				{value === 4 && <Attendance />}
-				{value === 5 && <StudyMaterial />}
+				<div>
+					{value === 0 && <Configure />}
+					{value === 1 && <Students />}
+					{value === 2 && <Communicator />}
+					{value === 3 && <Schedule />}
+					{value === 4 && <Attendance />}
+					{value === 5 && <StudyMaterial />}
+				</div>
 			</>
 		);
 	}

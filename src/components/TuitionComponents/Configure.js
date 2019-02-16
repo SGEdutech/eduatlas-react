@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import '../../core/css/tabBar.css';
+
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -22,9 +24,9 @@ class Configure extends Component {
 		const { value } = this.state;
 		return (
 			<>
-				<AppBar position="fixed" color="default">
+				<AppBar color="default">
 					<Tabs
-						style={{ width: '100%',	position: 'fixed', bottom: 0, background: 'white' }}
+						className="tabBar"
 						value={value}
 						onChange={this.handleChange}
 						indicatorColor="primary"
@@ -56,3 +58,5 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, { deleteCourse, deleteBatch, deleteDiscount })(Configure);
+
+// boxShadow: '0px -2px 4px -1px rgba(0,0,0,0.2), 0px -4px 5px 0px rgba(0,0,0,0.14), 0px -1px 10px 0px rgba(0,0,0,0.12)'

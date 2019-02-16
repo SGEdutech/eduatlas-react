@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import '../../core/css/tabBar.css';
+
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -17,9 +19,9 @@ class StudyMaterial extends Component {
 		const { value } = this.state;
 		return (
 			<>
-				<AppBar position="fixed" color="default">
+				<AppBar color="default">
 					<Tabs
-						style={{ width: '100%',	position: 'fixed', bottom: 0, background: 'white' }}
+						className="tabBar"
 						value={value}
 						onChange={this.handleChange}
 						indicatorColor="primary"
@@ -29,8 +31,8 @@ class StudyMaterial extends Component {
 						<Tab label="Add" />
 					</Tabs>
 				</AppBar>
-				{value === 1 && <ViewOrDeleteMaterials />}
-				{value === 0 && <AddStudyMaterial />}
+				{value === 0 && <ViewOrDeleteMaterials />}
+				{value === 1 && <AddStudyMaterial />}
 			</>
 		);
 	}

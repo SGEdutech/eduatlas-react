@@ -4,9 +4,34 @@ import { Provider } from 'react-redux';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+
 import store from './redux/store';
 
-const startApp = () => ReactDOM.render(<Provider store={store}><App /></ Provider>, document.getElementById('root'));
+const theme = createMuiTheme({
+	palette: {
+		primary: {
+			main: '#00bcd4'
+		},
+		background: {
+			default: 'white'
+		}
+	}
+},
+);
+
+const rootElement = (
+	<>
+		<MuiThemeProvider theme={theme}>
+			<CssBaseline />
+			<Provider store={store}>
+				<App />
+			</ Provider>
+		</MuiThemeProvider>
+	</>);
+
+const startApp = () => ReactDOM.render(rootElement, document.getElementById('root'));
 
 if (window.cordova) {
 	document.addEventListener('deviceready', startApp, false);
