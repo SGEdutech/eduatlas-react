@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import IconsWithTooltip from '../../../SharedComponents/IconsWithTooltip';
 
 import { Card, Col, Row } from 'antd';
+const { Meta } = Card;
 
 function BatchCard(props) {
 	const { id, code, description, courseId, courseCode, numberOfStudents, deleteBatch, editBatch } = props;
@@ -15,19 +16,23 @@ function BatchCard(props) {
 
 	return (
 		<Card className="mb-3"
-			title={<span className="text-uppercase">{code}</span>}
 			actions={iconsArray}>
-			<Row>
-				<Col>
-					<div><span className="font-weight-bold">Course:</span> <span className="text-uppercase">{courseCode}</span></div>
-				</Col>
-				<Col>
-					<div><span className="font-weight-bold">Number Of Students:</span> {numberOfStudents}</div>
-				</Col>
-				<Col>
-					{/* {description} */}
-				</Col>
-			</Row>
+			<Meta
+				title={<span className="text-uppercase">{code}</span>}
+				description={
+					<Row>
+						<Col>
+							<div className="one-line-ellipsis"><span className="font-weight-bold">Description:</span> {description}</div>
+						</Col>
+						<Col>
+							<div><span className="font-weight-bold">Course:</span> <span className="text-uppercase">{courseCode}</span></div>
+						</Col>
+						<Col>
+							<div><span className="font-weight-bold">Number Of Students:</span> {numberOfStudents}</div>
+						</Col>
+					</Row>
+				}
+			/>
 		</Card>
 	);
 }

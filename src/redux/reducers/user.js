@@ -11,6 +11,8 @@ function userReducer(state = initState, action) {
 			return { ...state, userInfo: action.payload.data };
 		case 'USER_LOGOUT_FULFILLED':
 			return { ...state, userInfo: {} };
+		case 'EDIT_PROFILE_FULFILLED':
+			return { ...state, userInfo: action.payload.data };
 		default:
 			return state;
 	}

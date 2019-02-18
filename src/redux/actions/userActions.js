@@ -10,11 +10,11 @@ export function getUserInfo() {
 }
 
 // TODO
-export function editProfile(discountId, editedDiscount) {
+export function editProfile(userId, editedUser) {
 	return dispatch => {
 		dispatch({
 			type: 'EDIT_PROFILE',
-			payload: axios.put(`https://eduatlas.com/tuition/5bbe191a64512a2f77b84c70/discount/${discountId}`, editedDiscount)
+			payload: axios.put(`https://eduatlas.com/user/${userId}`, editedUser)
 		});
 	};
 }

@@ -20,3 +20,15 @@
 .z101 {
 	z-index: 101 !important;
 }
+
+.ant-card-meta-description {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.one-line-ellipsis {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}

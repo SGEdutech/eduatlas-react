@@ -46,7 +46,7 @@ export default class Attendance extends Component {
 			// TODO: Further sort via time
 			schedulesOfThisBatch = schedulesOfThisBatch.sort((a, b) => a.date.startOf('day').diff(b.date.startOf('day'), 'days'));
 
-			let daysAbsent = 0;
+			let daysPresent = 0;
 			let totalClassesPassed = 0;
 			schedulesOfThisBatch.forEach(schedule => {
 				// Injecting status
@@ -54,10 +54,10 @@ export default class Attendance extends Component {
 					schedule.status = 'scheduled';
 				} else if (schedule.studentsAbsent.find(studentAbsent => studentAbsent === studentInfo._id)) {
 					totalClassesPassed++;
-					daysAbsent++;
 					schedule.status = 'absent';
 				} else {
 					totalClassesPassed++;
+					daysPresent++;
 					schedule.status = 'present';
 				}
 				schedule.parsedDate = schedule.date.format('DD/MM/YY');
@@ -82,7 +82,7 @@ export default class Attendance extends Component {
 								Attendance
 							</Col>
 							<Col span={24} className="mt-1">
-								<span className="display-4">{daysAbsent}</span><span className="mx-1">/</span>{totalClassesPassed}
+								<span className="display-4">{daysPresent}</span><span className="mx-1">/</span>{totalClassesPassed}
 							</Col>
 						</Row>
 					</Col>

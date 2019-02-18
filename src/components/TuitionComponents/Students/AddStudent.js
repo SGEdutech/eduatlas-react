@@ -15,6 +15,7 @@ import {
 	DatePicker,
 	Divider,
 	Form,
+	Icon,
 	Input,
 	InputNumber,
 	Row,
@@ -240,10 +241,7 @@ class AddStudent extends Component {
 		const studentInputs = (
 			task !== 'add-payment' && task !== 'add-installment' &&
 			<>
-				<Col span={24}>
-					<h3>Compulsary Fields</h3>
-					<Divider />
-				</Col>
+				<Divider orientation="left"><small className="mx-1">Compulsary Fields</small><Icon type="arrow-down" /></Divider>
 				<Col {...colLayout}>
 					<Form.Item
 						{...formItemLayout}
@@ -289,11 +287,7 @@ class AddStudent extends Component {
 						)}
 					</Form.Item>
 				</Col>
-				<Col span={24}>
-					<Divider />
-					<h3>Additional Fields</h3>
-					<Divider />
-				</Col>
+				<Divider orientation="left"><small className="mx-1">Additional Fields</small><Icon type="arrow-down" /></Divider>
 				<Col {...colLayout}>
 					<Form.Item
 						{...formItemLayout}
@@ -322,11 +316,7 @@ class AddStudent extends Component {
 		const paymentInputs = (
 			task !== 'add-installment' &&
 			<>
-				<Col span={24}>
-					<Divider />
-					<h3>Payment Details</h3>
-					<Divider />
-				</Col>
+				<Divider orientation="left"><small className="mx-1">Payment Details</small><Icon type="arrow-down" /></Divider>
 				<Col {...colLayout}>
 					<Form.Item
 						{...formItemLayout}
@@ -375,11 +365,7 @@ class AddStudent extends Component {
 
 		const installmentInputs = (
 			<>
-				<Col span={24}>
-					<Divider />
-					<h3>Installment Details</h3>
-					<Divider />
-				</Col>
+				<Divider orientation="left"><small className="mx-1">Installment Details</small><Icon type="arrow-down" /></Divider>
 				<Col {...colLayout}>
 					<Form.Item
 						{...formItemLayout}
@@ -572,9 +558,9 @@ class AddStudent extends Component {
 								{dynamicInputs}
 							</Col>
 							<Col xs={24}>
+								<Divider />
 								<Row type="flex" justify="end">
 									<Form.Item>
-										<Divider />
 										<Button type="primary" htmlType="submit">
 											Add Student
 										</Button>
