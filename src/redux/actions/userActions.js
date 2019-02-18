@@ -9,7 +9,6 @@ export function getUserInfo() {
 	};
 }
 
-// TODO
 export function editProfile(userId, editedUser) {
 	return dispatch => {
 		dispatch({

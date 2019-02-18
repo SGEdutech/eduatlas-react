@@ -88,7 +88,7 @@ class Navbar extends Component {
 					onClose={this.onClose}
 					visible={this.state.visible}>
 					<List split={true} style={{ fontSize: 18 }}>
-						<Link to={'/edit-profile/5bbe191a64512a2f77b84c70'}><NavListItem iconType="edit" content="Edit Profile" /></Link>
+						<Link to={`/edit-profile/${user.userInfo._id}`}><NavListItem iconType="edit" content="Edit Profile" /></Link>
 						<NavListItem iconType="form" content="Receipt Config" />
 						<NavListItem iconType="key" content="Change Password" />
 						<NavListItem iconType="logout" content="Logout" onClick={this.handleLogout} />
