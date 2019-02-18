@@ -33,7 +33,7 @@ function batchReducer(state = initState, action) {
 		case 'DELETE_STUDENT_FULFILLED': {
 			const { _id: deletedStudentId } = action.payload.data;
 			const batches = [...state.batches];
-			batches.forEach(batch => batch.students.filter(studentId => studentId === deletedStudentId));
+			batches.forEach(batch => batch.students = batch.students.filter(studentId => studentId !== deletedStudentId));
 			return { ...state, batches };
 		}
 		default: {
