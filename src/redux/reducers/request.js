@@ -8,7 +8,7 @@ function requestReducer(state = initState, action) {
 			return { ...state, requests: action.payload.data.requests };
 		}
 		case 'ADD_REQUEST_FULFILLED': {
-			return { ...state, requests: [...state.courses, action.payload.data] };
+			return { ...state, requests: [...state.requests, action.payload.data] };
 		}
 		case 'DELETE_REQUEST_FULFILLED': {
 			return { ...state, requests: state.requests.filter(request => request._id !== action.payload.data._id) };
