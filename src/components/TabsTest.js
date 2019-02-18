@@ -1,59 +1,24 @@
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
+import React, { Component } from 'react';
 
-const styles = () => ({
-	stickToBottom: {
-		width: '100%',
-		position: 'fixed',
-		bottom: 0
-	}
-});
+import {
+	Col,
+	Icon,
+	Row
+} from 'antd';
 
-class ScrollableTabsButtonAuto extends React.Component {
-	state = {
-		value: 0
-	};
-
-	handleChange = (event, value) => {
-		this.setState({ value });
-	};
-
+export default class TabsTest extends Component {
 	render() {
-		const { classes } = this.props;
-		const { value } = this.state;
-
 		return (
-			<>
-				<AppBar position="fixed" color="default" style={{ top: 40 }}>
-					<Tabs
-						// className={classes.stickToBottom}
-						value={value}
-						onChange={this.handleChange}
-						indicatorColor="primary"
-						textColor="primary"
-						variant="scrollable"
-						scrollButtons="auto">
-						<Tab label="Item Oneeeeee" />
-						<Tab label="Item Two" />
-						<Tab label="Item Three" />
-						<Tab label="Item Four" />
-						<Tab label="Item Five" />
-						<Tab label="Item Six" />
-					</Tabs>
-				</AppBar>
-				{value === 0 && <div style={{ height: 2500 }}>Supp Nigga</div>}
-				{value === 1 && <div>Item Two</div>}
-				{value === 2 && <div>Item Three</div>}
-				{value === 3 && <div>Item Four</div>}
-				{value === 4 && <div>Item Five</div>}
-				{value === 5 && <div>Item Six</div>}
-				{value === 6 && <div>Item Seven</div>}
-			</>
+			<Row style={{ height: '100vh' }} type="flex" justify="center" align="middle">
+				<Col>
+					<Row type="flex" justify="center">
+						<Icon style={{ fontSize: 64 }} type="clock-circle" twoToneColor="#00bcd4" />
+					</Row>
+					<Row type="flex" justify="center">
+						<h1>Your request is pending</h1>
+					</Row>
+				</Col>
+			</Row>
 		);
 	}
 }
-
-export default withStyles(styles)(ScrollableTabsButtonAuto);

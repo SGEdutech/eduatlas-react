@@ -29,7 +29,7 @@ class PrimaryTuitionTabs extends Component {
 	leftSwipe = () => {
 		this.setState(prevState => {
 			const minValue = 0;
-			const maxValue = 5;
+			const maxValue = 3;
 			let value = prevState.value + 1;
 			if (value < minValue) value = maxValue;
 			if (value > maxValue) value = minValue;
@@ -40,7 +40,7 @@ class PrimaryTuitionTabs extends Component {
 	rightSwipe = () => {
 		this.setState(prevState => {
 			const minValue = 0;
-			const maxValue = 5;
+			const maxValue = 3;
 			let value = prevState.value - 1;
 			if (value < minValue) value = maxValue;
 			if (value > maxValue) value = minValue;
@@ -71,7 +71,7 @@ class PrimaryTuitionTabs extends Component {
 						<Tab label="Study Material" />
 					</Tabs>
 				</AppBar>
-				<Swipeable delta={20} onSwipedLeft={this.leftSwipe} onSwipedRight={this.rightSwipe}>
+				<Swipeable delta={20} onSwipedLeft={this.leftSwipe} onSwipedRight={this.rightSwipe} style={{ minHeight: '80vh' }}>
 					<div className="py-3">
 						{value === 0 && <Notifications notifications={notifications} studentEmail={studentInfo.email} />}
 						{value === 1 && <Attendance batches={batches} schedules={schedules} studentInfo={studentInfo} />}

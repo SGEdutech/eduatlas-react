@@ -26,12 +26,6 @@ const cursorStyle = {
 	cursor: 'pointer',
 };
 
-const DrawerHeader = <Meta
-	avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-	title="IMS Pitampura"
-	description="Role: Admin"
-/>;
-
 const NavListItem = props => (
 	<Row type="flex" align="middle" className="my-3" style={cursorStyle} onClick={props.onClick}>
 		<Icon type={props.iconType} className="mr-3" />
@@ -62,6 +56,13 @@ class Navbar extends Component {
 
 	render() {
 		const { user, renderBackBtn = false, navText = undefined } = this.props;
+
+		const DrawerHeader = <Meta
+			avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+			title={<span className="text-capitalize">{user.userInfo.firstName}</span>}
+			description="Role: Student"
+		/>;
+
 		return (
 			<>
 				<nav className="navbar fixed-top bg-info mb-0" style={headerStyle}>
@@ -89,7 +90,6 @@ class Navbar extends Component {
 					visible={this.state.visible}>
 					<List split={true} style={{ fontSize: 18 }}>
 						<Link to={'/edit-profile/5bbe191a64512a2f77b84c70'}><NavListItem iconType="edit" content="Edit Profile" /></Link>
-						<NavListItem iconType="form" content="Receipt Config" />
 						<NavListItem iconType="key" content="Change Password" />
 						<NavListItem iconType="logout" content="Logout" onClick={this.handleLogout} />
 					</List>

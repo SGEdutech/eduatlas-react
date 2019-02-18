@@ -59,7 +59,7 @@ class PrimaryTuitionTabs extends Component {
 						<Tab label="Study Material" />
 					</Tabs>
 				</AppBar>
-				<Swipeable delta={20} onSwipedLeft={this.leftSwipe} onSwipedRight={this.rightSwipe} style={{ minHeight: '100vh' }}>
+				<Swipeable delta={20} onSwipedLeft={this.leftSwipe} onSwipedRight={this.rightSwipe} style={{ minHeight: '80vh' }}>
 					<div className="py-3">
 						{value === 0 && <Configure />}
 						{value === 1 && <Students />}

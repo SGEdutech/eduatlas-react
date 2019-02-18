@@ -4,6 +4,7 @@ import moment from 'moment';
 import {
 	Col,
 	Collapse,
+	Empty,
 	Row,
 	Tag,
 	Table
@@ -97,8 +98,13 @@ export default class Attendance extends Component {
 			</Panel>;
 		});
 
+		const emptyJsx = <Empty className="mt-4"
+			image="https://gw.alipayobjects.com/mdn/miniapp_social/afts/img/A*pevERLJC9v0AAAAAAAAAAABjAQAAAQ/original"
+			description={<span>Nothing is better than something...</span>}></Empty>;
+
 		return (
 			<div className="container">
+				{studentBatches.length === 0 ? emptyJsx : <></>}
 				<Collapse bordered={false}>
 					{panelsJsx}
 				</Collapse>

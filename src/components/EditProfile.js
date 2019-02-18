@@ -43,8 +43,7 @@ class EditProfile extends Component {
 				return;
 			}
 			sanatizeFormObj(values);
-			// TODO: uncomment below line
-			// editProfile(userId, values)
+			editProfile(userId, values);
 			history.goBack();
 		});
 	}

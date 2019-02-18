@@ -31,6 +31,7 @@ import { message } from 'antd';
 
 import fetchAll from './redux/actions/fetchAllAction';
 import { resetSandesh } from './redux/actions/mesageActions';
+import { addRequest } from './redux/actions/requestActions';
 
 class App extends Component {
 	componentDidMount() {
@@ -56,7 +57,7 @@ class App extends Component {
 			<Router>
 				<Switch>
 					<Route exact path="/" render={() => <Loading messageInfo={this.props.messageInfo} user={this.props.user} students={this.props.students} />}></Route>
-					<Route exact path="/send-request" component={SendRequest}></Route>
+					<Route exact path="/send-request" render={() => <SendRequest addRequest={this.props.addRequest} requests={this.props.requests} userInfo={this.props.user.userInfo} />}></Route>
 					<Route exact path="/tuition" component={TuitionManager}></Route>
 					<Route exact path="/tuition/add-course" component={AddOrEditCourse}></Route>
 					<Route exact path="/tuition/add-batch" component={AddOrEditBatch}></Route>
@@ -73,7 +74,7 @@ class App extends Component {
 					<Route exact path="/login" component={Login}></Route>
 					<Route exact path="/signup" component={Signup}></Route>
 					<Route exact path="/student" component={StudentManager}></Route>
-					<Route exact path="/tabs" component={TabsTest}></Route>
+					<Route exact path="/test" component={TabsTest}></Route>
 				</Switch>
 			</Router>
 		);
@@ -83,9 +84,10 @@ class App extends Component {
 function mapStateToProps(state) {
 	return {
 		messageInfo: state.messageInfo,
+		requests: state.request.requests,
 		students: state.student.students,
 		user: state.user
 	};
 }
 
-export default connect(mapStateToProps, { resetSandesh, fetchAll })(App);
+export default connect(mapStateToProps, { addRequest, resetSandesh, fetchAll })(App);

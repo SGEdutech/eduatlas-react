@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Navbar from '..//Navbar';
+import StudentNavbar from '../StudentNavbar';
 import PrimaryStudentTabs from './PrimaryStudentTabs';
 
 import {
@@ -10,7 +10,7 @@ import {
 export default function StudentManager() {
 	return (
 		<div className="below-nav-and-tab">
-			<Navbar />
+			<StudentNavbar />
 			<PrimaryStudentTabs />
 		</div>
 	);

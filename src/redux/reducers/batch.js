@@ -36,8 +36,9 @@ function batchReducer(state = initState, action) {
 			batches.forEach(batch => batch.students.filter(studentId => studentId === deletedStudentId));
 			return { ...state, batches };
 		}
-		default:
+		default: {
 			return state;
+		}
 	}
 }
 

@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 
+import StudentNavbar from '../StudentNavbar'
+
 import {
 	Col,
+	Empty,
 	Icon,
 	Row
 } from 'antd';
@@ -9,36 +12,40 @@ import {
 class SendRequest extends Component {
 	componentWillMount() {
 		const { addRequest, requests, userInfo } = this.props;
+		if (Object.keys(userInfo).length === 0) return;
 		const request = requests.find(request => request.email === userInfo.primaryEmail);
 		if (request) return;
-		addRequest({ name: userInfo.firstName + userInfo.lastName, email: userInfo.primaryEmail });
+		const studentInfo = { email: userInfo.primaryEmail };
+		studentInfo.name = userInfo.lastName ? userInfo.firstName + ' ' + userInfo.lastName : userInfo.firstName;
+		addRequest(studentInfo);
 	}
 
 	render() {
 		const { requests, userInfo } = this.props;
 		const sendingRequestJsx = (
-			<Row style={{ height: '100vh' }} type="flex" justify="center" align="middle">
-				<Col>
-					<Row type="flex" justify="center">
-						<Icon style={{ fontSize: 64 }} type="loading" theme="twoTone" spin />
-					</Row>
-					<Row type="flex" justify="center">
-						<h1>Sending Request</h1>
-					</Row>
-				</Col>
-			</Row>
+			<>
+				<StudentNavbar />
+				<Row className="below-nav" style={{ height: '80vh' }} type="flex" justify="center" align="middle">
+					<Col>
+						<Row type="flex" justify="center">
+							<Icon style={{ fontSize: 64 }} type="loading" theme="twoTone" spin />
+						</Row>
+						<Row type="flex" justify="center">
+							<h1>Sending Request</h1>
+						</Row>
+					</Col>
+				</Row>
+			</>
 		);
 		const pendingJsx = (
-			<Row style={{ height: '100vh' }} type="flex" justify="center" align="middle">
-				<Col>
-					<Row type="flex" justify="center">
-						<Icon style={{ fontSize: 64 }} type="clock-circle" twoToneColor="#00bcd4" />
-					</Row>
-					<Row type="flex" justify="center">
-						<h1>Your request is pending</h1>
-					</Row>
-				</Col>
-			</Row>
+			<>
+				<StudentNavbar />
+				<Row className="below-nav" style={{ height: '80vh' }} type="flex" justify="center" align="middle">
+					<Empty className="mt-4"
+						image="https://gw.alipayobjects.com/mdn/miniapp_social/afts/img/A*pevERLJC9v0AAAAAAAAAAABjAQAAAQ/original"
+						description={<span>Your request is pending ...</span>}></Empty>
+				</Row>
+			</>
 		);
 		const request = requests.find(request => request.email === userInfo.primaryEmail);
 		if (request) return pendingJsx;

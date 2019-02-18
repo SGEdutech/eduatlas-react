@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 
+import RequestCard from './Requests/RequestCard';
+
 import {
 	Avatar,
 	Card,
 	Col,
+	Empty,
 	Form,
 	Icon,
 	Input,
@@ -23,224 +26,20 @@ const colLayout = {
 
 class Requests extends Component {
 	render() {
-		const {
-			getFieldDecorator
-		} = this.props.form;
+		const { requests, addStudent, deleteRequest, batches } = this.props;
 
+		const emptyJsx = <Empty className="mt-4"
+			image="https://gw.alipayobjects.com/mdn/miniapp_social/afts/img/A*pevERLJC9v0AAAAAAAAAAABjAQAAAQ/original"
+			description={<span>Nothing is better than something...</span>}></Empty>;
+
+		const requestCardsJsx = (
+			requests.map(request => <Col {...colLayout} key={request._id}><RequestCard requestInfo={request} deleteRequest={deleteRequest} addStudent={addStudent} batches={batches} /></Col>)
+		);
 		return (
 			<>
 				<div className="container">
 					<Row gutter={16}>
-						<Col {...colLayout}>
-							<Card
-								className="mb-3"
-								actions={[<Icon type="check" />, <Icon type="close" />]}
-								title={
-									<Meta
-										avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-										title="Raj Kumar Sahni"
-									/>
-								}
-							>
-								<Form>
-									<Form.Item>
-										<Input disabled addonAfter={<Icon type="mail" />} defaultValue="thisisalongmailaddress@gmail.com" />
-									</Form.Item>
-									<Form.Item>
-										<Input disabled addonAfter="EA ID" defaultValue="EA-AAA00001" />
-									</Form.Item>
-									<Form.Item>
-										{getFieldDecorator('userName', {
-											rules: [{ required: true, message: 'Please input roll number!' }]
-										})(
-											<Input addonAfter="Roll No." />
-										)}
-									</Form.Item>
-									<Form.Item>
-										<Select placeholder="Select a batch">
-											<Option value="jack">JEE Maths</Option>
-											<Option value="lucy">JEE Physics</Option>
-											<Option value="Yiminghe">JEE Chemistry</Option>
-										</Select>
-									</Form.Item>
-								</Form>
-							</Card>
-						</Col>
-						<Col {...colLayout}>
-							<Card
-								className="mb-3"
-								actions={[<Icon type="check" />, <Icon type="close" />]}
-								title={
-									<Meta
-										avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-										title="Raj Kumar Sahni"
-									/>
-								}
-							>
-								<Form>
-									<Form.Item>
-										<Input disabled addonAfter={<Icon type="mail" />} defaultValue="thisisalongmailaddress@gmail.com" />
-									</Form.Item>
-									<Form.Item>
-										<Input disabled addonAfter="EA ID" defaultValue="EA-AAA00001" />
-									</Form.Item>
-									<Form.Item>
-										{getFieldDecorator('userName', {
-											rules: [{ required: true, message: 'Please input roll number!' }]
-										})(
-											<Input addonAfter="Roll No." />
-										)}
-									</Form.Item>
-									<Form.Item>
-										<Select placeholder="Select a batch">
-											<Option value="jack">JEE Maths</Option>
-											<Option value="lucy">JEE Physics</Option>
-											<Option value="Yiminghe">JEE Chemistry</Option>
-										</Select>
-									</Form.Item>
-								</Form>
-							</Card>
-						</Col>
-						<Col {...colLayout}>
-							<Card
-								className="mb-3"
-								actions={[<Icon type="check" />, <Icon type="close" />]}
-								title={
-									<Meta
-										avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-										title="Raj Kumar Sahni"
-									/>
-								}
-							>
-								<Form>
-									<Form.Item>
-										<Input disabled addonAfter={<Icon type="mail" />} defaultValue="thisisalongmailaddress@gmail.com" />
-									</Form.Item>
-									<Form.Item>
-										<Input disabled addonAfter="EA ID" defaultValue="EA-AAA00001" />
-									</Form.Item>
-									<Form.Item>
-										{getFieldDecorator('userName', {
-											rules: [{ required: true, message: 'Please input roll number!' }]
-										})(
-											<Input addonAfter="Roll No." />
-										)}
-									</Form.Item>
-									<Form.Item>
-										<Select placeholder="Select a batch">
-											<Option value="jack">JEE Maths</Option>
-											<Option value="lucy">JEE Physics</Option>
-											<Option value="Yiminghe">JEE Chemistry</Option>
-										</Select>
-									</Form.Item>
-								</Form>
-							</Card>
-						</Col>
-						<Col {...colLayout}>
-							<Card
-								className="mb-3"
-								actions={[<Icon type="check" />, <Icon type="close" />]}
-								title={
-									<Meta
-										avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-										title="Raj Kumar Sahni"
-									/>
-								}
-							>
-								<Form>
-									<Form.Item>
-										<Input disabled addonAfter={<Icon type="mail" />} defaultValue="thisisalongmailaddress@gmail.com" />
-									</Form.Item>
-									<Form.Item>
-										<Input disabled addonAfter="EA ID" defaultValue="EA-AAA00001" />
-									</Form.Item>
-									<Form.Item>
-										{getFieldDecorator('userName', {
-											rules: [{ required: true, message: 'Please input roll number!' }]
-										})(
-											<Input addonAfter="Roll No." />
-										)}
-									</Form.Item>
-									<Form.Item>
-										<Select placeholder="Select a batch">
-											<Option value="jack">JEE Maths</Option>
-											<Option value="lucy">JEE Physics</Option>
-											<Option value="Yiminghe">JEE Chemistry</Option>
-										</Select>
-									</Form.Item>
-								</Form>
-							</Card>
-						</Col>
-						<Col {...colLayout}>
-							<Card
-								className="mb-3"
-								actions={[<Icon type="check" />, <Icon type="close" />]}
-								title={
-									<Meta
-										avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-										title="Raj Kumar Sahni"
-									/>
-								}
-							>
-								<Form>
-									<Form.Item>
-										<Input disabled addonAfter={<Icon type="mail" />} defaultValue="thisisalongmailaddress@gmail.com" />
-									</Form.Item>
-									<Form.Item>
-										<Input disabled addonAfter="EA ID" defaultValue="EA-AAA00001" />
-									</Form.Item>
-									<Form.Item>
-										{getFieldDecorator('userName', {
-											rules: [{ required: true, message: 'Please input roll number!' }]
-										})(
-											<Input addonAfter="Roll No." />
-										)}
-									</Form.Item>
-									<Form.Item>
-										<Select placeholder="Select a batch">
-											<Option value="jack">JEE Maths</Option>
-											<Option value="lucy">JEE Physics</Option>
-											<Option value="Yiminghe">JEE Chemistry</Option>
-										</Select>
-									</Form.Item>
-								</Form>
-							</Card>
-						</Col>
-						<Col {...colLayout}>
-							<Card
-								className="mb-3"
-								actions={[<Icon type="check" />, <Icon type="close" />]}
-								title={
-									<Meta
-										avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-										title="Raj Kumar Sahni"
-									/>
-								}
-							>
-								<Form>
-									<Form.Item>
-										<Input disabled addonAfter={<Icon type="mail" />} defaultValue="thisisalongmailaddress@gmail.com" />
-									</Form.Item>
-									<Form.Item>
-										<Input disabled addonAfter="EA ID" defaultValue="EA-AAA00001" />
-									</Form.Item>
-									<Form.Item>
-										{getFieldDecorator('userName', {
-											rules: [{ required: true, message: 'Please input roll number!' }]
-										})(
-											<Input addonAfter="Roll No." />
-										)}
-									</Form.Item>
-									<Form.Item>
-										<Select placeholder="Select a batch">
-											<Option value="jack">JEE Maths</Option>
-											<Option value="lucy">JEE Physics</Option>
-											<Option value="Yiminghe">JEE Chemistry</Option>
-										</Select>
-									</Form.Item>
-								</Form>
-							</Card>
-						</Col>
+						{requests.length === 0 ? emptyJsx : requestCardsJsx}
 					</Row>
 				</div>
 			</>
@@ -248,4 +47,4 @@ class Requests extends Component {
 	}
 }
 
-export default Form.create({ name: 'accept-student' })(Requests);
+export default Requests;
