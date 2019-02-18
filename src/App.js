@@ -25,6 +25,7 @@ import TabsTest from './components/TabsTest';
 
 // student components
 import StudentManager from './components/StudentComponents/StudentManager';
+import SendRequest from './components/StudentComponents/SendRequest';
 
 import { message } from 'antd';
 
@@ -54,8 +55,9 @@ class App extends Component {
 		return (
 			<Router>
 				<Switch>
-					<Route exact path="/" render={() => <Loading messageInfo={this.props.messageInfo} user={this.props.user} />}></Route>
-					<Route exact path="/tuition/" component={TuitionManager}></Route>
+					<Route exact path="/" render={() => <Loading messageInfo={this.props.messageInfo} user={this.props.user} students={this.props.students} />}></Route>
+					<Route exact path="/send-request" component={SendRequest}></Route>
+					<Route exact path="/tuition" component={TuitionManager}></Route>
 					<Route exact path="/tuition/add-course" component={AddOrEditCourse}></Route>
 					<Route exact path="/tuition/add-batch" component={AddOrEditBatch}></Route>
 					<Route exact path="/tuition/add-discount" component={AddOrEditDiscount}></Route>
@@ -81,7 +83,7 @@ class App extends Component {
 function mapStateToProps(state) {
 	return {
 		messageInfo: state.messageInfo,
-		student: state.student,
+		students: state.student.students,
 		user: state.user
 	};
 }

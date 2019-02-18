@@ -7,7 +7,7 @@ import {
 } from 'antd';
 
 function Loading(props) {
-	const { messageInfo: { fetched, kaamChaluHai }, history: { replace }, user: { userInfo } } = props;
+	const { messageInfo: { fetched, kaamChaluHai }, history: { replace }, students, user: { userInfo } } = props;
 	function redirectToLogin() {
 		replace('/login');
 	}
@@ -18,6 +18,10 @@ function Loading(props) {
 
 	function redirectToStudentManager() {
 		replace('/student');
+	}
+
+	function redirectToRequestSentPage() {
+		replace('/send-request');
 	}
 
 	const tuitionId = '5bbe191a64512a2f77b84c70';
@@ -38,7 +42,12 @@ function Loading(props) {
 		redirectToTuitionManager();
 		return loadingJsx;
 	}
-	redirectToStudentManager();
+	const student = students.find(student => student.email === userInfo.primaryEmail);
+	if (student) {
+		redirectToStudentManager();
+		return loadingJsx;
+	}
+	redirectToRequestSentPage();
 	return loadingJsx;
 }
 
