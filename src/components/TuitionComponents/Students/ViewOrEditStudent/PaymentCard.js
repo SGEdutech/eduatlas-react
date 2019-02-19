@@ -240,7 +240,7 @@ class PaymentCard extends Component {
 						<Collapse>
 							{installments && installments.map((installment, index) => (
 								<Panel key={installment._id} header={'Installment ' + (index + 1)}>
-									<InstallmentCollapse index={index} paymentId={paymentId} installment={installment} editInstallment={this.props.editInstallment} key={installment._id} />
+									<InstallmentCollapse index={index} paymentId={paymentId} installment={installment} deleteInstallment={this.props.deleteInstallment} editInstallment={this.props.editInstallment} key={installment._id} />
 								</Panel>
 							))}
 						</Collapse>

@@ -11,10 +11,13 @@ import {
 	Form,
 	Input,
 	InputNumber,
+	Modal,
 	Row,
 	Select
 } from 'antd';
 const { Option } = Select;
+const confirm = Modal.confirm;
+
 
 const formItemLayout = {
 	labelCol: {
@@ -33,7 +36,7 @@ class InstallmentCollapse extends Component {
 		editable: false
 	}
 
-	showDeleteConfirm = paymentId => {
+	showDeleteConfirm = (paymentId, installmentId) => {
 		const { deleteInstallment, match } = this.props;
 		const { studentId } = match.params;
 		confirm({
@@ -43,13 +46,14 @@ class InstallmentCollapse extends Component {
 			okType: 'danger',
 			cancelText: 'No',
 			onOk() {
-				deletePayment(studentId, paymentId);
+				deleteInstallment(studentId, paymentId, installmentId);
 			}
 		});
 	};
 
 	handleDeleteBtnClick = () => {
-
+		const { installment: { _id: installmentId }, paymentId } = this.props;
+		this.showDeleteConfirm(paymentId, installmentId);
 	}
 
 	handleEditBtnClick = () => this.setState({ editable: true });
