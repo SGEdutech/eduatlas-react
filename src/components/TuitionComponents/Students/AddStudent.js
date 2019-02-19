@@ -38,6 +38,7 @@ const colLayout = {
 
 class AddStudent extends Component {
 	state = {
+		selectedCourseIndex: 0,
 		modeOfPayment: 'cash',
 		couseCode: '',
 		baseFee: 0,
@@ -107,15 +108,16 @@ class AddStudent extends Component {
 
 	handleModeOfPaymentChange = value => this.setState({ modeOfPayment: value });
 
-	handleCourseChange = ([courseId]) => {
+	handleCourseChange = courseId => {
 		if (Boolean(courseId) === false) {
 			this.setState({ baseFee: 0, gstPercentage: 0 });
 			return;
 		}
 		const courseInfo = this.props.courses.find(course => course._id === courseId);
+		const courseIndex = this.props.courses.findIndex(course => course._id === courseId);
 		if (Boolean(courseInfo) === false) throw new Error('Course with this id could not be found');
 		const { code, fees, gstPercentage } = courseInfo;
-		this.setState({ baseFee: fees, gstPercentage, courseCode: code });
+		this.setState({ baseFee: fees, gstPercentage, courseCode: code, selectedCourseIndex: courseIndex });
 	}
 
 	handleDiscountCodeChange = discountId => {
@@ -140,8 +142,7 @@ class AddStudent extends Component {
 	}
 
 	injectBatchInfo = values => {
-		if (Boolean(values.courseAndBatch) === false) return;
-		const [courseId, batchId] = values.courseAndBatch;
+		const { courseId, batchId } = values;
 		if (Boolean(batchId) === false) return;
 		values.batchInfo = { courseId, batchId };
 	}
@@ -172,11 +173,7 @@ class AddStudent extends Component {
 			paymentObj[key] = values[key];
 			delete values[key];
 		});
-		if (values.courseAndBatch) {
-			const [courseId] = values.courseAndBatch;
-			if (courseId) paymentObj.courseId = courseId;
-			delete values.courseAndBatch;
-		}
+		if (values.courseId) paymentObj.courseId = values.courseId;
 		values.payments = [paymentObj];
 	}
 
@@ -226,6 +223,7 @@ class AddStudent extends Component {
 	render() {
 		const { getFieldDecorator } = this.props.form;
 		const { batches, courses, discounts, task } = this.props;
+		const { selectedCourseIndex } = this.state;
 
 		const coursesAndbatchesOpts = courses.map(course => (
 			{
@@ -322,14 +320,34 @@ class AddStudent extends Component {
 				<Col {...colLayout}>
 					<Form.Item
 						{...formItemLayout}
-						label="Select Course and Batch"
+						label="Select Course"
 						hasFeedback={true}>
-						{getFieldDecorator('courseAndBatch', {
+						{getFieldDecorator('courseId', {
+							rules: [{
+								required: true, message: 'Please select course!'
+							}]
 						})(
-							<Cascader
-								options={coursesAndbatchesOpts}
-								changeOnSelect
-								onChange={this.handleCourseChange} />
+							<Select
+								placeholder="Select Course"
+								onChange={this.handleCourseChange}
+							>
+								{coursesAndbatchesOpts.map(course => <Option key={course.value}>{course.label}</Option>)}
+							</Select>
+						)}
+					</Form.Item>
+				</Col>
+				<Col {...colLayout}>
+					<Form.Item
+						{...formItemLayout}
+						label="Select Batch"
+						hasFeedback={true}>
+						{getFieldDecorator('batchId', {
+						})(
+							<Select
+								placeholder="Select Batch"
+							>
+								{coursesAndbatchesOpts[selectedCourseIndex].children.map(batch => <Option key={batch.value}>{batch.label}</Option>)}
+							</Select>
 						)}
 					</Form.Item>
 				</Col>
