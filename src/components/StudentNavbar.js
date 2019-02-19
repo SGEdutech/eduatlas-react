@@ -76,9 +76,9 @@ class Navbar extends Component {
 							) : (
 									<>
 										<Icon style={cursorStyle} type="menu-fold" onClick={this.showDrawer} />
-										<span className="ml-auto mr-auto"><Link to="/">IMS PITAMPURA</Link></span>
+										<span className="ml-auto mr-auto"><Link to="/"><span style={{ color: '#fff', fontWeight: 700 }}>IMS PITAMPURA</span></Link></span>
 									</>
-							)
+								)
 						}
 					</div>
 				</nav>
@@ -89,8 +89,7 @@ class Navbar extends Component {
 					onClose={this.onClose}
 					visible={this.state.visible}>
 					<List split={true} style={{ fontSize: 18 }}>
-						<Link to={`/edit-profile/${user.userInfo._id}`}><NavListItem iconType="edit" content="Edit Profile" /></Link>
-						<NavListItem iconType="key" content="Change Password" />
+						<Link to={`/edit-profile/${user.userInfo._id}`}><span style={{ color: '#000' }}><NavListItem iconType="edit" content="Edit Profile" /></span></Link>
 						<NavListItem iconType="logout" content="Logout" onClick={this.handleLogout} />
 					</List>
 				</Drawer>
