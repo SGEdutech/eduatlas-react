@@ -19,7 +19,8 @@ const { Meta } = Card;
 
 const headerStyle = {
 	height: '40px',
-	zIndex: 101
+	zIndex: 101,
+
 };
 
 const cursorStyle = {
@@ -75,7 +76,7 @@ class Navbar extends Component {
 							) : (
 									<>
 										<Icon style={cursorStyle} type="menu-fold" onClick={this.showDrawer} />
-										<span className="ml-auto mr-auto"><Link to="/">IMS PITAMPURA</Link></span>
+										<span className="ml-auto mr-auto"><Link to="/"><span style={{ color: '#fff', fontWeight: 700 }}>IMS PITAMPURA</span></Link></span>
 									</>
 								)
 						}
@@ -90,7 +91,7 @@ class Navbar extends Component {
 					<List split={true} style={{ fontSize: 18 }}>
 						<Link to={`/edit-profile/${user.userInfo._id}`}><NavListItem iconType="edit" content="Edit Profile" /></Link>
 						<NavListItem iconType="form" content="Receipt Config" />
-						<NavListItem iconType="key" content="Change Password" />
+						{/* <NavListItem iconType="key" content="Change Password" /> */}
 						<NavListItem iconType="logout" content="Logout" onClick={this.handleLogout} />
 					</List>
 				</Drawer>
