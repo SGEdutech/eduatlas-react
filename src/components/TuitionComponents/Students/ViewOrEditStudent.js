@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import { compose } from 'redux';
 
-import { editStudent, editPayment, editInstallment } from '../../../redux/actions/studentActions';
+import { editStudent, editPayment, deletePayment, editInstallment, deleteInstallment } from '../../../redux/actions/studentActions';
 
 import Navbar from '../../Navbar';
 import PaymentCard from './ViewOrEditStudent/PaymentCard';
@@ -203,7 +203,7 @@ class ViewOrEditStudent extends Component {
 						</Col>
 						<Col className="mb-3">
 							<Link to={this.props.location.pathname + '/add-payment'}><Button className="mb-3" type="dashed" block={true}><Icon type="plus-circle" />Add New Course</Button></Link>
-							{payments && payments.map(payment => <PaymentCard courses={this.props.courses} payment={payment} editPayment={this.props.editPayment} editInstallment={this.props.editInstallment} key={payment._id} />)}
+							{payments && payments.map(payment => <PaymentCard courses={this.props.courses} payment={payment} editPayment={this.props.editPayment} deletePayment={this.props.deletePayment}  editInstallment={this.props.editInstallment} key={payment._id} />)}
 						</Col>
 					</Row>
 				</div>
@@ -214,4 +214,4 @@ class ViewOrEditStudent extends Component {
 
 const mapStateToProps = state => ({ students: state.student.students, courses: state.course.courses });
 
-export default compose(Form.create({ name: 'edit-student' }), withRouter, connect(mapStateToProps, { editStudent, editPayment, editInstallment }))(ViewOrEditStudent);
+export default compose(Form.create({ name: 'edit-student' }), withRouter, connect(mapStateToProps, { editStudent, editPayment, editInstallment, deleteInstallment, deletePayment }))(ViewOrEditStudent);

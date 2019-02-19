@@ -33,6 +33,25 @@ class InstallmentCollapse extends Component {
 		editable: false
 	}
 
+	showDeleteConfirm = paymentId => {
+		const { deleteInstallment, match } = this.props;
+		const { studentId } = match.params;
+		confirm({
+			title: 'Are You Sure?',
+			content: 'This action is permanent!',
+			okText: 'Yes',
+			okType: 'danger',
+			cancelText: 'No',
+			onOk() {
+				deletePayment(studentId, paymentId);
+			}
+		});
+	};
+
+	handleDeleteBtnClick = () => {
+
+	}
+
 	handleEditBtnClick = () => this.setState({ editable: true });
 
 	handleCancelBtnClick = () => {
@@ -204,20 +223,23 @@ class InstallmentCollapse extends Component {
 					<Col span={24}>
 						{!editable ? (<Row type="flex" justify="end">
 							<Form.Item>
-								<Button type="primary" onClick={this.handleEditBtnClick}>
+								<Button className="mx-1" type="primary" onClick={this.handleEditBtnClick}>
 									Edit
-							</Button>
+								</Button>
+								<Button type="primary" onClick={this.handleDeleteBtnClick}>
+									Delete
+								</Button>
 							</Form.Item>
 						</Row>) : (<Row type="flex" justify="end">
 							<Form.Item>
 								<Button className="mx-3" onClick={this.handleCancelBtnClick}>
 									Cancel
-							</Button>
+								</Button>
 							</Form.Item>
 							<Form.Item>
 								<Button type="primary" htmlType="submit">
 									Save Changes
-							</Button>
+								</Button>
 							</Form.Item>
 						</Row>)}
 					</Col>

@@ -199,7 +199,7 @@ class AddStudent extends Component {
 
 	handleSubmit = e => {
 		e.preventDefault();
-		const { form, task } = this.props;
+		const { form, task, history } = this.props;
 		const { resetFields } = form;
 		form.validateFieldsAndScroll((err, values) => {
 			if (err) {
@@ -212,8 +212,10 @@ class AddStudent extends Component {
 			this.injectInstallmentInfo(values);
 			if (task === 'add-installment') {
 				this.initAddInstallment(values);
+				history.goBack();
 			} else if (task === 'add-payment') {
 				this.initAddPayment(values);
+				history.goBack();
 			} else {
 				this.initAddStudent(values);
 			}

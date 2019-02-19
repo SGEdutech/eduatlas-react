@@ -18,9 +18,11 @@ import {
 	Icon,
 	Input,
 	InputNumber,
+	Modal,
 	Row
 } from 'antd';
 const { Panel } = Collapse;
+const confirm = Modal.confirm;
 
 const formItemLayout = {
 	labelCol: {
@@ -46,6 +48,26 @@ class PaymentCard extends Component {
 		let totalFeeCollected = 0;
 		installments.forEach(({ feeCollected }) => totalFeeCollected += feeCollected);
 		return totalFeeCollected;
+	}
+
+	showDeleteConfirm = paymentId => {
+		const { deletePayment, match } = this.props;
+		const { studentId } = match.params;
+		confirm({
+			title: 'Are You Sure?',
+			content: 'This action is permanent!',
+			okText: 'Yes',
+			okType: 'danger',
+			cancelText: 'No',
+			onOk() {
+				deletePayment(studentId, paymentId);
+			}
+		});
+	};
+
+	handleDeleteBtnClick = () => {
+		const { payment: { _id: paymentId } } = this.props;
+		this.showDeleteConfirm(paymentId);
 	}
 
 	handleEditBtnClick = () => this.setState({ editable: true });
@@ -90,7 +112,7 @@ class PaymentCard extends Component {
 				<Card className="mb-3">
 					<Form onSubmit={this.handleSubmit}>
 						<Row gutter={16}>
-							<Col {...colLayout} className={this.state.editable ? 'd-none' : undefined}>
+							<Col {...colLayout} >
 								<Form.Item
 									{...formItemLayout}
 									label="Course Code"
@@ -186,29 +208,29 @@ class PaymentCard extends Component {
 								</Form.Item>
 							</Col>
 							<Col span={24}>
-								{!editable ? (<Row type="flex" justify="end">
+								{editable === false ? (<Row type="flex" justify="end">
 									<Form.Item>
-										<Button type="primary" onClick={this.handleEditBtnClick}>
+										<Button className="mx-1" type="primary" onClick={this.handleEditBtnClick}>
 											Edit
-									</Button>
+										</Button>
+										<Button type="primary" onClick={this.handleDeleteBtnClick}>
+											Delete
+										</Button>
 									</Form.Item>
 								</Row>) : (<Row type="flex" justify="end">
 									<Form.Item>
-										<Button className="mx-3" onClick={this.handleCancelBtnClick}>
+										<Button className="mx-1" onClick={this.handleCancelBtnClick}>
 											Cancel
-									</Button>
-									</Form.Item>
-									<Form.Item>
+										</Button>
 										<Button type="primary" htmlType="submit">
 											Save Changes
-									</Button>
+										</Button>
 									</Form.Item>
 								</Row>)}
 							</Col>
 						</Row>
 					</Form>
 					<Col span={24}>
-						{/* installment collapse will come here */}
 						<Link to={this.props.location.pathname + `/payment/${paymentId}/add-installment`}>
 							<Button className="mb-3" type="dashed" block={true}>
 								<Icon type="plus-circle" />
