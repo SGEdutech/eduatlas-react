@@ -241,7 +241,7 @@ class AddStudent extends Component {
 		const studentInputs = (
 			task !== 'add-payment' && task !== 'add-installment' &&
 			<>
-				<Divider orientation="left"><small className="mx-1">Compulsary Fields</small><Icon type="arrow-down" /></Divider>
+				<Divider orientation="left"><small className="mx-1">Compulsory Fields</small><Icon type="arrow-down" /></Divider>
 				<Col {...colLayout}>
 					<Form.Item
 						{...formItemLayout}
@@ -316,7 +316,7 @@ class AddStudent extends Component {
 		const paymentInputs = (
 			task !== 'add-installment' &&
 			<>
-				<Divider orientation="left"><small className="mx-1">Payment Details</small><Icon type="arrow-down" /></Divider>
+				<Divider orientation="left"><small className="mx-1">Course Details</small><Icon type="arrow-down" /></Divider>
 				<Col {...colLayout}>
 					<Form.Item
 						{...formItemLayout}
@@ -477,7 +477,8 @@ class AddStudent extends Component {
 		const dynamicInputs = (
 			task !== 'add-installment' &&
 			<>
-				<Row className="p-1" style={{ border: 'thick double #00bcd4' }}>
+				<Divider orientation="left"><small className="mx-1">Course Summary</small><Icon type="arrow-down" /></Divider>
+				<Row className="p-1" style={{ border: 'thick double #b2993d', backgroundColor: '#ffdb58' }}>
 					<Col span={24}>
 						<Form.Item
 							label="Course Code">
@@ -541,7 +542,7 @@ class AddStudent extends Component {
 
 		return (
 			<>
-				{task === 'add-payment' && <Navbar renderBackBtn={true} navText="Add Payment" />}
+				{task === 'add-payment' && <Navbar renderBackBtn={true} navText="Add Course" />}
 				{task === 'add-installment' && <Navbar renderBackBtn={true} navText="Add Installment" />}
 				<div className={'container' + (task === 'add-payment' || task === 'add-installment' ? ' below-nav' : '')}>
 					<Form onSubmit={this.handleSubmit}>
@@ -562,7 +563,9 @@ class AddStudent extends Component {
 								<Row type="flex" justify="end">
 									<Form.Item>
 										<Button type="primary" htmlType="submit">
-											Add Student
+											{task === 'add-payment' && 'Add Course'}
+											{task === 'add-installment' && 'Add Installment'}
+											{Boolean(task) === false && 'Add Student'}
 										</Button>
 									</Form.Item>
 								</Row>

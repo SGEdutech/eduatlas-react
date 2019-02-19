@@ -127,7 +127,7 @@ class AddCourse extends Component {
 							<Col {...colLayout}>
 								<Form.Item
 									{...formItemLayout}
-									label="Course Code"
+									label="Course Code/Name"
 									hasFeedback={true}>
 									{getFieldDecorator('code', {
 										initialValue: code,
@@ -137,7 +137,7 @@ class AddCourse extends Component {
 											validator: this.validateCourseCode
 										}]
 									})(
-										<Input placeholder="course code" />
+										<Input placeholder="Course Code/Name" />
 									)}
 								</Form.Item>
 							</Col>

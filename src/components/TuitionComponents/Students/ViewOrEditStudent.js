@@ -199,10 +199,10 @@ class ViewOrEditStudent extends Component {
 									</Row>)}
 								</Col>
 							</Form>
-							<Divider orientation="left"><small>Course Payments<Icon type="arrow-down" /></small></Divider>
+							<Divider orientation="left"><small>Course Details<Icon type="arrow-down" /></small></Divider>
 						</Col>
 						<Col className="mb-3">
-							<Link to={this.props.location.pathname + '/add-payment'}><Button className="mb-3" type="dashed" block={true}><Icon type="plus-circle" />Add New Payment</Button></Link>
+							<Link to={this.props.location.pathname + '/add-payment'}><Button className="mb-3" type="dashed" block={true}><Icon type="plus-circle" />Add New Course</Button></Link>
 							{payments && payments.map(payment => <PaymentCard courses={this.props.courses} payment={payment} editPayment={this.props.editPayment} editInstallment={this.props.editInstallment} key={payment._id} />)}
 						</Col>
 					</Row>

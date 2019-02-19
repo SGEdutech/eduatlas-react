@@ -55,7 +55,7 @@ class Course extends Component {
 					<CourseCard
 						id={_id}
 						code={code}
-						discription={description}
+						description={description}
 						numberOfBatches={batches.length}
 						courseFee={fees}
 						deleteCourse={this.showDeleteConfirm} />
