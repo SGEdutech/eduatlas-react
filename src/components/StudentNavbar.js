@@ -15,6 +15,7 @@ import {
 import { logOut } from '../redux/actions/userActions';
 
 import { tuitionName } from '../config.json';
+import fallbackDp from '../fallback-dp.svg';
 
 const { Meta } = Card;
 
@@ -60,7 +61,7 @@ class Navbar extends Component {
 		const { user, renderBackBtn = false, navText = undefined } = this.props;
 
 		const DrawerHeader = <Meta
-			avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+			avatar={<Avatar src={fallbackDp} />}
 			title={<span className="text-capitalize">{user.userInfo.firstName}</span>}
 			description="Role: Student"/>;
 

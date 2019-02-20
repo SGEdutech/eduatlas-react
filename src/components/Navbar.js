@@ -1,3 +1,4 @@
+// TODO: Merge student and tuition navbar
 import React, { Component } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { compose } from 'redux';
@@ -15,6 +16,7 @@ import {
 import { logOut } from '../redux/actions/userActions';
 
 import { tuitionName } from '../config.json';
+import fallbackDp from '../fallback-dp.svg';
 
 const { Meta } = Card;
 
@@ -24,11 +26,11 @@ const headerStyle = {
 };
 
 const cursorStyle = {
-	cursor: 'pointer',
+	cursor: 'pointer'
 };
 
 const DrawerHeader = <Meta
-	avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+	avatar={<Avatar src={fallbackDp} />}
 	title={tuitionName}
 	description="Role: Admin"/>;
 
