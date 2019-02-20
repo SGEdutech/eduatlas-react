@@ -14,13 +14,13 @@ import {
 
 import { logOut } from '../redux/actions/userActions';
 
-const { Meta } = Card;
+import { tuitionName } from '../config.json';
 
+const { Meta } = Card;
 
 const headerStyle = {
 	height: '40px',
-	zIndex: 101,
-
+	zIndex: 101
 };
 
 const cursorStyle = {
@@ -29,9 +29,8 @@ const cursorStyle = {
 
 const DrawerHeader = <Meta
 	avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-	title="IMS Pitampura"
-	description="Role: Admin"
-/>;
+	title={tuitionName}
+	description="Role: Admin"/>;
 
 const NavListItem = props => (
 	<Row type="flex" align="middle" className="my-3" style={cursorStyle} onClick={props.onClick}>
@@ -76,7 +75,7 @@ class Navbar extends Component {
 							) : (
 									<>
 										<Icon style={cursorStyle} type="menu-fold" onClick={this.showDrawer} />
-										<span className="ml-auto mr-auto"><Link to="/"><span style={{ color: '#fff', fontWeight: 700 }}>IMS PITAMPURA</span></Link></span>
+										<span className="ml-auto mr-auto"><span className="text-uppercase" style={{ color: '#fff', fontWeight: 700 }}>{tuitionName}</span></span>
 									</>
 								)
 						}

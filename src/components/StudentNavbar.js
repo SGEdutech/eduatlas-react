@@ -14,6 +14,8 @@ import {
 
 import { logOut } from '../redux/actions/userActions';
 
+import { tuitionName } from '../config.json';
+
 const { Meta } = Card;
 
 
@@ -23,7 +25,7 @@ const headerStyle = {
 };
 
 const cursorStyle = {
-	cursor: 'pointer',
+	cursor: 'pointer'
 };
 
 const NavListItem = props => (
@@ -60,8 +62,7 @@ class Navbar extends Component {
 		const DrawerHeader = <Meta
 			avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
 			title={<span className="text-capitalize">{user.userInfo.firstName}</span>}
-			description="Role: Student"
-		/>;
+			description="Role: Student"/>;
 
 		return (
 			<>
@@ -76,7 +77,7 @@ class Navbar extends Component {
 							) : (
 									<>
 										<Icon style={cursorStyle} type="menu-fold" onClick={this.showDrawer} />
-										<span className="ml-auto mr-auto"><Link to="/"><span style={{ color: '#fff', fontWeight: 700 }}>IMS PITAMPURA</span></Link></span>
+										<span className="ml-auto mr-auto"><Link to="/"><span className="text-uppercase" style={{ color: '#fff', fontWeight: 700 }}>{tuitionName}</span></Link></span>
 									</>
 								)
 						}

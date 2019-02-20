@@ -15,6 +15,8 @@ import {
 	Row
 } from 'antd';
 
+import { tuitionName } from '../config.json';
+
 const colLayout = {
 	xs: {
 		span: 24
@@ -55,7 +57,7 @@ class Login extends Component {
 					<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" size={128} icon="user" />
 				</Row>
 				<Row className="mb-3" type="flex" justify="center">
-					<h2 className="text-capitalize">IMS PITAMPURA</h2>
+					<h2 className="text-capitalize">{tuitionName}</h2>
 				</Row>
 				<Form onSubmit={this.handleSubmit} className="pt-3">
 					<Row gutter={16}>
@@ -77,7 +79,6 @@ class Login extends Component {
 						</Col>
 						<Col {...colLayout}>
 							<Form.Item
-								// {...formItemLayout}
 								hasFeedback={true}>
 								{getFieldDecorator('password', {
 									rules: [{
