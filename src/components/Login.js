@@ -17,8 +17,7 @@ import {
 
 const colLayout = {
 	xs: {
-		span: 24,
-		// offset: 8
+		span: 24
 	},
 	sm: {
 		span: 12,
@@ -27,7 +26,7 @@ const colLayout = {
 	lg: {
 		span: 8,
 		offset: 8
-	},
+	}
 };
 
 class Login extends Component {
@@ -88,11 +87,6 @@ class Login extends Component {
 									<Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
 								)}
 							</Form.Item>
-						</Col>
-						<Col {...colLayout}>
-							<Row type="flex" justify="end">
-								<a className="login-form-forgot" href="">Forgot password</a>
-							</Row>
 						</Col>
 						<Col {...colLayout}>
 							<Form.Item>
