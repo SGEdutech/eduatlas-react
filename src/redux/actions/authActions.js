@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 export function signUp(userData) {
-	console.log(userData);
 	return dispatch => {
 		dispatch({
 			type: 'USER_SIGNUP',

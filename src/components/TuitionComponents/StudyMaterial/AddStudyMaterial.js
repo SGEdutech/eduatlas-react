@@ -5,8 +5,6 @@ import { compose } from 'redux';
 
 import StudentSelector from '../Communicator/NewAnnouncement/StudentSelector';
 
-import sanatizeForm from '../../../scripts/sanatize-form-obj';
-
 import {
 	Button,
 	Col,
@@ -15,9 +13,9 @@ import {
 	Input,
 	Row,
 	Select,
-	Switch,
 	Upload
 } from 'antd';
+
 const { TextArea } = Input;
 
 const colLayout = {
@@ -52,16 +50,6 @@ class AddStudyMaterial extends Component {
 
 	handleSubmit = e => {
 		e.preventDefault();
-		const { addNotification, form } = this.props;
-		form.validateFieldsAndScroll((err, values) => {
-			if (err) {
-				console.error(err);
-				return;
-			}
-			values.senderId = '5bbe191a64512a2f77b84c70';
-			sanatizeForm(values);
-			addNotification(values);
-		});
 	}
 
 	render() {

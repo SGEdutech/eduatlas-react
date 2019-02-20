@@ -15,28 +15,13 @@ import {
 	Icon,
 	Input,
 	Row,
-	Select,
-	TimePicker
+	Select
 } from 'antd';
 
 import { DatePicker as DatePickerM, List } from 'antd-mobile';
 import enUs from 'antd-mobile/lib/date-picker/locale/en_US';
 
 const { Option } = Select;
-
-const formItemLayout = {
-	labelCol: {
-	},
-	wrapperCol: {
-	}
-};
-
-const formScheduleItemLayout = {
-	labelCol: {
-	},
-	wrapperCol: {
-	}
-};
 
 const colLayout = {
 	xs: 24,
@@ -50,7 +35,6 @@ const scheduleColLayout = {
 	lg: 4
 };
 
-const format = 'HH:mm a';
 let id = 1;
 
 class AddSchedule extends Component {
@@ -177,11 +161,9 @@ class AddSchedule extends Component {
 			<Row key={k} type="flex" justify="space-around" align="bottom">
 				<Col {...scheduleColLayout} className="p-1">
 					<Form.Item
-						{...formScheduleItemLayout}
 						label="Day"
 						hasFeedback={true}>
 						{getFieldDecorator('date_' + k, {
-							// initialValue: code,
 							rules: [{
 								required: true, message: 'Please choose day!'
 							}]
@@ -194,7 +176,6 @@ class AddSchedule extends Component {
 				</Col>
 				<Col {...scheduleColLayout} className="p-1">
 					<Form.Item
-						{...formScheduleItemLayout}
 						label="From Time">
 						{getFieldDecorator('fromTime_' + k, {
 							rules: [{ required: true, message: 'Please enter dude!' }]
@@ -211,7 +192,6 @@ class AddSchedule extends Component {
 				</Col>
 				<Col {...scheduleColLayout} className="p-1">
 					<Form.Item
-						{...formScheduleItemLayout}
 						label="To Time">
 						{getFieldDecorator('toTime_' + k, {
 							validator: this.validateToTime, message: 'Must be less than From-Time'
@@ -228,11 +208,9 @@ class AddSchedule extends Component {
 				</Col>
 				<Col {...scheduleColLayout} className="p-1">
 					<Form.Item
-						{...formScheduleItemLayout}
 						label="Topic"
 						hasFeedback={true}>
 						{getFieldDecorator('topic_' + k, {
-							// initialValue: code,
 							rules: [{
 								required: true, message: 'Please input topic!'
 							}]
@@ -243,11 +221,9 @@ class AddSchedule extends Component {
 				</Col>
 				<Col {...scheduleColLayout} className="p-1">
 					<Form.Item
-						{...formScheduleItemLayout}
 						label="Faculty"
 						hasFeedback={true}>
 						{getFieldDecorator('faculty_' + k, {
-							// initialValue: code,
 							rules: [{
 								required: true, message: 'Please input faculty!'
 							}]
@@ -261,9 +237,7 @@ class AddSchedule extends Component {
 						<Icon
 							className="dynamic-delete-button"
 							type="minus-circle-o"
-							// disabled={keys.length === 1}
-							onClick={() => this.remove(k)}
-						/>
+							onClick={() => this.remove(k)}/>
 					</Form.Item>
 				</Col>
 			</Row>
@@ -274,14 +248,12 @@ class AddSchedule extends Component {
 				<Form onSubmit={this.handleSubmit} className="pt-3">
 					<Col {...colLayout} className="p-1">
 						<Form.Item
-							{...formItemLayout}
 							label="From Date">
 							<DatePicker format="DD-MM-YYYY" onChange={this.handleFromDateChange} className="w-100" />
 						</Form.Item>
 					</Col>
 					<Col {...colLayout} className="p-1">
 						<Form.Item
-							{...formItemLayout}
 							label="To Date"
 							hasFeedback={true}>
 							<DatePicker value={this.getToDate()} format="DD-MM-YYYY" className="w-100" disabled={true} />
@@ -291,21 +263,17 @@ class AddSchedule extends Component {
 						{scheduleInps}
 					</Col>
 					<Col span={24}>
-						{/* <Row type="flex" justify="end"> */}
 						<Form.Item>
 							<Button type="dashed" block onClick={this.add}>
 								<Icon type="plus" /> Add Another
 							</Button>
 						</Form.Item>
-						{/* </Row> */}
 					</Col>
 					<Col {...colLayout}>
 						<Form.Item
-							{...formItemLayout}
 							label="Batches"
 							hasFeedback={true}>
 							{getFieldDecorator('batches', {
-								// initialValue: code,
 								rules: [{
 									required: true, message: 'Please input batch!'
 								}]

@@ -7,14 +7,12 @@ import {
 	Col,
 	Form,
 	Input,
-	Row,
-	Select,
-	Switch
+	Row
 } from 'antd';
 
 import sanatizeForm from '../../../scripts/sanatize-form-obj';
+import { tuitionId } from '../../../config.json';
 
-const { Option } = Select;
 const { TextArea } = Input;
 
 const colLayout = {
@@ -55,7 +53,7 @@ class NewAnnouncement extends Component {
 				console.error(err);
 				return;
 			}
-			values.senderId = '5bbe191a64512a2f77b84c70';
+			values.senderId = tuitionId;
 			sanatizeForm(values);
 			addNotification(values);
 		});

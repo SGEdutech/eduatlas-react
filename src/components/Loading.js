@@ -1,5 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import { tuitionId } from '../config.json';
 
 import {
 	Icon,
@@ -24,7 +25,6 @@ function Loading(props) {
 		replace('/send-request');
 	}
 
-	const tuitionId = '5bbe191a64512a2f77b84c70';
 	const loadingJsx = (
 		<Row style={{ height: '100vh' }} type="flex" justify="center" align="middle">
 			<Icon style={{ fontSize: 64 }} type="smile" theme="twoTone" twoToneColor="#00bcd4" spin />
