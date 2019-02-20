@@ -8,20 +8,15 @@ import { signUp } from '../redux/actions/userActions';
 import {
 	Avatar,
 	Button,
-	Checkbox,
 	Col,
 	Icon,
 	Form,
 	Input,
-	Row,
+	Row
 } from 'antd';
 
-const formItemLayout = {
-	labelCol: {
-	},
-	wrapperCol: {
-	}
-};
+import { tuitionName } from '../config.json';
+import tuitionLogo from '../tuition-logo.svg';
 
 const colLayout = {
 	xs: {
@@ -85,10 +80,10 @@ class Signup extends Component {
 		return (
 			<div className="container">
 				<Row className="mt-3" type="flex" justify="center">
-					<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" size={128} icon="user" />
+					<Avatar src={tuitionLogo} size={128} icon="user" />
 				</Row>
 				<Row className="mb-3" type="flex" justify="center">
-					<h2 className="text-capitalize">IMS PITAMPURA</h2>
+					<h2 className="text-capitalize">{tuitionName}</h2>
 				</Row>
 				<Form onSubmit={this.handleSubmit} className="pt-3">
 					<Row gutter={16}>

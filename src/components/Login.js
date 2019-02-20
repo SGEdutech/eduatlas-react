@@ -16,6 +16,7 @@ import {
 } from 'antd';
 
 import { tuitionName } from '../config.json';
+import tuitionLogo from '../tuition-logo.svg';
 
 const colLayout = {
 	xs: {
@@ -54,7 +55,7 @@ class Login extends Component {
 		return (
 			<div className="container">
 				<Row className="mt-3" type="flex" justify="center">
-					<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" size={128} icon="user" />
+					<Avatar src={tuitionLogo} size={128} icon="user" />
 				</Row>
 				<Row className="mb-3" type="flex" justify="center">
 					<h2 className="text-capitalize">{tuitionName}</h2>
