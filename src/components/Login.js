@@ -33,8 +33,6 @@ const colLayout = {
 };
 
 class Login extends Component {
-	state = {};
-
 	handleSubmit = e => {
 		e.preventDefault();
 		const { form, logIn, history: { push }, form: { resetFields } } = this.props;
@@ -64,7 +62,6 @@ class Login extends Component {
 					<Row gutter={16}>
 						<Col {...colLayout}>
 							<Form.Item
-								// {...formItemLayout}
 								hasFeedback={true}>
 								{getFieldDecorator('username', {
 									rules: [{

@@ -59,9 +59,7 @@ class AddDiscount extends Component {
 				return;
 			}
 			sanatizeFormObj(values);
-			if (this.state.saveAsPercentage) {
-				values.isPercent = true;
-			}
+			values.isPercent = this.state.saveAsPercentage;
 			edit ? editDiscount(match.params.discountId, values) : addDiscount(values);
 			history.goBack();
 		});
