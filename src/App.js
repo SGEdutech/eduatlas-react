@@ -36,7 +36,9 @@ import { addRequest } from './redux/actions/requestActions';
 class App extends Component {
 	componentDidMount() {
 		if (this.props.messageInfo.fetched) return;
-		setInterval(this.props.fetchAll, 2 * 60 * 1000);
+		const { fetchAll } = this.props;
+		fetchAll();
+		setInterval(fetchAll, 2 * 60 * 1000);
 	}
 
 	componentDidUpdate() {
