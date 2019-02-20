@@ -16,4 +16,6 @@ npm-debug.log
 
 # cordova
 www
-platform
+plugins
+platforms
+config.xml
