@@ -17,6 +17,7 @@ import {
 } from 'antd';
 
 const { TextArea } = Input;
+const { Option } = Select;
 
 const colLayout = {
 	xs: 24,
@@ -50,6 +51,14 @@ class AddStudyMaterial extends Component {
 
 	handleSubmit = e => {
 		e.preventDefault();
+		const { form } = this.props;
+		form.validateFieldsAndScroll((err, values) => {
+			if (err) {
+				console.error(err);
+				return;
+			}
+			console.log(values);
+		});
 	}
 
 	render() {
@@ -83,13 +92,14 @@ class AddStudyMaterial extends Component {
 								label="Type Of Resource"
 								hasFeedback={true}>
 								{getFieldDecorator('type', {
+									defaultValue: 'reference material',
 									rules: [{ required: 'true', message: 'Must Choose Type' }]
 								})(
-									<Select defaultValue="reference material">
-										<option class="text-uppercase" value="reference material">Reference Material</option>
-										<option class="text-uppercase" value="homework">Homework</option>
-										<option class="text-uppercase" value="test">Assignment/Test</option>
-										<option class="text-uppercase" value="video">Video</option>
+									<Select>
+										<Option className="text-uppercase" value="reference material">Reference Material</Option>
+										<Option className="text-uppercase" value="homework">Homework</Option>
+										<Option className="text-uppercase" value="test">Assignment/Test</Option>
+										<Option className="text-uppercase" value="video">Video</Option>
 									</Select>
 								)}
 							</Form.Item>
@@ -140,7 +150,7 @@ class AddStudyMaterial extends Component {
 function mapStateToProps(state) {
 	return {
 		batches: state.batch.batches,
-		students: state.student.students,
+		students: state.student.students
 	};
 }
 

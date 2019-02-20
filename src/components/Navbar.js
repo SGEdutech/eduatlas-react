@@ -45,15 +45,11 @@ class Navbar extends Component {
 	state = { visible: false };
 
 	showDrawer = () => {
-		this.setState({
-			visible: true
-		});
+		this.setState({ visible: true });
 	};
 
 	onClose = () => {
-		this.setState({
-			visible: false
-		});
+		this.setState({ visible: false });
 	};
 
 	handleLogout = () => {
@@ -101,9 +97,7 @@ class Navbar extends Component {
 }
 
 function mapStateToProps(state) {
-	return {
-		user: state.user
-	};
+	return { user: state.user };
 }
 
 export default compose(connect(mapStateToProps, { logOut }), withRouter)(Navbar);

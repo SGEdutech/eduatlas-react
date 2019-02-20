@@ -22,21 +22,13 @@ import {
 const { TextArea } = Input;
 const { Option } = Select;
 
-
-const formItemLayout = {
-	labelCol: {
-	},
-	wrapperCol: {
-	}
-};
-
 const studentTableLayout = {
 	labelCol: {
 		xs: { span: 24 }
 	},
 	wrapperCol: {
 		xs: { span: 24 }
-	},
+	}
 };
 
 
@@ -166,7 +158,7 @@ class AddBatch extends Component {
 	render() {
 		const { getFieldDecorator } = this.props.form;
 		const { courses, studentsOfTuition } = this.props;
-		const { code, description, courseId, students } = this.state.batchInfo;
+		const { code, description, courseId } = this.state.batchInfo;
 		const columns = [
 			{
 				title: 'Name',
@@ -203,7 +195,6 @@ class AddBatch extends Component {
 						<Row gutter={16}>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="Parent Course"
 									hasFeedback={true}>
 									{getFieldDecorator('courseId', {
@@ -220,7 +211,6 @@ class AddBatch extends Component {
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="Batch Code"
 									hasFeedback={true}>
 									{getFieldDecorator('code', {
@@ -237,7 +227,6 @@ class AddBatch extends Component {
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="Description"
 									hasFeedback={true}>
 									{getFieldDecorator('description', { initialValue: description })(<TextArea rows={4} />)}
