@@ -5,6 +5,8 @@ import promise from 'redux-promise-middleware';
 
 import reducer from './reducers/rootReducer';
 
-const middleware = compose(applyMiddleware(promise(), thunk), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const middleware = window.cordova ?
+	compose(applyMiddleware(promise(), thunk)) :
+	compose(applyMiddleware(promise(), thunk), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 export default createStore(reducer, middleware);
