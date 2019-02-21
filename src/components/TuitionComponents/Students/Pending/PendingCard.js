@@ -8,7 +8,6 @@ import {
 	Avatar,
 	Card,
 	Form,
-	Icon,
 	Input,
 	Select
 } from 'antd';
