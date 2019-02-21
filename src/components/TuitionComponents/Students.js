@@ -14,6 +14,7 @@ import { deleteRequest } from '../../redux/actions/requestActions';
 
 import Active from './Students/Active';
 import AddStudent from './Students/AddStudent';
+import Pending from './Students/Pending';
 import Requests from './Students/Requests';
 
 const confirm = Modal.confirm;
@@ -39,7 +40,7 @@ class Students extends Component {
 
 	render() {
 		const { value } = this.state;
-		const { request, addStudent, student, batch, deleteStudent, messageInfo } = this.props;
+		const { request, addStudent, student, batch, course, deleteStudent, messageInfo } = this.props;
 		return (
 			<>
 				<AppBar color="default" className="z101">
@@ -52,12 +53,14 @@ class Students extends Component {
 						variant="fullWidth">
 						<Tab label="Requests" />
 						<Tab label="Active" />
+						<Tab label="Pending" />
 						<Tab label="Add" />
 					</Tabs>
 				</AppBar>
-				{value === 0 && <Requests requests={request.requests} addStudent={addStudent} deleteRequest={this.showDeleteConfirm} batches={batch.batches} />}
-				{value === 1 && <Active messageInfo={messageInfo} studentsInfo={student} deleteStudent={deleteStudent} />}
-				{value === 2 && <AddStudent />}
+				{value === 0 && <Requests requests={request.requests} addStudent={addStudent} deleteRequest={this.showDeleteConfirm} batches={batch.batches} courses={course.courses} />}
+				{value === 1 && <Active batches={batch.batches} messageInfo={messageInfo} studentsInfo={student} deleteStudent={deleteStudent} />}
+				{value === 2 && <Pending batches={batch.batches} messageInfo={messageInfo} studentsInfo={student} />}
+				{value === 3 && <AddStudent />}
 			</>
 		);
 	}

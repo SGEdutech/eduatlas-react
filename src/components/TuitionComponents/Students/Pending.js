@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import StudentCard from './Active/StudentCard';
+import PendingCard from './Pending/PendingCard';
 
 import {
 	Card,
@@ -22,7 +22,7 @@ const colLayout = {
 	xxl: 6
 };
 
-class Active extends Component {
+class Pending extends Component {
 	state = { search: '' };
 
 	handleSearchInpChange = e => this.setState({ search: e.target.value });
@@ -44,14 +44,14 @@ class Active extends Component {
 	render() {
 		const { batches, messageInfo, studentsInfo } = this.props;
 
-		// filter out students without batches
+		// filter out students with batches
 		const studentsToShow = studentsInfo.students.filter(student => {
 			let isInAnyBatch = false;
 			batches.forEach(batch => {
 				if (batch.students.find(studentId => student._id === studentId)) isInAnyBatch = true;
 			});
-			if (isInAnyBatch) return student;
-			return false;
+			if (isInAnyBatch) return false;
+			return student;
 		});
 
 		const studentsToRender = studentsToShow.filter(student => {
@@ -59,11 +59,11 @@ class Active extends Component {
 			const searchRegex = new RegExp(this.state.search, 'i');
 			return searchRegex.test(rollNumber) || searchRegex.test(name) || searchRegex.test(email)
 		});
-
 		const studentsJsx = studentsToRender.map(({ _id, name, rollNumber, email }) => (
 			<Col {...colLayout} key={_id}>
 				<div className="mb-3">
-					<StudentCard
+					<PendingCard
+						batches={batches}
 						id={_id}
 						name={name}
 						rollNumber={rollNumber}
@@ -104,4 +104,4 @@ class Active extends Component {
 	}
 }
 
-export default Active;
+export default Pending;
