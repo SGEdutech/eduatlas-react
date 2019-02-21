@@ -2,6 +2,7 @@
   "name": "create-react-app-antd",
   "version": "0.1.0",
   "private": true,
+  "homepage": "./",
   "dependencies": {
     "@material-ui/core": "^3.9.2",
     "antd": "^3.10.1",

@@ -119,7 +119,7 @@ class AddStudyMaterial extends Component {
 									{getFieldDecorator('dragger', {
 										rules: [{ required: 'true', message: 'Must Choose Type' }],
 										valuePropName: 'fileList',
-										getValueFromEvent: this.normFile,
+										getValueFromEvent: this.normFile
 									})(
 										<Upload.Dragger name="files" action="/upload.do">
 											<p className="ant-upload-drag-icon">
