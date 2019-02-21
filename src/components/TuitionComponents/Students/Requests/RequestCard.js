@@ -32,8 +32,7 @@ class RequestCard extends Component {
 			if (Boolean(courseInfo) === false) return;
 			// TODO: Throw error
 			values.batchInfo = { batchId: batchInfo._id, courseId: batchInfo.courseId };
-			values.courseCode = courseInfo.code;
-			values.courseFee = courseInfo.fees;
+			values.payments = [{ courseCode: courseInfo.code, courseFee: courseInfo.fees }];
 			delete values.batchId;
 			addStudent(values);
 		});
