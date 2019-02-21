@@ -103,6 +103,7 @@ class PaymentCard extends Component {
 
 	render() {
 		const { editable } = this.state;
+		const { students } = this.props;
 		const { getFieldDecorator } = this.props.form;
 		const { _id: paymentId, courseCode, courseFee, taxAmount = 0, discountAmount = 0, discountReason, installments } = this.props.payment;
 		const nextInstallmentDate = moment(this.props.payment.nextInstallmentDate);
@@ -240,7 +241,11 @@ class PaymentCard extends Component {
 						<Collapse>
 							{installments && installments.map((installment, index) => (
 								<Panel key={installment._id} header={'Installment ' + (index + 1)}>
-									<InstallmentCollapse index={index} paymentId={paymentId} installment={installment} deleteInstallment={this.props.deleteInstallment} editInstallment={this.props.editInstallment} key={installment._id} />
+									<InstallmentCollapse
+										index={index} paymentId={paymentId} installment={installment}
+										deleteInstallment={this.props.deleteInstallment} editInstallment={this.props.editInstallment}
+										key={installment._id} students={students} courseCode={courseCode}
+									/>
 								</Panel>
 							))}
 						</Collapse>

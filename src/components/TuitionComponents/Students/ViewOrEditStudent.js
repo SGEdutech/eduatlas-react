@@ -203,7 +203,13 @@ class ViewOrEditStudent extends Component {
 						</Col>
 						<Col className="mb-3">
 							<Link to={this.props.location.pathname + '/add-payment'}><Button className="mb-3" type="dashed" block={true}><Icon type="plus-circle" />Add New Course</Button></Link>
-							{payments && payments.map(payment => <PaymentCard courses={this.props.courses} payment={payment} editPayment={this.props.editPayment} deletePayment={this.props.deletePayment} deleteInstallment={this.props.deleteInstallment} editInstallment={this.props.editInstallment} key={payment._id} />)}
+							{payments && payments.map(payment =>
+								<PaymentCard
+									courses={this.props.courses} payment={payment} editPayment={this.props.editPayment}
+									deletePayment={this.props.deletePayment} deleteInstallment={this.props.deleteInstallment}
+									editInstallment={this.props.editInstallment} key={payment._id} students={this.props.students}
+								/>
+							)}
 						</Col>
 					</Row>
 				</div>

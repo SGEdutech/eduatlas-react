@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+
 import sanatizeFormObj from '../../../../../scripts/sanatize-form-obj';
+import { getDocDef } from '../../../../../scripts/receipt-definition';
 
 import {
 	Button,
@@ -18,6 +22,7 @@ import {
 const { Option } = Select;
 const confirm = Modal.confirm;
 
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 const formItemLayout = {
 	labelCol: {
@@ -34,6 +39,24 @@ const colLayout = {
 class InstallmentCollapse extends Component {
 	state = {
 		editable: false
+	}
+
+	handleDownloadBtnClick = () => {
+		const { installment, match, students, courseCode } = this.props;
+		installment.courseCode = courseCode;
+		const { studentId } = match.params;
+		const studentInfo = students.find(student => studentId === student._id);
+		const receiptConfig = {
+			businessName: 'Shri Ram Academy', addressLine1: '23 flamingo pitampura',
+			addressLine2: 'New Delhi', city: 'Delhi', pinCode: 234567,
+			gstNumber: '23m234jbg234j2'
+		};
+		const docDefinition = getDocDef(receiptConfig, studentInfo, installment);
+		pdfMake.createPdf(docDefinition).download('receipt.pdf');
+	}
+
+	handleMailReceiptBtnClick = () => {
+
 	}
 
 	showDeleteConfirm = (paymentId, installmentId) => {
@@ -225,16 +248,30 @@ class InstallmentCollapse extends Component {
 						</>
 					}
 					<Col span={24}>
-						{!editable ? (<Row type="flex" justify="end">
-							<Form.Item>
-								<Button className="mx-1" type="primary" onClick={this.handleEditBtnClick}>
-									Edit
-								</Button>
-								<Button type="primary" onClick={this.handleDeleteBtnClick}>
-									Delete
-								</Button>
-							</Form.Item>
-						</Row>) : (<Row type="flex" justify="end">
+						{!editable ? (
+							<>
+								<Row type="flex" justify="end">
+									<Form.Item>
+										<Button className="mx-1" type="primary" onClick={this.handleEditBtnClick}>
+											Edit
+										</Button>
+										<Button type="primary" onClick={this.handleDeleteBtnClick}>
+											Delete
+										</Button>
+									</Form.Item>
+								</Row>
+								<Row type="flex" justify="end">
+									<Form.Item>
+										<Button className="mx-1" type="primary" onClick={this.handleDownloadBtnClick}>
+											Download Receipt
+										</Button>
+										<Button type="primary" onClick={this.handleMailReceiptBtnClick}>
+											Mail Receipt to student
+										</Button>
+									</Form.Item>
+								</Row>
+							</>
+						) : (<Row type="flex" justify="end">
 							<Form.Item>
 								<Button className="mx-3" onClick={this.handleCancelBtnClick}>
 									Cancel

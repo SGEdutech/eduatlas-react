@@ -33,6 +33,7 @@ const colLayout = {
 class ReceiptConfig extends Component {
 	render() {
 		const { getFieldDecorator } = this.props.form;
+		// TODO: add terms and conditions Arr
 		const { businessName, addressLine1, addressLine2, city, state, pinCode, taxId } = this.props.userInfo;
 
 		return (
