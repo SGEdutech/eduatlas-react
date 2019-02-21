@@ -185,7 +185,7 @@ class AddSchedule extends Component {
 								minuteStep={2}
 								use12Hours={true}
 								locale={enUs}>
-								<List.Item arrow="horizontal">From Time</List.Item>
+								<List.Item style={{ border: '1px solid #D3D3D3', borderRadius: '5px' }} arrow="horizontal"></List.Item>
 							</DatePickerM>
 						)}
 					</Form.Item>
@@ -201,7 +201,7 @@ class AddSchedule extends Component {
 								minuteStep={2}
 								use12Hours={true}
 								locale={enUs}>
-								<List.Item arrow="horizontal">To Time</List.Item>
+								<List.Item style={{ border: '1px solid #D3D3D3', borderRadius: '5px' }} arrow="horizontal"></List.Item>
 							</DatePickerM>
 						)}
 					</Form.Item>
@@ -237,7 +237,7 @@ class AddSchedule extends Component {
 						<Icon
 							className="dynamic-delete-button"
 							type="minus-circle-o"
-							onClick={() => this.remove(k)}/>
+							onClick={() => this.remove(k)} />
 					</Form.Item>
 				</Col>
 			</Row>
