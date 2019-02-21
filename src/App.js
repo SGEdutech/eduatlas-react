@@ -21,7 +21,7 @@ import ViewOrEditStudent from './components/TuitionComponents/Students/ViewOrEdi
 import Loading from './components/Loading';
 import Login from './components/Login';
 import Signup from './components/Signup';
-import TabsTest from './components/TabsTest';
+import ReceiptConfig from './components/ReceiptConfig';
 
 // student components
 import StudentManager from './components/StudentComponents/StudentManager';
@@ -76,7 +76,7 @@ class App extends Component {
 					<Route exact path="/login" component={Login}></Route>
 					<Route exact path="/signup" component={Signup}></Route>
 					<Route exact path="/student" component={StudentManager}></Route>
-					<Route exact path="/test" component={TabsTest}></Route>
+					{/* <Route exact path="/receipt-config" component={ReceiptConfig}></Route> */}
 				</Switch>
 			</Router>
 		);
