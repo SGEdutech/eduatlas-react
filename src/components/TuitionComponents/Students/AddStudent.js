@@ -52,6 +52,26 @@ class AddStudent extends Component {
 		feeCollected: 0
 	};
 
+	validateRollNumber = (rule, rollNumber = '', callback) => {
+		const { students } = this.props;
+
+		rollNumber = rollNumber.trim().toLowerCase();
+		if (!rollNumber) callback('invalid!');
+		const isDuplicate = students.find(student => student.rollNumber === rollNumber);
+		if (isDuplicate) callback('Roll Number already exists');
+		callback();
+	}
+
+	validateEmail = (rule, email = '', callback) => {
+		const { students } = this.props;
+
+		email = email.trim().toLowerCase();
+		if (!email) callback('invalid!');
+		const isDuplicate = students.find(student => student.email === email);
+		if (isDuplicate) callback('Email already exists');
+		callback();
+	}
+
 	getBaseFee = courseId => {
 		// TODO: Handle this error
 		const courseInfo = this.props.courses.find(course => course._id === courseId);
@@ -250,6 +270,8 @@ class AddStudent extends Component {
 						{getFieldDecorator('rollNumber', {
 							rules: [{
 								required: true, message: 'Please give some Roll-number!'
+							}, {
+								validator: this.validateRollNumber
 							}]
 						})(
 							<Input placeholder="roll number" />
@@ -281,6 +303,9 @@ class AddStudent extends Component {
 							},
 							{
 								required: true, message: 'Please provide email!'
+							},
+							{
+								validator: this.validateEmail
 							}]
 						})(
 							<Input placeholder="student email" />

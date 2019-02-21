@@ -17,6 +17,16 @@ const Option = Select.Option;
 
 
 class RequestCard extends Component {
+	validateRollNumber = (rule, rollNumber = '', callback) => {
+		const { students } = this.props;
+
+		rollNumber = rollNumber.trim().toLowerCase();
+		if (!rollNumber) callback('invalid!');
+		const isDuplicate = students.find(student => student.rollNumber === rollNumber);
+		if (isDuplicate) callback('Roll Number already exists');
+		callback();
+	}
+
 	handleSubmit = e => {
 		e.preventDefault();
 		const { addStudent, batches, courses, form } = this.props;
@@ -76,7 +86,10 @@ class RequestCard extends Component {
 					</Form.Item>
 					<Form.Item >
 						{getFieldDecorator('rollNumber', {
-							rules: [{ required: true, message: 'Please input roll number!' }]
+							rules: [
+								{ required: true, message: 'Please input roll number!' },
+								{ validator: this.validateRollNumber }
+							]
 						})(
 							<Input addonAfter="Roll No." />
 						)}

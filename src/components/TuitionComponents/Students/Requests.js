@@ -26,14 +26,14 @@ const colLayout = {
 
 class Requests extends Component {
 	render() {
-		const { requests, addStudent, deleteRequest, batches, courses } = this.props;
+		const { requests, addStudent, deleteRequest, batches, courses, students } = this.props;
 
 		const emptyJsx = <Empty className="mt-4"
 			image="https://gw.alipayobjects.com/mdn/miniapp_social/afts/img/A*pevERLJC9v0AAAAAAAAAAABjAQAAAQ/original"
 			description={<span>Nothing is better than something...</span>}></Empty>;
 
 		const requestCardsJsx = (
-			requests.map(request => <Col {...colLayout} key={request._id}><RequestCard requestInfo={request} deleteRequest={deleteRequest} addStudent={addStudent} batches={batches} courses={courses} /></Col>)
+			requests.map(request => <Col {...colLayout} key={request._id}><RequestCard requestInfo={request} deleteRequest={deleteRequest} addStudent={addStudent} batches={batches} courses={courses} students={students} /></Col>)
 		);
 		return (
 			<>
