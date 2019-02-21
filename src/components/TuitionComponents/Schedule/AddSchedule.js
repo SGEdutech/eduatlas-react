@@ -158,8 +158,8 @@ class AddSchedule extends Component {
 
 
 		const scheduleInps = keys.map((k, index) => (
-			<Row key={k} type="flex" justify="space-around" align="bottom">
-				<Col {...scheduleColLayout} className="p-1">
+			<Row gutter={16} key={k} type="flex" justify="space-around" align="bottom">
+				<Col {...scheduleColLayout} >
 					<Form.Item
 						label="Day"
 						hasFeedback={true}>
@@ -174,7 +174,7 @@ class AddSchedule extends Component {
 						)}
 					</Form.Item>
 				</Col>
-				<Col {...scheduleColLayout} className="p-1">
+				<Col {...scheduleColLayout} >
 					<Form.Item
 						label="From Time">
 						{getFieldDecorator('fromTime_' + k, {
@@ -190,7 +190,7 @@ class AddSchedule extends Component {
 						)}
 					</Form.Item>
 				</Col>
-				<Col {...scheduleColLayout} className="p-1">
+				<Col {...scheduleColLayout} >
 					<Form.Item
 						label="To Time">
 						{getFieldDecorator('toTime_' + k, {
@@ -206,7 +206,7 @@ class AddSchedule extends Component {
 						)}
 					</Form.Item>
 				</Col>
-				<Col {...scheduleColLayout} className="p-1">
+				<Col {...scheduleColLayout} >
 					<Form.Item
 						label="Topic"
 						hasFeedback={true}>
@@ -219,7 +219,7 @@ class AddSchedule extends Component {
 						)}
 					</Form.Item>
 				</Col>
-				<Col {...scheduleColLayout} className="p-1">
+				<Col {...scheduleColLayout} >
 					<Form.Item
 						label="Faculty"
 						hasFeedback={true}>
@@ -232,7 +232,7 @@ class AddSchedule extends Component {
 						)}
 					</Form.Item>
 				</Col>
-				<Col className="p-1">
+				<Col >
 					<Form.Item>
 						<Icon
 							className="dynamic-delete-button"
@@ -246,56 +246,58 @@ class AddSchedule extends Component {
 		return (
 			<div className="container">
 				<Form onSubmit={this.handleSubmit} className="pt-3">
-					<Col {...colLayout} className="p-1">
-						<Form.Item
-							label="From Date">
-							<DatePicker format="DD-MM-YYYY" onChange={this.handleFromDateChange} className="w-100" />
-						</Form.Item>
-					</Col>
-					<Col {...colLayout} className="p-1">
-						<Form.Item
-							label="To Date"
-							hasFeedback={true}>
-							<DatePicker value={this.getToDate()} format="DD-MM-YYYY" className="w-100" disabled={true} />
-						</Form.Item>
-					</Col>
-					<Col className="p-1 mb-3" span={24} style={{ border: 'thick double #00bcd4' }}>
-						{scheduleInps}
-					</Col>
-					<Col span={24}>
-						<Form.Item>
-							<Button type="dashed" block onClick={this.add}>
-								<Icon type="plus" /> Add Another
-							</Button>
-						</Form.Item>
-					</Col>
-					<Col {...colLayout}>
-						<Form.Item
-							label="Batches"
-							hasFeedback={true}>
-							{getFieldDecorator('batches', {
-								rules: [{
-									required: true, message: 'Please input batch!'
-								}]
-							})(
-								<Select
-									mode="multiple"
-									placeholder="Please select batches">
-									{this.props.batches &&
-										this.props.batches.map(batch => <Option key={batch._id} value={batch._id}>{batch.code}</Option>)}
-								</Select>
-							)}
-						</Form.Item>
-					</Col>
-					<Col span={24}>
-						<Row type="flex" justify="end">
+					<Row gutter={16}>
+						<Col {...colLayout} >
+							<Form.Item
+								label="From Date">
+								<DatePicker format="DD-MM-YYYY" onChange={this.handleFromDateChange} className="w-100" />
+							</Form.Item>
+						</Col>
+						<Col {...colLayout} >
+							<Form.Item
+								label="To Date"
+								hasFeedback={true}>
+								<DatePicker value={this.getToDate()} format="DD-MM-YYYY" className="w-100" disabled={true} />
+							</Form.Item>
+						</Col>
+						<Col className="p-1 mb-3" span={24} style={{ border: 'thick double #00bcd4' }}>
+							{scheduleInps}
+						</Col>
+						<Col span={24}>
 							<Form.Item>
-								<Button type="primary" htmlType="submit">
-									Add Schedule(s)
+								<Button type="dashed" block onClick={this.add}>
+									<Icon type="plus" /> Add Another
 								</Button>
 							</Form.Item>
-						</Row>
-					</Col>
+						</Col>
+						<Col {...colLayout}>
+							<Form.Item
+								label="Batches"
+								hasFeedback={true}>
+								{getFieldDecorator('batches', {
+									rules: [{
+										required: true, message: 'Please input batch!'
+									}]
+								})(
+									<Select
+										mode="multiple"
+										placeholder="Please select batches">
+										{this.props.batches &&
+											this.props.batches.map(batch => <Option key={batch._id} value={batch._id}>{batch.code}</Option>)}
+									</Select>
+								)}
+							</Form.Item>
+						</Col>
+						<Col span={24}>
+							<Row type="flex" justify="end">
+								<Form.Item>
+									<Button type="primary" htmlType="submit">
+										Add Schedule(s)
+									</Button>
+								</Form.Item>
+							</Row>
+						</Col>
+					</Row>
 				</Form>
 			</div >
 		);
