@@ -33,7 +33,7 @@ class Communicator extends Component {
 						<Tab label="Add" />
 					</Tabs>
 				</AppBar>
-				{value === 0 && <Announcements messageInfo={this.props.messageInfo} announcements={[]} />}
+				{value === 0 && <Announcements messageInfo={this.props.messageInfo} announcements={this.props.notifications} />}
 				{value === 1 && <NewAnnouncement messageInfo={this.props.messageInfo} batches={this.props.batches} students={this.props.students} addNotification={this.props.addNotification} />}
 			</>
 		);
@@ -44,7 +44,8 @@ function mapStateToProps(state) {
 	return {
 		batches: state.batch.batches,
 		messageInfo: state.messageInfo,
-		students: state.student.students
+		notifications: state.notification.notifications,
+		students: state.student.students,
 	};
 }
 
