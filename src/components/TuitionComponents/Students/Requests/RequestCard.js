@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 
 import IconsWithTooltip from '../../../SharedComponents/IconsWithTooltip';
 
-import { addStudent } from '../../../../redux/actions/studentActions';
-
 import sanatizeFormObj from '../../../../scripts/sanatize-form-obj';
 
 import {
@@ -21,7 +19,7 @@ const Option = Select.Option;
 class RequestCard extends Component {
 	handleSubmit = e => {
 		e.preventDefault();
-		const { addStudent, batches, form } = this.props;
+		const { addStudent, batches, courses, form } = this.props;
 		form.validateFieldsAndScroll((err, values) => {
 			if (err) {
 				console.error(err);
@@ -29,9 +27,13 @@ class RequestCard extends Component {
 			}
 			sanatizeFormObj(values);
 			const batchInfo = batches.find(batch => batch._id === values.batchId);
-			// TODO: Throw error
 			if (Boolean(batchInfo) === false) return;
+			const courseInfo = courses.find(course => course._id === batchInfo.courseId);
+			if (Boolean(courseInfo) === false) return;
+			// TODO: Throw error
 			values.batchInfo = { batchId: batchInfo._id, courseId: batchInfo.courseId };
+			values.courseCode = courseInfo.code;
+			values.courseFee = courseInfo.fee;
 			delete values.batchId;
 			addStudent(values);
 		});
