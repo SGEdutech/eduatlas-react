@@ -28,13 +28,11 @@ class RequestCard extends Component {
 				return;
 			}
 			sanatizeFormObj(values);
-			if (values.batchId) {
-				const batchInfo = batches.find(batch => batch._id === values.batchId);
-				// TODO: Throw error
-				if (Boolean(batchInfo) === false) return;
-				values.batchInfo = { batchId: batchInfo._id, courseId: batchInfo.courseId };
-				delete values.batchId;
-			}
+			const batchInfo = batches.find(batch => batch._id === values.batchId);
+			// TODO: Throw error
+			if (Boolean(batchInfo) === false) return;
+			values.batchInfo = { batchId: batchInfo._id, courseId: batchInfo.courseId };
+			delete values.batchId;
 			addStudent(values);
 		});
 	}
@@ -83,7 +81,9 @@ class RequestCard extends Component {
 						)}
 					</Form.Item>
 					<Form.Item >
-						{getFieldDecorator('batchId')(
+						{getFieldDecorator('batchId', {
+							rules: [{ required: true, message: 'Please select batch!' }]
+						})(
 							<Select placeholder="Select a batch">
 								{batches.map(batch => <Option key={batch._id} value={batch._id}>{batch.code}</Option>)}
 							</Select>
