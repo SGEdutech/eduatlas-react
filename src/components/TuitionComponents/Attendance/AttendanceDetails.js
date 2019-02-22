@@ -34,7 +34,7 @@ class AttendanceDetails extends Component {
 			const studentsAbsent = [];
 			const keys = Object.keys(values);
 			keys.forEach(key => {
-				if (values[key] === false) return;
+				if (values[key]) return;
 				studentsAbsent.push(key);
 			});
 			editSchedule(courseId, batchId, scheduleId, { studentsAbsent });
@@ -76,7 +76,7 @@ class AttendanceDetails extends Component {
 										[
 											<Form.Item style={{ marginBottom: 0 }}>
 												{getFieldDecorator(student._id, {
-													initialValue: !student.isAbsent,
+													initialValue: student.isAbsent,
 													valuePropName: 'checked'
 												})(
 													<Switch />
@@ -87,11 +87,9 @@ class AttendanceDetails extends Component {
 									<List.Item.Meta
 										avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
 										title={student.name}
-										description={'Roll Number: ' + student.rollNumber}
-									/>
+										description={'Roll Number: ' + student.rollNumber}/>
 								</List.Item>
-							)}
-						/>
+							)} />
 						<Row type="flex" justify="end">
 							<Form.Item>
 								<Button type="primary" htmlType="submit">

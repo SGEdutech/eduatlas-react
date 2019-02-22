@@ -15,7 +15,6 @@ function ScheduleCard(props) {
 	if (isAttendance) {
 		iconsArray = [
 			<Link to={'/tuition/attendance/' + id}><IconsWithTooltip tooltipMessage="View" iconType="eye" /></Link>,
-			<IconsWithTooltip tooltipMessage="Add/Edit" iconType="usergroup-add" />
 		];
 	}
 
