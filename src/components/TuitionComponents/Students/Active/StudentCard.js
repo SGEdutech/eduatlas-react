@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 
 import IconsWithTooltip from '../../../SharedComponents/IconsWithTooltip';
 
+import fallBackDp from '../../../../fallback-dp.svg';
+
 import {
 	Avatar,
 	Card
@@ -23,7 +25,7 @@ function StudentCard(props) {
 			<Card
 				actions={iconsArray}>
 				<Meta
-					avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+					avatar={<Avatar src={fallBackDp} />}
 					title={name}
 					description={'Roll Number: ' + rollNumber}
 				/>

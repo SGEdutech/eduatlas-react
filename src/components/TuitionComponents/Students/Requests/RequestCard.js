@@ -69,7 +69,7 @@ class RequestCard extends Component {
 					]}
 					title={
 						<Meta
-							avatar={<Avatar src={"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"} />}
+							avatar={<Avatar src={fallBackDp} />}
 							title={name} />
 					}>
 					<Form.Item className="d-none">
