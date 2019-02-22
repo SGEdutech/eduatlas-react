@@ -76,7 +76,7 @@ class App extends Component {
 					<Route exact path="/login" component={Login}></Route>
 					<Route exact path="/signup" component={Signup}></Route>
 					<Route exact path="/student" component={StudentManager}></Route>
-					{/* <Route exact path="/receipt-config" component={ReceiptConfig}></Route> */}
+					<Route exact path="/receipt-config" component={ReceiptConfig}></Route>
 				</Switch>
 			</Router>
 		);

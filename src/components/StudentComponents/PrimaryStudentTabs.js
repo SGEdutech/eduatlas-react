@@ -68,7 +68,7 @@ class PrimaryTuitionTabs extends Component {
 						<Tab label="Notifications" />
 						<Tab label="Attendance" />
 						<Tab label="Enrollment and Fee" />
-						<Tab label="Study Material" />
+						{/* <Tab label="Study Material" /> */}
 					</Tabs>
 				</AppBar>
 				<Swipeable delta={20} onSwipedLeft={this.leftSwipe} onSwipedRight={this.rightSwipe} style={{ minHeight: '80vh' }}>
@@ -76,7 +76,7 @@ class PrimaryTuitionTabs extends Component {
 						{value === 0 && <Notifications notifications={notifications} studentEmail={studentInfo.email} />}
 						{value === 1 && <Attendance batches={batches} schedules={schedules} studentInfo={studentInfo} />}
 						{value === 2 && <EnrollmentAndFee courses={courses} studentInfo={studentInfo} />}
-						{value === 3 && <>study material</>}
+						{/* {value === 3 && <>study material</>} */}
 					</div>
 				</Swipeable>
 			</>

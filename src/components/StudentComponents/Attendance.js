@@ -51,7 +51,7 @@ export default class Attendance extends Component {
 			let totalClassesPassed = 0;
 			schedulesOfThisBatch.forEach(schedule => {
 				// Injecting status
-				if (moment().startOf('day').diff(schedule.date.startOf('day'), 'days') < 0) {
+				if (moment().startOf('day').diff(schedule.date.startOf('day'), 'days') < 1) {
 					schedule.status = 'scheduled';
 				} else if (schedule.studentsAbsent.find(studentAbsent => studentAbsent === studentInfo._id)) {
 					totalClassesPassed++;

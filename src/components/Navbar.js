@@ -87,7 +87,7 @@ class Navbar extends Component {
 					visible={this.state.visible}>
 					<List split={true} style={{ fontSize: 18 }}>
 						<Link to={`/edit-profile/${user.userInfo._id}`}><span style={{ color: '#000' }}><NavListItem iconType="edit" content="Edit Profile" /></span></Link>
-						<NavListItem iconType="form" content="Receipt Config" />
+						<Link to='/receipt-config'><span style={{ color: '#000' }}><NavListItem iconType="form" content="Receipt Config" /></span></Link>
 						<NavListItem iconType="logout" content="Logout" onClick={this.handleLogout} />
 					</List>
 				</Drawer>
