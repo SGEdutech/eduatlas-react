@@ -81,3 +81,12 @@ export function deleteInstallment(studentId, paymentId, installmentId) {
 		});
 	};
 }
+
+export function mailReceipt(docDef, email) {
+	return dispatch => {
+		dispatch({
+			type: 'SEND_RECEIPT',
+			payload: axios.post('https://eduatlas.com/tuition/email-receipt', { docDef: JSON.stringify(docDef), email })
+		});
+	};
+}

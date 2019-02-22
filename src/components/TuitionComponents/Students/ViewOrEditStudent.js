@@ -3,7 +3,11 @@ import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import { compose } from 'redux';
 
-import { editStudent, editPayment, deletePayment, editInstallment, deleteInstallment } from '../../../redux/actions/studentActions';
+import {
+	editStudent, editPayment, deletePayment,
+	editInstallment, deleteInstallment, mailReceipt
+} from '../../../redux/actions/studentActions';
+
 
 import Navbar from '../../Navbar';
 import PaymentCard from './ViewOrEditStudent/PaymentCard';
@@ -208,6 +212,7 @@ class ViewOrEditStudent extends Component {
 									courses={this.props.courses} payment={payment} editPayment={this.props.editPayment}
 									deletePayment={this.props.deletePayment} deleteInstallment={this.props.deleteInstallment}
 									editInstallment={this.props.editInstallment} key={payment._id} students={this.props.students}
+									mailReceipt={this.props.mailReceipt}
 								/>
 							)}
 						</Col>
@@ -220,4 +225,6 @@ class ViewOrEditStudent extends Component {
 
 const mapStateToProps = state => ({ students: state.student.students, courses: state.course.courses });
 
-export default compose(Form.create({ name: 'edit-student' }), withRouter, connect(mapStateToProps, { editStudent, editPayment, editInstallment, deleteInstallment, deletePayment }))(ViewOrEditStudent);
+export default compose(Form.create({ name: 'edit-student' }), withRouter, connect(mapStateToProps,
+	{ editStudent, editPayment, editInstallment, deleteInstallment, deletePayment, mailReceipt }
+))(ViewOrEditStudent);

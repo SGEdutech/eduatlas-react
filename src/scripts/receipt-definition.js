@@ -65,7 +65,7 @@ function getFromAndToDetails(receiptConfig, studentInfo) {
 	const { businessName, addressLine1, addressLine2, city, state, pinCode, gstNumber } = receiptConfig;
 	if (businessName) toReturn.push(businessName);
 	if (addressLine1) toReturn.push(addressLine1);
-	if (addressLine2) toReturn.push(addressLine1);
+	if (addressLine2) toReturn.push(addressLine2);
 	if (city) toReturn.push(city);
 	if (state) toReturn.push(state);
 	if (pinCode) toReturn.push(pinCode);

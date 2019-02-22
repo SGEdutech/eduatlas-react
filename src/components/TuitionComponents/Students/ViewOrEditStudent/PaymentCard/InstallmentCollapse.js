@@ -19,6 +19,7 @@ import {
 	Row,
 	Select
 } from 'antd';
+
 const { Option } = Select;
 const confirm = Modal.confirm;
 
@@ -41,8 +42,8 @@ class InstallmentCollapse extends Component {
 		editable: false
 	}
 
-	handleDownloadBtnClick = () => {
-		const { installment, match, students, courseCode } = this.props;
+	handleMailReceiptBtnClick = () => {
+		const { installment, match, mailReceipt, students, courseCode } = this.props;
 		installment.courseCode = courseCode;
 		const { studentId } = match.params;
 		const studentInfo = students.find(student => studentId === student._id);
@@ -52,11 +53,7 @@ class InstallmentCollapse extends Component {
 			gstNumber: '23m234jbg234j2'
 		};
 		const docDefinition = getDocDef(receiptConfig, studentInfo, installment);
-		pdfMake.createPdf(docDefinition).download('receipt.pdf');
-	}
-
-	handleMailReceiptBtnClick = () => {
-
+		mailReceipt(docDefinition, studentInfo.email);
 	}
 
 	showDeleteConfirm = (paymentId, installmentId) => {
@@ -108,9 +105,8 @@ class InstallmentCollapse extends Component {
 	}
 
 	render() {
-		const { getFieldDecorator } = this.props.form;
-		const { installment } = this.props;
-		const { feeCollected, modeOfPayment, bank, dateOfCheque, chequeNumber, cardNumber, transactionId, createdAt } = installment;
+		const { form: { getFieldDecorator }, installment } = this.props;
+		const { feeCollected, modeOfPayment, bank, dateOfCheque, chequeNumber, transactionId } = installment;
 		const { editable } = this.state;
 
 		return (
@@ -262,9 +258,6 @@ class InstallmentCollapse extends Component {
 								</Row>
 								<Row type="flex" justify="end">
 									<Form.Item>
-										<Button className="mx-1" type="primary" onClick={this.handleDownloadBtnClick}>
-											Download Receipt
-										</Button>
 										<Button type="primary" onClick={this.handleMailReceiptBtnClick}>
 											Mail Receipt to student
 										</Button>
