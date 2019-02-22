@@ -11,6 +11,7 @@ import { Modal } from 'antd';
 
 import { addStudent, deleteStudent } from '../../redux/actions/studentActions';
 import { deleteRequest } from '../../redux/actions/requestActions';
+import { addStudentInBatch } from '../../redux/actions/batchActions';
 
 import Active from './Students/Active';
 import AddStudent from './Students/AddStudent';
@@ -40,7 +41,7 @@ class Students extends Component {
 
 	render() {
 		const { value } = this.state;
-		const { request, addStudent, student, batch, course, deleteStudent, messageInfo } = this.props;
+		const { request, addStudent, student, batch, course, deleteStudent, messageInfo, addStudentInBatch } = this.props;
 		return (
 			<>
 				<AppBar color="default" className="z101">
@@ -59,7 +60,7 @@ class Students extends Component {
 				</AppBar>
 				{value === 0 && <Requests students={student.students} requests={request.requests} addStudent={addStudent} deleteRequest={this.showDeleteConfirm} batches={batch.batches} courses={course.courses} />}
 				{value === 1 && <Active batches={batch.batches} messageInfo={messageInfo} studentsInfo={student} deleteStudent={deleteStudent} />}
-				{value === 2 && <Pending batches={batch.batches} messageInfo={messageInfo} studentsInfo={student} />}
+				{value === 2 && <Pending addStudentInBatch={addStudentInBatch} batches={batch.batches} messageInfo={messageInfo} studentsInfo={student} />}
 				{value === 3 && <AddStudent students={student.students} />}
 			</>
 		);
@@ -77,4 +78,4 @@ function mapStateToProps(state) {
 	};
 }
 
-export default connect(mapStateToProps, { addStudent, deleteStudent, deleteRequest })(Students);
+export default connect(mapStateToProps, { addStudent, deleteStudent, deleteRequest, addStudentInBatch })(Students);

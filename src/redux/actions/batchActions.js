@@ -27,3 +27,12 @@ export function deleteBatch(courseId, batchId) {
 		});
 	};
 }
+
+export function addStudentInBatch(courseId, batchId, studentId) {
+	return dispatch => {
+		dispatch({
+			type: 'ADD_STUDUNT_IN_BATCH',
+			payload: axios.post(`https://eduatlas.com/tuition/${tuitionId}/course/${courseId}/batch/${batchId}/student`, { students: studentId })
+		});
+	};
+}

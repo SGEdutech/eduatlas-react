@@ -20,14 +20,17 @@ const Option = Select.Option;
 class PendingCard extends Component {
 	handleSubmit = e => {
 		e.preventDefault();
-		const { form } = this.props;
+		const { form, addStudentInBatch, batches } = this.props;
 		form.validateFieldsAndScroll((err, values) => {
 			if (err) {
 				console.error(err);
 				return;
 			}
 			sanatizeFormObj(values);
-			console.log(values);
+			const { batchId, studentId } = values;
+			const batchInfo = batches.find(batch => batch._id === batchId);
+			const courseId = batchInfo.courseId;
+			addStudentInBatch(courseId, batchId, studentId);
 		});
 	}
 

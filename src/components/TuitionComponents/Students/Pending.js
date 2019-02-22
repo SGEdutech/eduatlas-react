@@ -27,22 +27,8 @@ class Pending extends Component {
 
 	handleSearchInpChange = e => this.setState({ search: e.target.value });
 
-	showDeleteConfirm = id => {
-		const { deleteStudent } = this.props;
-		confirm({
-			title: 'Are You Sure?',
-			content: 'This action is permanent!',
-			okText: 'Yes',
-			okType: 'danger',
-			cancelText: 'No',
-			onOk() {
-				deleteStudent(id);
-			}
-		});
-	};
-
 	render() {
-		const { batches, messageInfo, studentsInfo } = this.props;
+		const { batches, messageInfo, studentsInfo, addStudentInBatch } = this.props;
 
 		// filter out students with batches
 		const studentsToShow = studentsInfo.students.filter(student => {
@@ -68,7 +54,7 @@ class Pending extends Component {
 						name={name}
 						rollNumber={rollNumber}
 						email={email}
-						deleteStudent={this.showDeleteConfirm} />
+						addStudentInBatch={addStudentInBatch} />
 				</div>
 			</Col>
 		));
