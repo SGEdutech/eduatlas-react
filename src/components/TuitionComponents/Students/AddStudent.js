@@ -416,7 +416,11 @@ class AddStudent extends Component {
 						{...formItemLayout}
 						label="Fee Collected"
 						hasFeedback={true}>
-						{getFieldDecorator('feeCollected')(
+						{getFieldDecorator('feeCollected', {
+							rules: [{
+								required: task === 'add-installment', message: 'Please input amount!'
+							}]
+						})(
 							<InputNumber className="w-100" step={500} min={0} onChange={this.handleFeeCollectedChange} formatter={value => `₹${value}`} />
 						)}
 					</Form.Item>
@@ -427,6 +431,9 @@ class AddStudent extends Component {
 						label="Mode Of Payment"
 						hasFeedback={true}>
 						{getFieldDecorator('modeOfPayment', {
+							rules: [{
+								required: task === 'add-installment', message: 'Please select mode!'
+							}]
 							// initialValue: this.state.modeOfPayment
 						})(
 							<Select onChange={this.handleModeOfPaymentChange} placeholder="select mode">

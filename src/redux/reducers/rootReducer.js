@@ -8,6 +8,7 @@ import notification from './notification';
 import request from './request';
 import student from './student';
 import schedule from './schedule';
+import tuitionInfo from './tuitionInfo';
 import user from './user';
 
 export default combineReducers({
@@ -19,5 +20,6 @@ export default combineReducers({
 	request,
 	student,
 	schedule,
+	tuitionInfo,
 	user
 });

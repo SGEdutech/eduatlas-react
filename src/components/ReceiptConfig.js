@@ -5,25 +5,18 @@ import { compose } from 'redux';
 
 import sanatizeFormObj from '../scripts/sanatize-form-obj';
 
+import { editReceipt } from '../redux/actions/tuitionInfoActions';
+
 import Navbar from './Navbar';
 
 import {
 	Button,
-	Checkbox,
 	Col,
-	Divider,
 	Form,
 	Input,
 	InputNumber,
 	Row
 } from 'antd';
-
-const formItemLayout = {
-	labelCol: {
-	},
-	wrapperCol: {
-	}
-};
 
 const colLayout = {
 	xs: 24,
@@ -33,23 +26,30 @@ const colLayout = {
 class ReceiptConfig extends Component {
 	handleSubmit = e => {
 		e.preventDefault();
-		const { form, history } = this.props;
+		const { editReceipt, form, history } = this.props;
 		form.validateFieldsAndScroll((err, values) => {
 			if (err) {
 				console.error(err);
 				return;
 			}
 			sanatizeFormObj(values);
-			console.log(values);
-			// history.goBack();
+			editReceipt(values);
+			history.goBack();
 		});
 	}
 
 	render() {
 		const { getFieldDecorator } = this.props.form;
 		// TODO: add terms and conditions Arr
-		// const { businessName, addressLine1, addressLine2, city, state, pinCode, gstNumber } = this.props.userInfo;
-
+		const {
+			receiptConfigBusinessName,
+			receiptConfigAddressLine1,
+			receiptConfigAddressLine2,
+			receiptConfigCity,
+			receiptConfigState,
+			receiptConfigPinCode,
+			receiptConfigGstNumber
+		} = this.props.tuitionInfo;
 		return (
 			<>
 				<Navbar renderBackBtn={true} navText="Receipt Config" />
@@ -58,11 +58,10 @@ class ReceiptConfig extends Component {
 						<Row gutter={16}>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="Business Name"
 									hasFeedback={true}>
-									{getFieldDecorator('businessName', {
-										// initialValue: businessName,
+									{getFieldDecorator('receiptConfigBusinessName', {
+										initialValue: receiptConfigBusinessName,
 										rules: [{
 											required: true, message: 'Please provide name!'
 										}]
@@ -73,11 +72,10 @@ class ReceiptConfig extends Component {
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="Address Line 1"
 									hasFeedback={true}>
-									{getFieldDecorator('addressLine1', {
-										// initialValue: addressLine1
+									{getFieldDecorator('receiptConfigAddressLine1', {
+										initialValue: receiptConfigAddressLine1
 									})(
 										<Input />
 									)}
@@ -85,11 +83,10 @@ class ReceiptConfig extends Component {
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="Address Line 2"
 									hasFeedback={true}>
-									{getFieldDecorator('addressLine2', {
-										// initialValue: addressLine2
+									{getFieldDecorator('receiptConfigAddressLine2', {
+										initialValue: receiptConfigAddressLine2
 									})(
 										<Input />
 									)}
@@ -97,11 +94,10 @@ class ReceiptConfig extends Component {
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="City"
 									hasFeedback={true}>
-									{getFieldDecorator('city', {
-										// initialValue: city
+									{getFieldDecorator('receiptConfigCity', {
+										initialValue: receiptConfigCity
 									})(
 										<Input />
 									)}
@@ -109,11 +105,10 @@ class ReceiptConfig extends Component {
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="State"
 									hasFeedback={true}>
-									{getFieldDecorator('state', {
-										// initialValue: state
+									{getFieldDecorator('receiptConfigState', {
+										initialValue: receiptConfigState
 									})(
 										<Input />
 									)}
@@ -121,11 +116,10 @@ class ReceiptConfig extends Component {
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="Pin Code"
 									hasFeedback={true}>
-									{getFieldDecorator('pinCode', {
-										// initialValue: pinCode
+									{getFieldDecorator('receiptConfigPinCode', {
+										initialValue: receiptConfigPinCode
 									})(
 										<InputNumber className="w-100" />
 									)}
@@ -133,11 +127,10 @@ class ReceiptConfig extends Component {
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="Tax ID/GST"
 									hasFeedback={true}>
-									{getFieldDecorator('gstNumber', {
-										// initialValue: gstNumber
+									{getFieldDecorator('receiptConfigGstNumber', {
+										initialValue: receiptConfigGstNumber
 									})(
 										<Input />
 									)}
@@ -162,10 +155,11 @@ class ReceiptConfig extends Component {
 
 function mapStateToProps(state) {
 	return {
+		tuitionInfo: state.tuitionInfo,
 		userInfo: state.user.userInfo
 	};
 }
 
-export default compose(Form.create({ name: 'receipt-config' }), withRouter, connect(mapStateToProps, {}))(ReceiptConfig);
+export default compose(Form.create({ name: 'receipt-config' }), withRouter, connect(mapStateToProps, { editReceipt }))(ReceiptConfig);
 
 

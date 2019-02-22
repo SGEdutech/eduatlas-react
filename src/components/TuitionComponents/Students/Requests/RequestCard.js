@@ -4,6 +4,8 @@ import IconsWithTooltip from '../../../SharedComponents/IconsWithTooltip';
 
 import sanatizeFormObj from '../../../../scripts/sanatize-form-obj';
 
+import fallBackDp from '../../../../fallback-dp.svg';
+
 import {
 	Avatar,
 	Card,
@@ -67,7 +69,7 @@ class RequestCard extends Component {
 					]}
 					title={
 						<Meta
-							avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+							avatar={<Avatar src={"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"} />}
 							title={name} />
 					}>
 					<Form.Item className="d-none">
