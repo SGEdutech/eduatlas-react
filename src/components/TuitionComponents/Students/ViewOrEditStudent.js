@@ -212,7 +212,7 @@ class ViewOrEditStudent extends Component {
 									courses={this.props.courses} payment={payment} editPayment={this.props.editPayment}
 									deletePayment={this.props.deletePayment} deleteInstallment={this.props.deleteInstallment}
 									editInstallment={this.props.editInstallment} key={payment._id} students={this.props.students}
-									mailReceipt={this.props.mailReceipt}
+									mailReceipt={this.props.mailReceipt} tuitionInfo={this.props.tuitionInfo}
 								/>
 							)}
 						</Col>
@@ -223,7 +223,9 @@ class ViewOrEditStudent extends Component {
 	}
 }
 
-const mapStateToProps = state => ({ students: state.student.students, courses: state.course.courses });
+const mapStateToProps = state => ({
+	students: state.student.students, courses: state.course.courses, tuitionInfo: state.tuitionInfo
+});
 
 export default compose(Form.create({ name: 'edit-student' }), withRouter, connect(mapStateToProps,
 	{ editStudent, editPayment, editInstallment, deleteInstallment, deletePayment, mailReceipt }

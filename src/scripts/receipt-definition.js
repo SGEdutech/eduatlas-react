@@ -62,14 +62,14 @@ function getDescription(installmentInfo) {
 
 function getFromAndToDetails(receiptConfig, studentInfo) {
 	const toReturn = [{ text: 'From', style: 'bigger' }];
-	const { businessName, addressLine1, addressLine2, city, state, pinCode, gstNumber } = receiptConfig;
-	if (businessName) toReturn.push(businessName);
-	if (addressLine1) toReturn.push(addressLine1);
-	if (addressLine2) toReturn.push(addressLine2);
-	if (city) toReturn.push(city);
-	if (state) toReturn.push(state);
-	if (pinCode) toReturn.push(pinCode);
-	if (gstNumber) toReturn.push('Tax/GST ID: ' + gstNumber);
+	const { receiptConfigBusinessName, receiptConfigAddressLine1, receiptConfigAddressLine2, receiptConfigCity, receiptConfigState, receiptConfigPinCode, receiptConfigGstNumber } = receiptConfig;
+	if (receiptConfigBusinessName) toReturn.push(receiptConfigBusinessName);
+	if (receiptConfigAddressLine1) toReturn.push(receiptConfigAddressLine1);
+	if (receiptConfigAddressLine2) toReturn.push(receiptConfigAddressLine2);
+	if (receiptConfigCity) toReturn.push(receiptConfigCity);
+	if (receiptConfigState) toReturn.push(receiptConfigState);
+	if (receiptConfigPinCode) toReturn.push(receiptConfigPinCode);
+	if (receiptConfigGstNumber) toReturn.push('Tax/GST ID: ' + receiptConfigGstNumber);
 
 	toReturn.push({ text: 'To', style: 'bigger' });
 	toReturn.push(titleCase(studentInfo.name), 'India');

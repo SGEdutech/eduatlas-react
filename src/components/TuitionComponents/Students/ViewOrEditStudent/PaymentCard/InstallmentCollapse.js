@@ -43,16 +43,11 @@ class InstallmentCollapse extends Component {
 	}
 
 	handleMailReceiptBtnClick = () => {
-		const { installment, match, mailReceipt, students, courseCode } = this.props;
+		const { installment, match, mailReceipt, students, courseCode, tuitionInfo } = this.props;
 		installment.courseCode = courseCode;
 		const { studentId } = match.params;
 		const studentInfo = students.find(student => studentId === student._id);
-		const receiptConfig = {
-			businessName: 'Shri Ram Academy', addressLine1: '23 flamingo pitampura',
-			addressLine2: 'New Delhi', city: 'Delhi', pinCode: 234567,
-			gstNumber: '23m234jbg234j2'
-		};
-		const docDefinition = getDocDef(receiptConfig, studentInfo, installment);
+		const docDefinition = getDocDef(tuitionInfo, studentInfo, installment);
 		mailReceipt(docDefinition, studentInfo.email);
 	}
 
