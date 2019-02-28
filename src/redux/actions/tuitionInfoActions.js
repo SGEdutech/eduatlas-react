@@ -5,7 +5,7 @@ export function editReceipt(receiptInfo) {
 	return dispatch => {
 		dispatch({
 			type: 'EDIT_TUITION_INFO',
-			payload: axios.put(`https://eduatlas.com/tuition/${tuitionId}/receipt`, receiptInfo)
+			payload: axios.put(`http://localhost:6868/tuition/${tuitionId}/receipt`, receiptInfo)
 		});
 	};
 }

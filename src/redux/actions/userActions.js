@@ -4,7 +4,7 @@ export function getUserInfo() {
 	return dispatch => {
 		dispatch({
 			type: 'FETCH_USER',
-			payload: axios.post('https://eduatlas.com/user/info')
+			payload: axios.post('http://localhost:6868/user/info')
 		});
 	};
 }
@@ -13,7 +13,7 @@ export function editProfile(userId, editedUser) {
 	return dispatch => {
 		dispatch({
 			type: 'EDIT_PROFILE',
-			payload: axios.put(`https://eduatlas.com/user/${userId}`, editedUser)
+			payload: axios.put(`http://localhost:6868/user/${userId}`, editedUser)
 		});
 	};
 }
@@ -22,7 +22,7 @@ export function signUp(userData) {
 	return dispatch => {
 		dispatch({
 			type: 'USER_SIGNUP',
-			payload: axios.post('https://eduatlas.com/auth/local/signup', userData)
+			payload: axios.post('http://localhost:6868/auth/local/signup', userData)
 		});
 	};
 }
@@ -31,7 +31,7 @@ export function logIn(credentials) {
 	return dispatch => {
 		dispatch({
 			type: 'USER_LOGIN',
-			payload: axios.post('https://eduatlas.com/auth/local/login', credentials)
+			payload: axios.post('http://localhost:6868/auth/local/login', credentials)
 		});
 	};
 }
@@ -40,7 +40,7 @@ export function logOut() {
 	return dispatch => {
 		dispatch({
 			type: 'USER_LOGOUT',
-			payload: axios.post('https://eduatlas.com/auth/local/logout')
+			payload: axios.post('http://localhost:6868/auth/local/logout')
 		});
 	};
 }

@@ -18,7 +18,7 @@ export function addResource(newResource) {
 	return dispatch => {
 		dispatch({
 			type: 'ADD_RESOURCE',
-			payload: axios.post(`https://eduatlas.com/tuition/${tuitionId}/resource`, form_data, config)
+			payload: axios.post(`http://localhost:6868/tuition/${tuitionId}/resource`, form_data, config)
 		});
 	};
 }
@@ -27,7 +27,7 @@ export function deleteResource(id) {
 	return dispatch => {
 		dispatch({
 			type: 'DELETE_RESOURCE',
-			payload: axios.delete(`https://eduatlas.com/tuition/${tuitionId}/resource/${id}`)
+			payload: axios.delete(`http://localhost:6868/tuition/${tuitionId}/resource/${id}`)
 		});
 	};
 }
