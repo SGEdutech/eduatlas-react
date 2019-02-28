@@ -2,10 +2,23 @@ import axios from 'axios';
 import { tuitionId } from '../../config.json';
 
 export function addResource(newResource) {
+	const config = {
+		headers: {
+			'content-type': 'multipart/form-data'
+		}
+	};
+	const form_data = new FormData();
+
+	for (const key in newResource) {
+		if (key === 'file') form_data.append('file', newResource[key], newResource[key].name);
+		form_data.append(key, newResource[key]);
+	}
+	console.log(form_data)
+	return
 	return dispatch => {
 		dispatch({
 			type: 'ADD_RESOURCE',
-			payload: axios.post(`https://eduatlas.com/tuition/${tuitionId}/resource`, newResource)
+			payload: axios.post(`https://eduatlas.com/tuition/${tuitionId}/resource`, form_data, config)
 		});
 	};
 }

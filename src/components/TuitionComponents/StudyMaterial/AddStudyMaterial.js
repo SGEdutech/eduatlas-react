@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import StudentSelector from '../Communicator/NewAnnouncement/StudentSelector';
 
+import sanatizeFormObj from '../../../scripts/sanatize-form-obj';
+
 import {
 	Button,
 	Col,
@@ -59,13 +61,16 @@ class AddStudyMaterial extends Component {
 
 	handleSubmit = e => {
 		e.preventDefault();
-		const { form } = this.props;
+		const { addResource, form } = this.props;
+		const { selectedFile } = this.state;
 		form.validateFieldsAndScroll((err, values) => {
 			if (err) {
 				console.error(err);
 				return;
 			}
-			console.log(values);
+			sanatizeFormObj(values);
+			values.file = selectedFile;
+			addResource(values);
 		});
 	}
 
@@ -85,7 +90,6 @@ class AddStudyMaterial extends Component {
 				nextState.selectedFile = null;
 				nextState.selectedFileList = [];
 		}
-		console.log(nextState.selectedFile)
 		this.setState(() => nextState);
 	}
 

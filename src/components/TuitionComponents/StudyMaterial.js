@@ -7,7 +7,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
-import { deleteResource } from '../../redux/actions/resourceActions';
+import { addResource, deleteResource } from '../../redux/actions/resourceActions';
 
 import AddStudyMaterial from './StudyMaterial/AddStudyMaterial';
 import ViewOrDeleteMaterials from './StudyMaterial/ViewOrDeleteMaterials';
@@ -19,7 +19,7 @@ class StudyMaterial extends Component {
 
 	render() {
 		const { value } = this.state;
-		const { batches, deleteResource, messageInfo, resources, students } = this.props;
+		const { addResource, batches, deleteResource, messageInfo, resources, students } = this.props;
 
 		return (
 			<>
@@ -36,7 +36,7 @@ class StudyMaterial extends Component {
 					</Tabs>
 				</AppBar>
 				{value === 0 && <ViewOrDeleteMaterials deleteResource={deleteResource} messageInfo={messageInfo} resources={resources} />}
-				{value === 1 && <AddStudyMaterial batches={batches} students={students} />}
+				{value === 1 && <AddStudyMaterial addResource={addResource} batches={batches} students={students} />}
 			</>
 		);
 	}
@@ -52,4 +52,4 @@ function mapStateToProps(state) {
 	};
 }
 
-export default connect(mapStateToProps, { deleteResource })(StudyMaterial);
+export default connect(mapStateToProps, { addResource, deleteResource })(StudyMaterial);
