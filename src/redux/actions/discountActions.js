@@ -5,7 +5,7 @@ export function addDiscount(newDiscount) {
 	return dispatch => {
 		dispatch({
 			type: 'ADD_DISCOUNT',
-			payload: axios.post(`http://localhost:6868/tuition/${tuitionId}/discount`, newDiscount)
+			payload: axios.post(`https://eduatlas.com/tuition/${tuitionId}/discount`, newDiscount)
 		});
 	};
 }
@@ -14,7 +14,7 @@ export function editDiscount(discountId, editedDiscount) {
 	return dispatch => {
 		dispatch({
 			type: 'EDIT_DISCOUNT',
-			payload: axios.put(`http://localhost:6868/tuition/${tuitionId}/discount/${discountId}`, editedDiscount)
+			payload: axios.put(`https://eduatlas.com/tuition/${tuitionId}/discount/${discountId}`, editedDiscount)
 		});
 	};
 }
@@ -23,7 +23,7 @@ export function deleteDiscount(id) {
 	return dispatch => {
 		dispatch({
 			type: 'DELETE_DISCOUNT',
-			payload: axios.delete(`http://localhost:6868/tuition/${tuitionId}/discount/${id}`)
+			payload: axios.delete(`https://eduatlas.com/tuition/${tuitionId}/discount/${id}`)
 		});
 	};
 }
