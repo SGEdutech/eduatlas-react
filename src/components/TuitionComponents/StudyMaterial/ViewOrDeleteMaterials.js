@@ -4,33 +4,51 @@ import FileCard from './ViewOrDeleteMaterials/FileCard';
 import VideoCard from './ViewOrDeleteMaterials/VideoCard';
 
 import {
-	Button,
+	Card,
 	Col,
-	Form,
-	Icon,
-	Input,
+	Empty,
 	Row,
 	Select,
-	Switch,
-	Upload
+	Skeleton
 } from 'antd';
 const { Option } = Select;
 
 const colLayout = {
 	xs: 24,
-	md: 12
-};
-
-const cardColLayout = {
-	xs: 24,
-	sm: 12,
-	md: 8,
-	xl: 6,
-	xxl: 6
+	md: 8
 };
 
 class ViewOrDeleteMaterials extends Component {
 	render() {
+		const { deleteResource, messageInfo, resources } = this.props;
+		const resourcesJsx = resources.map(({ _id, path, title, students, description, type, ytUrl }) => {
+			if (type !== 'video') return <Col {...colLayout} key={_id}>
+				<FileCard _id={_id} path={path} title={title} students={students} description={description} type={type} ytUrl={ytUrl} 
+					deleteResource={deleteResource} />
+			</Col>;
+		});
+		const videoResourcesJsx = resources.map(({ _id, path, title, students, description, type, ytUrl }) => {
+			if (type === 'video') return <Col {...colLayout} key={_id}>
+				<VideoCard _id={_id} path={path} title={title} students={students} description={description} type={type} ytUrl={ytUrl} />
+			</Col>;
+		});
+
+		const emptyJsx = <Empty className="mt-4"
+			image="https://gw.alipayobjects.com/mdn/miniapp_social/afts/img/A*pevERLJC9v0AAAAAAAAAAABjAQAAAQ/original"
+			description={<span>Nothing is better than something...</span>}></Empty>;
+
+		const skeletonCards = [];
+		for (let i = 0; i < 5; i++) {
+			skeletonCards.push(
+				<Col {...colLayout} key={i}>
+					<Card className="mb-3">
+						<Skeleton loading={true} active>
+						</Skeleton>
+					</Card>
+				</Col>
+			);
+		}
+
 		return (
 			<div className="container">
 				<Row className="mb-3" type="flex" align="middle" justify="center">
@@ -48,32 +66,10 @@ class ViewOrDeleteMaterials extends Component {
 					</Col>
 				</Row>
 				<Row gutter={16}>
-					<Col {...cardColLayout}>
-						<FileCard />
-					</Col>
-					<Col {...cardColLayout}>
-						<FileCard />
-					</Col>
-					<Col {...cardColLayout}>
-						<FileCard />
-					</Col>
-					<Col {...cardColLayout}>
-						<FileCard />
-					</Col>
-					<Col {...cardColLayout}>
-						<FileCard />
-					</Col>
+					{messageInfo.fetching ? skeletonCards : (resources.length === 0 ? emptyJsx : resourcesJsx)}
 				</Row>
 				<Row gutter={16}>
-					<Col {...cardColLayout}>
-						<VideoCard />
-					</Col>
-					<Col {...cardColLayout}>
-						<VideoCard />
-					</Col>
-					<Col {...cardColLayout}>
-						<VideoCard />
-					</Col>
+					{messageInfo.fetching ? skeletonCards : videoResourcesJsx}
 				</Row>
 			</div>
 		);

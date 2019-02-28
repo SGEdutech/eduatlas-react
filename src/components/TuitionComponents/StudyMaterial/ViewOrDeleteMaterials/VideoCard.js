@@ -9,6 +9,7 @@ const { Meta } = Card;
 
 class VideoCard extends Component {
 	render() {
+		const { _id, path, title, students, description, type, ytUrl } = this.props;
 		return (
 			<Card
 				className="mb-3"
@@ -16,7 +17,6 @@ class VideoCard extends Component {
 				cover={<img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />}
 			>
 				<Meta
-					// avatar={<Icon style={{ fontSize: 32 }} type="file" theme="twoTone" />}
 					title="Abstract of Experiment 1"
 					description="This is the description of abstract"
 				/>

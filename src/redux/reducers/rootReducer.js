@@ -6,6 +6,7 @@ import discount from './discount';
 import messageInfo from './messageInfo';
 import notification from './notification';
 import request from './request';
+import resource from './resource';
 import student from './student';
 import schedule from './schedule';
 import tuitionInfo from './tuitionInfo';
@@ -18,6 +19,7 @@ export default combineReducers({
 	messageInfo,
 	notification,
 	request,
+	resource,
 	student,
 	schedule,
 	tuitionInfo,

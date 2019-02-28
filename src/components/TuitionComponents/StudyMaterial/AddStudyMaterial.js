@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'redux';
 
 import StudentSelector from '../Communicator/NewAnnouncement/StudentSelector';
 
@@ -32,8 +29,8 @@ class AddStudyMaterial extends Component {
 	handleBatchChange = selectedBatches => {
 		const { batches, form: { setFieldsValue }, students } = this.props;
 		let studentsIdsOfSelectedBatches = [];
-		selectedBatches.forEach(selectedBatch => {
-			const studentOfThisBatch = batches.find(batch => batch._id === selectedBatch).students;
+		selectedBatches.forEach(selectedBatchId => {
+			const studentOfThisBatch = batches.find(batch => batch._id === selectedBatchId).students;
 			studentsIdsOfSelectedBatches = [...new Set([...studentsIdsOfSelectedBatches, ...studentOfThisBatch])];
 		});
 		const studentEmailsOfSelectedBatch = studentsIdsOfSelectedBatches.map(studentId => students.find(student => student._id === studentId).email);
@@ -59,6 +56,10 @@ class AddStudyMaterial extends Component {
 			}
 			console.log(values);
 		});
+	}
+
+	testFun = file => {
+		console.log(file);
 	}
 
 	render() {
@@ -114,14 +115,14 @@ class AddStudyMaterial extends Component {
 							</Form.Item>
 						</Col>
 						<Col {...colLayout}>
-							<Form.Item label="Dragger">
+							<Form.Item label="File">
 								<div className="dropbox">
-									{getFieldDecorator('dragger', {
+									{getFieldDecorator('file', {
 										rules: [{ required: 'true', message: 'Must Choose Type' }],
 										valuePropName: 'fileList',
 										getValueFromEvent: this.normFile
 									})(
-										<Upload.Dragger name="files" action="/upload.do">
+										<Upload.Dragger name="file" multiple={false} action={this.testFun}>
 											<p className="ant-upload-drag-icon">
 												<Icon type="inbox" />
 											</p>
@@ -147,11 +148,4 @@ class AddStudyMaterial extends Component {
 	}
 }
 
-function mapStateToProps(state) {
-	return {
-		batches: state.batch.batches,
-		students: state.student.students
-	};
-}
-
-export default compose(Form.create({ name: 'new-study-material' }), withRouter, connect(mapStateToProps, {}))(AddStudyMaterial);
+export default Form.create({ name: 'new-study-material' })(AddStudyMaterial);
