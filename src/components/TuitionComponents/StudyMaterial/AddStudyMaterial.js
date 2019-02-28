@@ -69,12 +69,12 @@ class AddStudyMaterial extends Component {
 				return;
 			}
 			sanatizeFormObj(values);
-			values.file = selectedFile;
+			values.file = selectedFile.originFileObj;
 			addResource(values);
 		});
 	}
 
-	onChange = info => {
+	onFileInpChange = info => {
 		const nextState = {};
 		switch (info.file.status) {
 			case 'uploading':
@@ -154,7 +154,7 @@ class AddStudyMaterial extends Component {
 										<Upload.Dragger
 											fileList={this.state.selectedFileList}
 											customRequest={dummyRequest}
-											onChange={this.onChange}>
+											onChange={this.onFileInpChange}>
 											<p className="ant-upload-drag-icon">
 												<Icon type="inbox" />
 											</p>
