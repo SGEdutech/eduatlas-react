@@ -67,6 +67,7 @@ class NewAnnouncement extends Component {
 				<Form onSubmit={this.handleSubmit} className="pt-3">
 					<Row gutter={16}>
 						<StudentSelector
+							fieldName='receivers'
 							colLayout={colLayout}
 							filterOptions={this.filterOptions}
 							students={students}

@@ -31,7 +31,7 @@ const dummyRequest = ({ file, onSuccess }) => {
 
 class AddStudyMaterial extends Component {
 	state = {
-		selectedFile: null,
+		fileObj: null,
 		selectedFileList: []
 	};
 
@@ -47,7 +47,7 @@ class AddStudyMaterial extends Component {
 			studentsIdsOfSelectedBatches = [...new Set([...studentsIdsOfSelectedBatches, ...studentOfThisBatch])];
 		});
 		const studentEmailsOfSelectedBatch = studentsIdsOfSelectedBatches.map(studentId => students.find(student => student._id === studentId).email);
-		setFieldsValue({ receivers: studentEmailsOfSelectedBatch });
+		setFieldsValue({ students: studentEmailsOfSelectedBatch });
 	}
 
 	handleStudentChange = selectedStudents => this.setState({ selectedStudents });
@@ -56,20 +56,20 @@ class AddStudyMaterial extends Component {
 		const { setFieldsValue } = this.props.form;
 		const { students } = this.props;
 		const allStudents = students.map(student => student.email);
-		isChecked ? setFieldsValue({ receivers: allStudents }) : setFieldsValue({ receivers: [] });
+		isChecked ? setFieldsValue({ students: allStudents }) : setFieldsValue({ students: [] });
 	}
 
 	handleSubmit = e => {
 		e.preventDefault();
 		const { addResource, form } = this.props;
-		const { selectedFile } = this.state;
+		const { fileObj } = this.state;
 		form.validateFieldsAndScroll((err, values) => {
 			if (err) {
 				console.error(err);
 				return;
 			}
 			sanatizeFormObj(values);
-			values.file = selectedFile.originFileObj;
+			values.file = fileObj;
 			addResource(values);
 		});
 	}
@@ -81,13 +81,13 @@ class AddStudyMaterial extends Component {
 				nextState.selectedFileList = [info.file];
 				break;
 			case 'done':
-				nextState.selectedFile = info.file;
+				nextState.fileObj = info.file.originFileObj;
 				nextState.selectedFileList = [info.file];
 				break;
 
 			default:
 				// error or removed
-				nextState.selectedFile = null;
+				nextState.fileObj = null;
 				nextState.selectedFileList = [];
 		}
 		this.setState(() => nextState);
@@ -101,6 +101,7 @@ class AddStudyMaterial extends Component {
 				<Form onSubmit={this.handleSubmit} className="pt-3">
 					<Row gutter={16}>
 						<StudentSelector
+							fieldName="students"
 							colLayout={colLayout}
 							filterOptions={this.filterOptions}
 							students={students}

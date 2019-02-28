@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 
 import {
-	Button,
 	Col,
 	Form,
-	Input,
-	Row,
 	Select,
 	Switch
 } from 'antd';
@@ -13,14 +10,14 @@ const { Option } = Select;
 
 class StudentSelector extends Component {
 	render() {
-		const { colLayout, filterOptions, students, handleBatchChange, batches, handleSelectAll, getFieldDecorator } = this.props;
+		const { colLayout, filterOptions, fieldName, students, handleBatchChange, batches, handleSelectAll, getFieldDecorator } = this.props;
 		return (
 		<>
 			<Col {...colLayout}>
 				<Form.Item
 					label="Students"
 					hasFeedback={true}>
-					{getFieldDecorator('receivers', {
+					{getFieldDecorator(fieldName, {
 						rules: [{
 							required: true, message: 'Please select student(s)!'
 						}]
