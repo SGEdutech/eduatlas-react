@@ -38,7 +38,7 @@ const colLayout = {
 
 class AddStudent extends Component {
 	state = {
-		selectedCourseIndex: 0,
+		selectedCourseIndex: -1,
 		modeOfPayment: 'cash',
 		couseCode: '',
 		baseFee: 0,
@@ -245,7 +245,7 @@ class AddStudent extends Component {
 		const { batches, courses, discounts, task } = this.props;
 		const { selectedCourseIndex } = this.state;
 
-		const coursesAndbatchesOpts = courses.map(course => (
+		const coursesAndBatchesOpts = courses.map(course => (
 			{
 				value: course._id,
 				label: course.code,
@@ -354,9 +354,8 @@ class AddStudent extends Component {
 						})(
 							<Select
 								placeholder="Select Course"
-								onChange={this.handleCourseChange}
-							>
-								{coursesAndbatchesOpts.map(course => <Option key={course.value}>{course.label}</Option>)}
+								onChange={this.handleCourseChange}>
+								{coursesAndBatchesOpts.map(course => <Option key={course.value}>{course.label}</Option>)}
 							</Select>
 						)}
 					</Form.Item>
@@ -368,10 +367,8 @@ class AddStudent extends Component {
 						hasFeedback={true}>
 						{getFieldDecorator('batchId', {
 						})(
-							<Select
-								placeholder="Select Batch"
-							>
-								{coursesAndbatchesOpts[selectedCourseIndex].children.map(batch => <Option key={batch.value}>{batch.label}</Option>)}
+							<Select placeholder="Select Batch">
+								{selectedCourseIndex !== -1 && coursesAndBatchesOpts[selectedCourseIndex].children.map(batch => <Option key={batch.value}>{batch.label}</Option>)}
 							</Select>
 						)}
 					</Form.Item>
