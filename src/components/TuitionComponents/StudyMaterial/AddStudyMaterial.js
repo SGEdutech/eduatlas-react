@@ -21,7 +21,18 @@ const colLayout = {
 	md: 12
 };
 
+const dummyRequest = ({ file, onSuccess }) => {
+	setTimeout(() => {
+		onSuccess('ok');
+	}, 0);
+};
+
 class AddStudyMaterial extends Component {
+	state = {
+		selectedFile: null,
+		selectedFileList: []
+	};
+
 	filterOptions = (input, option) => {
 		if (option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0) return true;
 	}
@@ -58,8 +69,24 @@ class AddStudyMaterial extends Component {
 		});
 	}
 
-	testFun = file => {
-		console.log(file);
+	onChange = info => {
+		const nextState = {};
+		switch (info.file.status) {
+			case 'uploading':
+				nextState.selectedFileList = [info.file];
+				break;
+			case 'done':
+				nextState.selectedFile = info.file;
+				nextState.selectedFileList = [info.file];
+				break;
+
+			default:
+				// error or removed
+				nextState.selectedFile = null;
+				nextState.selectedFileList = [];
+		}
+		console.log(nextState.selectedFile)
+		this.setState(() => nextState);
 	}
 
 	render() {
@@ -118,11 +145,12 @@ class AddStudyMaterial extends Component {
 							<Form.Item label="File">
 								<div className="dropbox">
 									{getFieldDecorator('file', {
-										rules: [{ required: 'true', message: 'Must Choose Type' }],
-										valuePropName: 'fileList',
-										getValueFromEvent: this.normFile
+										rules: [{ required: 'true', message: 'Must Choose File' }]
 									})(
-										<Upload.Dragger name="file" multiple={false} action={this.testFun}>
+										<Upload.Dragger
+											fileList={this.state.selectedFileList}
+											customRequest={dummyRequest}
+											onChange={this.onChange}>
 											<p className="ant-upload-drag-icon">
 												<Icon type="inbox" />
 											</p>
