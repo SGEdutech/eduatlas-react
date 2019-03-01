@@ -1,15 +1,10 @@
 import axios from 'axios';
 import { schemeAndAuthority, tuitionId } from '../../config.json';
+import convertModelToFormData from '../../scripts/modelToFormdata';
 
 export function addResource(newResource) {
-	const config = {
-		headers: {
-			'Content-Type': 'multipart/form-data'
-		}
-	};
-	const form_data = new FormData();
-	const keys = Object.keys(newResource);
-	keys.forEach(key => form_data.append(key, newResource[key]));
+	const config = { headers: { 'Content-Type': 'multipart/form-data' }	};
+	const form_data = convertModelToFormData(newResource);
 	return dispatch => {
 		dispatch({
 			type: 'ADD_RESOURCE',
