@@ -92,7 +92,7 @@ class FileCard extends Component {
 	}
 
 	render() {
-		const { path, title, description, type } = this.props;
+		const { path, title, description, type, students } = this.props;
 		return (
 			<Card
 				className="mb-3"
@@ -102,11 +102,14 @@ class FileCard extends Component {
 					title={title}
 					description={
 						<>
-							<Row>
-								<Tag color="cyan">{type}</Tag>
+							<Row className="one-line-ellipsis">
+								{description}
 							</Row>
 							<Row>
-								{description}
+								<span className="font-weight-bold">Shared With: </span>{students.length} Students
+							</Row>
+							<Row>
+								<Tag color="cyan">{type}</Tag>
 							</Row>
 						</>
 					} />

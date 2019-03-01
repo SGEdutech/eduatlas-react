@@ -21,7 +21,7 @@ class ViewOrDeleteMaterials extends Component {
 	state = {
 		videoResources: [],
 		vidDatas: [],
-		filterResourceType: null
+		filterResourceType: []
 	};
 
 	handleSelectChange = updatedFilterVal => {
@@ -29,8 +29,22 @@ class ViewOrDeleteMaterials extends Component {
 	}
 
 	render() {
+		let { resources } = this.props;
+		const { deleteResource, messageInfo } = this.props;
+		const { filterResourceType } = this.state;
+
+		// filter out resources based on filter values
+		if (filterResourceType.length !== 0) {
+			resources = resources.filter(resource => {
+				let isIncluded = false;
+				filterResourceType.forEach(acceptedType => {
+					if (acceptedType === resource.type) isIncluded = true;
+				});
+				if (isIncluded) return resource;
+				return false;
+			});
+		}
 		// console.log(this.state.vidDatas);
-		const { deleteResource, messageInfo, resources } = this.props;
 		const resourcesJsx = resources.map(({ _id, path, title, students, description, type, ytUrl }) => {
 			if (type !== 'video') return <Col {...colLayout} key={_id}>
 				<FileCard _id={_id} path={path} title={title} students={students} description={description} type={type} ytUrl={ytUrl}
@@ -71,10 +85,10 @@ class ViewOrDeleteMaterials extends Component {
 							mode="multiple"
 							allowClear
 							placeholder="Filter Study Materials">
-							<option class="text-uppercase" value="reference material">Reference Material</option>
-							<option class="text-uppercase" value="homework">Homework</option>
-							<option class="text-uppercase" value="test">Assignment/Test</option>
-							<option class="text-uppercase" value="video">Video</option>
+							<Select.Option className="text-uppercase" value="reference material">Reference Material</Select.Option>
+							<Select.Option className="text-uppercase" value="homework">Homework</Select.Option>
+							<Select.Option className="text-uppercase" value="test">Assignment/Test</Select.Option>
+							<Select.Option className="text-uppercase" value="video">Video</Select.Option>
 						</Select>
 					</Col>
 				</Row>
