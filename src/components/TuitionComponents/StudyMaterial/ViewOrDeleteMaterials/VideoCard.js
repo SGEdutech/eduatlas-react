@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+import ytLogo from '../../../../youtube-logo.svg';
+
 import {
 	Card,
 	Icon,
@@ -66,7 +68,7 @@ class VideoCard extends Component {
 				loading={Boolean(title) === false}
 				className="mb-3"
 				actions={[<a href={ytUrl} target="_blank" rel="noopener noreferrer"><Icon type="eye" /></a>, <Icon type="delete" onClick={this.handleDeleteBtnClick} />]}
-				cover={<img alt="Thumbnail" src={thumbnail} />}>
+				cover={<img style={{ height: 216 }} alt="Thumbnail" src={thumbnail || ytLogo} />}>
 				<Meta
 					title={title}
 					description={description} />
