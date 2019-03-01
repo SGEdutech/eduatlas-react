@@ -32,7 +32,7 @@ const dummyRequest = ({ file, onSuccess }) => {
 class AddStudyMaterial extends Component {
 	state = {
 		selectedFile: null,
-		resourceType: 'reference material'
+		resourceType: null
 	};
 
 	filterOptions = (input, option) => {
@@ -53,10 +53,9 @@ class AddStudyMaterial extends Component {
 	handleStudentChange = selectedStudents => this.setState({ selectedStudents });
 
 	handleSelectAll = isChecked => {
-		const { setFieldsValue } = this.props.form;
-		const { students } = this.props;
-		const allStudents = students.map(student => student.email);
-		isChecked ? setFieldsValue({ students: allStudents }) : setFieldsValue({ students: [] });
+		const { form: { setFieldsValue }, students } = this.props;
+		const allStudentsEmail = students.map(student => student.email);
+		isChecked ? setFieldsValue({ students: allStudentsEmail }) : setFieldsValue({ students: [] });
 	}
 
 	handleSubmit = e => {
@@ -95,7 +94,7 @@ class AddStudyMaterial extends Component {
 	validateYoutubeLink = (rule, link = '', callback) => {
 		const { resources } = this.props;
 		link = link.trim();
-		if (!link) callback('invalid!');
+		if (Boolean(link) === false) callback('invalid!');
 		const resourceInfo = resources.find(resource => resource.ytUrl === link);
 		const isDuplicate = Boolean(resourceInfo);
 		if (isDuplicate) callback('URL already exists');
@@ -105,7 +104,7 @@ class AddStudyMaterial extends Component {
 	validateTitle = (rule, title = '', callback) => {
 		const { resources } = this.props;
 		title = title.trim();
-		if (!title) callback('invalid!');
+		if (Boolean(title) === false) callback('Please enter something!');
 		const resourceInfo = resources.find(resource => resource.title === title);
 		const isDuplicate = Boolean(resourceInfo);
 		if (isDuplicate) callback('Title already exists');

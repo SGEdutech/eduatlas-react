@@ -20,7 +20,7 @@ class PrimaryTuitionTabs extends Component {
 	leftSwipe = () => {
 		this.setState(prevState => {
 			const minValue = 0;
-			const maxValue = 6;
+			const maxValue = 5;
 			let value = prevState.value + 1;
 			if (value < minValue) value = maxValue;
 			if (value > maxValue) value = minValue;
@@ -31,7 +31,7 @@ class PrimaryTuitionTabs extends Component {
 	rightSwipe = () => {
 		this.setState(prevState => {
 			const minValue = 0;
-			const maxValue = 6;
+			const maxValue = 5;
 			let value = prevState.value - 1;
 			if (value < minValue) value = maxValue;
 			if (value > maxValue) value = minValue;
