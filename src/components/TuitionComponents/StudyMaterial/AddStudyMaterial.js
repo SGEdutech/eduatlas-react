@@ -92,6 +92,26 @@ class AddStudyMaterial extends Component {
 		this.setState({ resourceType: changedType });
 	}
 
+	validateYoutubeLink = (rule, link = '', callback) => {
+		const { resources } = this.props;
+		link = link.trim();
+		if (!link) callback('invalid!');
+		const resourceInfo = resources.find(resource => resource.ytUrl === link);
+		const isDuplicate = Boolean(resourceInfo);
+		if (isDuplicate) callback('URL already exists');
+		callback();
+	}
+
+	validateTitle = (rule, title = '', callback) => {
+		const { resources } = this.props;
+		title = title.trim();
+		if (!title) callback('invalid!');
+		const resourceInfo = resources.find(resource => resource.title === title);
+		const isDuplicate = Boolean(resourceInfo);
+		if (isDuplicate) callback('Title already exists');
+		callback();
+	}
+
 	render() {
 		const { batches, students, form: { getFieldDecorator } } = this.props;
 		const { resourceType, selectedFile } = this.state;
@@ -133,7 +153,10 @@ class AddStudyMaterial extends Component {
 										label="Title"
 										hasFeedback={true}>
 										{getFieldDecorator('title', {
-											rules: [{ required: 'true', message: 'Must provide title' }]
+											rules: [
+												{ required: 'true', message: 'Must provide title!!' },
+											{ validator: this.validateTitle }
+											]
 										})(
 											<Input placeholder="Title" />
 										)}
@@ -175,7 +198,10 @@ class AddStudyMaterial extends Component {
 								<Form.Item label="YouTube Url/Link"
 									hasFeedback={true}>
 									{getFieldDecorator('ytUrl', {
-										rules: [{ required: 'true', message: 'Must Provide Link' }]
+										rules: [
+											{ required: 'true', message: 'Must Provide Link!!' },
+											{ validator: this.validateYoutubeLink }
+										]
 									})(
 										<Input
 											placeholder="URL/Link"

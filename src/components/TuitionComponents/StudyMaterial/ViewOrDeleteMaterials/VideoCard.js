@@ -6,7 +6,9 @@ import ytLogo from '../../../../youtube-logo.svg';
 import {
 	Card,
 	Icon,
-	Modal
+	Modal,
+	Row,
+	Tag
 } from 'antd';
 const { Meta } = Card;
 const { confirm } = Modal;
@@ -61,7 +63,7 @@ class VideoCard extends Component {
 	}
 
 	render() {
-		const { ytUrl } = this.props;
+		const { ytUrl, type, students } = this.props;
 		const { description, thumbnail, title } = this.state;
 		return (
 			<Card
@@ -71,7 +73,16 @@ class VideoCard extends Component {
 				cover={<img style={{ height: 216 }} alt="Thumbnail" src={thumbnail || ytLogo} />}>
 				<Meta
 					title={title}
-					description={description} />
+					description={
+						<>
+							<Row className="one-line-ellipsis">
+								{description}
+							</Row>
+							<Row>
+								<span className="font-weight-bold">Shared With: </span>{students.length} Students
+							</Row>
+						</>
+					} />
 			</Card>
 		);
 	}
