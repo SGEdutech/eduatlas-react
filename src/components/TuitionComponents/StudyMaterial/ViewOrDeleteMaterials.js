@@ -23,13 +23,14 @@ class ViewOrDeleteMaterials extends Component {
 		const { deleteResource, messageInfo, resources } = this.props;
 		const resourcesJsx = resources.map(({ _id, path, title, students, description, type, ytUrl }) => {
 			if (type !== 'video') return <Col {...colLayout} key={_id}>
-				<FileCard _id={_id} path={path} title={title} students={students} description={description} type={type} ytUrl={ytUrl} 
+				<FileCard _id={_id} path={path} title={title} students={students} description={description} type={type} ytUrl={ytUrl}
 					deleteResource={deleteResource} />
 			</Col>;
 		});
 		const videoResourcesJsx = resources.map(({ _id, path, title, students, description, type, ytUrl }) => {
 			if (type === 'video') return <Col {...colLayout} key={_id}>
-				<VideoCard _id={_id} path={path} title={title} students={students} description={description} type={type} ytUrl={ytUrl} />
+				<VideoCard _id={_id} path={path} title={title} students={students} description={description} type={type} ytUrl={ytUrl}
+					deleteResource={deleteResource} />
 			</Col>;
 		});
 
