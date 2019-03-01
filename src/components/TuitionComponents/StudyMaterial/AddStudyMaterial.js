@@ -32,7 +32,7 @@ const dummyRequest = ({ file, onSuccess }) => {
 class AddStudyMaterial extends Component {
 	state = {
 		selectedFile: null,
-		resourceType: 'reference material'
+		resourceType: null
 	};
 
 	filterOptions = (input, option) => {
