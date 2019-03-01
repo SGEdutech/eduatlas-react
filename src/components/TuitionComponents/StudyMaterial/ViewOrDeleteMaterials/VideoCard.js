@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 import {
 	Card,
@@ -9,6 +10,12 @@ const { Meta } = Card;
 const { confirm } = Modal;
 
 class VideoCard extends Component {
+	state = {
+		thumbnail: null,
+		title: null,
+		description: null
+	}
+
 	showDeleteConfirm = id => {
 		const { deleteResource } = this.props;
 		confirm({
@@ -28,18 +35,41 @@ class VideoCard extends Component {
 		this.showDeleteConfirm(_id);
 	}
 
+	fetchAndUpdateYtInfo = async vidUrl => {
+		const ytUrlRegex = new RegExp('^((?:https?:)?\\/\\/)?((?:www|m)\\.)?((?:youtube\\.com|youtu.be))(\\/(?:[\\w\\-]+\\?v=|embed\\/|v\\/)?)([\\w\\-]+)(\\S+)?$', 'i');
+		const urlBreakdown = ytUrlRegex.exec(vidUrl);
+		// Handle this case
+		if (Boolean(urlBreakdown) === false) return;
+		const vidId = urlBreakdown[5];
+		const response = await axios.get(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${vidId}&key=AIzaSyBK6bjBeIAUDJCrbAjSOGKSz4fOU2I6gBI`);
+		if (response.data.items.length === 0) {
+			// No Video
+		}
+		const vidData = response.data.items[0].snippet;
+		this.setState({
+			thumbnail: vidData.thumbnails.high.url,
+			title: vidData.title,
+			description: vidData.description
+		});
+	};
+
+	componentDidMount() {
+		const { ytUrl } = this.props;
+		this.fetchAndUpdateYtInfo(ytUrl);
+	}
+
 	render() {
-		const { _id, path, title, students, description, type, ytUrl } = this.props;
+		const { ytUrl } = this.props;
+		const { description, thumbnail, title } = this.state;
 		return (
 			<Card
+				loading={Boolean(title) === false}
 				className="mb-3"
-				actions={[<Icon type="eye" />, <Icon type="delete" onClick={this.handleDeleteBtnClick} />]}
-				cover={<img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />}
-			>
+				actions={[<a href={ytUrl} target="_blank" rel="noopener noreferrer"><Icon type="eye" /></a>, <Icon type="delete" onClick={this.handleDeleteBtnClick} />]}
+				cover={<img alt="Thumbnail" src={thumbnail} />}>
 				<Meta
-					title="Abstract of Experiment 1"
-					description="This is the description of abstract"
-				/>
+					title={title}
+					description={description} />
 			</Card>
 		);
 	}

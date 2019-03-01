@@ -11,7 +11,6 @@ import {
 	Select,
 	Skeleton
 } from 'antd';
-const { Option } = Select;
 
 const colLayout = {
 	xs: 24,
@@ -19,7 +18,18 @@ const colLayout = {
 };
 
 class ViewOrDeleteMaterials extends Component {
+	state = {
+		videoResources: [],
+		vidDatas: [],
+		filterResourceType: null
+	};
+
+	handleSelectChange = updatedFilterVal => {
+		this.setState({ filterResourceType: updatedFilterVal });
+	}
+
 	render() {
+		// console.log(this.state.vidDatas);
 		const { deleteResource, messageInfo, resources } = this.props;
 		const resourcesJsx = resources.map(({ _id, path, title, students, description, type, ytUrl }) => {
 			if (type !== 'video') return <Col {...colLayout} key={_id}>
@@ -27,12 +37,13 @@ class ViewOrDeleteMaterials extends Component {
 					deleteResource={deleteResource} />
 			</Col>;
 		});
-		const videoResourcesJsx = resources.map(({ _id, path, title, students, description, type, ytUrl }) => {
-			if (type === 'video') return <Col {...colLayout} key={_id}>
+		const videoResources = resources.filter(resource => resource.type === 'video');
+		const videoResourcesJsx = videoResources.map(({ _id, path, title, students, description, type, ytUrl }) => (
+			<Col {...colLayout} key={_id}>
 				<VideoCard _id={_id} path={path} title={title} students={students} description={description} type={type} ytUrl={ytUrl}
 					deleteResource={deleteResource} />
-			</Col>;
-		});
+			</Col>
+		));
 
 		const emptyJsx = <Empty className="mt-4"
 			image="https://gw.alipayobjects.com/mdn/miniapp_social/afts/img/A*pevERLJC9v0AAAAAAAAAAABjAQAAAQ/original"
@@ -55,6 +66,7 @@ class ViewOrDeleteMaterials extends Component {
 				<Row className="mb-3" type="flex" align="middle" justify="center">
 					<Col span={24} className="p-1">
 						<Select
+							onChange={this.handleSelectChange}
 							className="w-100"
 							mode="multiple"
 							allowClear

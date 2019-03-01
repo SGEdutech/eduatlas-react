@@ -111,17 +111,6 @@ class AddStudyMaterial extends Component {
 							getFieldDecorator={getFieldDecorator} />
 						<Col {...colLayout}>
 							<Form.Item
-								label="Title"
-								hasFeedback={true}>
-								{getFieldDecorator('title', {
-									rules: [{ required: 'true', message: 'Must provide title' }]
-								})(
-									<Input placeholder="Title" />
-								)}
-							</Form.Item>
-						</Col>
-						<Col {...colLayout}>
-							<Form.Item
 								label="Type Of Resource"
 								hasFeedback={true}>
 								{getFieldDecorator('type', {
@@ -139,6 +128,17 @@ class AddStudyMaterial extends Component {
 						</Col>
 						{resourceType !== 'video' &&
 							<>
+								<Col {...colLayout}>
+									<Form.Item
+										label="Title"
+										hasFeedback={true}>
+										{getFieldDecorator('title', {
+											rules: [{ required: 'true', message: 'Must provide title' }]
+										})(
+											<Input placeholder="Title" />
+										)}
+									</Form.Item>
+								</Col>
 								<Col {...colLayout}>
 									<Form.Item
 										label="Description"

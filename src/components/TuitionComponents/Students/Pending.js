@@ -82,7 +82,7 @@ class Pending extends Component {
 						<Input allowClear addonAfter={<Icon type="search" />} onChange={this.handleSearchInpChange} placeholder="Search Students" />
 					</Row>
 					<Row gutter={16}>
-						{messageInfo.fetching ? skeletonCards : (studentsInfo.students.length === 0 ? emptyJsx : studentsJsx)}
+						{messageInfo.fetching ? skeletonCards : (studentsToShow.length === 0 ? emptyJsx : studentsJsx)}
 					</Row>
 				</div>
 			</>
