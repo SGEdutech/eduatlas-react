@@ -31,8 +31,8 @@ const dummyRequest = ({ file, onSuccess }) => {
 
 class AddStudyMaterial extends Component {
 	state = {
-		fileObj: null,
-		selectedFileList: []
+		selectedFile: null,
+		resourceType: 'reference material'
 	};
 
 	filterOptions = (input, option) => {
@@ -61,40 +61,40 @@ class AddStudyMaterial extends Component {
 
 	handleSubmit = e => {
 		e.preventDefault();
-		const { addResource, form } = this.props;
-		const { fileObj } = this.state;
+		const { addResource, form, form: { resetFields } } = this.props;
+		const { selectedFile } = this.state;
 		form.validateFieldsAndScroll((err, values) => {
 			if (err) {
 				console.error(err);
 				return;
 			}
 			sanatizeFormObj(values);
-			values.file = fileObj;
+			if (selectedFile) values.file = selectedFile.originFileObj;
 			addResource(values);
+			resetFields();
+			this.setState({ selectedFile: null });
 		});
 	}
 
 	onFileInpChange = info => {
-		const nextState = {};
-		switch (info.file.status) {
-			case 'uploading':
-				nextState.selectedFileList = [info.file];
-				break;
-			case 'done':
-				nextState.fileObj = info.file.originFileObj;
-				nextState.selectedFileList = [info.file];
-				break;
-
-			default:
-				// error or removed
-				nextState.fileObj = null;
-				nextState.selectedFileList = [];
+		if (info.file.status === 'uploading' || info.file.status === 'done') {
+			this.setState({ selectedFile: info.file });
+			return;
 		}
-		this.setState(() => nextState);
+		this.setState({ selectedFile: null });
+	}
+
+	handleTypeOfMaterialChange = changedType => {
+		if (changedType !== 'video') {
+			this.setState({ resourceType: changedType, selectedFile: null });
+			return;
+		}
+		this.setState({ resourceType: changedType });
 	}
 
 	render() {
 		const { batches, students, form: { getFieldDecorator } } = this.props;
+		const { resourceType, selectedFile } = this.state;
 
 		return (
 			<div className="container">
@@ -114,7 +114,7 @@ class AddStudyMaterial extends Component {
 								label="Title"
 								hasFeedback={true}>
 								{getFieldDecorator('title', {
-									rules: [{ required: 'true', message: 'Must Provide Title' }]
+									rules: [{ required: 'true', message: 'Must provide title' }]
 								})(
 									<Input placeholder="Title" />
 								)}
@@ -128,7 +128,7 @@ class AddStudyMaterial extends Component {
 									defaultValue: 'reference material',
 									rules: [{ required: 'true', message: 'Must Choose Type' }]
 								})(
-									<Select>
+									<Select onChange={this.handleTypeOfMaterialChange}>
 										<Option className="text-uppercase" value="reference material">Reference Material</Option>
 										<Option className="text-uppercase" value="homework">Homework</Option>
 										<Option className="text-uppercase" value="test">Assignment/Test</Option>
@@ -137,34 +137,54 @@ class AddStudyMaterial extends Component {
 								)}
 							</Form.Item>
 						</Col>
-						<Col {...colLayout}>
-							<Form.Item
-								label="Description"
-								hasFeedback={true}>
-								{getFieldDecorator('description')(
-									<TextArea autosize={{ minRows: 4 }} />
-								)}
-							</Form.Item>
-						</Col>
-						<Col {...colLayout}>
-							<Form.Item label="File">
-								<div className="dropbox">
-									{getFieldDecorator('file', {
-										rules: [{ required: 'true', message: 'Must Choose File' }]
+						{resourceType !== 'video' &&
+							<>
+								<Col {...colLayout}>
+									<Form.Item
+										label="Description"
+										hasFeedback={true}>
+										{getFieldDecorator('description')(
+											<TextArea autosize={{ minRows: 4 }} />
+										)}
+									</Form.Item>
+								</Col>
+								<Col {...colLayout}>
+									<Form.Item label="File">
+										<div className="dropbox">
+											{getFieldDecorator('file', {
+												rules: [{ required: 'true', message: 'Must Choose File' }]
+											})(
+												<Upload.Dragger
+													fileList={selectedFile ? [selectedFile] : []}
+													customRequest={dummyRequest}
+													onChange={this.onFileInpChange}>
+													<p className="ant-upload-drag-icon">
+														<Icon type="inbox" />
+													</p>
+													<p className="ant-upload-text">Click or drag file to this area to upload</p>
+												</Upload.Dragger>
+											)}
+										</div>
+									</Form.Item>
+								</Col>
+							</>
+						}
+
+						{resourceType === 'video' &&
+							<Col {...colLayout}>
+								<Form.Item label="YouTube Url/Link"
+									hasFeedback={true}>
+									{getFieldDecorator('ytUrl', {
+										rules: [{ required: 'true', message: 'Must Provide Link' }]
 									})(
-										<Upload.Dragger
-											fileList={this.state.selectedFileList}
-											customRequest={dummyRequest}
-											onChange={this.onFileInpChange}>
-											<p className="ant-upload-drag-icon">
-												<Icon type="inbox" />
-											</p>
-											<p className="ant-upload-text">Click or drag file to this area to upload</p>
-										</Upload.Dragger>
+										<Input
+											placeholder="URL/Link"
+											pattern={'^((?:https?:)?\\/\\/)?((?:www|m)\\.)?((?:youtube\\.com|youtu.be))(\\/(?:[\\w\\-]+\\?v=|embed\\/|v\\/)?)([\\w\\-]+)(\\S+)?$'}
+											title="Please provide valid youtube url" />
 									)}
-								</div>
-							</Form.Item>
-						</Col>
+								</Form.Item>
+							</Col>
+						}
 						<Col span={24}>
 							<Row type="flex" justify="end">
 								<Form.Item>

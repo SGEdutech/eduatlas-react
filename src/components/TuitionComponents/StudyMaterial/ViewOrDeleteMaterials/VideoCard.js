@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 
 import {
-	Avatar,
 	Card,
-	Icon
+	Icon,
+	Modal
 } from 'antd';
 const { Meta } = Card;
+const { confirm } = Modal;
 
 class VideoCard extends Component {
 	showDeleteConfirm = id => {
@@ -26,13 +27,13 @@ class VideoCard extends Component {
 		const { _id } = this.props;
 		this.showDeleteConfirm(_id);
 	}
-	
+
 	render() {
 		const { _id, path, title, students, description, type, ytUrl } = this.props;
 		return (
 			<Card
 				className="mb-3"
-				actions={[<Icon type="eye" />, <Icon type="delete" />]}
+				actions={[<Icon type="eye" />, <Icon type="delete" onClick={this.handleDeleteBtnClick} />]}
 				cover={<img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />}
 			>
 				<Meta
