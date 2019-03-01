@@ -36,7 +36,7 @@ class StudyMaterial extends Component {
 					</Tabs>
 				</AppBar>
 				{value === 0 && <ViewOrDeleteMaterials deleteResource={deleteResource} messageInfo={messageInfo} resources={resources} />}
-				{value === 1 && <AddStudyMaterial addResource={addResource} batches={batches} resources={resources} students={students} />}
+				{value === 1 && <AddStudyMaterial addResource={addResource} batches={batches} resources={resources} showDelete={true} students={students} />}
 			</>
 		);
 	}

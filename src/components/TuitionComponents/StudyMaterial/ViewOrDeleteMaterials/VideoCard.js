@@ -63,13 +63,17 @@ class VideoCard extends Component {
 	}
 
 	render() {
-		const { ytUrl, type, students } = this.props;
+		const { ytUrl, type, showDelete, students } = this.props;
 		const { description, thumbnail, title } = this.state;
+
+		let actionsJsx = [<a href={ytUrl} target="_blank" rel="noopener noreferrer"><Icon type="eye" /></a>, <Icon type="delete" onClick={this.handleDeleteBtnClick} />];
+		if (showDelete === false) actionsJsx = [<a href={ytUrl} target="_blank" rel="noopener noreferrer"><Icon type="eye" /></a>];
+
 		return (
 			<Card
 				loading={Boolean(title) === false}
 				className="mb-3"
-				actions={[<a href={ytUrl} target="_blank" rel="noopener noreferrer"><Icon type="eye" /></a>, <Icon type="delete" onClick={this.handleDeleteBtnClick} />]}
+				actions={actionsJsx}
 				cover={<img style={{ height: 216 }} alt="Thumbnail" src={thumbnail || ytLogo} />}>
 				<Meta
 					title={title}

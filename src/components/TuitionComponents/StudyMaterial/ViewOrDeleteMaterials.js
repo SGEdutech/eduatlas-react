@@ -30,7 +30,7 @@ class ViewOrDeleteMaterials extends Component {
 
 	render() {
 		let { resources } = this.props;
-		const { deleteResource, messageInfo } = this.props;
+		const { deleteResource, messageInfo, showDelete } = this.props;
 		const { filterResourceType } = this.state;
 
 		// filter out resources based on filter values
@@ -47,15 +47,15 @@ class ViewOrDeleteMaterials extends Component {
 		// console.log(this.state.vidDatas);
 		const resourcesJsx = resources.map(({ _id, path, title, students, description, type, ytUrl }) => {
 			if (type !== 'video') return <Col {...colLayout} key={_id}>
-				<FileCard _id={_id} path={path} title={title} students={students} description={description} type={type} ytUrl={ytUrl}
-					deleteResource={deleteResource} />
+				<FileCard deleteResource={deleteResource} description={description} _id={_id} path={path} showDelete={showDelete}
+					students={students} title={title} type={type} ytUrl={ytUrl} />
 			</Col>;
 		});
 		const videoResources = resources.filter(resource => resource.type === 'video');
 		const videoResourcesJsx = videoResources.map(({ _id, path, title, students, description, type, ytUrl }) => (
 			<Col {...colLayout} key={_id}>
-				<VideoCard _id={_id} path={path} title={title} students={students} description={description} type={type} ytUrl={ytUrl}
-					deleteResource={deleteResource} />
+				<VideoCard deleteResource={deleteResource} description={description} _id={_id} path={path} showDelete={showDelete}
+					students={students} title={title} type={type} ytUrl={ytUrl} />
 			</Col>
 		));
 

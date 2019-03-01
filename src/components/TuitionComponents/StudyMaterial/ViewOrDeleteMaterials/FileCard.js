@@ -92,11 +92,15 @@ class FileCard extends Component {
 	}
 
 	render() {
-		const { path, title, description, type, students } = this.props;
+		const { path, title, description, type, showDelete, students } = this.props;
+
+		let actionsJsx = [<a rel="noopener noreferrer" target="_blank" href={`${schemeAndAuthority}/${path}`} onClick={this.handleDownloadBtnClick} download><Icon type="download" /></a>, <Icon type="delete" onClick={this.handleDeleteBtnClick} />];
+		if (showDelete === false) actionsJsx = [<a rel="noopener noreferrer" target="_blank" href={`${schemeAndAuthority}/${path}`} onClick={this.handleDownloadBtnClick} download><Icon type="download" /></a>];
+
 		return (
 			<Card
 				className="mb-3"
-				actions={[<a rel="noopener noreferrer" target="_blank" href={`${schemeAndAuthority}/${path}`} onClick={this.handleDownloadBtnClick} download><Icon type="download" /></a>, <Icon type="delete" onClick={this.handleDeleteBtnClick} />]}>
+				actions={actionsJsx}>
 				<Meta
 					avatar={<Icon style={{ fontSize: 32 }} type="file" theme="twoTone" twoToneColor="#00bcd4" />}
 					title={title}

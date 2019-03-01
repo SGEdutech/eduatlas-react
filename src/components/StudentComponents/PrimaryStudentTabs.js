@@ -10,6 +10,7 @@ import Attendance from './Attendance';
 import EnrollmentAndFee from './EnrollmentAndFee';
 import Forums from './Forums';
 import Notifications from './Notifications';
+import ViewOrDeleteMaterials from '../TuitionComponents/StudyMaterial/ViewOrDeleteMaterials';
 
 import { readNotification } from '../../redux/actions/notificationActions';
 
@@ -51,7 +52,7 @@ class PrimaryTuitionTabs extends Component {
 
 	render() {
 		const { value } = this.state;
-		const { batches, courses, notifications, readNotification, schedules, students, user } = this.props;
+		const { batches, courses, messageInfo, notifications, readNotification, resources, schedules, students, user } = this.props;
 		const { primaryEmail } = user;
 		const studentInfo = students.find(student => student.email === primaryEmail);
 		if (Boolean(studentInfo) === false) return <></>; // TODO: Handle this!!!!
@@ -69,7 +70,7 @@ class PrimaryTuitionTabs extends Component {
 						<Tab label="Notifications" />
 						<Tab label="Attendance" />
 						<Tab label="Enrollment and Fee" />
-						{/* <Tab label="Study Material" /> */}
+						<Tab label="Study Material" />
 					</Tabs>
 				</AppBar>
 				<Swipeable delta={20} onSwipedLeft={this.leftSwipe} onSwipedRight={this.rightSwipe} style={{ minHeight: '80vh' }}>
@@ -77,7 +78,7 @@ class PrimaryTuitionTabs extends Component {
 						{value === 0 && <Notifications notifications={notifications} readNotification={readNotification} studentEmail={studentInfo.email} />}
 						{value === 1 && <Attendance batches={batches} schedules={schedules} studentInfo={studentInfo} />}
 						{value === 2 && <EnrollmentAndFee courses={courses} studentInfo={studentInfo} />}
-						{/* {value === 3 && <>study material</>} */}
+						{value === 3 && <ViewOrDeleteMaterials messageInfo={messageInfo} resources={resources} showDelete={false} />}
 					</div>
 				</Swipeable>
 			</>
@@ -88,10 +89,12 @@ class PrimaryTuitionTabs extends Component {
 const mapStateToProps = state => ({
 	batches: state.batch.batches,
 	courses: state.course.courses,
+	messageInfo: state.messageInfo,
+	notifications: state.notification.notifications,
+	resources: state.resource.resources,
 	schedules: state.schedule.schedules,
 	students: state.student.students,
-	user: state.user.userInfo,
-	notifications: state.notification.notifications
+	user: state.user.userInfo
 });
 
 export default connect(mapStateToProps, { readNotification })(PrimaryTuitionTabs);
