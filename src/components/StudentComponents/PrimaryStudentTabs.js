@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { useSwipeable, Swipeable } from 'react-swipeable'
+import { useSwipeable, Swipeable } from 'react-swipeable';
 
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
@@ -11,6 +11,7 @@ import EnrollmentAndFee from './EnrollmentAndFee';
 import Forums from './Forums';
 import Notifications from './Notifications';
 
+import { readNotification } from '../../redux/actions/notificationActions';
 
 const tabBarStyle = {
 	position: 'fixed',
@@ -50,7 +51,7 @@ class PrimaryTuitionTabs extends Component {
 
 	render() {
 		const { value } = this.state;
-		const { batches, courses, notifications, schedules, students, user } = this.props;
+		const { batches, courses, notifications, readNotification, schedules, students, user } = this.props;
 		const { primaryEmail } = user;
 		const studentInfo = students.find(student => student.email === primaryEmail);
 		if (Boolean(studentInfo) === false) return <></>; // TODO: Handle this!!!!
@@ -73,7 +74,7 @@ class PrimaryTuitionTabs extends Component {
 				</AppBar>
 				<Swipeable delta={20} onSwipedLeft={this.leftSwipe} onSwipedRight={this.rightSwipe} style={{ minHeight: '80vh' }}>
 					<div className="py-3">
-						{value === 0 && <Notifications notifications={notifications} studentEmail={studentInfo.email} />}
+						{value === 0 && <Notifications notifications={notifications} readNotification={readNotification} studentEmail={studentInfo.email} />}
 						{value === 1 && <Attendance batches={batches} schedules={schedules} studentInfo={studentInfo} />}
 						{value === 2 && <EnrollmentAndFee courses={courses} studentInfo={studentInfo} />}
 						{/* {value === 3 && <>study material</>} */}
@@ -90,7 +91,7 @@ const mapStateToProps = state => ({
 	schedules: state.schedule.schedules,
 	students: state.student.students,
 	user: state.user.userInfo,
-	notifications: state.notification.notifications,
+	notifications: state.notification.notifications
 });
 
-export default connect(mapStateToProps)(PrimaryTuitionTabs);
+export default connect(mapStateToProps, { readNotification })(PrimaryTuitionTabs);
