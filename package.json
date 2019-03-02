@@ -8,6 +8,8 @@
     "antd": "^3.10.1",
     "antd-mobile": "^2.2.8",
     "axios": "^0.18.0",
+    "echarts": "^4.1.0",
+    "echarts-for-react": "^2.0.15-beta.0",
     "moment": "^2.24.0",
     "pdfmake": "^0.1.53",
     "react": "^16.5.2",

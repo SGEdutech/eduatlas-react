@@ -10,6 +10,7 @@ import Attendance from './Attendance';
 import EnrollmentAndFee from './EnrollmentAndFee';
 import Forums from './Forums';
 import Notifications from './Notifications';
+import PerformanceReport from './PerformanceReport';
 import ViewOrDeleteMaterials from '../TuitionComponents/StudyMaterial/ViewOrDeleteMaterials';
 
 import { readNotification } from '../../redux/actions/notificationActions';
@@ -71,6 +72,7 @@ class PrimaryTuitionTabs extends Component {
 						<Tab label="Attendance" />
 						<Tab label="Enrollment and Fee" />
 						<Tab label="Study Material" />
+						<Tab label="Performance Report" />
 					</Tabs>
 				</AppBar>
 				<Swipeable delta={20} onSwipedLeft={this.leftSwipe} onSwipedRight={this.rightSwipe} style={{ minHeight: '80vh' }}>
@@ -79,6 +81,7 @@ class PrimaryTuitionTabs extends Component {
 						{value === 1 && <Attendance batches={batches} schedules={schedules} studentInfo={studentInfo} />}
 						{value === 2 && <EnrollmentAndFee courses={courses} studentInfo={studentInfo} />}
 						{value === 3 && <ViewOrDeleteMaterials messageInfo={messageInfo} resources={resources} showDelete={false} />}
+						{value === 4 && <PerformanceReport />}
 					</div>
 				</Swipeable>
 			</>
