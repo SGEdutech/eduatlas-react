@@ -10,6 +10,7 @@ import Students from './Students';
 import Schedule from './Schedule';
 import Attendance from './Attendance';
 import Communicator from './Communicator';
+import PerformanceReport from './PerformanceReport';
 import StudyMaterial from './StudyMaterial';
 
 class PrimaryTuitionTabs extends Component {
@@ -20,7 +21,7 @@ class PrimaryTuitionTabs extends Component {
 	leftSwipe = () => {
 		this.setState(prevState => {
 			const minValue = 0;
-			const maxValue = 5;
+			const maxValue = 6;
 			let value = prevState.value + 1;
 			if (value < minValue) value = maxValue;
 			if (value > maxValue) value = minValue;
@@ -31,7 +32,7 @@ class PrimaryTuitionTabs extends Component {
 	rightSwipe = () => {
 		this.setState(prevState => {
 			const minValue = 0;
-			const maxValue = 5;
+			const maxValue = 6;
 			let value = prevState.value - 1;
 			if (value < minValue) value = maxValue;
 			if (value > maxValue) value = minValue;
@@ -57,6 +58,7 @@ class PrimaryTuitionTabs extends Component {
 						<Tab label="Schedule" />
 						<Tab label="Attendance" />
 						<Tab label="Study Material" />
+						<Tab label="Performance Report" />
 					</Tabs>
 				</AppBar>
 				<Swipeable delta={20} onSwipedLeft={this.leftSwipe} onSwipedRight={this.rightSwipe} style={{ minHeight: '80vh' }}>
@@ -67,6 +69,7 @@ class PrimaryTuitionTabs extends Component {
 						{value === 3 && <Schedule />}
 						{value === 4 && <Attendance />}
 						{value === 5 && <StudyMaterial />}
+						{value === 6 && <PerformanceReport />}
 					</div>
 				</Swipeable>
 			</>
