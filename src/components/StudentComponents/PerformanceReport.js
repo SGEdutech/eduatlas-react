@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 
 import '../../core/css/tabBar.css';
 
@@ -16,34 +15,28 @@ class PerformanceReport extends Component {
 	handleChange = (e, value) => this.setState({ value });
 
 	render() {
+		const { batches, schedules, studentInfo } = this.props;
 		const { value } = this.state;
 		return (
 			<>
 				<AppBar color="default" className="z101">
 					<Tabs
 						className="tabBar"
-						value={value}
-						onChange={this.handleChange}
 						indicatorColor="primary"
+						onChange={this.handleChange}
+						scrollButtons="auto"
 						textColor="primary"
-						variant="fullWidth"
-						scrollButtons="auto">
+						value={value}
+						variant="fullWidth">
 						<Tab label="Score" />
 						<Tab label="PER" />
 					</Tabs>
 				</AppBar>
-				{value === 0 && <Score />}
-				{value === 1 && <PerformanceEvalReport />}
+				{value === 0 && <Score batches={batches} schedules={schedules} studentInfo={studentInfo} />}
+				{value === 1 && <PerformanceEvalReport batches={batches} schedules={schedules} studentInfo={studentInfo} />}
 			</>
 		);
 	}
 }
 
-
-function mapStateToProps(state) {
-	return {
-		batch: state.batch
-	};
-}
-
-export default connect(mapStateToProps, {})(PerformanceReport);
+export default PerformanceReport;
