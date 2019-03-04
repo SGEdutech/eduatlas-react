@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { tuitionName } from '../../config.json';
 
 import {
 	Alert
@@ -18,7 +19,7 @@ export default class Notifications extends Component {
 			<Alert
 				key={notification._id}
 				className="mb-3"
-				message="IMS Pitampura"
+				message={tuitionName}
 				description={notification.message}
 				type="info"
 				showIcon

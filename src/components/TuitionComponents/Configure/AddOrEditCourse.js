@@ -12,26 +12,12 @@ import {
 	Button,
 	Checkbox,
 	Col,
-	Divider,
 	Form,
 	Input,
 	InputNumber,
 	Row
 } from 'antd';
 const { TextArea } = Input;
-
-
-const formItemLayout = {
-	labelCol: {
-	},
-	wrapperCol: {
-	}
-};
-
-const tailFormItemLayout = {
-	wrapperCol: {
-	}
-};
 
 const colLayout = {
 	xs: 24,
@@ -97,7 +83,7 @@ class AddCourse extends Component {
 		const courseInfo = this.props.courses.filter(course => course._id !== courseId)
 			.find(course => course.code === code);
 		const isDuplicate = Boolean(courseInfo);
-		if (isDuplicate) callback('this code already exists');
+		if (isDuplicate) callback('A course wiht this code already exists');
 		callback();
 	}
 
@@ -126,30 +112,23 @@ class AddCourse extends Component {
 						<Row gutter={16}>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="Course Code/Name"
 									hasFeedback={true}>
 									{getFieldDecorator('code', {
 										initialValue: code,
-										rules: [{
-											required: true, message: 'Course must have code!'
-										}, {
-											validator: this.validateCourseCode
-										}]
-									})(
-										<Input placeholder="Course Code/Name" />
-									)}
+										rules: [{ required: true, message: 'Course code is required!' },
+										{ validator: this.validateCourseCode }]
+									})(<Input />)}
 								</Form.Item>
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="Course Fee"
 									hasFeedback={true}>
 									{getFieldDecorator('fees', {
 										initialValue: fees,
 										rules: [{
-											required: true, message: 'Course must have fee!'
+											required: true, message: 'Course fee is required!'
 										}]
 									})(
 										<InputNumber onChange={this.handleFeeChange} className="w-100" decimalSeparator="." precision={2} step={1000} min={0} max={10000000} />
@@ -158,7 +137,6 @@ class AddCourse extends Component {
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="Description"
 									hasFeedback={true}>
 									{getFieldDecorator('description', { initialValue: description })(
@@ -168,25 +146,23 @@ class AddCourse extends Component {
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="GST %"
 									hasFeedback={true}>
 									{getFieldDecorator('gstPercentage', {
 										initialValue: gstPercentage,
-										rules: [{ required: true, message: 'must provide gst' }, { validator: this.validateGst }]
+										rules: [{ required: true, message: 'Please enter GST or check inclusive of taxes!' }, { validator: this.validateGst }]
 									})(
 										<InputNumber min={0} max={100} disabled={this.state.inclusiveOfTaxes} onChange={this.handleGstChange} className="w-100" formatter={value => `${value}%`} />
 									)}
 								</Form.Item>
 							</Col>
 							<Col {...colLayout}>
-								<Form.Item {...tailFormItemLayout}>
+								<Form.Item>
 									<Checkbox onChange={this.handleInclusiveTaxChange}>Inclusive Of Taxes</Checkbox>
 								</Form.Item>
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="Total Fee">
 									<Input value={this.state.totalFees} disabled />
 								</Form.Item>

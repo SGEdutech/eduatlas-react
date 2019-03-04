@@ -157,7 +157,7 @@ class AddStudyMaterial extends Component {
 											{ validator: this.validateTitle }
 											]
 										})(
-											<Input placeholder="Title" />
+											<Input />
 										)}
 									</Form.Item>
 								</Col>

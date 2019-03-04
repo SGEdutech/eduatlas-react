@@ -15,7 +15,7 @@ class StudentSelector extends Component {
 		<>
 			<Col {...colLayout}>
 				<Form.Item
-					label="Students"
+					label="Select Students"
 					hasFeedback={true}>
 					{getFieldDecorator(fieldName, {
 						rules: [{
@@ -25,7 +25,6 @@ class StudentSelector extends Component {
 						<Select showSearch
 							size="large"
 							mode="multiple"
-							placeholder="Select Students"
 							filterOption={filterOptions}
 							className="w-100">
 							{students.map(student => <Option key={student.email} value={student.email}>{student.name}</Option>)}
@@ -41,7 +40,6 @@ class StudentSelector extends Component {
 						onChange={handleBatchChange}
 						size="large"
 						mode="multiple"
-						placeholder="Select Batches"
 						filterOption={filterOptions}
 						className="w-100">
 						{batches.map(batch => <Option key={batch._id} value={batch._id}>{batch.code}</Option>)}

@@ -273,7 +273,7 @@ class AddStudent extends Component {
 								validator: this.validateRollNumber
 							}]
 						})(
-							<Input placeholder="roll number" />
+							<Input />
 						)}
 					</Form.Item>
 				</Col>
@@ -287,7 +287,7 @@ class AddStudent extends Component {
 								required: true, message: 'Please provide name!'
 							}]
 						})(
-							<Input placeholder="student name" />
+							<Input />
 						)}
 					</Form.Item>
 				</Col>
@@ -307,7 +307,7 @@ class AddStudent extends Component {
 								validator: this.validateEmail
 							}]
 						})(
-							<Input placeholder="student email" />
+							<Input />
 						)}
 					</Form.Item>
 				</Col>
@@ -319,7 +319,7 @@ class AddStudent extends Component {
 						hasFeedback={true}>
 						{getFieldDecorator('address', {
 						})(
-							<Input placeholder="Student Address" />
+							<Input />
 						)}
 					</Form.Item>
 				</Col>
@@ -330,7 +330,7 @@ class AddStudent extends Component {
 						hasFeedback={true}>
 						{getFieldDecorator('contactNumber', {
 						})(
-							<InputNumber className="w-100" placeholder="student number" />
+							<InputNumber className="w-100" />
 						)}
 					</Form.Item>
 				</Col>
@@ -352,7 +352,6 @@ class AddStudent extends Component {
 							}]
 						})(
 							<Select
-								placeholder="Select Course"
 								onChange={this.handleCourseChange}>
 								{coursesAndBatchesOpts.map(course => <Option key={course.value}>{course.label}</Option>)}
 							</Select>
@@ -366,7 +365,7 @@ class AddStudent extends Component {
 						hasFeedback={true}>
 						{getFieldDecorator('batchId', {
 						})(
-							<Select placeholder="Select Batch">
+							<Select>
 								{selectedCourseIndex !== -1 && coursesAndBatchesOpts[selectedCourseIndex].children.map(batch => <Option key={batch.value}>{batch.label}</Option>)}
 							</Select>
 						)}
@@ -377,7 +376,7 @@ class AddStudent extends Component {
 						{...formItemLayout}
 						label="Discount Code"
 						hasFeedback={true}>
-						<Select allowClear={true} onChange={this.handleDiscountCodeChange} placeholder="select discount code">
+						<Select allowClear={true} onChange={this.handleDiscountCodeChange}>
 							{discounts.map(discount => <Option key={discount._id} value={discount._id}>{discount.code}</Option>)}
 						</Select>
 					</Form.Item>
@@ -430,9 +429,8 @@ class AddStudent extends Component {
 							rules: [{
 								required: task === 'add-installment', message: 'Please select mode!'
 							}]
-							// initialValue: this.state.modeOfPayment
 						})(
-							<Select onChange={this.handleModeOfPaymentChange} placeholder="select mode">
+							<Select onChange={this.handleModeOfPaymentChange}>
 								<Option value="cash">Cash</Option>
 								<Option value="card">Card</Option>
 								<Option value="cheque">Cheque</Option>
@@ -461,7 +459,7 @@ class AddStudent extends Component {
 								hasFeedback={true}>
 								{getFieldDecorator('bank', {
 								})(
-									<Input placeholder="bank name" />
+									<Input />
 								)}
 							</Form.Item>
 						</Col>
@@ -472,7 +470,7 @@ class AddStudent extends Component {
 								hasFeedback={true}>
 								{getFieldDecorator('chequeNumber', {
 								})(
-									<Input placeholder="cheque number" />
+									<Input />
 								)}
 							</Form.Item>
 						</Col>
@@ -487,7 +485,7 @@ class AddStudent extends Component {
 								hasFeedback={true}>
 								{getFieldDecorator('bank', {
 								})(
-									<Input placeholder="bank name" />
+									<Input />
 								)}
 							</Form.Item>
 						</Col>
@@ -498,7 +496,7 @@ class AddStudent extends Component {
 								hasFeedback={true}>
 								{getFieldDecorator('transactionId', {
 								})(
-									<Input placeholder="transaction id" />
+									<Input />
 								)}
 							</Form.Item>
 						</Col>
@@ -513,7 +511,7 @@ class AddStudent extends Component {
 								hasFeedback={true}>
 								{getFieldDecorator('transactionId', {
 								})(
-									<Input placeholder="transaction id" />
+									<Input />
 								)}
 							</Form.Item>
 						</Col>
