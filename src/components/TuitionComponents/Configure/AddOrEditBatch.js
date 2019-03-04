@@ -203,7 +203,7 @@ class AddBatch extends Component {
 											required: true, message: 'Batch must have Course!'
 										}]
 									})(
-										<Select placeholder="select parent course" disabled={this.props.edit}>
+										<Select disabled={this.props.edit}>
 											{courses.map(course => <Option key={course._id} value={course._id}>{course.code}</Option>)}
 										</Select>
 									)}
@@ -221,7 +221,7 @@ class AddBatch extends Component {
 											validator: this.validateBatchCode
 										}]
 									})(
-										<Input placeholder="batch code" />
+										<Input />
 									)}
 								</Form.Item>
 							</Col>

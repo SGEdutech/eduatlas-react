@@ -137,7 +137,7 @@ class AddCourse extends Component {
 											validator: this.validateCourseCode
 										}]
 									})(
-										<Input placeholder="Course Code/Name" />
+										<Input />
 									)}
 								</Form.Item>
 							</Col>

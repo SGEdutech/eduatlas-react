@@ -115,7 +115,7 @@ class AddDiscount extends Component {
 											validator: this.validateDiscountCode
 										}]
 									})(
-										<Input placeholder="discount code" />
+										<Input />
 									)}
 								</Form.Item>
 							</Col>

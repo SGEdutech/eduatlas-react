@@ -185,6 +185,7 @@ class AddSchedule extends Component {
 								minuteStep={2}
 								use12Hours={true}
 								locale={enUs}>
+								{/* TODO: Fix UI */}
 								<List.Item style={{ border: '1px solid #D3D3D3', borderRadius: '5px' }} arrow="horizontal"></List.Item>
 							</DatePickerM>
 						)}
@@ -266,13 +267,13 @@ class AddSchedule extends Component {
 						<Col span={24}>
 							<Form.Item>
 								<Button type="dashed" block onClick={this.add}>
-									<Icon type="plus" /> Add Another
+									<Icon type="plus" /> Add More Schedule
 								</Button>
 							</Form.Item>
 						</Col>
 						<Col {...colLayout}>
 							<Form.Item
-								label="Batches"
+								label="Select Batches"
 								hasFeedback={true}>
 								{getFieldDecorator('batches', {
 									rules: [{
@@ -280,8 +281,7 @@ class AddSchedule extends Component {
 									}]
 								})(
 									<Select
-										mode="multiple"
-										placeholder="Please select batches">
+										mode="multiple">
 										{this.props.batches &&
 											this.props.batches.map(batch => <Option key={batch._id} value={batch._id}>{batch.code}</Option>)}
 									</Select>
