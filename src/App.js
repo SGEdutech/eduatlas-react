@@ -10,6 +10,7 @@ import Router from './Router';
 import AddOrEditBatch from './components/TuitionComponents/Configure/AddOrEditBatch';
 import AddOrEditCourse from './components/TuitionComponents/Configure/AddOrEditCourse';
 import AddOrEditDiscount from './components/TuitionComponents/Configure/AddOrEditDiscount';
+import AddOrEditTest from './components/TuitionComponents/PerformanceReport/Test/AddOrEditTest';
 import AddStudent from './components/TuitionComponents/Students/AddStudent';
 import AttendanceDetails from './components/TuitionComponents/Attendance/AttendanceDetails';
 import EditProfile from './components/EditProfile';
@@ -77,6 +78,8 @@ class App extends Component {
 					<Route exact path="/signup" component={Signup}></Route>
 					<Route exact path="/student" component={StudentManager}></Route>
 					<Route exact path="/receipt-config" component={ReceiptConfig}></Route>
+					<Route exact path="/tuition/add-test" component={AddOrEditTest}></Route>
+					<Route exact path="/tuition/edit-test/:testId" render={() => <AddOrEditTest edit={true} />}></Route>
 				</Switch>
 			</Router>
 		);
