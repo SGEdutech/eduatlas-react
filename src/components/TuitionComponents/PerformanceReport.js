@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { addTest, deleteTest, editTest } from '../../redux/actions/testActions';
+
 import '../../core/css/tabBar.css';
 
 import AppBar from '@material-ui/core/AppBar';
@@ -9,7 +11,7 @@ import Tab from '@material-ui/core/Tab';
 
 import AddScore from './PerformanceReport/AddScore';
 import AddTest from './PerformanceReport/AddTest';
-
+import Test from './PerformanceReport/Test';
 
 class PerformanceReport extends Component {
 	state = { value: 0 };
@@ -17,7 +19,7 @@ class PerformanceReport extends Component {
 	handleChange = (e, value) => this.setState({ value });
 
 	render() {
-		const { batches } = this.props;
+		const { addTest, batches, messageInfo, tests } = this.props;
 		const { value } = this.state;
 		return (
 			<>
@@ -33,8 +35,9 @@ class PerformanceReport extends Component {
 						<Tab label="Score" />
 					</Tabs>
 				</AppBar>
-				{value === 0 && <AddTest batches={batches} />}
-				{value === 1 && <AddScore batches={batches} />}
+				{value === 0 && <Test addTest={addTest} batches={batches} deleteTest={deleteTest} editTest={editTest} messageInfo={messageInfo} tests={tests} />}
+				{value === 1 && <AddTest addTest={addTest} batches={batches} tests={tests} />}
+				{value === 2 && <AddScore batches={batches} tests={tests} />}
 			</>
 		);
 	}
@@ -43,10 +46,12 @@ class PerformanceReport extends Component {
 function mapStateToProps(state) {
 	return {
 		schedule: state.schedule,
-		batches: state.batch.batches
+		batches: state.batch.batches,
+		messageInfo: state.messageInfo,
+		tests: state.test.tests
 	};
 }
 
-export default connect(mapStateToProps, {})(PerformanceReport);
+export default connect(mapStateToProps, { addTest, deleteTest, editTest })(PerformanceReport);
 
 

@@ -5,6 +5,7 @@ import sanatizeFormObj from '../../../scripts/sanatize-form-obj';
 import {
 	Button,
 	Col,
+	DatePicker,
 	Form,
 	Input,
 	InputNumber,
@@ -12,13 +13,6 @@ import {
 	Select
 } from 'antd';
 const { Option } = Select;
-
-const formItemLayout = {
-	labelCol: {
-	},
-	wrapperCol: {
-	}
-};
 
 const colLayout = {
 	xs: 24,
@@ -28,26 +22,25 @@ const colLayout = {
 class AddTest extends Component {
 	handleSubmit = e => {
 		e.preventDefault();
-		const { form, history, match } = this.props;
+		const { addTest, form, form: { resetFields } } = this.props;
 		form.validateFieldsAndScroll((err, values) => {
 			if (err) {
 				console.error(err);
 				return;
 			}
 			sanatizeFormObj(values);
-			console.log(values);
-			// history.goBack();
+			addTest(values);
+			resetFields();
 		});
 	}
 
-	validateTestCode = (rule, code = '', callback) => {
-		// const { discountId } = this.props.match.params;
-		// code = code.trim().toLowerCase();
-		// if (!code) callback('invalid!');
-		// const discountInfo = this.props.discounts.filter(discount => discount._id !== discountId)
-		// 	.find(discount => discount.code === code);
-		// const isDuplicate = Boolean(discountInfo);
-		// if (isDuplicate) callback('code already exists');
+	validateTestName = (rule, testName = '', callback) => {
+		const { tests } = this.props;
+		testName = testName.trim().toLowerCase();
+		if (!testName) callback('invalid!');
+		const testInfo = tests.find(discount => discount.code === testName);
+		const isDuplicate = Boolean(testInfo);
+		if (isDuplicate) callback('name already exists');
 		callback();
 	}
 
@@ -60,15 +53,14 @@ class AddTest extends Component {
 					<Row gutter={16}>
 						<Col {...colLayout}>
 							<Form.Item
-								{...formItemLayout}
 								label="Test Name"
 								hasFeedback={true}>
-								{getFieldDecorator('testName', {
+								{getFieldDecorator('name', {
 									// initialValue: code,
 									rules: [{
 										required: true, message: 'Please give some name!'
 									}, {
-										validator: this.validateTestCode
+										validator: this.validateTestName
 									}]
 								})(
 									<Input placeholder="Test Name/Code" />
@@ -77,10 +69,9 @@ class AddTest extends Component {
 						</Col>
 						<Col {...colLayout}>
 							<Form.Item
-								{...formItemLayout}
 								label="Max Score"
 								hasFeedback={true}>
-								{getFieldDecorator('maxScore', {
+								{getFieldDecorator('maxMarks', {
 									// initialValue: amount,
 									rules: [{
 										required: true, message: 'Max Score is required!'
@@ -92,10 +83,23 @@ class AddTest extends Component {
 						</Col>
 						<Col {...colLayout}>
 							<Form.Item
-								{...formItemLayout}
+								label="Date"
+								hasFeedback={true}>
+								{getFieldDecorator('date', {
+									// initialValue: amount,
+									rules: [{
+										required: true, message: 'Date is required!'
+									}]
+								})(
+									<DatePicker className="w-100" />
+								)}
+							</Form.Item>
+						</Col>
+						<Col {...colLayout}>
+							<Form.Item
 								label="Select Batch(s)"
 								hasFeedback={true}>
-								{getFieldDecorator('selectBatch', {
+								{getFieldDecorator('batchIds', {
 									rules: [{
 										required: true, message: 'Select atleast one batch!'
 									}]
