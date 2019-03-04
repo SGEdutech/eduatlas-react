@@ -9,6 +9,7 @@ import request from './request';
 import resource from './resource';
 import student from './student';
 import schedule from './schedule';
+import test from './test';
 import tuitionInfo from './tuitionInfo';
 import user from './user';
 
@@ -22,6 +23,7 @@ export default combineReducers({
 	resource,
 	student,
 	schedule,
+	test,
 	tuitionInfo,
 	user
 });
