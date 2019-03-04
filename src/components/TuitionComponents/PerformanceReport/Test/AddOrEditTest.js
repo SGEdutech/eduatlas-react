@@ -56,10 +56,11 @@ class AddOrEditTest extends Component {
 	}
 
 	validateTestName = (rule, testName = '', callback) => {
+		const { testId } = this.props.match.params;
 		const { tests } = this.props;
 		testName = testName.trim().toLowerCase();
 		if (!testName) callback('invalid!');
-		const testInfo = tests.find(test => test.name === testName);
+		const testInfo = tests.filter(test => test._id !== testId).find(test => test.name === testName);
 		const isDuplicate = Boolean(testInfo);
 		if (isDuplicate) callback('name already exists');
 		callback();
@@ -68,7 +69,7 @@ class AddOrEditTest extends Component {
 	render() {
 		const { batches, form: { getFieldDecorator } } = this.props;
 		const { batchIds, date, maxMarks, name } = this.state.testInfo;
-		
+
 		return (
 			<>
 				<Navbar renderBackBtn={true} navText={this.props.edit ? 'Edit Test' : 'Add Test'} />
@@ -110,7 +111,7 @@ class AddOrEditTest extends Component {
 									label="Date"
 									hasFeedback={true}>
 									{getFieldDecorator('date', {
-										// initialValue: date,
+										initialValue: date,
 										rules: [{
 											required: true, message: 'Date is required!'
 										}]
