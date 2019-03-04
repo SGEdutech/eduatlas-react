@@ -43,13 +43,15 @@ class AddCourse extends Component {
 
 	handleFeeChange = fees => {
 		const { form } = this.props;
-		const gst = form.getFieldValue('gstPercentage') || 0;
+		fees = parseInt(fees, 10) || 0;
+		const gst = parseInt(form.getFieldValue('gstPercentage'), 10) || 0;
 		this.setState({ totalFees: calculateTotalFee(fees, gst) });
 	}
 
 	handleGstChange = gst => {
 		const { form } = this.props;
-		const fees = form.getFieldValue('fees') || 0;
+		gst = parseInt(gst, 10) || 0;
+		const fees = parseInt(form.getFieldValue('fees'), 10) || 0;
 		this.setState({ totalFees: calculateTotalFee(fees, gst) });
 	}
 
@@ -57,8 +59,8 @@ class AddCourse extends Component {
 		const { form } = this.props;
 		const isChecked = e.target.checked;
 		if (isChecked) this.props.form.setFieldsValue({ 'gstPercentage': 0 });
-		const fees = form.getFieldValue('fees') || 0;
-		const gst = form.getFieldValue('gstPercentage') || 0;
+		const fees = parseInt(form.getFieldValue('fees'), 10) || 0;
+		const gst = parseInt(form.getFieldValue('gstPercentage'), 10) || 0;
 		this.setState({ inclusiveOfTaxes: isChecked, totalFees: calculateTotalFee(fees, gst) });
 	}
 
