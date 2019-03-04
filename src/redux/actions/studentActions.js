@@ -86,7 +86,7 @@ export function mailReceipt(docDef, email) {
 	return dispatch => {
 		dispatch({
 			type: 'SEND_RECEIPT',
-			payload: axios.post('${schemeAndAuthority}/tuition/email-receipt', { docDef: JSON.stringify(docDef), email })
+			payload: axios.post(`${schemeAndAuthority}/tuition/email-receipt`, { docDef: JSON.stringify(docDef), email })
 		});
 	};
 }
