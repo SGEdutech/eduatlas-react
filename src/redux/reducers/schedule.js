@@ -1,4 +1,3 @@
-import moment from 'moment';
 import dateToMoment from '../../scripts/dateToMoment';
 
 const initState = { schedules: [] };

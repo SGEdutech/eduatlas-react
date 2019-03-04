@@ -1,23 +1,30 @@
-const initState = {
-	tests: []
-};
+import dateToMoment from '../../scripts/dateToMoment';
 
-function courseReducer(state = initState, action) {
+const initState = { tests: [] };
+
+function testReducer(state = initState, action) {
 	switch (action.type) {
 		case 'FETCH_ALL_FULFILLED': {
-			return { ...state, tests: action.payload.data.tests };
+			const tests = action.payload.data.tests;
+			dateToMoment(tests);
+			return { ...state, tests };
 		}
 		case 'ADD_TEST_FULFILLED': {
-			return { ...state, tests: [...state.tests, action.payload.data] };
+			const newTest = action.payload.data;
+			dateToMoment(newTest);
+			return { ...state, tests: [...state.tests, newTest] };
 		}
 		case 'EDIT_TEST_FULFILLED': {
 			const editedTest = action.payload.data;
 			const { _id: editedTestId } = editedTest;
 			const newTests = state.tests.map(test => test._id === editedTestId ? editedTest : test);
+			dateToMoment(newTests);
 			return { ...state, tests: newTests };
 		}
 		case 'DELETE_TEST_FULFILLED': {
-			return { ...state, tests: state.tests.filter(test => test._id !== action.payload.data._id) };
+			const tests = state.tests.filter(test => test._id !== action.payload.data._id);
+			dateToMoment(tests);
+			return { ...state, tests };
 		}
 		case 'DELETE_BATCH_FULFILLED': {
 			const deletedBatchId = action.payload.data._id;
@@ -31,4 +38,4 @@ function courseReducer(state = initState, action) {
 	}
 }
 
-export default courseReducer;
+export default testReducer;
