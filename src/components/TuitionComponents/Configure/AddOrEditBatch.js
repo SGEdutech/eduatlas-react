@@ -23,19 +23,11 @@ const { TextArea } = Input;
 const { Option } = Select;
 
 const studentTableLayout = {
-	labelCol: {
-		xs: { span: 24 }
-	},
-	wrapperCol: {
-		xs: { span: 24 }
-	}
+	labelCol: { xs: { span: 24 } },
+	wrapperCol: { xs: { span: 24 } }
 };
 
-
-const colLayout = {
-	xs: 24,
-	md: 12
-};
+const colLayout = { xs: 24,	md: 12 };
 
 class AddBatch extends Component {
 	state = {
@@ -45,9 +37,7 @@ class AddBatch extends Component {
 		batchInfo: {}
 	};
 
-	enterLoading = () => {
-		this.setState({ loading: true });
-	}
+	enterLoading = () => this.setState({ loading: true });
 
 	getColumnSearchProps = dataIndex => ({
 		// don't touch this shit, its mineeeee -ANTD TABLE
@@ -137,12 +127,13 @@ class AddBatch extends Component {
 
 	validateBatchCode = (rule, code = '', callback) => {
 		const { batchId } = this.props.match.params;
+		// This case will be taken care of required validator
+		if (Boolean(code) === false) callback();
 		code = code.trim().toLowerCase();
-		if (!code) callback('invalid!');
-		const batchInfo = this.props.batches.filter(batch => batch._id !== batchId)
-			.find(batch => batch.code === code);
+		if (Boolean(code) === false) callback('Please enter batch code!');
+		const batchInfo = this.props.batches.filter(batch => batch._id !== batchId).find(batch => batch.code === code);
 		const isDuplicate = Boolean(batchInfo);
-		if (isDuplicate) callback('code already exists');
+		if (isDuplicate) callback('A batch with this code already exists');
 		callback();
 	}
 
@@ -200,7 +191,7 @@ class AddBatch extends Component {
 									{getFieldDecorator('courseId', {
 										initialValue: courseId,
 										rules: [{
-											required: true, message: 'Batch must have Course!'
+											required: true, message: 'Please select course this batch belongs to!'
 										}]
 									})(
 										<Select disabled={this.props.edit}>
@@ -216,7 +207,7 @@ class AddBatch extends Component {
 									{getFieldDecorator('code', {
 										initialValue: code,
 										rules: [{
-											required: true, message: 'Batch must have code!'
+											required: true, message: 'Batch code is required!'
 										}, {
 											validator: this.validateBatchCode
 										}]
