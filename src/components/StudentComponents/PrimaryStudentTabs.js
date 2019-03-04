@@ -53,7 +53,7 @@ class PrimaryTuitionTabs extends Component {
 
 	render() {
 		const { value } = this.state;
-		const { batches, courses, messageInfo, notifications, readNotification, resources, schedules, students, user } = this.props;
+		const { batches, courses, messageInfo, notifications, readNotification, resources, schedules, students, tests, user } = this.props;
 		const { primaryEmail } = user;
 		const studentInfo = students.find(student => student.email === primaryEmail);
 		if (Boolean(studentInfo) === false) return <></>; // TODO: Handle this!!!!
@@ -81,7 +81,7 @@ class PrimaryTuitionTabs extends Component {
 						{value === 1 && <Attendance batches={batches} schedules={schedules} studentInfo={studentInfo} />}
 						{value === 2 && <EnrollmentAndFee courses={courses} studentInfo={studentInfo} />}
 						{value === 3 && <ViewOrDeleteMaterials messageInfo={messageInfo} resources={resources} showDelete={false} />}
-						{value === 4 && <PerformanceReport batches={batches} schedules={schedules} studentInfo={studentInfo} />}
+						{value === 4 && <PerformanceReport batches={batches} schedules={schedules} studentInfo={studentInfo} tests={tests} />}
 					</div>
 				</Swipeable>
 			</>
@@ -97,6 +97,7 @@ const mapStateToProps = state => ({
 	resources: state.resource.resources,
 	schedules: state.schedule.schedules,
 	students: state.student.students,
+	tests: state.test.tests,
 	user: state.user.userInfo
 });
 
