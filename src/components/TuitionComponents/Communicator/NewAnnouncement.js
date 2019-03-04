@@ -47,7 +47,7 @@ class NewAnnouncement extends Component {
 
 	handleSubmit = e => {
 		e.preventDefault();
-		const { addNotification, form } = this.props;
+		const { addNotification, form, form: { resetFields } } = this.props;
 		form.validateFieldsAndScroll((err, values) => {
 			if (err) {
 				console.error(err);
@@ -56,6 +56,7 @@ class NewAnnouncement extends Component {
 			values.senderId = tuitionId;
 			sanatizeForm(values);
 			addNotification(values);
+			resetFields();
 		});
 	}
 
