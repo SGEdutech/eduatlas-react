@@ -116,7 +116,7 @@ class AddCourse extends Component {
 									hasFeedback={true}>
 									{getFieldDecorator('code', {
 										initialValue: code,
-										rules: [{ required: true, message: 'Course code is required' },
+										rules: [{ required: true, message: 'Course code is required!' },
 										{ validator: this.validateCourseCode }]
 									})(<Input />)}
 								</Form.Item>
@@ -128,7 +128,7 @@ class AddCourse extends Component {
 									{getFieldDecorator('fees', {
 										initialValue: fees,
 										rules: [{
-											required: true, message: 'Course fee is required'
+											required: true, message: 'Course fee is required!'
 										}]
 									})(
 										<InputNumber onChange={this.handleFeeChange} className="w-100" decimalSeparator="." precision={2} step={1000} min={0} max={10000000} />
@@ -150,7 +150,7 @@ class AddCourse extends Component {
 									hasFeedback={true}>
 									{getFieldDecorator('gstPercentage', {
 										initialValue: gstPercentage,
-										rules: [{ required: true, message: 'Please enter GST or check inclusive of taxes' }, { validator: this.validateGst }]
+										rules: [{ required: true, message: 'Please enter GST or check inclusive of taxes!' }, { validator: this.validateGst }]
 									})(
 										<InputNumber min={0} max={100} disabled={this.state.inclusiveOfTaxes} onChange={this.handleGstChange} className="w-100" formatter={value => `${value}%`} />
 									)}
