@@ -68,7 +68,7 @@ class AddOrEditTest extends Component {
 	render() {
 		const { batches, form: { getFieldDecorator } } = this.props;
 		const { batchIds, date, maxMarks, name } = this.state.testInfo;
-		console.log(date)
+		
 		return (
 			<>
 				<Navbar renderBackBtn={true} navText={this.props.edit ? 'Edit Test' : 'Add Test'} />

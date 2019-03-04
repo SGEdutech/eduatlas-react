@@ -19,7 +19,7 @@ class PerformanceReport extends Component {
 	handleChange = (e, value) => this.setState({ value });
 
 	render() {
-		const { addTest, batches, messageInfo, tests } = this.props;
+		const { addTest, batches, deleteTest, messageInfo, tests } = this.props;
 		const { value } = this.state;
 		return (
 			<>
