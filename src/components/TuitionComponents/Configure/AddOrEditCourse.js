@@ -78,10 +78,11 @@ class AddCourse extends Component {
 
 	validateCourseCode = (rule, code = '', callback) => {
 		const { courseId } = this.props.match.params;
+		// This case will be taken care of required validator
+		if (Boolean(code) === false) callback();
 		code = code.trim().toLowerCase();
-		if (!code) callback('invalid!');
-		const courseInfo = this.props.courses.filter(course => course._id !== courseId)
-			.find(course => course.code === code);
+		if (Boolean(code) === false) callback('Course code is required!');
+		const courseInfo = this.props.courses.filter(course => course._id !== courseId).find(course => course.code === code);
 		const isDuplicate = Boolean(courseInfo);
 		if (isDuplicate) callback('A course wiht this code already exists');
 		callback();
@@ -162,8 +163,7 @@ class AddCourse extends Component {
 								</Form.Item>
 							</Col>
 							<Col {...colLayout}>
-								<Form.Item
-									label="Total Fee">
+								<Form.Item label="Total Fee">
 									<Input value={this.state.totalFees} disabled />
 								</Form.Item>
 							</Col>
