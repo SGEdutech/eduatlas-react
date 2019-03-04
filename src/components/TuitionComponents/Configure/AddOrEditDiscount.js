@@ -74,8 +74,10 @@ class AddDiscount extends Component {
 
 	validateDiscountCode = (rule, code = '', callback) => {
 		const { discountId } = this.props.match.params;
+		// This case will be taken care of required validator
+		if (Boolean(code) === false) callback();
 		code = code.trim().toLowerCase();
-		if (!code) callback('invalid!');
+		if (Boolean(code) === false) callback('Discount code is required!');
 		const discountInfo = this.props.discounts.filter(discount => discount._id !== discountId)
 			.find(discount => discount.code === code);
 		const isDuplicate = Boolean(discountInfo);
@@ -110,7 +112,7 @@ class AddDiscount extends Component {
 									{getFieldDecorator('code', {
 										initialValue: code,
 										rules: [{
-											required: true, message: 'Please give some name!'
+											required: true, message: 'Discount code is required!'
 										}, {
 											validator: this.validateDiscountCode
 										}]
@@ -127,9 +129,10 @@ class AddDiscount extends Component {
 									{getFieldDecorator('amount', {
 										initialValue: amount,
 										rules: [{
-											required: true, message: 'Discount must have amount!'
+											required: true, message: 'Discount amount is required!'
 										}]
 									})(
+										// TODO: Step and min should not be in state
 										<InputNumber className="w-100" step={this.state.step} min={this.state.min} max={this.state.max} formatter={this.conditionalFormatter} />
 									)}
 								</Form.Item>
