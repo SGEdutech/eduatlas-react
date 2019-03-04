@@ -10,6 +10,7 @@ import Attendance from './Attendance';
 import EnrollmentAndFee from './EnrollmentAndFee';
 import Forums from './Forums';
 import Notifications from './Notifications';
+import PerformanceReport from './PerformanceReport';
 import ViewOrDeleteMaterials from '../TuitionComponents/StudyMaterial/ViewOrDeleteMaterials';
 
 import { readNotification } from '../../redux/actions/notificationActions';
@@ -31,7 +32,7 @@ class PrimaryTuitionTabs extends Component {
 	leftSwipe = () => {
 		this.setState(prevState => {
 			const minValue = 0;
-			const maxValue = 3;
+			const maxValue = 4;
 			let value = prevState.value + 1;
 			if (value < minValue) value = maxValue;
 			if (value > maxValue) value = minValue;
@@ -42,7 +43,7 @@ class PrimaryTuitionTabs extends Component {
 	rightSwipe = () => {
 		this.setState(prevState => {
 			const minValue = 0;
-			const maxValue = 3;
+			const maxValue = 4;
 			let value = prevState.value - 1;
 			if (value < minValue) value = maxValue;
 			if (value > maxValue) value = minValue;
@@ -71,6 +72,7 @@ class PrimaryTuitionTabs extends Component {
 						<Tab label="Attendance" />
 						<Tab label="Enrollment and Fee" />
 						<Tab label="Study Material" />
+						<Tab label="Performance Report" />
 					</Tabs>
 				</AppBar>
 				<Swipeable delta={20} onSwipedLeft={this.leftSwipe} onSwipedRight={this.rightSwipe} style={{ minHeight: '80vh' }}>
@@ -79,6 +81,7 @@ class PrimaryTuitionTabs extends Component {
 						{value === 1 && <Attendance batches={batches} schedules={schedules} studentInfo={studentInfo} />}
 						{value === 2 && <EnrollmentAndFee courses={courses} studentInfo={studentInfo} />}
 						{value === 3 && <ViewOrDeleteMaterials messageInfo={messageInfo} resources={resources} showDelete={false} />}
+						{value === 4 && <PerformanceReport batches={batches} schedules={schedules} studentInfo={studentInfo} />}
 					</div>
 				</Swipeable>
 			</>
