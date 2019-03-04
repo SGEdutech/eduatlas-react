@@ -15,7 +15,7 @@ class PerformanceReport extends Component {
 	handleChange = (e, value) => this.setState({ value });
 
 	render() {
-		const { batches, schedules, studentInfo, tests } = this.props;
+		const { batches, studentInfo, tests } = this.props;
 		const { value } = this.state;
 		return (
 			<>
@@ -33,7 +33,7 @@ class PerformanceReport extends Component {
 					</Tabs>
 				</AppBar>
 				{value === 0 && <Score batches={batches} studentInfo={studentInfo} tests={tests} />}
-				{value === 1 && <PerformanceEvalReport batches={batches} schedules={schedules} studentInfo={studentInfo} />}
+				{value === 1 && <PerformanceEvalReport batches={batches} studentInfo={studentInfo} tests={tests} />}
 			</>
 		);
 	}

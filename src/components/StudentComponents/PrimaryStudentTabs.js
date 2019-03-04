@@ -81,7 +81,7 @@ class PrimaryTuitionTabs extends Component {
 						{value === 1 && <Attendance batches={batches} schedules={schedules} studentInfo={studentInfo} />}
 						{value === 2 && <EnrollmentAndFee courses={courses} studentInfo={studentInfo} />}
 						{value === 3 && <ViewOrDeleteMaterials messageInfo={messageInfo} resources={resources} showDelete={false} />}
-						{value === 4 && <PerformanceReport batches={batches} schedules={schedules} studentInfo={studentInfo} tests={tests} />}
+						{value === 4 && <PerformanceReport batches={batches} studentInfo={studentInfo} tests={tests} />}
 					</div>
 				</Swipeable>
 			</>
