@@ -19,7 +19,7 @@ class PerformanceReport extends Component {
 	handleChange = (e, value) => this.setState({ value });
 
 	render() {
-		const { addTest, batches, deleteTest, messageInfo, tests } = this.props;
+		const { addTest, batches, deleteTest, editTest, messageInfo, students, tests } = this.props;
 		const { value } = this.state;
 		return (
 			<>
@@ -36,7 +36,7 @@ class PerformanceReport extends Component {
 					</Tabs>
 				</AppBar>
 				{value === 0 && <Test addTest={addTest} batches={batches} deleteTest={deleteTest} editTest={editTest} messageInfo={messageInfo} tests={tests} />}
-				{value === 1 && <AddScore batches={batches} tests={tests} />}
+				{value === 1 && <AddScore batches={batches} editTest={editTest} students={students} tests={tests} />}
 			</>
 		);
 	}
@@ -44,9 +44,10 @@ class PerformanceReport extends Component {
 
 function mapStateToProps(state) {
 	return {
-		schedule: state.schedule,
 		batches: state.batch.batches,
 		messageInfo: state.messageInfo,
+		schedule: state.schedule,
+		students: state.student.students,
 		tests: state.test.tests
 	};
 }

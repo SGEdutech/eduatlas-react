@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 
 import {
+	Button,
 	Col,
 	Form,
-	Input,
+	InputNumber,
 	Row,
 	Select,
 	Table
@@ -39,40 +40,61 @@ const EditableRow = ({ form, index, ...props }) => (
 const EditableFormRow = Form.create()(EditableRow);
 
 class AddScore extends Component {
+	constructor(props) {
+		super(props);
+		this.currentTestId = null;
+	}
+
 	state = {
-		batchFilter: null,
-		testFilter: null,
-		dataSource: [
-			{ _id: 1, name: 'Mannvender Singh Dalal', rollNumber: 1, score: 0 },
-			{ _id: 2, name: 'boy 2', rollNumber: 2, score: 0 },
-			{ _id: 3, name: 'boy 3', rollNumber: 3, score: 0 },
-			{ _id: 4, name: 'boy 4', rollNumber: 4, score: 0 },
-			{ _id: 5, name: 'boy 5', rollNumber: 5, score: 0 }
-		]
+		filteredTests: [],
+		currentTestStudents: []
 	}
 
-	handleBatchSelectChange = updatedVal => {
-		this.setState({ batchFilter: updatedVal });
-	}
+	handleBatchSelectChange = currentBatchIds => {
+		const { tests } = this.props;
+		const filteredTests = tests.filter(test => Boolean(test.batchIds.find(batchId => Boolean(currentBatchIds.find(currentBatchId => currentBatchId === batchId)))));
+		this.setState({ filteredTests });
+	};
 
-	handleTestSelectChange = updatedVal => {
-		this.setState({ testFilter: updatedVal });
-	}
-
-	handleSave = row => {
-		const newData = [...this.state.dataSource];
-		const index = newData.findIndex(item => row.key === item.key);
-		const item = newData[index];
-		newData.splice(index, 1, {
-			...item,
-			...row
+	handleSave = testRow => {
+		this.setState(prevState => {
+			const prevTestData = [...prevState.currentTestStudents];
+			const newTestData = prevTestData.map(test => test._id === testRow._id ? testRow : test);
+			return { currentTestStudents: newTestData };
 		});
-		this.setState({ dataSource: newData });
+	}
+
+	handleTestSelectChange = selectedTestId => {
+		const { batches, students, tests } = this.props;
+		const testInfo = tests.find(test => test._id === selectedTestId);
+		let studentIdsOfThisTest = [];
+		batches.forEach(batch => {
+			if (testInfo.batchIds.find(batchId => batchId === batch._id)) studentIdsOfThisTest = [...studentIdsOfThisTest, ...batch.students];
+		});
+		studentIdsOfThisTest = [...new Set(studentIdsOfThisTest)];
+		const currentTestStudents = studentIdsOfThisTest.map(studentId => students.find(student => student._id === studentId));
+		this.setState({ currentTestStudents });
+		this.currentTestId = selectedTestId;
+	}
+
+	handleSaveBtnClick = () => {
+		const { editTest } = this.props;
+		const { currentTestStudents } = this.state;
+		const reports = currentTestStudents.map(student => {
+			return {
+				studentId: student._id,
+				marksObtained: student.score || 0
+			};
+		});
+		editTest(this.currentTestId, { reports });
 	}
 
 	render() {
-		const { batches } = this.props;
-		const { dataSource } = this.state;
+		const { batches, tests } = this.props;
+		const { currentTestStudents } = this.state;
+		let { filteredTests } = this.state;
+		filteredTests = filteredTests.length === 0 ? tests : filteredTests;
+
 		const components = {
 			body: {
 				row: EditableFormRow,
@@ -101,9 +123,10 @@ class AddScore extends Component {
 				<Row className="mb-3" type="flex" align="middle" justify="center">
 					<Col span={24} className="p-1">
 						<Select
-							onChange={this.handleBatchSelectChange}
-							className="w-100"
 							allowClear
+							className="w-100"
+							mode="multiple"
+							onChange={this.handleBatchSelectChange}
 							placeholder="Select Batch">
 							{batches.map(batch => <Option key={batch._id} value={batch._id}>{batch.code}</Option>)}
 						</Select>
@@ -114,9 +137,7 @@ class AddScore extends Component {
 							className="w-100"
 							allowClear
 							placeholder="Select Test">
-							<Option value={1}>test 1</Option>
-							<Option value={2}>test 2</Option>
-							<Option value={3}>test 3</Option>
+							{filteredTests.map(test => <Option key={test._id} value={test._id}>{test.name}</Option>)}
 						</Select>
 					</Col>
 				</Row>
@@ -128,8 +149,15 @@ class AddScore extends Component {
 						className="mb-3"
 						bordered={true}
 						pagination={false}
-						dataSource={dataSource}
+						dataSource={currentTestStudents}
 						columns={columns} />
+				</Row>
+				<Row type="flex" justify="end">
+					<Form.Item>
+						<Button onClick={this.handleSaveBtnClick} type="primary">
+							Save Changes
+						</Button>
+					</Form.Item>
 				</Row>
 			</div>
 		);
@@ -182,28 +210,25 @@ class EditableCell extends Component {
 								editing ? (
 									<FormItem style={{ margin: 0 }}>
 										{form.getFieldDecorator(dataIndex, {
-											rules: [{
-												required: true,
-												message: `${title} is required.`,
-											}],
-											initialValue: record[dataIndex],
+											initialValue: record[dataIndex]
 										})(
-											<Input
-												ref={node => (this.input = node)}
+											<InputNumber
+												className="w-100"
 												onPressEnter={this.save}
 												onBlur={this.save}
+												ref={node => (this.input = node)}
 											/>
 										)}
 									</FormItem>
 								) : (
-									<div
-										className="editable-cell-value-wrap"
-										style={{ paddingRight: 24 }}
-										onClick={this.toggleEdit}
-									>
-										{restProps.children}
-									</div>
-								)
+										<div
+											className="editable-cell-value-wrap"
+											style={{ paddingRight: 24 }}
+											onClick={this.toggleEdit}
+										>
+											{restProps.children}
+										</div>
+									)
 							);
 						}}
 					</EditableContext.Consumer>
