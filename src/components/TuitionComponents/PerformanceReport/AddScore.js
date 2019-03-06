@@ -1,3 +1,4 @@
+// TODO: Sort this mess out
 import React, { Component } from 'react';
 
 import {
@@ -46,6 +47,7 @@ class AddScore extends Component {
 	}
 
 	state = {
+		allTests: [],
 		filteredTests: [],
 		currentTestStudents: []
 	}
@@ -64,17 +66,28 @@ class AddScore extends Component {
 		});
 	}
 
-	handleTestSelectChange = selectedTestId => {
+	getCurrentTestStudents = () => {
 		const { batches, students, tests } = this.props;
-		const testInfo = tests.find(test => test._id === selectedTestId);
+		const currentTestId = this.currentTestId;
+		if (Boolean(currentTestId) === false) return;
+		const testInfo = tests.find(test => test._id === currentTestId);
 		let studentIdsOfThisTest = [];
 		batches.forEach(batch => {
 			if (testInfo.batchIds.find(batchId => batchId === batch._id)) studentIdsOfThisTest = [...studentIdsOfThisTest, ...batch.students];
 		});
 		studentIdsOfThisTest = [...new Set(studentIdsOfThisTest)];
 		const currentTestStudents = studentIdsOfThisTest.map(studentId => students.find(student => student._id === studentId));
-		this.setState({ currentTestStudents });
-		this.currentTestId = selectedTestId;
+		// Injecting score
+		currentTestStudents.forEach(student => {
+			const studentReport = testInfo.reports.find(report => report.studentId === student._id);
+			if (studentReport) student = student.score = studentReport.marksObtained;
+		});
+		return currentTestStudents;
+	}
+
+	handleTestSelectChange = currentTestId => {
+		this.currentTestId = currentTestId;
+		this.setState({ currentTestStudents: this.getCurrentTestStudents() });
 	}
 
 	handleSaveBtnClick = () => {
@@ -89,12 +102,16 @@ class AddScore extends Component {
 		editTest(this.currentTestId, { reports });
 	}
 
+	static getDerivedStateFromProps(nextProps, prevState) {
+		if (JSON.stringify(nextProps.tests) !== JSON.stringify(prevState.allTests)) return false;
+		return { allTests: nextProps.tests };
+	}
+
 	render() {
 		const { batches, tests } = this.props;
 		const { currentTestStudents } = this.state;
 		let { filteredTests } = this.state;
 		filteredTests = filteredTests.length === 0 ? tests : filteredTests;
-
 		const components = {
 			body: {
 				row: EditableFormRow,
@@ -143,7 +160,7 @@ class AddScore extends Component {
 				</Row>
 				<Row gutter={16}>
 					<Table
-						rowClassName={() => 'editable-row'}
+						rowClassName="editable-row"
 						components={components}
 						rowKey="_id"
 						className="mb-3"

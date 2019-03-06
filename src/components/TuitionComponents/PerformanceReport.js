@@ -10,7 +10,6 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
 import AddScore from './PerformanceReport/AddScore';
-import AddOrEditTest from './PerformanceReport/Test/AddOrEditTest';
 import Test from './PerformanceReport/Test';
 
 class PerformanceReport extends Component {
