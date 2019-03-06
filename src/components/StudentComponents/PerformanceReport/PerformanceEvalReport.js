@@ -43,19 +43,14 @@ class PerformanceEvalReport extends Component {
 				bottom: '3%',
 				containLabel: true
 			},
-			dataZoom: [
-				{
-					id: 'dataZoomX',
-					type: 'slider',
-					xAxisIndex: [0],
-					filterMode: 'filter'
-				}
-			],
 			xAxis: {
-				type: 'category',
-				data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+				data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+				type: 'category'
 			},
 			yAxis: {
+				name: '% Marks',
+				nameGap: 30,
+				nameLocation: 'middle',
 				type: 'value'
 			},
 			series: [
@@ -78,17 +73,7 @@ class PerformanceEvalReport extends Component {
 					name: 'your',
 					type: 'line',
 					data: [120, 282, 91, 134, 190, 130, 110]
-				},
-				/* {
-					name: 'line2',
-					type: 'line',
-					data: [220, 182, 191, 234, 290, 330, 310],
-					markLine: {
-						data: [
-							{ type: 'average', name: 'average' }
-						]
-					}
-				} */
+				}
 			]
 		};
 
@@ -103,7 +88,7 @@ class PerformanceEvalReport extends Component {
 				let averageScore = 0, highestScore = 0;
 				let lowestScore = test.maxMarks;
 				let studentScore = null;
-				const testName = test.name;
+				const testName = test.name.substring(0, 5) + '..';
 
 				test.reports.forEach(report => {
 					const { marksObtained, studentId } = report;
@@ -118,10 +103,10 @@ class PerformanceEvalReport extends Component {
 				if (isTestRelevant) {
 					testNames.push(testName);
 					averageScore /= test.reports.length;
-					averageScores.push((averageScore / test.maxMarks) * 100);
-					highestScores.push((highestScore / test.maxMarks) * 100);
-					lowestScores.push((lowestScore / test.maxMarks) * 100);
-					studentScores.push((studentScore / test.maxMarks) * 100);
+					averageScores.push(parseFloat((averageScore / test.maxMarks) * 100).toFixed(2));
+					highestScores.push(parseFloat((highestScore / test.maxMarks) * 100).toFixed(2));
+					lowestScores.push(parseFloat((lowestScore / test.maxMarks) * 100).toFixed(2));
+					studentScores.push(parseFloat((studentScore / test.maxMarks) * 100).toFixed(2));
 				}
 				test.parsedDate = test.date.format('DD/MM/YY');
 			});

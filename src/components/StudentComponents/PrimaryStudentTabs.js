@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { useSwipeable, Swipeable } from 'react-swipeable';
+import { Swipeable } from 'react-swipeable';
 
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
@@ -8,21 +8,11 @@ import Tab from '@material-ui/core/Tab';
 
 import Attendance from './Attendance';
 import EnrollmentAndFee from './EnrollmentAndFee';
-import Forums from './Forums';
 import Notifications from './Notifications';
 import PerformanceReport from './PerformanceReport';
 import ViewOrDeleteMaterials from '../TuitionComponents/StudyMaterial/ViewOrDeleteMaterials';
 
 import { readNotification } from '../../redux/actions/notificationActions';
-
-const tabBarStyle = {
-	position: 'fixed',
-	top: 40,
-	width: '100%',
-	background: '#fff',
-	textAlign: 'center',
-	zIndex: 101
-};
 
 class PrimaryTuitionTabs extends Component {
 	state = { value: 0 };
