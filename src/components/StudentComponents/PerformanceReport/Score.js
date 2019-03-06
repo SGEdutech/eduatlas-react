@@ -6,53 +6,45 @@ import {
 	Collapse,
 	Empty,
 	Row,
-	Table
+	Table,
+	Tag
 } from 'antd';
 
 const { Panel } = Collapse;
 
 const columnsDef = [{
-	title: 'Test Name/Code',
+	title: 'Test Name',
 	dataIndex: 'name',
 	key: 'name'
 }, {
 	title: 'Date',
-	dataIndex: 'rollNumber',
-	key: 'rollNumber',
+	dataIndex: 'parsedDate',
+	key: 'parsedDate',
 	width: '50'
 }, {
 	title: 'Score',
-	dataIndex: 'score',
-	key: 'score',
+	dataIndex: 'marksObtained',
+	key: 'marksObtained',
 	width: '80',
 	editable: 'true'
 }];
 
 class Score extends Component {
 	render() {
-		const { batches, schedules, studentInfo } = this.props;
+		const { batches, tests, studentInfo } = this.props;
 		const studentBatches = batches.filter(batch => Boolean(batch.students.find(student => student === studentInfo._id)));
 
 		const panelsJsx = studentBatches.map((batch, index) => {
-			// TODO: remove schedules and bring in scores, remove moment
-			let schedulesOfThisBatch = schedules.filter(schedule => schedule.batchId === batch._id);
-			schedulesOfThisBatch = schedulesOfThisBatch.sort((a, b) => a.date.startOf('day').diff(b.date.startOf('day'), 'days'));
+			let testsOfThisBatch = tests.filter(test => test.batchIds.find(batchId => batchId === batch._id));
+			testsOfThisBatch = testsOfThisBatch.sort((a, b) => a.date.startOf('day').diff(b.date.startOf('day'), 'days'));
 
-			let daysPresent = 0;
-			let totalClassesPassed = 0;
-			schedulesOfThisBatch.forEach(schedule => {
-				// Injecting status
-				if (moment().startOf('day').diff(schedule.date.startOf('day'), 'days') < 1) {
-					schedule.status = 'scheduled';
-				} else if (schedule.studentsAbsent.find(studentAbsent => studentAbsent === studentInfo._id)) {
-					totalClassesPassed++;
-					schedule.status = 'absent';
-				} else {
-					totalClassesPassed++;
-					daysPresent++;
-					schedule.status = 'present';
-				}
-				schedule.parsedDate = schedule.date.format('DD/MM/YY');
+			testsOfThisBatch.forEach(test => {
+				test.marksObtained = null;
+				test.reports.forEach(report => {
+					if (report.studentId === studentInfo._id) test.marksObtained = report.marksObtained;
+				});
+				if (Boolean(test.marksObtained) === false) test.marksObtained = <Tag color="cyan">NA</Tag>;
+				test.parsedDate = test.date.format('DD/MM/YY');
 			});
 
 			return <Panel
@@ -71,10 +63,10 @@ class Score extends Component {
 					<Col span={12}>
 						<Row>
 							<Col span={24}>
-								Total Score
+								Total Tests
 							</Col>
 							<Col span={24} className="mt-1">
-								<span className="display-4">245</span><span className="mx-1">/</span>360
+								<span className="display-4">{testsOfThisBatch.length}</span>
 							</Col>
 						</Row>
 					</Col>
@@ -84,7 +76,7 @@ class Score extends Component {
 					className="mb-3"
 					bordered={true}
 					pagination={false}
-					dataSource={schedulesOfThisBatch}
+					dataSource={testsOfThisBatch}
 					columns={columnsDef} />
 			</Panel>;
 		});

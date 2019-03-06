@@ -15,8 +15,7 @@ import {
 	Col,
 	Collapse,
 	Empty,
-	Row,
-	Table
+	Row
 } from 'antd';
 
 const { Panel } = Collapse;
@@ -24,19 +23,19 @@ const { Panel } = Collapse;
 
 class PerformanceEvalReport extends Component {
 	render() {
-		const { batches, schedules, studentInfo } = this.props;
+		const { batches, tests, studentInfo } = this.props;
 		const studentBatches = batches.filter(batch => Boolean(batch.students.find(student => student === studentInfo._id)));
 
 		const option = {
-			title: {
-				text: 'random',
-				subtext: 'chart'
-			},
+			// title: {
+			// 	text: 'random',
+			// 	subtext: 'chart'
+			// },
 			tooltip: {
 				trigger: 'axis'
 			},
 			legend: {
-				data: ['line1', 'line2']
+				data: ['average', 'highest', 'lowest', 'your']
 			},
 			grid: {
 				left: '3%',
@@ -59,48 +58,83 @@ class PerformanceEvalReport extends Component {
 			yAxis: {
 				type: 'value'
 			},
-			series: [{
-				name: 'line1',
-				type: 'line',
-				data: [120, 282, 91, 134, 190, 130, 110],
-				markLine: {
-					data: [
-						{ type: 'average', name: 'average' }
-					]
-				}
-			}, {
-				name: 'line2',
-				type: 'line',
-				data: [220, 182, 191, 234, 290, 330, 310],
-				markLine: {
-					data: [
-						{ type: 'average', name: 'average' }
-					]
-				}
-			}]
+			series: [
+				{
+					name: 'average',
+					type: 'line',
+					data: [120, 282, 91, 134, 190, 130, 110]
+				},
+				{
+					name: 'highest',
+					type: 'line',
+					data: [120, 282, 91, 134, 190, 130, 110]
+				},
+				{
+					name: 'lowest',
+					type: 'line',
+					data: [120, 282, 91, 134, 190, 130, 110]
+				},
+				{
+					name: 'your',
+					type: 'line',
+					data: [120, 282, 91, 134, 190, 130, 110]
+				},
+				/* {
+					name: 'line2',
+					type: 'line',
+					data: [220, 182, 191, 234, 290, 330, 310],
+					markLine: {
+						data: [
+							{ type: 'average', name: 'average' }
+						]
+					}
+				} */
+			]
 		};
 
 		const panelsJsx = studentBatches.map((batch, index) => {
 			// TODO: remove schedules and bring in scores, remove moment
-			let schedulesOfThisBatch = schedules.filter(schedule => schedule.batchId === batch._id);
-			schedulesOfThisBatch = schedulesOfThisBatch.sort((a, b) => a.date.startOf('day').diff(b.date.startOf('day'), 'days'));
+			let testsOfThisBatch = tests.filter(test => test.batchIds.find(batchId => batchId === batch._id));
+			testsOfThisBatch = testsOfThisBatch.sort((a, b) => a.date.startOf('day').diff(b.date.startOf('day'), 'days'));
 
-			let daysPresent = 0;
-			let totalClassesPassed = 0;
-			schedulesOfThisBatch.forEach(schedule => {
-				// Injecting status
-				if (moment().startOf('day').diff(schedule.date.startOf('day'), 'days') < 1) {
-					schedule.status = 'scheduled';
-				} else if (schedule.studentsAbsent.find(studentAbsent => studentAbsent === studentInfo._id)) {
-					totalClassesPassed++;
-					schedule.status = 'absent';
-				} else {
-					totalClassesPassed++;
-					daysPresent++;
-					schedule.status = 'present';
+			let averageScores = [], highestScores = [], lowestScores = [], studentScores = [], testNames = [];
+			testsOfThisBatch.forEach(test => {
+				let isTestRelevant = false;
+				let averageScore = 0, highestScore = 0;
+				let lowestScore = test.maxMarks;
+				let studentScore = null;
+				const testName = test.name;
+
+				test.reports.forEach(report => {
+					const { marksObtained, studentId } = report;
+					if (studentId === studentInfo._id) {
+						isTestRelevant = true;
+						studentScore = marksObtained;
+					}
+					averageScore += marksObtained;
+					if (marksObtained > highestScore) highestScore = marksObtained;
+					if (marksObtained < lowestScore) lowestScore = marksObtained;
+				});
+				if (isTestRelevant) {
+					testNames.push(testName);
+					averageScore /= test.reports.length;
+					averageScores.push((averageScore / test.maxMarks) * 100);
+					highestScores.push((highestScore / test.maxMarks) * 100);
+					lowestScores.push((lowestScore / test.maxMarks) * 100);
+					studentScores.push((studentScore / test.maxMarks) * 100);
 				}
-				schedule.parsedDate = schedule.date.format('DD/MM/YY');
+				test.parsedDate = test.date.format('DD/MM/YY');
 			});
+
+			// lets update graph options
+			option.xAxis.data = testNames;
+			option.series.forEach(series => {
+				if (series.name === 'average') series.data = averageScores;
+				if (series.name === 'highest') series.data = highestScores;
+				if (series.name === 'lowest') series.data = lowestScores;
+				if (series.name === 'your') series.data = studentScores;
+			});
+
 
 			return <Panel
 				key={index + 1}
@@ -118,10 +152,10 @@ class PerformanceEvalReport extends Component {
 					<Col span={12}>
 						<Row>
 							<Col span={24}>
-								Total Score
+								Total Tests
 							</Col>
 							<Col span={24} className="mt-1">
-								<span className="display-4">245</span><span className="mx-1">/</span>360
+								<span className="display-4">{testsOfThisBatch.length}</span>
 							</Col>
 						</Row>
 					</Col>
