@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import {
 	Col,
 	Collapse,
+	Divider,
 	Empty,
 	Row,
 	Table,
@@ -60,7 +61,10 @@ class Score extends Component {
 							</Col>
 						</Row>
 					</Col>
-					<Col span={12}>
+					<Col span={2}>
+						<Divider type="vertical" />
+					</Col>
+					<Col span={10}>
 						<Row>
 							<Col span={24}>
 								Total Tests

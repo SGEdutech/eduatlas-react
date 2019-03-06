@@ -14,6 +14,7 @@ import 'echarts/lib/component/dataZoom';
 import {
 	Col,
 	Collapse,
+	Divider,
 	Empty,
 	Row
 } from 'antd';
@@ -27,10 +28,6 @@ class PerformanceEvalReport extends Component {
 		const studentBatches = batches.filter(batch => Boolean(batch.students.find(student => student === studentInfo._id)));
 
 		const option = {
-			// title: {
-			// 	text: 'random',
-			// 	subtext: 'chart'
-			// },
 			tooltip: {
 				trigger: 'axis'
 			},
@@ -134,7 +131,10 @@ class PerformanceEvalReport extends Component {
 							</Col>
 						</Row>
 					</Col>
-					<Col span={12}>
+					<Col span={2}>
+						<Divider type="vertical" />
+					</Col>
+					<Col span={10}>
 						<Row>
 							<Col span={24}>
 								Total Tests

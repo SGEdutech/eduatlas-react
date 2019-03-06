@@ -4,6 +4,7 @@ import moment from 'moment';
 import {
 	Col,
 	Collapse,
+	Divider,
 	Empty,
 	Row,
 	Tag,
@@ -77,7 +78,10 @@ export default class Attendance extends Component {
 							</Col>
 						</Row>
 					</Col>
-					<Col span={12}>
+					<Col span={2}>
+						<Divider type="vertical" />
+					</Col>
+					<Col span={10}>
 						<Row>
 							<Col span={24}>
 								Attendance
