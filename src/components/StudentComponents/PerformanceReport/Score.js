@@ -57,7 +57,7 @@ class Score extends Component {
 								Batch
 							</Col>
 							<Col span={24} className="mt-1">
-								<span className="display-4 text-uppercase">{batch.code}</span>
+								<span className="h4 text-uppercase">{batch.code}</span>
 							</Col>
 						</Row>
 					</Col>
@@ -70,7 +70,7 @@ class Score extends Component {
 								Total Tests
 							</Col>
 							<Col span={24} className="mt-1">
-								<span className="display-4">{testsOfThisBatch.length}</span>
+								<span className="h4">{testsOfThisBatch.length}</span>
 							</Col>
 						</Row>
 					</Col>

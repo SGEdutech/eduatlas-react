@@ -74,7 +74,7 @@ export default class Attendance extends Component {
 								Batch
 							</Col>
 							<Col span={24} className="mt-1">
-								<span className="display-4 text-uppercase">{batch.code}</span>
+								<span className="h4 text-uppercase">{batch.code}</span>
 							</Col>
 						</Row>
 					</Col>
@@ -87,7 +87,7 @@ export default class Attendance extends Component {
 								Attendance
 							</Col>
 							<Col span={24} className="mt-1">
-								<span className="display-4">{daysPresent}</span><span className="mx-1">/</span>{totalClassesPassed}
+								<span className="h4">{daysPresent}</span><span className="mx-1">/</span>{totalClassesPassed}
 							</Col>
 						</Row>
 					</Col>
