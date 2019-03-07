@@ -113,7 +113,7 @@ class FileCard extends Component {
 								<span className="font-weight-bold">Shared With: </span>{students.length} Students
 							</Row>
 							<Row>
-								<Tag color="cyan">{type}</Tag>
+								<Tag color="blue">{type}</Tag>
 							</Row>
 						</>
 					} />

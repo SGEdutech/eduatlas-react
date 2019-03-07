@@ -8,7 +8,8 @@ import {
 	InputNumber,
 	Row,
 	Select,
-	Table
+	Table,
+	Tag
 } from 'antd';
 const { Option } = Select;
 
@@ -17,10 +18,17 @@ const columnsDef = [{
 	dataIndex: 'name',
 	key: 'name'
 }, {
-	title: 'Roll Number',
-	dataIndex: 'rollNumber',
-	key: 'rollNumber',
-	width: '50'
+	title: 'Roll No. & Batch',
+	dataIndex: 'rollNumberAndBatches',
+	key: 'rollNumberAndBatches',
+	width: '50',
+	render: rollNumberAndBatches => {
+		const batchCodesJsx = rollNumberAndBatches.batchCodes.map((batchCode, i) => <Tag key={i} className="mx-auto" color={'blue'}>{batchCode}</Tag>);
+		return <Row className="text-center">
+			<Col span={24}>{rollNumberAndBatches.rollNumber}</Col>
+			<Col span={24}>{batchCodesJsx}</Col>
+		</Row>;
+	}
 }, {
 	title: 'Score',
 	dataIndex: 'score',
@@ -48,15 +56,8 @@ class AddScore extends Component {
 
 	state = {
 		allTests: [],
-		filteredTests: [],
 		currentTestStudents: []
 	}
-
-	handleBatchSelectChange = currentBatchIds => {
-		const { tests } = this.props;
-		const filteredTests = tests.filter(test => Boolean(test.batchIds.find(batchId => Boolean(currentBatchIds.find(currentBatchId => currentBatchId === batchId)))));
-		this.setState({ filteredTests });
-	};
 
 	handleSave = testRow => {
 		this.setState(prevState => {
@@ -71,16 +72,37 @@ class AddScore extends Component {
 		const currentTestId = this.currentTestId;
 		if (Boolean(currentTestId) === false) return;
 		const testInfo = tests.find(test => test._id === currentTestId);
-		let studentIdsOfThisTest = [];
+		// Insert batchCode and studentID in studentIdsAndBatchesOfThisTest
+		let studentIdsAndBatchesOfThisTest = [];
 		batches.forEach(batch => {
-			if (testInfo.batchIds.find(batchId => batchId === batch._id)) studentIdsOfThisTest = [...studentIdsOfThisTest, ...batch.students];
+			if (testInfo.batchIds.find(batchId => batchId === batch._id)) {
+				batch.students.forEach(studentId => studentIdsAndBatchesOfThisTest.push({ studentId, batchCodes: [batch.code] }));
+			}
 		});
-		studentIdsOfThisTest = [...new Set(studentIdsOfThisTest)];
-		const currentTestStudents = studentIdsOfThisTest.map(studentId => students.find(student => student._id === studentId));
-		// Injecting score
+		// Grouping student in mutiple batches
+		studentIdsAndBatchesOfThisTest = studentIdsAndBatchesOfThisTest.filter((studentDetails, index) => {
+			const firstIndex = studentIdsAndBatchesOfThisTest.findIndex(studentObj => studentObj.studentId === studentDetails.studentId);
+			if (firstIndex !== index) {
+				studentIdsAndBatchesOfThisTest[firstIndex].batchCodes = [...studentIdsAndBatchesOfThisTest[firstIndex].batchCodes, ...studentIdsAndBatchesOfThisTest[index].batchCodes];
+				return false;
+			}
+			return true;
+		});
+		// Extracting batchCodes from studentIdsAndBatchesOfThisTest and inserting in final student object
+		const currentTestStudents = studentIdsAndBatchesOfThisTest.map(studentInfo => {
+			const student = students.find(student => student._id === studentInfo.studentId);
+			if (Boolean(student) === false) console.error('Something went wrong!!');
+			student.batchCodes = studentInfo.batchCodes;
+			return student;
+		});
+		// Injecting score ands merging rollNumber and batches
 		currentTestStudents.forEach(student => {
 			const studentReport = testInfo.reports.find(report => report.studentId === student._id);
-			if (studentReport) student = student.score = studentReport.marksObtained;
+			if (studentReport) student.score = studentReport.marksObtained;
+			// TODO: Sort students by batch
+			student.rollNumberAndBatches = { rollNumber: student.rollNumber, batchCodes: student.batchCodes };
+			delete student.rollNumber;
+			delete student.batchCodes;
 		});
 		return currentTestStudents;
 	}
@@ -110,8 +132,6 @@ class AddScore extends Component {
 	render() {
 		const { batches, tests } = this.props;
 		const { currentTestStudents } = this.state;
-		let { filteredTests } = this.state;
-		filteredTests = filteredTests.length === 0 ? tests : filteredTests;
 		const components = {
 			body: {
 				row: EditableFormRow,
@@ -142,19 +162,11 @@ class AddScore extends Component {
 						<Select
 							allowClear
 							className="w-100"
-							mode="multiple"
-							onChange={this.handleBatchSelectChange}
-							placeholder="Select Batch">
-							{batches.map(batch => <Option key={batch._id} value={batch._id}>{batch.code}</Option>)}
-						</Select>
-					</Col>
-					<Col span={24} className="p-1">
-						<Select
+							filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
 							onChange={this.handleTestSelectChange}
-							className="w-100"
-							allowClear
-							placeholder="Select Test">
-							{filteredTests.map(test => <Option key={test._id} value={test._id}>{test.name}</Option>)}
+							placeholder="Select Test"
+							showSearch>
+							{tests.map(test => <Option key={test._id} value={test._id}>{test.name}</Option>)}
 						</Select>
 					</Col>
 				</Row>

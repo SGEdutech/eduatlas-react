@@ -44,7 +44,7 @@ class Score extends Component {
 				test.reports.forEach(report => {
 					if (report.studentId === studentInfo._id) test.marksObtained = report.marksObtained + '/' + test.maxMarks;
 				});
-				if (Boolean(test.marksObtained) === false) test.marksObtained = <Tag color="cyan">NA</Tag>;
+				if (Boolean(test.marksObtained) === false) test.marksObtained = <Tag color="blue">NA</Tag>;
 				test.parsedDate = test.date.format('DD/MM/YY');
 			});
 
