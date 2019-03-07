@@ -85,7 +85,7 @@ class PerformanceEvalReport extends Component {
 				let averageScore = 0, highestScore = 0;
 				let lowestScore = test.maxMarks;
 				let studentScore = null;
-				const testName = test.name.substring(0, 5) + '..';
+				const testName = test.name;
 
 				test.reports.forEach(report => {
 					const { marksObtained, studentId } = report;
