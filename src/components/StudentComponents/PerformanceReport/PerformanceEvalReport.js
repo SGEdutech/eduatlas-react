@@ -1,4 +1,3 @@
-import moment from 'moment';
 import React, { Component } from 'react';
 
 import ReactEchartsCore from 'echarts-for-react/lib/core';
@@ -75,10 +74,8 @@ class PerformanceEvalReport extends Component {
 		};
 
 		const panelsJsx = studentBatches.map((batch, index) => {
-			// TODO: remove schedules and bring in scores, remove moment
 			let testsOfThisBatch = tests.filter(test => test.batchIds.find(batchId => batchId === batch._id));
 			testsOfThisBatch = testsOfThisBatch.sort((a, b) => a.date.startOf('day').diff(b.date.startOf('day'), 'days'));
-
 			let averageScores = [], highestScores = [], lowestScores = [], studentScores = [], testNames = [];
 			testsOfThisBatch.forEach(test => {
 				let isTestRelevant = false;
