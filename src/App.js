@@ -1,3 +1,4 @@
+/* global FCMPlugin */
 import './core/css/material-kit.css';
 import './App.css';
 
@@ -40,6 +41,11 @@ class App extends Component {
 		const { fetchAll } = this.props;
 		fetchAll();
 		setInterval(fetchAll, 2 * 60 * 1000);
+		// Firebase service
+		if (window.cordova) {
+			window.cordova.plugins.autoStart.enable();
+			FCMPlugin.onTokenRefresh(token => alert('Token refresh' + token));
+		}
 	}
 
 	componentDidUpdate() {

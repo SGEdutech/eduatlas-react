@@ -1,5 +1,6 @@
+/* global FCMPlugin */
 import axios from 'axios';
-import { schemeAndAuthority } from '../../config.json';
+import { tuitionId, schemeAndAuthority } from '../../config.json';
 
 export function getUserInfo() {
 	return dispatch => {
@@ -30,19 +31,40 @@ export function signUp(userData) {
 
 export function logIn(credentials) {
 	return dispatch => {
-		dispatch({
-			type: 'USER_LOGIN',
-			payload: axios.post(`${schemeAndAuthority}/auth/local/login`, credentials)
-		});
+		if (window.cordova) {
+			FCMPlugin.getToken(registrationToken => {
+				credentials.registrationDetails = { registrationToken, tuitionId };
+				dispatch({
+					type: 'USER_LOGIN',
+					payload: axios.post(`${schemeAndAuthority}/auth/local/login`, credentials)
+				});
+			});
+		} else {
+			dispatch({
+				type: 'USER_LOGIN',
+				payload: axios.post(`${schemeAndAuthority}/auth/local/login`, credentials)
+			});
+		}
 	};
 }
 
-export function logOut() {
+// Email is only needed in case of cordova to remove registration id from firebase
+export function logOut(email) {
 	return dispatch => {
-		dispatch({
-			type: 'USER_LOGOUT',
-			payload: axios.post(`${schemeAndAuthority}/auth/local/logout`)
-		});
+		if (window.cordova) {
+			FCMPlugin.getToken(registrationToken => {
+				const data = { email, registrationDetails: { registrationToken, tuitionId } };
+				dispatch({
+					type: 'USER_LOGIN',
+					payload: axios.post(`${schemeAndAuthority}/auth/local/login`, data)
+				});
+			});
+		} else {
+			dispatch({
+				type: 'USER_LOGOUT',
+				payload: axios.post(`${schemeAndAuthority}/auth/local/logout`)
+			});
+		}
 	};
 }
 

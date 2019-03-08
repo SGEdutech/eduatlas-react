@@ -39,30 +39,22 @@ const NavListItem = props => (
 class Navbar extends Component {
 	state = { visible: false };
 
-	showDrawer = () => {
-		this.setState({
-			visible: true
-		});
-	};
+	showDrawer = () => this.setState({ visible: true });
 
-	onClose = () => {
-		this.setState({
-			visible: false
-		});
-	};
+	onClose = () => this.setState({ visible: false });
 
 	handleLogout = () => {
-		const { history: { replace }, logOut } = this.props;
-		logOut();
+		const { history: { replace }, logOut, user: { primaryEmail } } = this.props;
+		logOut(primaryEmail);
 		replace('/');
 	}
 
 	render() {
-		const { user, renderBackBtn = false, navText = undefined } = this.props;
+		const { user, renderBackBtn = false, navText } = this.props;
 
 		const DrawerHeader = <Meta
 			avatar={<Avatar src={fallbackDp} />}
-			title={<span className="text-capitalize">{user.userInfo.firstName}</span>}
+			title={<span className="text-capitalize">{user.firstName}</span>}
 			description="Role: Student"/>;
 
 		return (
@@ -91,7 +83,7 @@ class Navbar extends Component {
 					onClose={this.onClose}
 					visible={this.state.visible}>
 					<List split={true} style={{ fontSize: 18 }}>
-						<Link to={`/edit-profile/${user.userInfo._id}`}><span style={{ color: '#000' }}><NavListItem iconType="edit" content="Edit Profile" /></span></Link>
+						<Link to={`/edit-profile/${user._id}`}><span style={{ color: '#000' }}><NavListItem iconType="edit" content="Edit Profile" /></span></Link>
 						<NavListItem iconType="logout" content="Logout" onClick={this.handleLogout} />
 					</List>
 				</Drawer>
@@ -102,7 +94,7 @@ class Navbar extends Component {
 
 function mapStateToProps(state) {
 	return {
-		user: state.user
+		user: state.user.userInfo
 	};
 }
 

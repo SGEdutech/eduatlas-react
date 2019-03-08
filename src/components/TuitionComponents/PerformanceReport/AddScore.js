@@ -130,7 +130,7 @@ class AddScore extends Component {
 	}
 
 	render() {
-		const { batches, tests } = this.props;
+		const { tests } = this.props;
 		const { currentTestStudents } = this.state;
 		const components = {
 			body: {
