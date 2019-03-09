@@ -55,8 +55,8 @@ export function logOut(email) {
 			FCMPlugin.getToken(registrationToken => {
 				const data = { email, registrationDetails: { registrationToken, tuitionId } };
 				dispatch({
-					type: 'USER_LOGIN',
-					payload: axios.post(`${schemeAndAuthority}/auth/local/login`, data)
+					type: 'USER_LOGOUT',
+					payload: axios.post(`${schemeAndAuthority}/auth/local/logout`, data)
 				});
 			});
 		} else {
