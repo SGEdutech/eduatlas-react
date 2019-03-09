@@ -42,7 +42,7 @@ export function logIn(credentials) {
 		} else {
 			dispatch({
 				type: 'USER_LOGIN',
-				payload: axios.post(`${schemeAndAuthority}/auth/local/login`, credentials)
+				payload: axios.post(`${schemeAndAuthority}/auth/local/login`, credentials, { withCredentials: true })
 			});
 		}
 	};
@@ -62,7 +62,7 @@ export function logOut(email) {
 		} else {
 			dispatch({
 				type: 'USER_LOGOUT',
-				payload: axios.post(`${schemeAndAuthority}/auth/local/logout`)
+				payload: axios.post(`${schemeAndAuthority}/auth/local/logout`, {}, { withCredentials: true })
 			});
 		}
 	};

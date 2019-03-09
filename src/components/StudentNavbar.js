@@ -46,6 +46,7 @@ class Navbar extends Component {
 	handleLogout = () => {
 		const { history: { replace }, logOut, user: { primaryEmail } } = this.props;
 		logOut(primaryEmail);
+		// setTimeout(() => logOut(primaryEmail), 1000);
 		replace('/');
 	}
 
