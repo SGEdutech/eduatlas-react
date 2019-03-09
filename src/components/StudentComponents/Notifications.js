@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { tuitionName } from '../../config.json';
 
 import {
-	Alert
+	Alert,
+	Col,
+	Row
 } from 'antd';
 
 export default class Notifications extends Component {
@@ -17,14 +19,17 @@ export default class Notifications extends Component {
 		const notificationsOfThisStudent = notifications.filter(notification => notification.receivers.find(receiver => Boolean(receiver.readAt) === false && receiver.userEmail === studentEmail));
 		const notificationJsx = notificationsOfThisStudent.map(notification => (
 			<Alert
-				key={notification._id}
 				className="mb-3"
-				message={tuitionName}
 				description={notification.message}
-				type="info"
+				key={notification._id}
+				message={
+					<Row>
+						<Col className="one-line-ellipsis" span={22}>{tuitionName}</Col>
+						<Col className="text-right" span={2}><small className="cursor-pointer" onClick={() => this.onClose(notification._id)}>close</small></Col>
+					</Row>
+				}
 				showIcon
-				closable
-				onClose={() => this.onClose(notification._id)} />
+				type="info" />
 		));
 
 		return (
