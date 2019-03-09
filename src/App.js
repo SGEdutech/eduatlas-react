@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import Router from './Router';
 
-// tuition components
+// Tuition components
 import AddOrEditBatch from './components/TuitionComponents/Configure/AddOrEditBatch';
 import AddOrEditCourse from './components/TuitionComponents/Configure/AddOrEditCourse';
 import AddOrEditDiscount from './components/TuitionComponents/Configure/AddOrEditDiscount';
@@ -19,13 +19,13 @@ import EditSchedule from './components/TuitionComponents/Schedule/EditSchedule';
 import TuitionManager from './components/TuitionComponents/TuitionManager';
 import ViewOrEditStudent from './components/TuitionComponents/Students/ViewOrEditStudent';
 
-// shared components
+// Shared components
 import Loading from './components/Loading';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import ReceiptConfig from './components/ReceiptConfig';
 
-// student components
+// Student components
 import StudentManager from './components/StudentComponents/StudentManager';
 import SendRequest from './components/StudentComponents/SendRequest';
 
@@ -34,6 +34,9 @@ import { message } from 'antd';
 import fetchAll from './redux/actions/fetchAllAction';
 import { resetSandesh } from './redux/actions/mesageActions';
 import { addRequest } from './redux/actions/requestActions';
+
+// Scripts
+import refreshRegistrationId from './scripts/refreshRegistrationId';
 
 class App extends Component {
 	componentDidMount() {
@@ -44,7 +47,8 @@ class App extends Component {
 		// Firebase service
 		if (window.cordova) {
 			window.cordova.plugins.autoStart.enable();
-			FCMPlugin.onTokenRefresh(token => alert('Token refresh' + token));
+			// TODO: Fix memory leak
+			FCMPlugin.onTokenRefresh(refreshRegistrationId);
 		}
 	}
 
