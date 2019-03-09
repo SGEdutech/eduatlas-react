@@ -8,7 +8,7 @@ import {
 } from 'antd';
 
 function Loading(props) {
-	const { messageInfo: { fetched, kaamChaluHai }, history: { replace }, students, user: { userInfo } } = props;
+	const { messageInfo: { fetched, kaamChaluHai }, history: { replace }, students, user } = props;
 	function redirectToLogin() {
 		replace('/login');
 	}
@@ -32,17 +32,17 @@ function Loading(props) {
 	);
 
 	if (fetched === false || kaamChaluHai) return loadingJsx;
-	if (Object.keys(userInfo).length === 0) {
+	if (Object.keys(user).length === 0) {
 		redirectToLogin();
 		return loadingJsx;
 	}
-	const claims = userInfo.claims || [];
+	const claims = user.claims || [];
 	const thisTuition = claims.find(claim => claim.listingId === tuitionId);
 	if (thisTuition) {
 		redirectToTuitionManager();
 		return loadingJsx;
 	}
-	const student = students.find(student => student.email === userInfo.primaryEmail);
+	const student = students.find(student => student.email === user.primaryEmail);
 	if (student) {
 		redirectToStudentManager();
 		return loadingJsx;

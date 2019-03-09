@@ -70,7 +70,7 @@ class App extends Component {
 			<Router>
 				<Switch>
 					<Route exact path="/" render={() => <Loading messageInfo={this.props.messageInfo} user={this.props.user} students={this.props.students} />}></Route>
-					<Route exact path="/send-request" render={() => <SendRequest addRequest={this.props.addRequest} requests={this.props.requests} userInfo={this.props.user.userInfo} />}></Route>
+					<Route exact path="/send-request" render={() => <SendRequest addRequest={this.props.addRequest} requests={this.props.requests} userInfo={this.props.user} />}></Route>
 					<Route exact path="/tuition" component={TuitionManager}></Route>
 					<Route exact path="/tuition/add-course" component={AddOrEditCourse}></Route>
 					<Route exact path="/tuition/add-batch" component={AddOrEditBatch}></Route>
@@ -101,7 +101,7 @@ function mapStateToProps(state) {
 		messageInfo: state.messageInfo,
 		requests: state.request.requests,
 		students: state.student.students,
-		user: state.user
+		user: state.user.userInfo
 	};
 }
 
