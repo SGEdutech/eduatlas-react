@@ -21,7 +21,7 @@ class PrimaryTuitionTabs extends Component {
 	leftSwipe = () => {
 		this.setState(prevState => {
 			const minValue = 0;
-			const maxValue = 6;
+			const maxValue = 5;
 			let value = prevState.value + 1;
 			if (value < minValue) value = maxValue;
 			if (value > maxValue) value = minValue;
@@ -32,7 +32,7 @@ class PrimaryTuitionTabs extends Component {
 	rightSwipe = () => {
 		this.setState(prevState => {
 			const minValue = 0;
-			const maxValue = 6;
+			const maxValue = 5;
 			let value = prevState.value - 1;
 			if (value < minValue) value = maxValue;
 			if (value > maxValue) value = minValue;
@@ -57,7 +57,7 @@ class PrimaryTuitionTabs extends Component {
 						<Tab label="Communicator" />
 						<Tab label="Schedule" />
 						<Tab label="Attendance" />
-						<Tab label="Study Material" />
+						{/* <Tab label="Study Material" /> */}
 						<Tab label="Performance Report" />
 					</Tabs>
 				</AppBar>
@@ -68,8 +68,8 @@ class PrimaryTuitionTabs extends Component {
 						{value === 2 && <Communicator />}
 						{value === 3 && <Schedule />}
 						{value === 4 && <Attendance />}
-						{value === 5 && <StudyMaterial />}
-						{value === 6 && <PerformanceReport />}
+						{value === 5 && <PerformanceReport />}
+						{/* {value === 6 && <StudyMaterial />} */}
 					</div>
 				</Swipeable>
 			</>

@@ -22,7 +22,7 @@ class PrimaryTuitionTabs extends Component {
 	leftSwipe = () => {
 		this.setState(prevState => {
 			const minValue = 0;
-			const maxValue = 4;
+			const maxValue = 3;
 			let value = prevState.value + 1;
 			if (value < minValue) value = maxValue;
 			if (value > maxValue) value = minValue;
@@ -33,7 +33,7 @@ class PrimaryTuitionTabs extends Component {
 	rightSwipe = () => {
 		this.setState(prevState => {
 			const minValue = 0;
-			const maxValue = 4;
+			const maxValue = 3;
 			let value = prevState.value - 1;
 			if (value < minValue) value = maxValue;
 			if (value > maxValue) value = minValue;
@@ -61,8 +61,8 @@ class PrimaryTuitionTabs extends Component {
 						<Tab label="Notifications" />
 						<Tab label="Attendance" />
 						<Tab label="Enrollment and Fee" />
-						<Tab label="Study Material" />
 						<Tab label="Performance Report" />
+						{/* <Tab label="Study Material" /> */}
 					</Tabs>
 				</AppBar>
 				<Swipeable delta={20} onSwipedLeft={this.leftSwipe} onSwipedRight={this.rightSwipe} style={{ minHeight: '80vh' }}>
@@ -70,8 +70,8 @@ class PrimaryTuitionTabs extends Component {
 						{value === 0 && <Notifications notifications={notifications} readNotification={readNotification} studentEmail={studentInfo.email} />}
 						{value === 1 && <Attendance batches={batches} schedules={schedules} studentInfo={studentInfo} />}
 						{value === 2 && <EnrollmentAndFee courses={courses} studentInfo={studentInfo} />}
-						{value === 3 && <ViewOrDeleteMaterials messageInfo={messageInfo} resources={resources} showDelete={false} />}
-						{value === 4 && <PerformanceReport batches={batches} studentInfo={studentInfo} tests={tests} />}
+						{value === 3 && <PerformanceReport batches={batches} studentInfo={studentInfo} tests={tests} />}
+						{/* {value === 3 && <ViewOrDeleteMaterials messageInfo={messageInfo} resources={resources} showDelete={false} />} */}
 					</div>
 				</Swipeable>
 			</>
