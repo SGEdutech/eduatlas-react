@@ -46,8 +46,7 @@ class Navbar extends Component {
 	handleLogout = () => {
 		const { history: { replace }, logOut, user: { primaryEmail } } = this.props;
 		logOut(primaryEmail);
-		// setTimeout(() => logOut(primaryEmail), 1000);
-		replace('/');
+		setTimeout(() => replace('/'), 100);
 	}
 
 	render() {
@@ -56,7 +55,7 @@ class Navbar extends Component {
 		const DrawerHeader = <Meta
 			avatar={<Avatar src={fallbackDp} />}
 			title={<span className="text-capitalize">{user.firstName}</span>}
-			description="Role: Student"/>;
+			description="Role: Student" />;
 
 		return (
 			<>

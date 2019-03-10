@@ -43,7 +43,7 @@ class Login extends Component {
 			}
 			logIn(values);
 			resetFields();
-			push('/');
+			setTimeout(() => push('/'), 100);
 		});
 	}
 

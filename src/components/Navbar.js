@@ -32,7 +32,7 @@ const cursorStyle = {
 const DrawerHeader = <Meta
 	avatar={<Avatar src={fallbackDp} />}
 	title={tuitionName}
-	description="Role: Admin"/>;
+	description="Role: Admin" />;
 
 const NavListItem = props => (
 	<Row type="flex" align="middle" className="my-3" style={cursorStyle} onClick={props.onClick}>
@@ -51,7 +51,7 @@ class Navbar extends Component {
 	handleLogout = () => {
 		const { history: { replace }, logOut, user: { primaryEmail } } = this.props;
 		logOut(primaryEmail);
-		replace('/');
+		setTimeout(() => replace('/'), 100);
 	}
 
 	render() {
