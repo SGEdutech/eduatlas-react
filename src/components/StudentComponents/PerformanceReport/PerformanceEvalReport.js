@@ -20,63 +20,46 @@ import {
 
 const { Panel } = Collapse;
 
+// TODO: Shove this in constructor
+const options = {
+	tooltip: { trigger: 'axis' },
+	legend: { data: ['average', 'highest', 'lowest', 'your'] },
+	grid: {
+		left: '3%',
+		right: '4%',
+		bottom: '3%',
+		containLabel: true
+	},
+	xAxis: { type: 'category' },
+	yAxis: {
+		name: '% Marks',
+		nameGap: 30,
+		nameLocation: 'middle',
+		type: 'value'
+	},
+	series: [
+		{ name: 'average', type: 'line' },
+		{ name: 'highest', type: 'line' },
+		{ name: 'lowest', type: 'line' },
+		{ name: 'your', type: 'line' }
+	]
+};
 
 class PerformanceEvalReport extends Component {
 	render() {
 		const { batches, tests, studentInfo } = this.props;
 		const studentBatches = batches.filter(batch => Boolean(batch.students.find(student => student === studentInfo._id)));
 
-		const option = {
-			tooltip: {
-				trigger: 'axis'
-			},
-			legend: {
-				data: ['average', 'highest', 'lowest', 'your']
-			},
-			grid: {
-				left: '3%',
-				right: '4%',
-				bottom: '3%',
-				containLabel: true
-			},
-			xAxis: {
-				data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-				type: 'category'
-			},
-			yAxis: {
-				name: '% Marks',
-				nameGap: 30,
-				nameLocation: 'middle',
-				type: 'value'
-			},
-			series: [
-				{
-					name: 'average',
-					type: 'line',
-					data: [120, 282, 91, 134, 190, 130, 110]
-				},
-				{
-					name: 'highest',
-					type: 'line',
-					data: [120, 282, 91, 134, 190, 130, 110]
-				},
-				{
-					name: 'lowest',
-					type: 'line',
-					data: [120, 282, 91, 134, 190, 130, 110]
-				},
-				{
-					name: 'your',
-					type: 'line',
-					data: [120, 282, 91, 134, 190, 130, 110]
-				}
-			]
-		};
 
 		const panelsJsx = studentBatches.map((batch, index) => {
 			let testsOfThisBatch = tests.filter(test => test.batchIds.find(batchId => batchId === batch._id));
 			testsOfThisBatch = testsOfThisBatch.sort((a, b) => a.date.startOf('day').diff(b.date.startOf('day'), 'days'));
-			let averageScores = [], highestScores = [], lowestScores = [], studentScores = [], testNames = [];
+			const averageScores = [],
+				highestScores = [],
+				lowestScores = [],
+				studentScores = [],
+				testNames = [];
+
 			testsOfThisBatch.forEach(test => {
 				let isTestRelevant = false;
 				let averageScore = 0, highestScore = 0;
@@ -105,15 +88,16 @@ class PerformanceEvalReport extends Component {
 				test.parsedDate = test.date.format('DD/MM/YY');
 			});
 
-			// lets update graph options
-			option.xAxis.data = testNames;
-			option.series.forEach(series => {
+			const graphOptionsOfThisBatch = JSON.parse(JSON.stringify(options));
+			graphOptionsOfThisBatch.xAxis.data = testNames;
+			graphOptionsOfThisBatch.series.forEach(series => {
 				if (series.name === 'average') series.data = averageScores;
 				if (series.name === 'highest') series.data = highestScores;
 				if (series.name === 'lowest') series.data = lowestScores;
 				if (series.name === 'your') series.data = studentScores;
 			});
 
+			console.log(graphOptionsOfThisBatch);
 
 			return <Panel
 				key={index + 1}
@@ -144,14 +128,9 @@ class PerformanceEvalReport extends Component {
 				</Row>}>
 				<ReactEchartsCore
 					echarts={echarts}
-					option={option}
+					option={graphOptionsOfThisBatch}
 					notMerge={true}
-					lazyUpdate={true}
-				// theme={"theme_name"}
-				// onChartReady={this.onChartReadyCallback}
-				// onEvents={EventsDict}
-				// opts={} 
-				/>
+					lazyUpdate={true} />
 			</Panel>;
 		});
 
