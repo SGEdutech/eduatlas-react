@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import StudentCard from './Active/StudentCard';
 
+import filterStudents from '../../../scripts/filterStudents';
+
 import {
 	Card,
 	Col,
@@ -54,11 +56,7 @@ class Active extends Component {
 			return false;
 		});
 
-		const studentsToRender = studentsToShow.filter(student => {
-			const { rollNumber, name, email } = student;
-			const searchRegex = new RegExp(this.state.search, 'i');
-			return searchRegex.test(rollNumber) || searchRegex.test(name) || searchRegex.test(email)
-		});
+		const studentsToRender = filterStudents(studentsToShow, this.state.search);
 
 		const studentsJsx = studentsToRender.map(({ _id, name, rollNumber, email }) => (
 			<Col {...colLayout} key={_id}>

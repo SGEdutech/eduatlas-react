@@ -10,6 +10,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
 import AddScore from './PerformanceReport/AddScore';
+import PerformanceEvalReport from './PerformanceReport/PerformanceEvalReport';
 import Test from './PerformanceReport/Test';
 
 class PerformanceReport extends Component {
@@ -30,12 +31,14 @@ class PerformanceReport extends Component {
 						indicatorColor="primary"
 						textColor="primary"
 						variant="fullWidth">
-						<Tab label="Active" />
+						<Tab label="Tests" />
 						<Tab label="Score" />
+						<Tab label="PER" />
 					</Tabs>
 				</AppBar>
 				{value === 0 && <Test addTest={addTest} batches={batches} deleteTest={deleteTest} editTest={editTest} messageInfo={messageInfo} tests={tests} />}
 				{value === 1 && <AddScore batches={batches} editTest={editTest} students={students} tests={tests} />}
+				{value === 2 && <PerformanceEvalReport batches={batches} students={students} tests={tests} />}
 			</>
 		);
 	}
