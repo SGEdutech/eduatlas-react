@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 
-import StudentNavbar from '../StudentNavbar'
+import StudentNavbar from '../StudentNavbar';
 
 import {
 	Col,
@@ -9,15 +10,18 @@ import {
 	Row
 } from 'antd';
 
+import getTuitionIdFromUrl from '../../scripts/getTuitionIdFromUrl';
+
 class SendRequest extends Component {
 	componentWillMount() {
-		const { addRequest, requests, userInfo } = this.props;
+		const { addRequest, match: { url }, requests, userInfo } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
 		if (Object.keys(userInfo).length === 0) return;
 		const request = requests.find(request => request.email === userInfo.primaryEmail);
 		if (request) return;
 		const studentInfo = { email: userInfo.primaryEmail };
 		studentInfo.name = userInfo.lastName ? userInfo.firstName + ' ' + userInfo.lastName : userInfo.firstName;
-		addRequest(studentInfo);
+		addRequest(tuitionId, studentInfo);
 	}
 
 	render() {
@@ -53,5 +57,4 @@ class SendRequest extends Component {
 	}
 }
 
-export default SendRequest;
-
+export default withRouter(SendRequest);

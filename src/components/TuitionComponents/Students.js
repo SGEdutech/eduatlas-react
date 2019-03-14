@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { compose } from 'redux';
 
 import '../../core/css/tabBar.css';
 
@@ -18,6 +20,8 @@ import AddStudent from './Students/AddStudent';
 import Pending from './Students/Pending';
 import Requests from './Students/Requests';
 
+import getTuitionIdFromUrl from '../../scripts/getTuitionIdFromUrl';
+
 const confirm = Modal.confirm;
 
 class Students extends Component {
@@ -25,8 +29,9 @@ class Students extends Component {
 
 	handleChange = (e, value) => this.setState({ value });
 
-	showDeleteConfirm = id => {
-		const { deleteRequest } = this.props;
+	showDeleteConfirm = studentId => {
+		const { deleteRequest, match: { url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
 		confirm({
 			title: 'Are You Sure?',
 			content: 'This action is permanent!',
@@ -34,7 +39,7 @@ class Students extends Component {
 			okType: 'danger',
 			cancelText: 'No',
 			onOk() {
-				deleteRequest(id);
+				deleteRequest(tuitionId, studentId);
 			}
 		});
 	};
@@ -78,4 +83,4 @@ function mapStateToProps(state) {
 	};
 }
 
-export default connect(mapStateToProps, { addStudent, deleteStudent, deleteRequest, addStudentInBatch })(Students);
+export default compose(connect(mapStateToProps, { addStudent, deleteStudent, deleteRequest, addStudentInBatch }), withRouter)(Students);

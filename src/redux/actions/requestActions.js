@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { schemeAndAuthority, tuitionId } from '../../config.json';
+import { schemeAndAuthority } from '../../config.json';
 
-export function addRequest(newRequest) {
+export function addRequest(tuitionId, newRequest) {
 	return dispatch => {
 		dispatch({
 			type: 'ADD_REQUEST',
@@ -10,7 +10,7 @@ export function addRequest(newRequest) {
 	};
 }
 
-export function deleteRequest(reqId) {
+export function deleteRequest(tuitionId, reqId) {
 	return dispatch => {
 		dispatch({
 			type: 'DELETE_REQUEST',
