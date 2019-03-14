@@ -1,5 +1,6 @@
 /*global FileTransfer*/
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import { schemeAndAuthority } from '../../../../config.json';
 
 import {
@@ -11,12 +12,14 @@ import {
 	Row,
 	Tag
 } from 'antd';
+import getTuitionIdFromUrl from '../../../../scripts/getTuitionIdFromUrl.js';
 const { Meta } = Card;
 const confirm = Modal.confirm;
 
 class FileCard extends Component {
-	showDeleteConfirm = id => {
-		const { deleteResource } = this.props;
+	showDeleteConfirm = resourceId => {
+		const { deleteResource, match: { url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
 		confirm({
 			title: 'Are You Sure?',
 			content: 'This action is permanent!',
@@ -24,7 +27,7 @@ class FileCard extends Component {
 			okType: 'danger',
 			cancelText: 'No',
 			onOk() {
-				deleteResource(id);
+				deleteResource(tuitionId, resourceId);
 			}
 		});
 	};
@@ -121,5 +124,5 @@ class FileCard extends Component {
 		);
 	}
 }
-export default FileCard;
+export default withRouter(FileCard);
 

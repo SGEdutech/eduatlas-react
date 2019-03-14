@@ -2,7 +2,7 @@ import axios from 'axios';
 import { schemeAndAuthority, tuitionId } from '../../config.json';
 import convertModelToFormData from '../../scripts/modelToFormdata';
 
-export function addResource(newResource) {
+export function addResource(tuitionId, newResource) {
 	const config = { headers: { 'Content-Type': 'multipart/form-data' }	};
 	const form_data = convertModelToFormData(newResource);
 	return dispatch => {
@@ -13,7 +13,7 @@ export function addResource(newResource) {
 	};
 }
 
-export function deleteResource(id) {
+export function deleteResource(tuitionId, id) {
 	return dispatch => {
 		dispatch({
 			type: 'DELETE_RESOURCE',

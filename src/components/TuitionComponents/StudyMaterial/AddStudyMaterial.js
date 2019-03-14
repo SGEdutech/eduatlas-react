@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
+import { compose } from 'redux';
 
 import StudentSelector from '../Communicator/NewAnnouncement/StudentSelector';
 
 import sanatizeFormObj from '../../../scripts/sanatize-form-obj';
+import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
 
 import {
 	Button,
@@ -60,8 +63,9 @@ class AddStudyMaterial extends Component {
 
 	handleSubmit = e => {
 		e.preventDefault();
-		const { addResource, form, form: { resetFields } } = this.props;
+		const { addResource, form, form: { resetFields }, match: { url } } = this.props;
 		const { selectedFile } = this.state;
+		const tuitionId = getTuitionIdFromUrl(url);
 		form.validateFieldsAndScroll((err, values) => {
 			if (err) {
 				console.error(err);
@@ -69,7 +73,7 @@ class AddStudyMaterial extends Component {
 			}
 			sanatizeFormObj(values);
 			if (selectedFile) values.file = selectedFile.originFileObj;
-			addResource(values);
+			addResource(tuitionId, values);
 			resetFields();
 			this.setState({ selectedFile: null });
 		});
@@ -226,4 +230,4 @@ class AddStudyMaterial extends Component {
 	}
 }
 
-export default Form.create({ name: 'new-study-material' })(AddStudyMaterial);
+export default compose(Form.create({ name: 'new-study-material' }), withRouter)(AddStudyMaterial);
