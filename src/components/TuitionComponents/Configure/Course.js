@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-relative-link';
 
 import CourseCard from './Course/CourseCard';
+
+import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
 
 import {
 	Card,
@@ -33,7 +36,8 @@ const colLayout = {
 
 class Course extends Component {
 	showDeleteConfirm = id => {
-		const { deleteCourse } = this.props;
+		const { deleteCourse, match: { url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
 		confirm({
 			title: 'Are You Sure?',
 			content: 'This action is permanent!',
@@ -41,7 +45,7 @@ class Course extends Component {
 			okType: 'danger',
 			cancelText: 'No',
 			onOk() {
-				deleteCourse(id);
+				deleteCourse(tuitionId, id);
 			}
 		});
 	};
@@ -94,4 +98,4 @@ class Course extends Component {
 	}
 }
 
-export default Course;
+export default withRouter(Course);

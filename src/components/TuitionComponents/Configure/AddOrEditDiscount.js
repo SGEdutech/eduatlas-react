@@ -5,6 +5,7 @@ import { compose } from 'redux';
 
 import { addDiscount, editDiscount } from '../../../redux/actions/discountActions';
 
+import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
 import sanatizeFormObj from '../../../scripts/sanatize-form-obj';
 
 import Navbar from '../../Navbar';
@@ -52,7 +53,8 @@ class AddDiscount extends Component {
 
 	handleSubmit = e => {
 		e.preventDefault();
-		const { form, addDiscount, editDiscount, history, edit, match } = this.props;
+		const { form, addDiscount, editDiscount, history, edit, match: { url, params: { discountId } } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
 		form.validateFieldsAndScroll((err, values) => {
 			if (err) {
 				console.error(err);
@@ -60,7 +62,7 @@ class AddDiscount extends Component {
 			}
 			sanatizeFormObj(values);
 			values.isPercent = this.state.saveAsPercentage;
-			edit ? editDiscount(match.params.discountId, values) : addDiscount(values);
+			edit ? editDiscount(tuitionId, discountId, values) : addDiscount(tuitionId, values);
 			history.goBack();
 		});
 	}

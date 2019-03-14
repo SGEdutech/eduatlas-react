@@ -5,6 +5,7 @@ import { compose } from 'redux';
 
 import { addCourse, editCourse } from '../../../redux/actions/courseActions';
 
+import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
 import sanatizeFormObj from '../../../scripts/sanatize-form-obj';
 
 import Navbar from '../../Navbar';
@@ -66,14 +67,15 @@ class AddCourse extends Component {
 
 	handleSubmit = e => {
 		e.preventDefault();
-		const { form, addCourse, editCourse, history, edit, match } = this.props;
+		const { form, addCourse, editCourse, history, edit, match: { params: { courseId }, url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
 		form.validateFieldsAndScroll((err, values) => {
 			if (err) {
 				console.error(err);
 				return;
 			}
 			sanatizeFormObj(values);
-			edit ? editCourse(match.params.courseId, values) : addCourse(values);
+			edit ? editCourse(tuitionId, courseId, values) : addCourse(tuitionId, values);
 			history.goBack();
 		});
 	}

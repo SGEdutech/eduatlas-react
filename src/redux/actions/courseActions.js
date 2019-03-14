@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { schemeAndAuthority, tuitionId } from '../../config.json';
+import { schemeAndAuthority } from '../../config.json';
 
-export function addCourse(newCourse) {
+export function addCourse(tuitionId, newCourse) {
 	return dispatch => {
 		dispatch({
 			type: 'ADD_COURSE',
@@ -10,7 +10,7 @@ export function addCourse(newCourse) {
 	};
 }
 
-export function editCourse(courseId, editedData) {
+export function editCourse(tuitionId, courseId, editedData) {
 	return dispatch => {
 		dispatch({
 			type: 'EDIT_COURSE',
@@ -19,11 +19,11 @@ export function editCourse(courseId, editedData) {
 	};
 }
 
-export function deleteCourse(id) {
+export function deleteCourse(tuitionId, courseId) {
 	return dispatch => {
 		dispatch({
 			type: 'DELETE_COURSE',
-			payload: axios.delete(`${schemeAndAuthority}/tuition/${tuitionId}/course/${id}`)
+			payload: axios.delete(`${schemeAndAuthority}/tuition/${tuitionId}/course/${courseId}`)
 		});
 	};
 }

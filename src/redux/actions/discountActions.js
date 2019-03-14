@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { schemeAndAuthority, tuitionId } from '../../config.json';
+import { schemeAndAuthority } from '../../config.json';
 
-export function addDiscount(newDiscount) {
+export function addDiscount(tuitionId, newDiscount) {
 	return dispatch => {
 		dispatch({
 			type: 'ADD_DISCOUNT',
@@ -10,7 +10,7 @@ export function addDiscount(newDiscount) {
 	};
 }
 
-export function editDiscount(discountId, editedDiscount) {
+export function editDiscount(tuitionId, discountId, editedDiscount) {
 	return dispatch => {
 		dispatch({
 			type: 'EDIT_DISCOUNT',
@@ -19,11 +19,11 @@ export function editDiscount(discountId, editedDiscount) {
 	};
 }
 
-export function deleteDiscount(id) {
+export function deleteDiscount(tuitionId, discountId) {
 	return dispatch => {
 		dispatch({
 			type: 'DELETE_DISCOUNT',
-			payload: axios.delete(`${schemeAndAuthority}/tuition/${tuitionId}/discount/${id}`)
+			payload: axios.delete(`${schemeAndAuthority}/tuition/${tuitionId}/discount/${discountId}`)
 		});
 	};
 }
