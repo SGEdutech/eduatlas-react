@@ -1,9 +1,11 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
 import moment from 'moment';
+import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
 
 import { addSchedule } from '../../../redux/actions/scheduleActions';
+import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
 import sanatizeFormObj from '../../../scripts/sanatize-form-obj';
 import { minutesFromMidnight } from '../../../scripts/minutesToMidnight';
 
@@ -106,8 +108,8 @@ class AddSchedule extends Component {
 
 	handleSubmit = e => {
 		e.preventDefault();
-		const { form, addSchedule } = this.props;
-		const { resetFields } = form;
+		const { addSchedule, form, form: { resetFields }, match: { url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
 		form.validateFieldsAndScroll((err, values) => {
 			if (err) {
 				console.error(err);
@@ -115,7 +117,7 @@ class AddSchedule extends Component {
 			}
 			sanatizeFormObj(values);
 			this.calibrateFromAndToTime(values);
-			addSchedule({ schedules: this.splitSchedules(values), batches: values.batches });
+			addSchedule(tuitionId, { schedules: this.splitSchedules(values), batches: values.batches });
 			resetFields();
 		});
 	}
@@ -146,7 +148,6 @@ class AddSchedule extends Component {
 	}
 
 	validateToTime = (rule, value, callback) => {
-		const form = this.props.form;
 		callback();
 	}
 
@@ -313,5 +314,5 @@ function mapStateToProps(state) {
 	};
 }
 
-export default compose(Form.create({ name: 'add-schedule' }), connect(mapStateToProps, { addSchedule }))(AddSchedule);
+export default compose(Form.create({ name: 'add-schedule' }), connect(mapStateToProps, { addSchedule }), withRouter)(AddSchedule);
 

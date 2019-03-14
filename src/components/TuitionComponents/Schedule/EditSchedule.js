@@ -5,6 +5,7 @@ import { compose } from 'redux';
 
 import { editSchedule } from '../../../redux/actions/scheduleActions';
 
+import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
 import sanatizeFormObj from '../../../scripts/sanatize-form-obj';
 import { inverseMinutesFromMidnight, minutesFromMidnight } from '../../../scripts/minutesToMidnight';
 
@@ -44,7 +45,8 @@ class EditSchedule extends Component {
 
 	handleSubmit = e => {
 		e.preventDefault();
-		const { form, editSchedule, history } = this.props;
+		const { editSchedule, form, history, match: { url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
 		const { scheduleInfo: { courseId, batchId, _id: scheduleId } } = this.state;
 		form.validateFieldsAndScroll((err, values) => {
 			if (err) {
@@ -53,7 +55,7 @@ class EditSchedule extends Component {
 			}
 			sanatizeFormObj(values);
 			this.calibrateTimeInps(values);
-			editSchedule(courseId, batchId, scheduleId, values);
+			editSchedule(tuitionId, courseId, batchId, scheduleId, values);
 			history.goBack();
 		});
 	}

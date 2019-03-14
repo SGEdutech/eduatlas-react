@@ -7,6 +7,8 @@ import Navbar from '../../Navbar';
 
 import { editSchedule } from '../../../redux/actions/scheduleActions';
 
+import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
+
 import {
 	Avatar,
 	Button,
@@ -21,8 +23,8 @@ class AttendanceDetails extends Component {
 
 	handleSubmit = e => {
 		e.preventDefault();
-		const { form, editSchedule } = this.props;
-		const { resetFields } = form;
+		const { editSchedule, form, form: { resetFields }, match: { url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
 		const { scheduleId } = this.props.match.params;
 		const scheduleInfo = this.props.schedules.find(schedule => schedule._id === scheduleId);
 		const { courseId, batchId } = scheduleInfo;
@@ -37,7 +39,7 @@ class AttendanceDetails extends Component {
 				if (values[key]) return;
 				studentsAbsent.push(key);
 			});
-			editSchedule(courseId, batchId, scheduleId, { studentsAbsent });
+			editSchedule(tuitionId, courseId, batchId, scheduleId, { studentsAbsent });
 			resetFields();
 		});
 	}

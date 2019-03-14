@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { compose } from 'redux';
 import moment from 'moment';
 
 import ScheduleCard from './ActiveSchedules/ScheduleCard';
 
 import { deleteSchedule } from '../../../redux/actions/scheduleActions';
+import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
 import { inverseMinutesFromMidnight } from '../../../scripts/minutesToMidnight';
 
 import {
@@ -42,7 +45,8 @@ class ActiveSchedules extends Component {
 	}
 
 	showDeleteConfirm = (courseId, batchId, scheduleId) => {
-		const { deleteSchedule } = this.props;
+		const { deleteSchedule, match: { url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
 		confirm({
 			title: 'Are You Sure?',
 			content: 'This action is permanent!',
@@ -50,7 +54,7 @@ class ActiveSchedules extends Component {
 			okType: 'danger',
 			cancelText: 'No',
 			onOk() {
-				deleteSchedule(courseId, batchId, scheduleId);
+				deleteSchedule(tuitionId, courseId, batchId, scheduleId);
 			}
 		});
 	};
@@ -141,4 +145,4 @@ function mapStateToProps(state) {
 	};
 }
 
-export default connect(mapStateToProps, { deleteSchedule })(ActiveSchedules);
+export default compose(connect(mapStateToProps, { deleteSchedule }), withRouter)(ActiveSchedules);
