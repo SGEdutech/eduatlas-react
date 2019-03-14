@@ -11,7 +11,6 @@ export function addNotification(newNotification) {
 }
 
 export function readNotification(ids) {
-	console.log(ids)
 	return dispatch => {
 		dispatch({
 			type: 'READ_NOTIFICATION',

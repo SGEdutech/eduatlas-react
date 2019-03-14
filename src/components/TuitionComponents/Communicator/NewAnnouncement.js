@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { compose } from 'redux';
+import { withRouter } from 'react-router-dom';
 
 import StudentSelector from './NewAnnouncement/StudentSelector';
 
@@ -10,8 +12,8 @@ import {
 	Row
 } from 'antd';
 
+import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
 import sanatizeForm from '../../../scripts/sanatize-form-obj';
-import { tuitionId } from '../../../config.json';
 
 const { TextArea } = Input;
 
@@ -47,7 +49,8 @@ class NewAnnouncement extends Component {
 
 	handleSubmit = e => {
 		e.preventDefault();
-		const { addNotification, form, form: { resetFields } } = this.props;
+		const { addNotification, form, form: { resetFields }, match: { url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
 		form.validateFieldsAndScroll((err, values) => {
 			if (err) {
 				console.error(err);
@@ -105,4 +108,4 @@ class NewAnnouncement extends Component {
 	}
 }
 
-export default Form.create({ name: 'new-announcement' })(NewAnnouncement);
+export default compose(Form.create({ name: 'new-announcement' }), withRouter)(NewAnnouncement);

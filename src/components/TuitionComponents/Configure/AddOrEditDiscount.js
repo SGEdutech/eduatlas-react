@@ -20,18 +20,6 @@ import {
 	Row
 } from 'antd';
 
-const formItemLayout = {
-	labelCol: {
-	},
-	wrapperCol: {
-	}
-};
-
-const tailFormItemLayout = {
-	wrapperCol: {
-	}
-};
-
 const colLayout = {
 	xs: 24,
 	md: 12
@@ -108,7 +96,6 @@ class AddDiscount extends Component {
 						<Row gutter={16}>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="Discount Code"
 									hasFeedback={true}>
 									{getFieldDecorator('code', {
@@ -125,7 +112,6 @@ class AddDiscount extends Component {
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="Discount Amount"
 									hasFeedback={true}>
 									{getFieldDecorator('amount', {
@@ -140,7 +126,7 @@ class AddDiscount extends Component {
 								</Form.Item>
 							</Col>
 							<Col {...colLayout}>
-								<Form.Item {...tailFormItemLayout}>
+								<Form.Item>
 									<Checkbox checked={this.state.saveAsPercentage} onChange={this.handleSaveAsPercentageChange}>Save Discount as Percentage</Checkbox>
 								</Form.Item>
 							</Col>
