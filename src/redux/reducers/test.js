@@ -29,7 +29,7 @@ function testReducer(state = initState, action) {
 		case 'DELETE_BATCH_FULFILLED': {
 			const deletedBatchId = action.payload.data._id;
 			const tests = [...state.tests];
-			tests.forEach(test => test.batcheIds = test.batcheIds.filter(batchId => batchId !== deletedBatchId));
+			tests.forEach(test => test.batchIds = test.batchIds.filter(batchId => batchId !== deletedBatchId));
 			return { ...state, tests };
 		}
 		default: {

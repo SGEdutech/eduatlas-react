@@ -9,6 +9,9 @@ import sanatizeFormObj from '../../../scripts/sanatize-form-obj';
 
 import Navbar from '../../Navbar';
 import Highlighter from 'react-highlight-words';
+
+import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
+
 import {
 	Button,
 	Col,
@@ -110,7 +113,8 @@ class AddBatch extends Component {
 
 	handleSubmit = e => {
 		e.preventDefault();
-		const { form, addBatch, editBatch, history, edit, match } = this.props;
+		const { form, addBatch, editBatch, history, edit, match, match: { url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
 		form.validateFieldsAndScroll((err, values) => {
 			if (err) {
 				console.error(err);
@@ -120,7 +124,7 @@ class AddBatch extends Component {
 			values.students = this.state.selectedRowKeys;
 			const { courseId } = values;
 			delete values.courseId;
-			edit ? editBatch(courseId, match.params.batchId, values) : addBatch(courseId, values);
+			edit ? editBatch(tuitionId, courseId, match.params.batchId, values) : addBatch(tuitionId, courseId, values);
 			history.goBack();
 		});
 	}

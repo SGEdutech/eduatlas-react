@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import { compose } from 'redux';
+import { withRouter } from 'react-router-dom';
 
 import IconsWithTooltip from '../../../SharedComponents/IconsWithTooltip';
 
+import getTuitionIdFromUrl from '../../../../scripts/getTuitionIdFromUrl';
 import sanatizeFormObj from '../../../../scripts/sanatize-form-obj';
 
 import fallBackDp from '../../../../fallback-dp.svg';
@@ -20,7 +23,8 @@ const Option = Select.Option;
 class PendingCard extends Component {
 	handleSubmit = e => {
 		e.preventDefault();
-		const { form, addStudentInBatch, batches } = this.props;
+		const { addStudentInBatch, batches, form, match: { url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
 		form.validateFieldsAndScroll((err, values) => {
 			if (err) {
 				console.error(err);
@@ -30,7 +34,7 @@ class PendingCard extends Component {
 			const { batchId, studentId } = values;
 			const batchInfo = batches.find(batch => batch._id === batchId);
 			const courseId = batchInfo.courseId;
-			addStudentInBatch(courseId, batchId, studentId);
+			addStudentInBatch(tuitionId, courseId, batchId, studentId);
 		});
 	}
 
@@ -73,5 +77,5 @@ class PendingCard extends Component {
 	}
 }
 
-export default Form.create({ name: 'accept-student' })(PendingCard);
+export default compose(Form.create({ name: 'accept-student' }), withRouter)(PendingCard);
 

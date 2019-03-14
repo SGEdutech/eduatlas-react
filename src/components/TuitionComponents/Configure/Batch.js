@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-relative-link';
 
-import BatchCard from './Batch/BatchCard';
+import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
 
+import BatchCard from './Batch/BatchCard';
 
 import {
 	Card,
@@ -34,7 +36,8 @@ const colLayout = {
 
 class Batch extends Component {
 	showDeleteConfirm = (courseId, batchId) => {
-		const { deleteBatch } = this.props;
+		const { deleteBatch, match: { url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
 		confirm({
 			title: 'Are You Sure?',
 			content: 'This action is permanent!',
@@ -42,7 +45,7 @@ class Batch extends Component {
 			okType: 'danger',
 			cancelText: 'No',
 			onOk() {
-				deleteBatch(courseId, batchId);
+				deleteBatch(tuitionId, courseId, batchId);
 			}
 		});
 	};
@@ -94,4 +97,4 @@ class Batch extends Component {
 	}
 }
 
-export default Batch;
+export default withRouter(Batch);

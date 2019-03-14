@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { schemeAndAuthority, tuitionId } from '../../config.json';
+import { schemeAndAuthority } from '../../config.json';
 
-export function addBatch(courseId, newBatch) {
+export function addBatch(tuitionId, courseId, newBatch) {
 	return dispatch => {
 		dispatch({
 			type: 'ADD_BATCH',
@@ -10,7 +10,7 @@ export function addBatch(courseId, newBatch) {
 	};
 }
 
-export function editBatch(courseId, batchId, editedData) {
+export function editBatch(tuitionId, courseId, batchId, editedData) {
 	return dispatch => {
 		dispatch({
 			type: 'EDIT_BATCH',
@@ -19,7 +19,7 @@ export function editBatch(courseId, batchId, editedData) {
 	};
 }
 
-export function deleteBatch(courseId, batchId) {
+export function deleteBatch(tuitionId, courseId, batchId) {
 	return dispatch => {
 		dispatch({
 			type: 'DELETE_BATCH',
@@ -28,7 +28,7 @@ export function deleteBatch(courseId, batchId) {
 	};
 }
 
-export function addStudentInBatch(courseId, batchId, studentId) {
+export function addStudentInBatch(tuitionId, courseId, batchId, studentId) {
 	return dispatch => {
 		dispatch({
 			type: 'ADD_STUDUNT_IN_BATCH',

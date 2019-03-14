@@ -7,7 +7,7 @@ import { Card, Col, Row } from 'antd';
 const { Meta } = Card;
 
 function BatchCard(props) {
-	const { id, code, description, courseId, courseCode, numberOfStudents, deleteBatch, editBatch } = props;
+	const { id, code, description, courseId, courseCode, numberOfStudents, deleteBatch } = props;
 
 	const iconsArray = [
 		<Link to={'./edit-batch/' + id}><IconsWithTooltip tooltipMessage="Edit" iconType="edit" /></Link>,
