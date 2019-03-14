@@ -14,7 +14,7 @@ export function readNotification(ids) {
 	return dispatch => {
 		dispatch({
 			type: 'READ_NOTIFICATION',
-			payload: axios.put(`${schemeAndAuthority}/notification/user-read`, ids)
+			payload: axios.put(`${schemeAndAuthority}/notification/user-read`, ids, { withCredentials: true })
 		});
 	};
 }
