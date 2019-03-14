@@ -31,7 +31,7 @@ export function deleteBatch(tuitionId, courseId, batchId) {
 export function addStudentInBatch(tuitionId, courseId, batchId, studentId) {
 	return dispatch => {
 		dispatch({
-			type: 'ADD_STUDUNT_IN_BATCH',
+			type: 'ADD_STUDENT_IN_BATCH',
 			payload: axios.post(`${schemeAndAuthority}/tuition/${tuitionId}/course/${courseId}/batch/${batchId}/student`, { students: studentId })
 		});
 	};

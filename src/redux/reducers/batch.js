@@ -36,7 +36,7 @@ function batchReducer(state = initState, action) {
 			batches.forEach(batch => batch.students = batch.students.filter(studentId => studentId !== deletedStudentId));
 			return { ...state, batches };
 		}
-		case 'ADD_STUDUNT_IN_BATCH_FULFILLED': {
+		case 'ADD_STUDENT_IN_BATCH_FULFILLED': {
 			const batches = [...state.batches];
 			const { batchId, students } = action.payload.data;
 			batches.forEach(batch => {
