@@ -42,9 +42,9 @@ import refreshRegistrationId from './scripts/refreshRegistrationId';
 class App extends Component {
 	componentDidMount() {
 		if (this.props.messageInfo.fetched) return;
-		const { fetchAll } = this.props;
-		fetchAll();
-		setInterval(fetchAll, 2 * 60 * 1000);
+		const { fetchAll, match: { params: { tuitionId } } } = this.props;
+		fetchAll(tuitionId);
+		setInterval(() => fetchAll(tuitionId), 2 * 60 * 1000);
 		// Firebase service
 		if (window.cordova) {
 			window.cordova.plugins.autoStart.enable();
@@ -54,11 +54,11 @@ class App extends Component {
 	}
 
 	componentDidUpdate() {
-		const { messageInfo } = this.props;
+		const { fetchAll, match: { params: { tuitionId } }, messageInfo } = this.props;
 		if (messageInfo.kaamChaluHai) {
 			message.loading('Action in progress..', 0);
 		} else if (messageInfo.fetchFailed) {
-			setTimeout(this.props.fetchAll, 5000);
+			setTimeout(() => fetchAll(tuitionId), 5000);
 		} else if (messageInfo.kaamHoGaya) {
 			message.destroy();
 			message[messageInfo.lifafa.level](messageInfo.lifafa.sandesh);
