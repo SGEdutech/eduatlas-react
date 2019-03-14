@@ -1,7 +1,7 @@
 import moment from 'moment';
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-relative-link';
 
 import IconsWithTooltip from '../../../SharedComponents/IconsWithTooltip';
 
@@ -12,7 +12,7 @@ function TestCard(props) {
 	const { batchIds, date, deleteTest, id, maxMarks, name } = props;
 
 	const iconsArray = [
-		<Link to={'/tuition/edit-test/' + id}><IconsWithTooltip tooltipMessage="Edit" iconType="edit" /></Link>,
+		<Link to={'./edit-test/' + id}><IconsWithTooltip tooltipMessage="Edit" iconType="edit" /></Link>,
 		<IconsWithTooltip tooltipMessage="Delete" iconType="delete" onClick={() => deleteTest(id)} />
 	];
 

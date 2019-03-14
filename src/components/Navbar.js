@@ -15,6 +15,8 @@ import {
 
 import { logOut } from '../redux/actions/userActions';
 
+import getTuitionIdFromUrl from '../scripts/getTuitionIdFromUrl';
+
 import { tuitionName } from '../config.json';
 import fallbackDp from '../fallback-dp.svg';
 
@@ -49,13 +51,15 @@ class Navbar extends Component {
 	onClose = () => this.setState({ visible: false });
 
 	handleLogout = () => {
-		const { history: { replace }, logOut, user: { primaryEmail } } = this.props;
+		const { history: { replace }, match: { url }, logOut, user: { primaryEmail } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
 		logOut(primaryEmail);
-		setTimeout(() => replace('/'), 100);
+		setTimeout(() => replace(`/${tuitionId}`), 100);
 	}
 
 	render() {
-		const { user, renderBackBtn = false, navText = undefined } = this.props;
+		const { match: { url }, navText, renderBackBtn = false, user } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
 		return (
 			<>
 				<nav className="navbar fixed-top bg-info mb-0" style={headerStyle}>
@@ -82,8 +86,8 @@ class Navbar extends Component {
 					onClose={this.onClose}
 					visible={this.state.visible}>
 					<List split={true} style={{ fontSize: 18 }}>
-						<Link to={`/edit-profile/${user._id}`}><span style={{ color: '#000' }}><NavListItem iconType="edit" content="Edit Profile" /></span></Link>
-						<Link to='/receipt-config'><span style={{ color: '#000' }}><NavListItem iconType="form" content="Receipt Config" /></span></Link>
+						<Link to={`/${tuitionId}/edit-profile/${user._id}`}><span style={{ color: '#000' }}><NavListItem iconType="edit" content="Edit Profile" /></span></Link>
+						<Link to={`/${tuitionId}/receipt-config`}><span style={{ color: '#000' }}><NavListItem iconType="form" content="Receipt Config" /></span></Link>
 						<NavListItem iconType="logout" content="Logout" onClick={this.handleLogout} />
 					</List>
 				</Drawer>

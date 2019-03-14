@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-relative-link';
 
 import DiscountCards from './Discounts/DiscountCards';
 
@@ -85,7 +85,7 @@ class Discount extends Component {
 						{messageInfo.fetching ? skeletonCards : (discountsInfo.discounts.length === 0 ? emptyJsx : discountsJsx)}
 					</Row>
 				</div>
-				<Link to="/tuition/add-discount">
+				<Link to="./add-discount">
 					<Icon type="plus-circle" theme="filled" style={plusIconStyle} />
 				</Link>
 			</>

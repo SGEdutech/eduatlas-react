@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-relative-link';
 
 import TestCard from './Test/TestCard';
 
@@ -85,7 +85,7 @@ class Test extends Component {
 						{messageInfo.fetching ? skeletonCards : (tests.length === 0 ? emptyJsx : testsJsx)}
 					</Row>
 				</div>
-				<Link to="/tuition/add-test">
+				<Link to="./add-test">
 					<Icon type="plus-circle" theme="filled" style={plusIconStyle} />
 				</Link>
 			</>

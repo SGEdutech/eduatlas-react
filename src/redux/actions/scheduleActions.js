@@ -2,7 +2,6 @@ import axios from 'axios';
 import { schemeAndAuthority, tuitionId } from '../../config.json';
 
 export function addSchedule(newSchedule) {
-	console.log(newSchedule);
 	return dispatch => {
 		dispatch({
 			type: 'ADD_SCHEDULE',

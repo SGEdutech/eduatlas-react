@@ -8,21 +8,21 @@ import {
 } from 'antd';
 
 function Loading(props) {
-	const { messageInfo: { fetched, kaamChaluHai }, history: { replace }, students, user } = props;
+	const { match: { url }, messageInfo: { fetched, kaamChaluHai }, history: { replace }, students, user } = props;
 	function redirectToLogin() {
-		replace('/login');
+		replace(url + '/login');
 	}
 
 	function redirectToTuitionManager() {
-		replace('/tuition');
+		replace(url + '/tuition');
 	}
 
 	function redirectToStudentManager() {
-		replace('/student');
+		replace(url + '/student');
 	}
 
 	function redirectToRequestSentPage() {
-		replace('/send-request');
+		replace(url + '/send-request');
 	}
 
 	const loadingJsx = (

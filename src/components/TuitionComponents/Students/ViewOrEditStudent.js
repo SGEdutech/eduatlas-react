@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+import { Link } from 'react-router-relative-link';
 import { compose } from 'redux';
 
 import {
@@ -206,7 +207,7 @@ class ViewOrEditStudent extends Component {
 							<Divider orientation="left"><small>Course Details<Icon type="arrow-down" /></small></Divider>
 						</Col>
 						<Col className="mb-3">
-							<Link to={this.props.location.pathname + '/add-payment'}><Button className="mb-3" type="dashed" block={true}><Icon type="plus-circle" />Add New Course</Button></Link>
+							<Link to="./add-payment"><Button className="mb-3" type="dashed" block={true}><Icon type="plus-circle" />Add New Course</Button></Link>
 							{payments && payments.map(payment =>
 								<PaymentCard
 									courses={this.props.courses} payment={payment} editPayment={this.props.editPayment}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-relative-link';
 
 import IconsWithTooltip from '../../../SharedComponents/IconsWithTooltip';
 
@@ -15,8 +15,8 @@ function StudentCard(props) {
 	const { id, name, rollNumber, deleteStudent } = props;
 
 	const iconsArray = [
-		<Link to={'/tuition/student/' + id}><IconsWithTooltip tooltipMessage="View" iconType="eye" /></Link>,
-		<Link to={'/tuition/student/' + id}><IconsWithTooltip tooltipMessage="Edit" iconType="edit" /></Link>,
+		<Link to={'./student/' + id}><IconsWithTooltip tooltipMessage="View" iconType="eye" /></Link>,
+		<Link to={'./student/' + id}><IconsWithTooltip tooltipMessage="Edit" iconType="edit" /></Link>,
 		<IconsWithTooltip tooltipMessage="Delete" iconType="delete" onClick={() => deleteStudent(id)} />
 	];
 

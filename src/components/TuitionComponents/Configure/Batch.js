@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-relative-link';
 
 import BatchCard from './Batch/BatchCard';
+
 
 import {
 	Card,
@@ -47,8 +48,7 @@ class Batch extends Component {
 	};
 
 	render() {
-		const { messageInfo, batchesInfo } = this.props;
-
+		const { batchesInfo, messageInfo } = this.props;
 		const batchesJsx = batchesInfo.batches.map(({ _id, code, description, students, courseId, courseCode }) => (
 			<Col {...colLayout} key={_id}>
 				<div className="mb-3">
@@ -86,7 +86,7 @@ class Batch extends Component {
 						{messageInfo.fetching ? skeletonCards : (batchesInfo.batches.length === 0 ? emptyJsx : batchesJsx)}
 					</Row>
 				</div>
-				<Link to="/tuition/add-batch">
+				<Link to="./add-batch">
 					<Icon type="plus-circle" theme="filled" style={plusIconStyle} />
 				</Link>
 			</>

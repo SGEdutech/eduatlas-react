@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+import { Link } from 'react-router-relative-link';
 import { compose } from 'redux';
 
 import { logIn } from '../redux/actions/userActions';
+
+import getTuitionIdFromUrl from '../scripts/getTuitionIdFromUrl';
 
 import {
 	Avatar,
@@ -35,7 +38,8 @@ const colLayout = {
 class Login extends Component {
 	handleSubmit = e => {
 		e.preventDefault();
-		const { form, logIn, history: { push }, form: { resetFields } } = this.props;
+		const { form, form: { resetFields }, history: { push }, logIn, match: { url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
 		form.validateFieldsAndScroll((err, values) => {
 			if (err) {
 				console.error(err);
@@ -43,13 +47,12 @@ class Login extends Component {
 			}
 			logIn(values);
 			resetFields();
-			setTimeout(() => push('/'), 100);
+			setTimeout(() => push(`/${tuitionId}`), 100);
 		});
 	}
 
 	render() {
 		const { getFieldDecorator } = this.props.form;
-
 		return (
 			<div className="container">
 				<Row className="mt-3" type="flex" justify="center">
@@ -96,7 +99,7 @@ class Login extends Component {
 						</Col>
 						<Col {...colLayout} className="mb-3">
 							<Row type="flex" justify="center">
-								<Link to="/signup"> Sign-Up!</Link>
+								<Link to="../signup"> Sign-Up!</Link>
 							</Row>
 						</Col>
 					</Row>

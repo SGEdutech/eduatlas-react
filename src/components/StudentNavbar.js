@@ -14,6 +14,8 @@ import {
 
 import { logOut } from '../redux/actions/userActions';
 
+import getTuitionIdFromUrl from '../scripts/getTuitionIdFromUrl';
+
 import { tuitionName } from '../config.json';
 import fallbackDp from '../fallback-dp.svg';
 
@@ -44,14 +46,15 @@ class Navbar extends Component {
 	onClose = () => this.setState({ visible: false });
 
 	handleLogout = () => {
-		const { history: { replace }, logOut, user: { primaryEmail } } = this.props;
+		const { history: { replace }, match: { url }, logOut, user: { primaryEmail } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
 		logOut(primaryEmail);
-		setTimeout(() => replace('/'), 100);
+		setTimeout(() => replace(`/${tuitionId}`), 100);
 	}
 
 	render() {
-		const { user, renderBackBtn = false, navText } = this.props;
-
+		const { match: { url }, navText, renderBackBtn = false, user } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
 		const DrawerHeader = <Meta
 			avatar={<Avatar src={fallbackDp} />}
 			title={<span className="text-capitalize">{user.firstName}</span>}
@@ -70,7 +73,7 @@ class Navbar extends Component {
 							) : (
 									<>
 										<Icon style={cursorStyle} type="menu-fold" onClick={this.showDrawer} />
-										<span className="ml-auto mr-auto"><Link to="/"><span className="text-uppercase" style={{ color: '#fff', fontWeight: 700 }}>{tuitionName}</span></Link></span>
+										<span className="ml-auto mr-auto"><Link to={`/${tuitionId}`}><span className="text-uppercase" style={{ color: '#fff', fontWeight: 700 }}>{tuitionName}</span></Link></span>
 									</>
 								)
 						}
@@ -83,7 +86,7 @@ class Navbar extends Component {
 					onClose={this.onClose}
 					visible={this.state.visible}>
 					<List split={true} style={{ fontSize: 18 }}>
-						<Link to={`/edit-profile/${user._id}`}><span style={{ color: '#000' }}><NavListItem iconType="edit" content="Edit Profile" /></span></Link>
+						<Link to={`/${tuitionId}/edit-profile/${user._id}`}><span style={{ color: '#000' }}><NavListItem iconType="edit" content="Edit Profile" /></span></Link>
 						<NavListItem iconType="logout" content="Logout" onClick={this.handleLogout} />
 					</List>
 				</Drawer>

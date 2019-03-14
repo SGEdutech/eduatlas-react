@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+import { Link } from 'react-router-relative-link';
 import { compose } from 'redux';
 
 import { signUp } from '../redux/actions/userActions';
@@ -18,10 +19,11 @@ import {
 import { tuitionName } from '../config.json';
 import tuitionLogo from '../tuition-logo.svg';
 
+import getTuitionIdFromUrl from '../scripts/getTuitionIdFromUrl';
+
 const colLayout = {
 	xs: {
 		span: 24
-		// offset: 8
 	},
 	sm: {
 		span: 12,
@@ -40,7 +42,8 @@ class Signup extends Component {
 
 	handleSubmit = e => {
 		e.preventDefault();
-		const { form, signUp, history: { push }, form: { resetFields } } = this.props;
+		const { form, form: { resetFields }, history: { push }, match: { url }, signUp } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
 		form.validateFieldsAndScroll((err, values) => {
 			if (err) {
 				console.error(err);
@@ -48,7 +51,7 @@ class Signup extends Component {
 			}
 			signUp(values);
 			resetFields();
-			push('/login');
+			push(`/${tuitionId}/login`);
 		});
 	}
 
@@ -71,12 +74,11 @@ class Signup extends Component {
 
 	handleConfirmBlur = e => {
 		const value = e.target.value;
-		this.setState({ confirmDirty: this.state.confirmDirty || !!value });
+		this.setState({ confirmDirty: this.state.confirmDirty || Boolean(value) });
 	}
 
 	render() {
 		const { getFieldDecorator } = this.props.form;
-
 		return (
 			<div className="container">
 				<Row className="mt-3" type="flex" justify="center">
@@ -92,9 +94,7 @@ class Signup extends Component {
 								// {...formItemLayout}
 								hasFeedback={true}>
 								{getFieldDecorator('firstName', {
-									rules: [{
-										required: true, message: 'Please provide name!'
-									}]
+									rules: [{ required: true, message: 'Please provide name!' }]
 								})(
 									<Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="First Name" />
 								)}
@@ -105,12 +105,8 @@ class Signup extends Component {
 								// {...formItemLayout}
 								hasFeedback={true}>
 								{getFieldDecorator('primaryEmail', {
-									rules: [{
-										type: 'email', message: 'Not a valid E-mail!'
-									},
-									{
-										required: true, message: 'Please provide email!'
-									}]
+									rules: [{ type: 'email', message: 'Not a valid E-mail!'	},
+									{ required: true, message: 'Please provide email!' }]
 								})(
 									<Input prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Email Address" />
 								)}
@@ -121,12 +117,8 @@ class Signup extends Component {
 								// {...formItemLayout}
 								hasFeedback={true}>
 								{getFieldDecorator('password', {
-									rules: [{
-										required: true, message: 'Please input your password!',
-									},
-									{
-										validator: this.validateToNextPassword,
-									}]
+									rules: [{ required: true, message: 'Please input your password!' },
+									{ validator: this.validateToNextPassword }]
 								})(
 									<Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
 								)}
@@ -137,12 +129,8 @@ class Signup extends Component {
 								// {...formItemLayout}
 								hasFeedback={true}>
 								{getFieldDecorator('confirm', {
-									rules: [{
-										required: true, message: 'Please input your password again!',
-									},
-									{
-										validator: this.compareToFirstPassword,
-									}]
+									rules: [{ required: true, message: 'Please input your password again!' },
+									{ validator: this.compareToFirstPassword }]
 								})(
 									<Input onBlur={this.handleConfirmBlur} prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Confirm Password" />
 								)}
@@ -157,7 +145,7 @@ class Signup extends Component {
 						</Col>
 						<Col {...colLayout} className="mb-3">
 							<Row type="flex" justify="center">
-								<Link to="/login"> Login!</Link>
+								<Link to="../login"> Login!</Link>
 							</Row>
 						</Col>
 					</Row>

@@ -1,7 +1,8 @@
 import moment from 'moment';
 
 import React, { Component } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+import { Link } from 'react-router-relative-link';
 import { compose } from 'redux';
 
 import InstallmentCollapse from './PaymentCard/InstallmentCollapse';
@@ -232,7 +233,7 @@ class PaymentCard extends Component {
 						</Row>
 					</Form>
 					<Col span={24}>
-						<Link to={this.props.location.pathname + `/payment/${paymentId}/add-installment`}>
+						<Link to={`./payment/${paymentId}/add-installment`}>
 							<Button className="mb-3" type="dashed" block={true}>
 								<Icon type="plus-circle" />
 								Add New Installment

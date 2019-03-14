@@ -1,7 +1,7 @@
 import moment from 'moment';
 
 import React, { Component } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 
 import InstallmentCollapse from './PaymentCard/InstallmentCollapse';
@@ -41,7 +41,7 @@ class PaymentCard extends Component {
 	}
 
 	render() {
-		const { _id: paymentId, courseId, courseCode, courseFee, taxAmount = 0, discountAmount = 0, discountReason, installments } = this.props.payment;
+		const { _id: paymentId, courseCode, courseFee, taxAmount = 0, discountAmount = 0, discountReason, installments } = this.props.payment;
 		const nextInstallmentDate = moment(this.props.payment.nextInstallmentDate);
 		const totalFeeCollected = this.getTotalFeeCollected(installments);
 

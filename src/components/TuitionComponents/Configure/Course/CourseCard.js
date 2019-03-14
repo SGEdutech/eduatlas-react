@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-relative-link';
 
 import IconsWithTooltip from '../../../SharedComponents/IconsWithTooltip';
 
@@ -10,7 +10,7 @@ function CourseCard(props) {
 	const { id, description, code, numberOfBatches, courseFee, deleteCourse } = props;
 
 	const iconsArray = [
-		<Link to={'/tuition/edit-course/' + id}><IconsWithTooltip tooltipMessage="Edit" iconType="edit" /></Link>,
+		<Link to={'./edit-course/' + id}><IconsWithTooltip tooltipMessage="Edit" iconType="edit" /></Link>,
 		<IconsWithTooltip tooltipMessage="Delete" iconType="delete" onClick={() => deleteCourse(id)} />
 	];
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-relative-link';
 
 import IconsWithTooltip from '../../../SharedComponents/IconsWithTooltip';
 
@@ -10,7 +10,7 @@ function BatchCard(props) {
 	const { id, code, description, courseId, courseCode, numberOfStudents, deleteBatch, editBatch } = props;
 
 	const iconsArray = [
-		<Link to={'/tuition/edit-batch/' + id}><IconsWithTooltip tooltipMessage="Edit" iconType="edit" /></Link>,
+		<Link to={'./edit-batch/' + id}><IconsWithTooltip tooltipMessage="Edit" iconType="edit" /></Link>,
 		<IconsWithTooltip tooltipMessage="Delete" iconType="delete" onClick={() => deleteBatch(courseId, id)} />
 	];
 
@@ -31,8 +31,7 @@ function BatchCard(props) {
 							<div><span className="font-weight-bold">Number Of Students:</span> {numberOfStudents}</div>
 						</Col>
 					</Row>
-				}
-			/>
+				} />
 		</Card>
 	);
 }

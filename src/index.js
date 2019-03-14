@@ -4,10 +4,15 @@ import { Provider } from 'react-redux';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+import { Redirect, Route, Switch } from 'react-router-dom';
+import Router from './Router';
+
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 import store from './redux/store';
+
+import { tuitionId } from './config.json';
 
 const theme = createMuiTheme({
 	palette: {
@@ -18,16 +23,20 @@ const theme = createMuiTheme({
 			default: 'white'
 		}
 	}
-},
-);
+});
 
 const rootElement = (
 	<>
 		<MuiThemeProvider theme={theme}>
 			<CssBaseline />
 			<Provider store={store}>
-				<App />
-			</ Provider>
+				<Router>
+					<Switch>
+						<Route exact path="/" component={() => <Redirect to={`/${tuitionId}`} />}></Route>
+						<Route path="/:tuitionId" component={App}></Route>
+					</Switch>
+				</Router>
+			</Provider>
 		</MuiThemeProvider>
 	</>);
 
