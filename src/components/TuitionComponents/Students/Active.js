@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 
 import StudentCard from './Active/StudentCard';
 
 import filterStudents from '../../../scripts/filterStudents';
+import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
 
 import {
 	Card,
@@ -30,7 +32,8 @@ class Active extends Component {
 	handleSearchInpChange = e => this.setState({ search: e.target.value });
 
 	showDeleteConfirm = id => {
-		const { deleteStudent } = this.props;
+		const { deleteStudent, match: { url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
 		confirm({
 			title: 'Are You Sure?',
 			content: 'This action is permanent!',
@@ -38,7 +41,7 @@ class Active extends Component {
 			okType: 'danger',
 			cancelText: 'No',
 			onOk() {
-				deleteStudent(id);
+				deleteStudent(tuitionId, id);
 			}
 		});
 	};
@@ -102,4 +105,4 @@ class Active extends Component {
 	}
 }
 
-export default Active;
+export default withRouter(Active);

@@ -8,6 +8,7 @@ import { compose } from 'redux';
 import InstallmentCollapse from './PaymentCard/InstallmentCollapse';
 
 import sanatizeFormObj from '../../../../scripts/sanatize-form-obj';
+import getTuitionIdFromUrl from '../../../../scripts/getTuitionIdFromUrl';
 
 import {
 	Button,
@@ -24,13 +25,6 @@ import {
 } from 'antd';
 const { Panel } = Collapse;
 const confirm = Modal.confirm;
-
-const formItemLayout = {
-	labelCol: {
-	},
-	wrapperCol: {
-	}
-};
 
 const colLayout = {
 	xs: 24,
@@ -52,8 +46,8 @@ class PaymentCard extends Component {
 	}
 
 	showDeleteConfirm = paymentId => {
-		const { deletePayment, match } = this.props;
-		const { studentId } = match.params;
+		const { deletePayment, match: { params: { studentId }, url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
 		confirm({
 			title: 'Are You Sure?',
 			content: 'This action is permanent!',
@@ -61,7 +55,7 @@ class PaymentCard extends Component {
 			okType: 'danger',
 			cancelText: 'No',
 			onOk() {
-				deletePayment(studentId, paymentId);
+				deletePayment(tuitionId, studentId, paymentId);
 			}
 		});
 	};
@@ -81,16 +75,15 @@ class PaymentCard extends Component {
 
 	handleSubmit = e => {
 		e.preventDefault();
-		const { form, editPayment, payment: { _id: paymentId } } = this.props;
-		const { resetFields } = form;
-		const { studentId } = this.props.match.params;
+		const { editPayment, form, form: { resetFields }, match: { params: { studentId }, url }, payment: { _id: paymentId } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
 		form.validateFieldsAndScroll((err, values) => {
 			if (err) {
 				console.error(err);
 				return;
 			}
 			sanatizeFormObj(values);
-			editPayment(studentId, paymentId, values);
+			editPayment(tuitionId, studentId, paymentId, values);
 			this.setState({ editable: false });
 			resetFields();
 		});
@@ -116,7 +109,6 @@ class PaymentCard extends Component {
 						<Row gutter={16}>
 							<Col {...colLayout} >
 								<Form.Item
-									{...formItemLayout}
 									label="Course Code"
 									hasFeedback={editable}>
 									<Input disabled={true} value={courseCode} />
@@ -124,7 +116,6 @@ class PaymentCard extends Component {
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="Course Fee"
 									hasFeedback={editable}>
 									{getFieldDecorator('courseFee', {
@@ -139,7 +130,6 @@ class PaymentCard extends Component {
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="Discount Amount"
 									hasFeedback={editable}>
 									{getFieldDecorator('discountAmount', {
@@ -151,7 +141,6 @@ class PaymentCard extends Component {
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="Discount Reason"
 									hasFeedback={editable}>
 									{getFieldDecorator('discountReason', {
@@ -163,7 +152,6 @@ class PaymentCard extends Component {
 							</Col>
 							<Col {...colLayout} className={this.state.editable ? 'd-none' : undefined}>
 								<Form.Item
-									{...formItemLayout}
 									label="Net Fee"
 									hasFeedback={editable}>
 									<InputNumber className="w-100" disabled={true} value={courseFee - discountAmount} />
@@ -171,7 +159,6 @@ class PaymentCard extends Component {
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="Tax"
 									hasFeedback={editable}>
 									{getFieldDecorator('taxAmount', {
@@ -183,7 +170,6 @@ class PaymentCard extends Component {
 							</Col>
 							<Col {...colLayout} className={this.state.editable ? 'd-none' : undefined}>
 								<Form.Item
-									{...formItemLayout}
 									label="Gross Fee"
 									hasFeedback={editable}>
 									<InputNumber className="w-100" disabled={true} value={courseFee - discountAmount + taxAmount} />
@@ -191,7 +177,6 @@ class PaymentCard extends Component {
 							</Col>
 							<Col {...colLayout} className={this.state.editable ? 'd-none' : undefined}>
 								<Form.Item
-									{...formItemLayout}
 									label="Pending Balance"
 									hasFeedback={editable}>
 									<Input disabled={true} placeholder="pending balance" value={(courseFee - discountAmount + taxAmount) - totalFeeCollected} />
@@ -199,7 +184,6 @@ class PaymentCard extends Component {
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="Next Installment Date"
 									hasFeedback={editable}>
 									{getFieldDecorator('nextInstallmentDate', {

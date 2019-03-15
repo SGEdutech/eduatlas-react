@@ -82,7 +82,7 @@ export function deleteInstallment(tuitionId, studentId, paymentId, installmentId
 	};
 }
 
-export function mailReceipt(tuitionId, docDef, email) {
+export function mailReceipt(docDef, email) {
 	return dispatch => {
 		dispatch({
 			type: 'SEND_RECEIPT',

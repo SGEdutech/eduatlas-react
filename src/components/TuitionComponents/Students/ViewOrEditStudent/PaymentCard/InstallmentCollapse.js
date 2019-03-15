@@ -5,6 +5,7 @@ import { compose } from 'redux';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 
+import getTuitionIdFromUrl from '../../../../../scripts/getTuitionIdFromUrl';
 import sanatizeFormObj from '../../../../../scripts/sanatize-form-obj';
 import { getDocDef } from '../../../../../scripts/receipt-definition';
 
@@ -24,13 +25,6 @@ const { Option } = Select;
 const confirm = Modal.confirm;
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
-
-const formItemLayout = {
-	labelCol: {
-	},
-	wrapperCol: {
-	}
-};
 
 const colLayout = {
 	xs: 24,
@@ -52,8 +46,8 @@ class InstallmentCollapse extends Component {
 	}
 
 	showDeleteConfirm = (paymentId, installmentId) => {
-		const { deleteInstallment, match } = this.props;
-		const { studentId } = match.params;
+		const { deleteInstallment, match: { params: { studentId }, url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
 		confirm({
 			title: 'Are You Sure?',
 			content: 'This action is permanent!',
@@ -61,7 +55,7 @@ class InstallmentCollapse extends Component {
 			okType: 'danger',
 			cancelText: 'No',
 			onOk() {
-				deleteInstallment(studentId, paymentId, installmentId);
+				deleteInstallment(tuitionId, studentId, paymentId, installmentId);
 			}
 		});
 	};
@@ -83,17 +77,15 @@ class InstallmentCollapse extends Component {
 
 	handleSubmit = e => {
 		e.preventDefault();
-		const { form, editInstallment, paymentId, installment } = this.props;
-		const installmentId = installment._id;
-		const { resetFields } = form;
-		const { studentId } = this.props.match.params;
+		const { editInstallment, form, form: { resetFields }, installment: { _id: installmentId }, match: { params: { studentId }, url }, paymentId } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
 		form.validateFieldsAndScroll((err, values) => {
 			if (err) {
 				console.error(err);
 				return;
 			}
 			sanatizeFormObj(values);
-			editInstallment(studentId, paymentId, installmentId, values);
+			editInstallment(tuitionId, studentId, paymentId, installmentId, values);
 			this.setState({ editable: false });
 			resetFields();
 		});
@@ -109,7 +101,6 @@ class InstallmentCollapse extends Component {
 				<Row gutter={16}>
 					<Col {...colLayout}>
 						<Form.Item
-							{...formItemLayout}
 							label="Mode Of Payment"
 							hasFeedback={editable}>
 							{getFieldDecorator('modeOfPayment', {
@@ -129,7 +120,6 @@ class InstallmentCollapse extends Component {
 					</Col>
 					<Col {...colLayout}>
 						<Form.Item
-							{...formItemLayout}
 							label="Fee Collected"
 							hasFeedback={editable}>
 							{getFieldDecorator('feeCollected', {
@@ -146,7 +136,6 @@ class InstallmentCollapse extends Component {
 						<>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="Date"
 									hasFeedback={editable}>
 									{getFieldDecorator('dateOfCheque', {
@@ -158,7 +147,6 @@ class InstallmentCollapse extends Component {
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="Bank Name"
 									hasFeedback={editable}>
 									{getFieldDecorator('bank', {
@@ -170,7 +158,6 @@ class InstallmentCollapse extends Component {
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="Cheque Number"
 									hasFeedback={editable}>
 									{getFieldDecorator('chequeNumber', {
@@ -186,7 +173,6 @@ class InstallmentCollapse extends Component {
 						<>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="Bank Name"
 									hasFeedback={editable}>
 									{getFieldDecorator('bank', {
@@ -198,7 +184,6 @@ class InstallmentCollapse extends Component {
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="Transaction Id"
 									hasFeedback={editable}>
 									{getFieldDecorator('transactionId', {
@@ -214,7 +199,6 @@ class InstallmentCollapse extends Component {
 						<>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="Name of Mode"
 									hasFeedback={editable}>
 									{getFieldDecorator('modeOfPayment', {
@@ -226,7 +210,6 @@ class InstallmentCollapse extends Component {
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="Transaction Id"
 									hasFeedback={editable}>
 									{getFieldDecorator('transactionId', {
