@@ -5,6 +5,7 @@ import { compose } from 'redux';
 
 import { addTest, editTest } from '../../../../redux/actions/testActions';
 
+import getTuitionIdFromUrl from '../../../../scripts/getTuitionIdFromUrl';
 import sanatizeFormObj from '../../../../scripts/sanatize-form-obj';
 
 import Navbar from '../../../Navbar';
@@ -43,14 +44,15 @@ class AddOrEditTest extends Component {
 
 	handleSubmit = e => {
 		e.preventDefault();
-		const { addTest, edit, editTest, form, form: { resetFields }, match } = this.props;
+		const { addTest, edit, editTest, form, form: { resetFields }, match: { params: { testId }, url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
 		form.validateFieldsAndScroll((err, values) => {
 			if (err) {
 				console.error(err);
 				return;
 			}
 			sanatizeFormObj(values);
-			edit ? editTest(match.params.testId, values) : addTest(values);
+			edit ? editTest(tuitionId, testId, values) : addTest(tuitionId, values);
 			resetFields();
 		});
 	}

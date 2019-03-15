@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { schemeAndAuthority, tuitionId } from '../../config.json';
+import { schemeAndAuthority } from '../../config.json';
 
-export function addTest(newTest) {
+export function addTest(tuitionId, newTest) {
 	return dispatch => {
 		dispatch({
 			type: 'ADD_TEST',
@@ -10,7 +10,7 @@ export function addTest(newTest) {
 	};
 }
 
-export function editTest(testId, editedTest) {
+export function editTest(tuitionId, testId, editedTest) {
 	return dispatch => {
 		dispatch({
 			type: 'EDIT_TEST',
@@ -19,11 +19,11 @@ export function editTest(testId, editedTest) {
 	};
 }
 
-export function deleteTest(id) {
+export function deleteTest(tuitionId, testId) {
 	return dispatch => {
 		dispatch({
 			type: 'DELETE_TEST',
-			payload: axios.delete(`${schemeAndAuthority}/tuition/${tuitionId}/test/${id}`)
+			payload: axios.delete(`${schemeAndAuthority}/tuition/${tuitionId}/test/${testId}`)
 		});
 	};
 }
