@@ -219,7 +219,7 @@ class AddStudent extends Component {
 
 	handleSubmit = e => {
 		e.preventDefault();
-		const { form, form: resetFields, task, history } = this.props;
+		const { form, form: { resetFields }, task, history } = this.props;
 		form.validateFieldsAndScroll((err, values) => {
 			if (err) {
 				console.error(err);
