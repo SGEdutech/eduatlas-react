@@ -13,6 +13,7 @@ import {
 import Navbar from '../../Navbar';
 import PaymentCard from './ViewOrEditStudent/PaymentCard';
 
+import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
 import sanatizeFormObj from '../../../scripts/sanatize-form-obj';
 
 import {
@@ -47,17 +48,6 @@ class ViewOrEditStudent extends Component {
 		editable: false
 	}
 
-	handleSubmit = e => {
-		e.preventDefault();
-		const { form } = this.props;
-		form.validateFieldsAndScroll((err, values) => {
-			if (err) {
-				console.error(err);
-				return;
-			}
-		});
-	}
-
 	handleEditBtnClick = e => this.setState({ editable: true });
 
 	handleCancelBtnClick = e => {
@@ -68,16 +58,15 @@ class ViewOrEditStudent extends Component {
 
 	handleSubmit = e => {
 		e.preventDefault();
-		const { form, editStudent } = this.props;
-		const { resetFields } = form;
-		const { studentId } = this.props.match.params;
+		const { editStudent, form, form: { resetFields }, match: { params: { studentId }, url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
 		form.validateFieldsAndScroll((err, values) => {
 			if (err) {
 				console.error(err);
 				return;
 			}
 			sanatizeFormObj(values);
-			editStudent(studentId, values);
+			editStudent(tuitionId, studentId, values);
 			this.setState({ editable: false });
 			resetFields();
 		});
