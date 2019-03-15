@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { schemeAndAuthority, tuitionId } from '../../config.json';
+import { schemeAndAuthority } from '../../config.json';
 
-export function addStudent(newStudent) {
+export function addStudent(tuitionId, newStudent) {
 	return dispatch => {
 		dispatch({
 			type: 'ADD_STUDENT',
@@ -10,7 +10,7 @@ export function addStudent(newStudent) {
 	};
 }
 
-export function editStudent(studentId, editedData) {
+export function editStudent(tuitionId, studentId, editedData) {
 	return dispatch => {
 		dispatch({
 			type: 'EDIT_STUDENT',
@@ -19,7 +19,7 @@ export function editStudent(studentId, editedData) {
 	};
 }
 
-export function deleteStudent(id) {
+export function deleteStudent(tuitionId, id) {
 	return dispatch => {
 		dispatch({
 			type: 'DELETE_STUDENT',
@@ -28,7 +28,7 @@ export function deleteStudent(id) {
 	};
 }
 
-export function addPayment(studentId, newPayment) {
+export function addPayment(tuitionId, studentId, newPayment) {
 	return dispatch => {
 		dispatch({
 			type: 'ADD_PAYMENT',
@@ -37,7 +37,7 @@ export function addPayment(studentId, newPayment) {
 	};
 }
 
-export function editPayment(studentId, paymentId, editedPayment) {
+export function editPayment(tuitionId, studentId, paymentId, editedPayment) {
 	return dispatch => {
 		dispatch({
 			type: 'EDIT_PAYMENT',
@@ -46,7 +46,7 @@ export function editPayment(studentId, paymentId, editedPayment) {
 	};
 }
 
-export function deletePayment(studentId, paymentId) {
+export function deletePayment(tuitionId, studentId, paymentId) {
 	return dispatch => {
 		dispatch({
 			type: 'DELETE_PAYMENT',
@@ -55,7 +55,7 @@ export function deletePayment(studentId, paymentId) {
 	};
 }
 
-export function addInstallment(studentId, paymentId, newInstallment) {
+export function addInstallment(tuitionId, studentId, paymentId, newInstallment) {
 	return dispatch => {
 		dispatch({
 			type: 'ADD_INSTALLMENT',
@@ -64,7 +64,7 @@ export function addInstallment(studentId, paymentId, newInstallment) {
 	};
 }
 
-export function editInstallment(studentId, paymentId, installmentId, editedInstallment) {
+export function editInstallment(tuitionId, studentId, paymentId, installmentId, editedInstallment) {
 	return dispatch => {
 		dispatch({
 			type: 'EDIT_INSTALLMENT',
@@ -73,7 +73,7 @@ export function editInstallment(studentId, paymentId, installmentId, editedInsta
 	};
 }
 
-export function deleteInstallment(studentId, paymentId, installmentId) {
+export function deleteInstallment(tuitionId, studentId, paymentId, installmentId) {
 	return dispatch => {
 		dispatch({
 			type: 'DELETE_INSTALLMENT',
@@ -82,7 +82,7 @@ export function deleteInstallment(studentId, paymentId, installmentId) {
 	};
 }
 
-export function mailReceipt(docDef, email) {
+export function mailReceipt(tuitionId, docDef, email) {
 	return dispatch => {
 		dispatch({
 			type: 'SEND_RECEIPT',

@@ -6,11 +6,11 @@ import { withRouter } from 'react-router-dom';
 import Navbar from '../../Navbar';
 
 import { addStudent, addPayment, addInstallment } from '../../../redux/actions/studentActions';
+import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
 import sanatizeFormObj from '../../../scripts/sanatize-form-obj';
 
 import {
 	Button,
-	Cascader,
 	Col,
 	DatePicker,
 	Divider,
@@ -198,20 +198,23 @@ class AddStudent extends Component {
 	}
 
 	initAddInstallment = values => {
-		const { addInstallment, match: { params: { studentId, paymentId } } } = this.props;
+		const { addInstallment, match: { params: { studentId, paymentId }, url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
 		const installment = values.payments[0].installments[0];
-		addInstallment(studentId, paymentId, installment);
+		addInstallment(tuitionId, studentId, paymentId, installment);
 	}
 
 	initAddPayment = values => {
-		const { addPayment, match: { params: { studentId } } } = this.props;
+		const { addPayment, match: { params: { studentId }, url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
 		const payment = values.payments[0];
-		addPayment(studentId, payment);
+		addPayment(tuitionId, studentId, payment);
 	}
 
 	initAddStudent = values => {
-		const { addStudent } = this.props;
-		addStudent(values);
+		const { addStudent, match: { url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
+		addStudent(tuitionId, values);
 	}
 
 	handleSubmit = e => {
