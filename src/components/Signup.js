@@ -51,7 +51,7 @@ class Signup extends Component {
 			}
 			signUp(values);
 			resetFields();
-			push(`/${tuitionId}/login`);
+			push(`/app/${tuitionId}/login`);
 		});
 	}
 

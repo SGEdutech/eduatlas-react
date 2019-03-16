@@ -49,7 +49,7 @@ class Navbar extends Component {
 		const { history: { replace }, match: { url }, logOut, user: { primaryEmail } } = this.props;
 		const tuitionId = getTuitionIdFromUrl(url);
 		logOut(primaryEmail);
-		setTimeout(() => replace(`/${tuitionId}`), 100);
+		setTimeout(() => replace(`/app/${tuitionId}`), 100);
 	}
 
 	render() {

@@ -32,8 +32,8 @@ const rootElement = (
 			<Provider store={store}>
 				<Router>
 					<Switch>
-						<Route exact path="/" component={() => <Redirect to={`/${tuitionId}`} />}></Route>
-						<Route path="/:tuitionId" component={App}></Route>
+						<Route exact path="/" component={() => <Redirect to={`/app/${tuitionId}`} />}></Route>
+						<Route path="/app/:tuitionId" component={App}></Route>
 					</Switch>
 				</Router>
 			</Provider>

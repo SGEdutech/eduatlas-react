@@ -47,7 +47,7 @@ class Login extends Component {
 			}
 			logIn(values);
 			resetFields();
-			setTimeout(() => push(`/${tuitionId}`), 100);
+			setTimeout(() => push(`/app/${tuitionId}`), 100);
 		});
 	}
 
