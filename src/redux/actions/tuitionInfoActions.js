@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { schemeAndAuthority, tuitionId } from '../../config.json';
+import { schemeAndAuthority } from '../../config.json';
 
-export function editReceipt(receiptInfo) {
+export function editReceipt(tuitionId, receiptInfo) {
 	return dispatch => {
 		dispatch({
 			type: 'EDIT_TUITION_INFO',

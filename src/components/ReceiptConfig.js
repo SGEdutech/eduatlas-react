@@ -17,6 +17,7 @@ import {
 	InputNumber,
 	Row
 } from 'antd';
+import getTuitionIdFromUrl from '../scripts/getTuitionIdFromUrl';
 
 const colLayout = {
 	xs: 24,
@@ -26,14 +27,15 @@ const colLayout = {
 class ReceiptConfig extends Component {
 	handleSubmit = e => {
 		e.preventDefault();
-		const { editReceipt, form, history } = this.props;
+		const { editReceipt, form, history, match: { url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
 		form.validateFieldsAndScroll((err, values) => {
 			if (err) {
 				console.error(err);
 				return;
 			}
 			sanatizeFormObj(values);
-			editReceipt(values);
+			editReceipt(tuitionId, values);
 			history.goBack();
 		});
 	}
