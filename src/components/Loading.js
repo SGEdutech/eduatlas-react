@@ -1,6 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { tuitionId } from '../config.json';
+
+import getTuitionIdFromUrl from '../scripts/getTuitionIdFromUrl';
 
 import {
 	Icon,
@@ -9,6 +10,7 @@ import {
 
 function Loading(props) {
 	const { match: { url }, messageInfo: { fetched, kaamChaluHai }, history: { replace }, students, user } = props;
+	const tuitionId = getTuitionIdFromUrl(url);
 	function redirectToLogin() {
 		replace(url + '/login');
 	}
