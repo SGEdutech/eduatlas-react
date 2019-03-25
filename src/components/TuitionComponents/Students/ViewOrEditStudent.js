@@ -30,13 +30,6 @@ import {
 } from 'antd';
 const { Meta } = Card;
 
-const formItemLayout = {
-	labelCol: {
-	},
-	wrapperCol: {
-	}
-};
-
 const colLayout = {
 	xs: 24,
 	md: 12
@@ -103,7 +96,6 @@ class ViewOrEditStudent extends Component {
 							<Form onSubmit={this.handleSubmit} className="pt-3">
 								<Col {...colLayout}>
 									<Form.Item
-										{...formItemLayout}
 										label="Name"
 										hasFeedback={editable}>
 										{getFieldDecorator('name', {
@@ -118,7 +110,6 @@ class ViewOrEditStudent extends Component {
 								</Col>
 								<Col {...colLayout}>
 									<Form.Item
-										{...formItemLayout}
 										label="Email"
 										hasFeedback={editable}>
 										{getFieldDecorator('email', {
@@ -135,7 +126,6 @@ class ViewOrEditStudent extends Component {
 								</Col>
 								<Col {...colLayout}>
 									<Form.Item
-										{...formItemLayout}
 										label="Roll Number"
 										hasFeedback={editable}>
 										{getFieldDecorator('rollNumber', {
@@ -150,7 +140,6 @@ class ViewOrEditStudent extends Component {
 								</Col>
 								<Col {...colLayout}>
 									<Form.Item
-										{...formItemLayout}
 										label="Phone Number"
 										hasFeedback={editable}>
 										{getFieldDecorator('contactNumber', {
@@ -162,7 +151,6 @@ class ViewOrEditStudent extends Component {
 								</Col>
 								<Col {...colLayout}>
 									<Form.Item
-										{...formItemLayout}
 										label="Address"
 										hasFeedback={editable}>
 										{getFieldDecorator('address', {

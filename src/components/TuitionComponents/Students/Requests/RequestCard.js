@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import { compose } from 'redux';
+import { withRouter } from 'react-router-dom';
 
 import IconsWithTooltip from '../../../SharedComponents/IconsWithTooltip';
 
+import getTuitionIdFromUrl from '../../../../scripts/getTuitionIdFromUrl';
 import sanatizeFormObj from '../../../../scripts/sanatize-form-obj';
 
 import fallBackDp from '../../../../fallback-dp.svg';
@@ -31,7 +34,8 @@ class RequestCard extends Component {
 
 	handleSubmit = e => {
 		e.preventDefault();
-		const { addStudent, batches, courses, form } = this.props;
+		const { addStudent, batches, courses, form, match: { url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
 		form.validateFieldsAndScroll((err, values) => {
 			if (err) {
 				console.error(err);
@@ -46,7 +50,7 @@ class RequestCard extends Component {
 			values.batchInfo = { batchId: batchInfo._id, courseId: batchInfo.courseId };
 			values.payments = [{ courseCode: courseInfo.code, courseFee: courseInfo.fees }];
 			delete values.batchId;
-			addStudent(values);
+			addStudent(tuitionId, values);
 		});
 	}
 
@@ -111,5 +115,5 @@ class RequestCard extends Component {
 	}
 }
 
-export default Form.create({ name: 'accept-student' })(RequestCard);
+export default compose(Form.create({ name: 'accept-student' }), withRouter)(RequestCard);
 
