@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 
 import { parse } from 'papaparse';
 
@@ -11,6 +12,7 @@ import {
 	Upload
 } from 'antd';
 
+import getTuitionIdFromUrl from '../../../../scripts/getTuitionIdFromUrl';
 import markAttendanceTemplate from '../../../../excel-templates/mark-attendance.csv';
 
 class ExcelAttendanceUpload extends Component {
@@ -20,6 +22,22 @@ class ExcelAttendanceUpload extends Component {
 	};
 
 	dummyRequest = ({ onSuccess }) => setTimeout(() => onSuccess('ok'), 0);
+
+	filterNullEntries = arr => arr.filter(item => item);
+
+	getAbsentStudentIds = (batchId, presentRollnumbers) => {
+		const { batches, students } = this.props;
+		const batchInfo = batches.find(batch => batch._id === batchId);
+		const presentStudentIds = presentRollnumbers.map(presentRollNumber => students.find(student => student.rollNumber === presentRollNumber)._id);
+		return batchInfo.students.filter(studentId => Boolean(presentStudentIds.find(presentStudentId => presentStudentId === studentId)) === false);
+	}
+
+	getRollNumbersArray = parsedArr => parsedArr.map(parsedObj => parsedObj['Roll Number']);
+
+	handleEmptyLastObj = studentsData => {
+		const lastStudentData = studentsData[studentsData.length - 1];
+		if (Boolean(lastStudentData['Roll Number']) === false) studentsData.pop();
+	}
 
 	onChange = info => {
 		const nextState = {};
@@ -41,11 +59,47 @@ class ExcelAttendanceUpload extends Component {
 	};
 
 	parseCsv = () => {
-		const { state: { selectedFile: { originFileObj } } } = this;
+		const { state: { selectedFile: { originFileObj } }, validateAndAddAttendance } = this;
 		parse(originFileObj, {
 			header: true,
-			complete: res => console.log(res.data)
+			complete: res => validateAndAddAttendance(res.data)
 		});
+	}
+
+	showErrorMessage = message => {
+		notification.error({
+			description: message,
+			duration: 0,
+			message: 'Student can\'t be added',
+		});
+	}
+
+	validateAndAddAttendance = presentRollnumbers => {
+		const { editSchedule, match: { params: { scheduleId }, url }, schedules } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
+		const scheduleInfo = schedules.find(schedule => schedule._id === scheduleId);
+		const { batchId, courseId } = scheduleInfo;
+		this.handleEmptyLastObj(presentRollnumbers);
+		presentRollnumbers = this.filterNullEntries(presentRollnumbers);
+		presentRollnumbers = this.getRollNumbersArray(presentRollnumbers);
+		const areStudentIdsValid = this.validateStudentRollNumbers(presentRollnumbers);
+		if (areStudentIdsValid === false) return;
+		const absentStudentIds = this.getAbsentStudentIds(batchId, presentRollnumbers);
+		editSchedule(tuitionId, courseId, batchId, scheduleId, { studentsAbsent: absentStudentIds });
+		this.setState({ selectedFile: null, selectedFileList: [] });
+	}
+
+	validateStudentRollNumbers = rollNumbers => {
+		const { students } = this.props;
+		let isValid = true;
+		rollNumbers.forEach((rollNumber, index) => {
+			const isRollNumberValid = Boolean(students.find(student => student.rollNumber === rollNumber));
+			if (isRollNumberValid === false) {
+				this.showErrorMessage(`No student with roll number at row ${index + 2} found!`);
+				isValid = false;
+			}
+		});
+		return isValid;
 	}
 
 	render() {
@@ -81,5 +135,5 @@ class ExcelAttendanceUpload extends Component {
 	}
 }
 
-export default ExcelAttendanceUpload;
+export default withRouter(ExcelAttendanceUpload);
 

@@ -64,15 +64,17 @@ class AttendanceDetails extends Component {
 	}
 
 	render() {
+		const { batches, editSchedule, schedules } = this.props;
 		const { getFieldDecorator } = this.props.form;
 		const { students } = this.state;
+
 		return (
 			<>
 				<Navbar renderBackBtn={true} navText="Attendance" />
 				<div className="container below-nav">
 					<Row>
 						{Boolean(window.cordova) === false && <Divider orientation="left"><small className="mx-1">Excel Upload</small><Icon type="arrow-down" /></Divider>}
-						{Boolean(window.cordova) === false && <ExcelAttendanceUpload />}
+						{Boolean(window.cordova) === false && <ExcelAttendanceUpload batches={batches} editSchedule={editSchedule} schedules={schedules} students={students} />}
 					</Row>
 					<Divider orientation="left"><small className="mx-1">Attendance</small><Icon type="arrow-down" /></Divider>
 					<Form onSubmit={this.handleSubmit} className="pt-3">

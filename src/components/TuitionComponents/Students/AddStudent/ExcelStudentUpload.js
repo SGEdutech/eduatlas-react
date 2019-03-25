@@ -19,21 +19,6 @@ class ExcelStudentUpload extends Component {
 		selectedFileList: []
 	};
 
-	dummyRequest = ({ onSuccess }) => setTimeout(() => onSuccess('ok'), 0);
-
-	showErrorMessage = message => {
-		notification.error({
-			description: message,
-			duration: 0,
-			message: 'Student can\'t be added',
-		});
-	}
-
-	handleEmptyLastObj = studentsData => {
-		const lastStudentData = studentsData[studentsData.length - 1];
-		if (Boolean(lastStudentData['Roll Number']) === false && Boolean(lastStudentData['Name']) === false && Boolean(lastStudentData['E-Mail']) === false && Boolean(lastStudentData['Course Code']) === false) studentsData.pop();
-	}
-
 	calibrateCourseAndBatchCodeCasing = studentsData => {
 		studentsData.forEach(studentData => {
 			if (studentData['Batch Code(optional)']) studentData['Batch Code(optional)'] = studentData['Batch Code(optional)'].trim().toLowerCase();
@@ -41,90 +26,11 @@ class ExcelStudentUpload extends Component {
 		});
 	}
 
-	validateRequiredFields = studentsData => {
-		let isValid = true;
-		studentsData.forEach((studentData, index) => {
-			if (Boolean(studentData['Roll Number']) === false || Boolean(studentData['Name']) === false || Boolean(studentData['E-Mail']) === false || Boolean(studentData['Course Code']) === false) {
-				this.showErrorMessage(`Student data at row ${index + 2} is missing some compulsary field(s)!`);
-				isValid = false;
-			}
-		});
-		return isValid;
-	}
+	dummyRequest = ({ onSuccess }) => setTimeout(() => onSuccess('ok'), 0);
 
-	validateUniqueFields = studentsData => {
-		const { students } = this.props;
-		let isValid = true;
-		studentsData.forEach((studentData, index) => {
-			students.forEach(student => {
-				if (student.rollNumber === studentData['Roll Number'] || student.email === studentData['E-Mail']) this.showErrorMessage(`Email or roll number at row ${index + 2} already exists`);
-				isValid = false;
-			});
-		});
-		return isValid;
-	}
-
-	validateDuplicateEntries = studentsData => {
-		let isValid = true;
-		studentsData.forEach((studentData, index) => {
-			const studentIndex = studentsData.findIndex(student => student['Roll Number'] === studentData['Roll Number'] || student['E-Mail'] === studentData['E-Mail']);
-			if (studentIndex !== index) {
-				this.showErrorMessage(`Roll number or email at row ${index + 2} has another entry with same value in in csv file`);
-				isValid = false;
-			}
-		});
-	}
-
-	validateCourseCode = studentsData => {
-		const { courses } = this.props;
-		let isValid = true;
-		studentsData.forEach((studentData, index) => {
-			const doesCourseCodeExists = Boolean(courses.find(course => course.code === studentData['Course Code']));
-			if (doesCourseCodeExists === false) {
-				this.showErrorMessage(`Course with code ${studentData['Course Code']} at row ${index + 2} does not exists`);
-				isValid = false;
-			}
-		});
-		return isValid;
-	}
-
-	validateBatchCode = studentsData => {
-		const { batches } = this.props;
-		let isValid = true;
-		studentsData.forEach((studentData, index) => {
-			if (Boolean(studentData['Batch Code(optional)']) === false) return;
-			const doesCourseCodeExists = Boolean(batches.find(batch => batch.code === studentData['Batch Code(optional)']));
-			if (doesCourseCodeExists === false) {
-				this.showErrorMessage(`Batch with code ${studentData['Batch Code(optional)']} at row ${index + 2} does not exists`);
-				isValid = false;
-			}
-		});
-		return isValid;
-	}
-
-	validateStudentsData = studentsData => {
-		this.handleEmptyLastObj(studentsData);
-		const isAnyEntryDuplicate = this.validateDuplicateEntries(studentsData);
-		const areRequiredFieldsValid = this.validateRequiredFields(studentsData);
-		const areUniqueFieldsValid = this.validateUniqueFields(studentsData);
-		const areCourseCodeValid = this.validateCourseCode(studentsData);
-		const areBatchCodeValid = this.validateBatchCode(studentsData);
-		return isAnyEntryDuplicate || areRequiredFieldsValid || areUniqueFieldsValid || areCourseCodeValid || areBatchCodeValid;
-	}
-
-	validateAndAddStudents = studentDataJson => {
-		this.calibrateCourseAndBatchCodeCasing(studentDataJson);
-		const isValid = this.validateStudentsData(studentDataJson);
-		if (isValid === false) return;
-		console.log(studentDataJson);
-	}
-
-	parseCsv = () => {
-		const { state: { selectedFile: { originFileObj } }, validateAndAddStudents } = this;
-		parse(originFileObj, {
-			header: true,
-			complete: res => validateAndAddStudents(res.data)
-		});
+	handleEmptyLastObj = studentsData => {
+		const lastStudentData = studentsData[studentsData.length - 1];
+		if (Boolean(lastStudentData['Roll Number']) === false && Boolean(lastStudentData['Name']) === false && Boolean(lastStudentData['E-Mail']) === false && Boolean(lastStudentData['Course Code']) === false) studentsData.pop();
 	}
 
 	onChange = info => {
@@ -145,6 +51,100 @@ class ExcelStudentUpload extends Component {
 		}
 		this.setState(() => nextState);
 	};
+
+	parseCsv = () => {
+		const { state: { selectedFile: { originFileObj } }, validateAndAddStudents } = this;
+		parse(originFileObj, {
+			header: true,
+			complete: res => validateAndAddStudents(res.data)
+		});
+	}
+
+	showErrorMessage = message => {
+		notification.error({
+			description: message,
+			duration: 0,
+			message: 'Student can\'t be added',
+		});
+	}
+
+	validateAndAddStudents = studentDataJson => {
+		this.calibrateCourseAndBatchCodeCasing(studentDataJson);
+		const isValid = this.validateStudentsData(studentDataJson);
+		if (isValid === false) return;
+		this.setState({ selectedFile: null,	selectedFileList: [] });
+	}
+
+	validateBatchCode = studentsData => {
+		const { batches } = this.props;
+		let isValid = true;
+		studentsData.forEach((studentData, index) => {
+			if (Boolean(studentData['Batch Code(optional)']) === false) return;
+			const doesCourseCodeExists = Boolean(batches.find(batch => batch.code === studentData['Batch Code(optional)']));
+			if (doesCourseCodeExists === false) {
+				this.showErrorMessage(`Batch with code ${studentData['Batch Code(optional)']} at row ${index + 2} does not exists`);
+				isValid = false;
+			}
+		});
+		return isValid;
+	}
+
+	validateCourseCode = studentsData => {
+		const { courses } = this.props;
+		let isValid = true;
+		studentsData.forEach((studentData, index) => {
+			const doesCourseCodeExists = Boolean(courses.find(course => course.code === studentData['Course Code']));
+			if (doesCourseCodeExists === false) {
+				this.showErrorMessage(`Course with code ${studentData['Course Code']} at row ${index + 2} does not exists`);
+				isValid = false;
+			}
+		});
+		return isValid;
+	}
+
+	validateDuplicateEntries = studentsData => {
+		let isValid = true;
+		studentsData.forEach((studentData, index) => {
+			const studentIndex = studentsData.findIndex(student => student['Roll Number'] === studentData['Roll Number'] || student['E-Mail'] === studentData['E-Mail']);
+			if (studentIndex !== index) {
+				this.showErrorMessage(`Roll number or email at row ${index + 2} has another entry with same value in in csv file`);
+				isValid = false;
+			}
+		});
+	}
+
+	validateRequiredFields = studentsData => {
+		let isValid = true;
+		studentsData.forEach((studentData, index) => {
+			if (Boolean(studentData['Roll Number']) === false || Boolean(studentData['Name']) === false || Boolean(studentData['E-Mail']) === false || Boolean(studentData['Course Code']) === false) {
+				this.showErrorMessage(`Student data at row ${index + 2} is missing some compulsary field(s)!`);
+				isValid = false;
+			}
+		});
+		return isValid;
+	}
+
+	validateStudentsData = studentsData => {
+		this.handleEmptyLastObj(studentsData);
+		const isAnyEntryDuplicate = this.validateDuplicateEntries(studentsData);
+		const areRequiredFieldsValid = this.validateRequiredFields(studentsData);
+		const areUniqueFieldsValid = this.validateUniqueFields(studentsData);
+		const areCourseCodeValid = this.validateCourseCode(studentsData);
+		const areBatchCodeValid = this.validateBatchCode(studentsData);
+		return isAnyEntryDuplicate || areRequiredFieldsValid || areUniqueFieldsValid || areCourseCodeValid || areBatchCodeValid;
+	}
+
+	validateUniqueFields = studentsData => {
+		const { students } = this.props;
+		let isValid = true;
+		studentsData.forEach((studentData, index) => {
+			students.forEach(student => {
+				if (student.rollNumber === studentData['Roll Number'] || student.email === studentData['E-Mail']) this.showErrorMessage(`Email or roll number at row ${index + 2} already exists`);
+				isValid = false;
+			});
+		});
+		return isValid;
+	}
 
 	render() {
 		const { selectedFileList } = this.state;
