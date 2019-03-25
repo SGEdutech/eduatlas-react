@@ -19,3 +19,6 @@ www
 plugins
 platforms
 config.xml
+
+# Config file
+src/config.json
