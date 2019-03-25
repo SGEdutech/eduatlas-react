@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withRouter } from 'react-router-dom';
 
+import ExcelStudentUpload from './AddStudent/ExcelStudentUpload';
 import Navbar from '../../Navbar';
 
 import { addStudent, addPayment, addInstallment } from '../../../redux/actions/studentActions';
@@ -21,15 +22,9 @@ import {
 	Row,
 	Select
 } from 'antd';
+import { exec } from 'child_process';
 
 const { Option } = Select;
-
-const formItemLayout = {
-	labelCol: {
-	},
-	wrapperCol: {
-	}
-};
 
 const colLayout = {
 	xs: 24,
@@ -244,7 +239,7 @@ class AddStudent extends Component {
 
 	render() {
 		const { getFieldDecorator } = this.props.form;
-		const { batches, courses, discounts, task } = this.props;
+		const { batches, courses, discounts, students, task } = this.props;
 		const { selectedCourseIndex } = this.state;
 
 		const coursesAndBatchesOpts = courses.map(course => (
@@ -263,10 +258,11 @@ class AddStudent extends Component {
 		const studentInputs = (
 			task !== 'add-payment' && task !== 'add-installment' &&
 			<>
+				{Boolean(window.cordova) === false && <Divider orientation="left"><small className="mx-1">Bulk Upload Students</small><Icon type="arrow-down" /></Divider>}
+				{Boolean(window.cordova) === false && <ExcelStudentUpload addStudent={addStudent} batches={batches} courses={courses} students={students} />}
 				<Divider orientation="left"><small className="mx-1">Compulsory Fields</small><Icon type="arrow-down" /></Divider>
 				<Col {...colLayout}>
 					<Form.Item
-						{...formItemLayout}
 						label="Roll No"
 						hasFeedback={true}>
 						{getFieldDecorator('rollNumber', {
@@ -282,7 +278,6 @@ class AddStudent extends Component {
 				</Col>
 				<Col {...colLayout}>
 					<Form.Item
-						{...formItemLayout}
 						label="Student Name"
 						hasFeedback={true}>
 						{getFieldDecorator('name', {
@@ -296,7 +291,6 @@ class AddStudent extends Component {
 				</Col>
 				<Col {...colLayout}>
 					<Form.Item
-						{...formItemLayout}
 						label="Student Email"
 						hasFeedback={true}>
 						{getFieldDecorator('email', {
@@ -317,7 +311,6 @@ class AddStudent extends Component {
 				<Divider orientation="left"><small className="mx-1">Additional Fields</small><Icon type="arrow-down" /></Divider>
 				<Col {...colLayout}>
 					<Form.Item
-						{...formItemLayout}
 						label="Address"
 						hasFeedback={true}>
 						{getFieldDecorator('address', {
@@ -328,7 +321,6 @@ class AddStudent extends Component {
 				</Col>
 				<Col {...colLayout}>
 					<Form.Item
-						{...formItemLayout}
 						label="Contact Number"
 						hasFeedback={true}>
 						{getFieldDecorator('contactNumber', {
@@ -346,7 +338,6 @@ class AddStudent extends Component {
 				<Divider orientation="left"><small className="mx-1">Course Details</small><Icon type="arrow-down" /></Divider>
 				<Col {...colLayout}>
 					<Form.Item
-						{...formItemLayout}
 						label="Select Course"
 						hasFeedback={true}>
 						{getFieldDecorator('courseId', {
@@ -363,7 +354,6 @@ class AddStudent extends Component {
 				</Col>
 				<Col {...colLayout}>
 					<Form.Item
-						{...formItemLayout}
 						label="Select Batch"
 						hasFeedback={true}>
 						{getFieldDecorator('batchId', {
@@ -376,7 +366,6 @@ class AddStudent extends Component {
 				</Col>
 				<Col {...colLayout}>
 					<Form.Item
-						{...formItemLayout}
 						label="Discount Code"
 						hasFeedback={true}>
 						<Select allowClear={true} onChange={this.handleDiscountCodeChange}>
@@ -386,7 +375,6 @@ class AddStudent extends Component {
 				</Col>
 				<Col {...colLayout}>
 					<Form.Item
-						{...formItemLayout}
 						label="Additional Discount"
 						hasFeedback={true}>
 						<InputNumber className="w-100" step={100} min={0} onChange={this.handleAdditionalDiscountChange} />
@@ -394,7 +382,6 @@ class AddStudent extends Component {
 				</Col>
 				<Col {...colLayout}>
 					<Form.Item
-						{...formItemLayout}
 						label="Next Installment Date"
 						hasFeedback={true}>
 						{getFieldDecorator('nextInstallmentDate', {
@@ -411,7 +398,6 @@ class AddStudent extends Component {
 				<Divider orientation="left"><small className="mx-1">Installment Details</small><Icon type="arrow-down" /></Divider>
 				<Col {...colLayout}>
 					<Form.Item
-						{...formItemLayout}
 						label="Fee Collected"
 						hasFeedback={true}>
 						{getFieldDecorator('feeCollected', {
@@ -425,7 +411,6 @@ class AddStudent extends Component {
 				</Col>
 				<Col {...colLayout}>
 					<Form.Item
-						{...formItemLayout}
 						label="Mode Of Payment"
 						hasFeedback={true}>
 						{getFieldDecorator('modeOfPayment', {
@@ -446,7 +431,6 @@ class AddStudent extends Component {
 					<>
 						<Col {...colLayout}>
 							<Form.Item
-								{...formItemLayout}
 								label="Date"
 								hasFeedback={true}>
 								{getFieldDecorator('dateOfCheque', {
@@ -457,7 +441,6 @@ class AddStudent extends Component {
 						</Col>
 						<Col {...colLayout}>
 							<Form.Item
-								{...formItemLayout}
 								label="Bank Name"
 								hasFeedback={true}>
 								{getFieldDecorator('bank', {
@@ -468,7 +451,6 @@ class AddStudent extends Component {
 						</Col>
 						<Col {...colLayout}>
 							<Form.Item
-								{...formItemLayout}
 								label="Cheque Number"
 								hasFeedback={true}>
 								{getFieldDecorator('chequeNumber', {
@@ -483,7 +465,6 @@ class AddStudent extends Component {
 					<>
 						<Col {...colLayout}>
 							<Form.Item
-								{...formItemLayout}
 								label="Bank Name"
 								hasFeedback={true}>
 								{getFieldDecorator('bank', {
@@ -494,7 +475,6 @@ class AddStudent extends Component {
 						</Col>
 						<Col {...colLayout}>
 							<Form.Item
-								{...formItemLayout}
 								label="Transaction Id"
 								hasFeedback={true}>
 								{getFieldDecorator('transactionId', {
@@ -509,7 +489,6 @@ class AddStudent extends Component {
 					<>
 						<Col {...colLayout}>
 							<Form.Item
-								{...formItemLayout}
 								label="Transaction Id"
 								hasFeedback={true}>
 								{getFieldDecorator('transactionId', {

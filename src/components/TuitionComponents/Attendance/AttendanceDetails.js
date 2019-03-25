@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 
+import ExcelAttendanceUpload from './AttendanceDetails/ExcelAttendanceUpload';
 import Navbar from '../../Navbar';
 
 import { editSchedule } from '../../../redux/actions/scheduleActions';
@@ -12,7 +13,9 @@ import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
 import {
 	Avatar,
 	Button,
+	Divider,
 	Form,
+	Icon,
 	List,
 	Row,
 	Switch
@@ -67,6 +70,11 @@ class AttendanceDetails extends Component {
 			<>
 				<Navbar renderBackBtn={true} navText="Attendance" />
 				<div className="container below-nav">
+					<Row>
+						{Boolean(window.cordova) === false && <Divider orientation="left"><small className="mx-1">Excel Upload</small><Icon type="arrow-down" /></Divider>}
+						{Boolean(window.cordova) === false && <ExcelAttendanceUpload />}
+					</Row>
+					<Divider orientation="left"><small className="mx-1">Attendance</small><Icon type="arrow-down" /></Divider>
 					<Form onSubmit={this.handleSubmit} className="pt-3">
 						<List
 							className="mb-3"
@@ -89,7 +97,7 @@ class AttendanceDetails extends Component {
 									<List.Item.Meta
 										avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
 										title={student.name}
-										description={'Roll Number: ' + student.rollNumber}/>
+										description={'Roll Number: ' + student.rollNumber} />
 								</List.Item>
 							)} />
 						<Row type="flex" justify="end">

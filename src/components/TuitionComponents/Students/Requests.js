@@ -20,8 +20,8 @@ const colLayout = {
 	xs: 24,
 	sm: 12,
 	md: 12,
-	xl: 6,
-	xxl: 4
+	xl: 8,
+	xxl: 6
 };
 
 class Requests extends Component {
