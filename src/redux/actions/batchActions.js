@@ -36,3 +36,12 @@ export function addStudentInBatch(tuitionId, courseId, batchId, studentId) {
 		});
 	};
 }
+
+export function deleteStudentInBatch(tuitionId, courseId, batchId, studentId) {
+	return dispatch => {
+		dispatch({
+			type: 'DELETE_STUDENT_IN_BATCH',
+			payload: axios.delete(`${schemeAndAuthority}/tuition/${tuitionId}/course/${courseId}/batch/${batchId}/student`, { data: { students: studentId } })
+		});
+	};
+}

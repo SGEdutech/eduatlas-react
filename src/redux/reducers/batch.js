@@ -44,6 +44,14 @@ function batchReducer(state = initState, action) {
 			});
 			return { ...state, batches };
 		}
+		case 'DELETE_STUDENT_IN_BATCH_FULFILLED': {
+			const batches = [...state.batches];
+			const { batchId, students } = action.payload.data;
+			batches.forEach(batch => {
+				if (batch._id === batchId) batch.students = students;
+			});
+			return { ...state, batches };
+		}
 		default: {
 			return state;
 		}

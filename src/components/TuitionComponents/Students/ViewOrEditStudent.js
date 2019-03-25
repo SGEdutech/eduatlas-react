@@ -9,12 +9,17 @@ import {
 	editInstallment, deleteInstallment, mailReceipt
 } from '../../../redux/actions/studentActions';
 
-
+// Components
+import EditStudentBatch from './ViewOrEditStudent/EditStudentBatch';
 import Navbar from '../../Navbar';
 import PaymentCard from './ViewOrEditStudent/PaymentCard';
 
+// Scripts
 import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
 import sanatizeFormObj from '../../../scripts/sanatize-form-obj';
+
+// Actions
+import { addStudentInBatch, deleteStudentInBatch } from '../../../redux/actions/batchActions';
 
 import {
 	Avatar,
@@ -26,7 +31,7 @@ import {
 	Icon,
 	Input,
 	InputNumber,
-	Row
+	Row,
 } from 'antd';
 const { Meta } = Card;
 
@@ -181,6 +186,10 @@ class ViewOrEditStudent extends Component {
 									</Row>)}
 								</Col>
 							</Form>
+							<Divider orientation="left"><small>Batch Details<Icon type="arrow-down" /></small></Divider>
+						</Col>
+						<Col className="px-3">
+							<EditStudentBatch addStudentInBatch={this.props.addStudentInBatch} batches={this.props.batches} deleteStudentInBatch={this.props.deleteStudentInBatch} />
 							<Divider orientation="left"><small>Course Details<Icon type="arrow-down" /></small></Divider>
 						</Col>
 						<Col className="mb-3">
@@ -202,9 +211,22 @@ class ViewOrEditStudent extends Component {
 }
 
 const mapStateToProps = state => ({
-	students: state.student.students, courses: state.course.courses, tuitionInfo: state.tuitionInfo
+	batches: state.batch.batches,
+	courses: state.course.courses,
+	students: state.student.students,
+	tuitionInfo: state.tuitionInfo
 });
 
 export default compose(Form.create({ name: 'edit-student' }), withRouter, connect(mapStateToProps,
-	{ editStudent, editPayment, editInstallment, deleteInstallment, deletePayment, mailReceipt }
+	{
+		addStudentInBatch,
+		deleteInstallment,
+		deletePayment,
+		deleteStudentInBatch,
+		editStudent,
+		editPayment,
+		editInstallment,
+		mailReceipt
+	}
+
 ))(ViewOrEditStudent);
