@@ -4,13 +4,15 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import moment from 'moment';
 
+import CloneSchedules from './ActiveSchedules/CloneSchedules';
 import ScheduleCard from './ActiveSchedules/ScheduleCard';
 
-import { deleteSchedule } from '../../../redux/actions/scheduleActions';
+import { addSchedule, deleteSchedule } from '../../../redux/actions/scheduleActions';
 import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
 import { inverseMinutesFromMidnight } from '../../../scripts/minutesToMidnight';
 
 import {
+	Button,
 	Card,
 	Col,
 	Collapse,
@@ -21,12 +23,10 @@ import {
 	Input,
 	Modal,
 	Row,
-	Select,
 	Skeleton
 } from 'antd';
 const Panel = Collapse.Panel;
 const { confirm } = Modal;
-const { Option } = Select;
 
 const colLayout = {
 	xs: 24,
@@ -45,8 +45,25 @@ class ActiveSchedules extends Component {
 	state = {
 		batchId: undefined,
 		fromDate: moment(),
+		modalBatchId: null,
+		modalVisible: false,
+		modalWeekNumber: null,
 		searchQuery: undefined,
 		toDate: undefined
+	}
+
+	getBatchWiseSchedule = schedules => {
+		const { batches } = this.props;
+		return batches.map(batch => {
+			const schedulesOfThisBatch = schedules.filter(schedule => schedule.batchId === batch._id);
+			const schedulesOfThisBatchByWeek = {};
+			schedulesOfThisBatch.forEach(schedule => {
+				const weekOfSchedule = schedule.date.week();
+				if (Boolean(schedulesOfThisBatchByWeek[weekOfSchedule]) === false) schedulesOfThisBatchByWeek[weekOfSchedule] = [];
+				schedulesOfThisBatchByWeek[weekOfSchedule].push(schedule);
+			});
+			return schedulesOfThisBatchByWeek;
+		});
 	}
 
 	getFilteredSchedules = () => {
@@ -80,6 +97,13 @@ class ActiveSchedules extends Component {
 
 	handleToDateChange = toDate => this.setState({ toDate });
 
+	hideModal = () => this.setState({ modalBatchId: null, modalVisible: false, modalWeekNumber: null });
+
+	openModal = e => {
+		const { currentTarget: { attributes: { databatchid: { value: modalBatchId }, dataweeknumber: { value: modalWeekNumber } } } } = e;
+		this.setState({ modalBatchId, modalVisible: true, modalWeekNumber });
+	};
+
 	showDeleteConfirm = (courseId, batchId, scheduleId) => {
 		const { deleteSchedule, match: { url } } = this.props;
 		const tuitionId = getTuitionIdFromUrl(url);
@@ -96,21 +120,12 @@ class ActiveSchedules extends Component {
 	};
 
 	render() {
-		const { batches, messageInfo, isAttendance } = this.props;
+		const { modalBatchId, modalVisible, modalWeekNumber } = this.state;
+		const { addSchedule, batches, isAttendance, schedules } = this.props;
 		const filteredSchedules = this.getFilteredSchedules();
 		this.sortSchedules(filteredSchedules);
 
-		const batchWiseSchedulesArr = batches.map(batch => {
-			const schedulesOfThisBatch = filteredSchedules.filter(schedule => schedule.batchId === batch._id);
-			const schedulesOfThisBatchByWeek = {};
-			schedulesOfThisBatch.forEach(schedule => {
-				const weekOfSchedule = schedule.date.week();
-				if (Boolean(schedulesOfThisBatchByWeek[weekOfSchedule]) === false) schedulesOfThisBatchByWeek[weekOfSchedule] = [];
-				schedulesOfThisBatchByWeek[weekOfSchedule].push(schedule);
-			});
-			return schedulesOfThisBatchByWeek;
-		});
-
+		const batchWiseSchedulesArr = this.getBatchWiseSchedule(filteredSchedules);
 		const emptyJsx = <Empty className="mt-4"
 			image="https://gw.alipayobjects.com/mdn/miniapp_social/afts/img/A*pevERLJC9v0AAAAAAAAAAABjAQAAAQ/original"
 			description={<span>Nothing is better than something...</span>}></Empty>;
@@ -124,13 +139,14 @@ class ActiveSchedules extends Component {
 				{Object.keys(batchWiseSchedulesArr[i]).map(weekNumber => {
 					return (
 						<div key={weekNumber}>
-							<Divider orientation="left"><small className="mx-1">Week {weekNumber}</small><Icon type="arrow-down" /></Divider>
+							<Divider orientation="left"><small className="mx-1">Week {weekNumber}</small><Icon type="arrow-down" /><Button className="mx-1" dataweeknumber={weekNumber} databatchid={batch._id} onClick={this.openModal} type="primary" size="small" ghost>Clone</Button></Divider>
 							<Row gutter={16}>
 								{batchWiseSchedulesArr[i][weekNumber].map(({ _id, date, faculty, topic, fromTime, toTime, batchCode, courseId, batchId }) => (
 									<Col key={_id} {...cardColLayout}>
 										<ScheduleCard
 											id={_id}
 											date={date}
+											key={_id}
 											faculty={faculty}
 											topic={topic}
 											fromTime={inverseMinutesFromMidnight(fromTime).format('LT')}
@@ -176,6 +192,13 @@ class ActiveSchedules extends Component {
 				<Collapse>
 					{panelsJsx}
 				</Collapse>
+				<Modal
+					footer={null}
+					onCancel={this.hideModal}
+					title="Clone Schedule"
+					visible={modalVisible}>
+					<CloneSchedules addSchedule={addSchedule} batches={batches} batchId={modalBatchId} getBatchWiseSchedule={this.getBatchWiseSchedule} schedules={schedules} weekNumber={modalWeekNumber} />
+				</Modal>
 			</div>
 		);
 	}
@@ -189,4 +212,4 @@ function mapStateToProps(state) {
 	};
 }
 
-export default compose(connect(mapStateToProps, { deleteSchedule }), withRouter)(ActiveSchedules);
+export default compose(connect(mapStateToProps, { addSchedule, deleteSchedule }), withRouter)(ActiveSchedules);

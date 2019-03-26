@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { schemeAndAuthority } from '../../config.json';
 
-export function addSchedule(tuitionId, newSchedule) {
+export function addSchedule(tuitionId, scheduleInfo) {
 	return dispatch => {
 		dispatch({
 			type: 'ADD_SCHEDULE',
-			payload: axios.post(`${schemeAndAuthority}/tuition/${tuitionId}/schedule`, newSchedule)
+			payload: axios.post(`${schemeAndAuthority}/tuition/${tuitionId}/schedule`, scheduleInfo)
 		});
 	};
 }
