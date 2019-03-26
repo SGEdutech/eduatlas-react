@@ -13,14 +13,18 @@ import { inverseMinutesFromMidnight } from '../../../scripts/minutesToMidnight';
 import {
 	Card,
 	Col,
+	Collapse,
 	DatePicker,
+	Divider,
 	Empty,
+	Icon,
+	Input,
 	Modal,
 	Row,
 	Select,
 	Skeleton
 } from 'antd';
-
+const Panel = Collapse.Panel;
 const { confirm } = Modal;
 const { Option } = Select;
 
@@ -31,18 +35,50 @@ const colLayout = {
 
 const cardColLayout = {
 	xs: 24,
-	sm: 12,
-	md: 8,
-	xl: 6,
-	xxl: 6
+	sm: 24,
+	md: 12,
+	xl: 8,
+	xxl: 8
 };
 
 class ActiveSchedules extends Component {
 	state = {
 		batchId: undefined,
-		fromDate: undefined,
+		fromDate: moment(),
+		searchQuery: undefined,
 		toDate: undefined
 	}
+
+	getFilteredSchedules = () => {
+		let { schedules } = this.props;
+		const { batchId, searchQuery, toDate } = this.state;
+		let { fromDate } = this.state;
+		if (searchQuery) {
+			const searchRegex = new RegExp(searchQuery, 'i');
+			schedules = schedules.filter(schedule => searchRegex.test(schedule.topic) || searchRegex.test(schedule.faculty))
+		}
+		if (batchId) schedules = schedules.filter(schedule => schedule.batchId === batchId);
+		if (Boolean(fromDate) === false) fromDate = moment(0);
+		schedules = schedules.filter(schedule => {
+			return schedule.date.startOf('day').diff(fromDate.startOf('day'), 'days') >= 0;
+		});
+		if (toDate) schedules = schedules.filter(schedule => schedule.date.startOf('day').diff(toDate.startOf('day'), 'days') <= 0);
+		return schedules;
+	}
+
+	sortSchedules = schedules => schedules.sort((a, b) => {
+		if (a.date.valueOf() > b.date.valueOf()) return 1;
+		if (a.date.valueOf() < b.date.valueOf()) return -1;
+		return a.fromTime > b.fromTime ? 1 : -1;
+	});
+
+	handleBatchChange = batchId => this.setState({ batchId });
+
+	handleFromDateChange = fromDate => this.setState({ fromDate });
+
+	handleSearchChange = ({ currentTarget: { value: searchQuery } }) => this.setState({ searchQuery });
+
+	handleToDateChange = toDate => this.setState({ toDate });
 
 	showDeleteConfirm = (courseId, batchId, scheduleId) => {
 		const { deleteSchedule, match: { url } } = this.props;
@@ -59,49 +95,59 @@ class ActiveSchedules extends Component {
 		});
 	};
 
-	handleBatchChange = batchId => this.setState({ batchId });
-
-	handleFromDateChange = fromDate => this.setState({ fromDate });
-
-	handleToDateChange = toDate => this.setState({ toDate });
-
-	getFilteredSchedules = () => {
-		let { schedules } = this.props;
-		const { batchId, toDate } = this.state;
-		let { fromDate } = this.state;
-		if (batchId) schedules = schedules.filter(schedule => schedule.batchId === batchId);
-		fromDate = fromDate || moment();
-		schedules = schedules.filter(schedule => {
-			return schedule.date.startOf('day').diff(fromDate.startOf('day'), 'days') >= 0;
-		});
-		if (toDate) schedules = schedules.filter(schedule => schedule.date.startOf('day').diff(toDate.startOf('day'), 'days') <= 0);
-		return schedules;
-	}
-
 	render() {
 		const { batches, messageInfo, isAttendance } = this.props;
 		const filteredSchedules = this.getFilteredSchedules();
-		const schdulesJsx = filteredSchedules.map(({ _id, date, faculty, topic, fromTime, toTime, batchCode, courseId, batchId }) => (
-			<Col {...cardColLayout} key={_id}>
-				<ScheduleCard
-					id={_id}
-					date={date}
-					faculty={faculty}
-					topic={topic}
-					fromTime={inverseMinutesFromMidnight(fromTime).format('LT')}
-					toTime={inverseMinutesFromMidnight(toTime).format('LT')}
-					courseId={courseId}
-					batchId={batchId}
-					batchCode={batchCode}
-					isAttendance={isAttendance}
-					deleteSchedule={this.showDeleteConfirm} />
-			</Col>
-		));
+		this.sortSchedules(filteredSchedules);
 
+		const batchWiseSchedulesArr = batches.map(batch => {
+			const schedulesOfThisBatch = filteredSchedules.filter(schedule => schedule.batchId === batch._id);
+			const schedulesOfThisBatchByWeek = {};
+			schedulesOfThisBatch.forEach(schedule => {
+				const weekOfSchedule = schedule.date.week();
+				if (Boolean(schedulesOfThisBatchByWeek[weekOfSchedule]) === false) schedulesOfThisBatchByWeek[weekOfSchedule] = [];
+				schedulesOfThisBatchByWeek[weekOfSchedule].push(schedule);
+			});
+			return schedulesOfThisBatchByWeek;
+		});
 
 		const emptyJsx = <Empty className="mt-4"
 			image="https://gw.alipayobjects.com/mdn/miniapp_social/afts/img/A*pevERLJC9v0AAAAAAAAAAABjAQAAAQ/original"
 			description={<span>Nothing is better than something...</span>}></Empty>;
+
+		const panelsJsx = batches.map((batch, i) => {
+			return (<Panel header={batch.code} key={batch._id}>
+
+				{/* Show Empty if there are no schedules for a batch */}
+				{Boolean(Object.keys(batchWiseSchedulesArr[i]).length === 0) && emptyJsx}
+
+				{Object.keys(batchWiseSchedulesArr[i]).map(weekNumber => {
+					return (
+						<div key={weekNumber}>
+							<Divider orientation="left"><small className="mx-1">Week {weekNumber}</small><Icon type="arrow-down" /></Divider>
+							<Row gutter={16}>
+								{batchWiseSchedulesArr[i][weekNumber].map(({ _id, date, faculty, topic, fromTime, toTime, batchCode, courseId, batchId }) => (
+									<Col key={_id} {...cardColLayout}>
+										<ScheduleCard
+											id={_id}
+											date={date}
+											faculty={faculty}
+											topic={topic}
+											fromTime={inverseMinutesFromMidnight(fromTime).format('LT')}
+											toTime={inverseMinutesFromMidnight(toTime).format('LT')}
+											courseId={courseId}
+											batchId={batchId}
+											batchCode={batchCode}
+											isAttendance={isAttendance}
+											deleteSchedule={this.showDeleteConfirm} />
+									</Col>
+								))}
+							</Row>
+						</div>
+					);
+				})}
+			</Panel>);
+		});
 
 		const skeletonCards = [];
 		for (let i = 0; i < 5; i++) {
@@ -118,20 +164,18 @@ class ActiveSchedules extends Component {
 			<div className="container">
 				<Row className="mb-3" type="flex" align="middle" justify="center">
 					<Col span={24} className="p-1">
-						<Select name="Something" onChange={this.handleBatchChange} placeholder="Select Batch" className="w-100">
-							{batches.map(course => <Option onChange={this.handleChange} key={course._id} value={course._id}>{course.code}</Option>)}
-						</Select>
+						<Input onChange={this.handleSearchChange} placeholder="Search" />
 					</Col>
 					<Col {...colLayout} className="p-1">
-						<DatePicker onChange={this.handleFromDateChange} className="w-100" />
+						<DatePicker allowClear className="w-100" defaultValue={moment()} format="DD-MM-YYYY" onChange={this.handleFromDateChange} placeholder="From Date" />
 					</Col>
 					<Col {...colLayout} className="p-1">
-						<DatePicker onChange={this.handleToDateChange} className="w-100" />
+						<DatePicker allowClear className="w-100" format="DD-MM-YYYY" onChange={this.handleToDateChange} placeholder="To Date" />
 					</Col>
 				</Row>
-				<Row gutter={16}>
-					{messageInfo.fetching ? skeletonCards : (filteredSchedules.length === 0 ? emptyJsx : schdulesJsx)}
-				</Row>
+				<Collapse>
+					{panelsJsx}
+				</Collapse>
 			</div>
 		);
 	}

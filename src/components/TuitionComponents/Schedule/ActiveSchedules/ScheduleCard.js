@@ -38,9 +38,6 @@ function ScheduleCard(props) {
 				<Col>
 					<div className="text-capitalize"><span className="font-weight-bold">Faculty: </span> {faculty}</div>
 				</Col>
-				<Col>
-					<div><span className="font-weight-bold">Batch: </span><span className="text-uppercase"> {batchCode}</span></div>
-				</Col>
 			</Row>
 		</Card>
 	);

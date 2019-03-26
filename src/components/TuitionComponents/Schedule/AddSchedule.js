@@ -137,7 +137,7 @@ class AddSchedule extends Component {
 		});
 	}
 
-	add = () => {
+	addSchedule = () => {
 		const { form } = this.props;
 		// can use data-binding to get
 		const keys = form.getFieldValue('keys');
@@ -152,7 +152,8 @@ class AddSchedule extends Component {
 	}
 
 	render() {
-		const { getFieldDecorator, getFieldValue } = this.props.form;
+		const { form } = this.props;
+		const { getFieldDecorator, getFieldValue } = form;
 
 		getFieldDecorator('keys', { initialValue: [0] });
 		const keys = getFieldValue('keys');
@@ -165,6 +166,7 @@ class AddSchedule extends Component {
 						label="Day"
 						hasFeedback={true}>
 						{getFieldDecorator('date_' + k, {
+							initialValue: form.getFieldValue('date_' + (k - 1)),
 							rules: [{
 								required: true, message: 'Please choose day!'
 							}]
@@ -179,6 +181,7 @@ class AddSchedule extends Component {
 					<Form.Item
 						label="From Time">
 						{getFieldDecorator('fromTime_' + k, {
+							initialValue: form.getFieldValue('fromTime_' + (k - 1)),
 							rules: [{ required: true, message: 'Please enter dude!' }]
 						})(
 							<DatePickerM
@@ -196,6 +199,7 @@ class AddSchedule extends Component {
 					<Form.Item
 						label="To Time">
 						{getFieldDecorator('toTime_' + k, {
+							initialValue: form.getFieldValue('toTime_' + (k - 1)),
 							validator: this.validateToTime, message: 'Must be less than From-Time'
 						})(
 							<DatePickerM
@@ -213,9 +217,7 @@ class AddSchedule extends Component {
 						label="Topic"
 						hasFeedback={true}>
 						{getFieldDecorator('topic_' + k, {
-							rules: [{
-								required: true, message: 'Please input topic!'
-							}]
+							initialValue: form.getFieldValue('topic_' + (k - 1))
 						})(
 							<Input />
 						)}
@@ -226,9 +228,7 @@ class AddSchedule extends Component {
 						label="Faculty"
 						hasFeedback={true}>
 						{getFieldDecorator('faculty_' + k, {
-							rules: [{
-								required: true, message: 'Please input faculty!'
-							}]
+							initialValue: form.getFieldValue('faculty_' + (k - 1))
 						})(
 							<Input />
 						)}
@@ -262,17 +262,7 @@ class AddSchedule extends Component {
 								<DatePicker value={this.getToDate()} format="DD-MM-YYYY" className="w-100" disabled={true} />
 							</Form.Item>
 						</Col>
-						<Col className="p-1 mb-3" span={24} style={{ border: 'thick double #00bcd4' }}>
-							{scheduleInps}
-						</Col>
 						<Col span={24}>
-							<Form.Item>
-								<Button type="dashed" block onClick={this.add}>
-									<Icon type="plus" /> Add More Schedule
-								</Button>
-							</Form.Item>
-						</Col>
-						<Col {...colLayout}>
 							<Form.Item
 								label="Select Batches"
 								hasFeedback={true}>
@@ -288,6 +278,16 @@ class AddSchedule extends Component {
 											this.props.batches.map(batch => <Option key={batch._id} value={batch._id}>{batch.code}</Option>)}
 									</Select>
 								)}
+							</Form.Item>
+						</Col>
+						<Col className="p-1 mb-3" span={24} style={{ border: 'thick double #00bcd4' }}>
+							{scheduleInps}
+						</Col>
+						<Col span={24}>
+							<Form.Item>
+								<Button type="dashed" block onClick={this.addSchedule}>
+									<Icon type="plus" /> Add More Schedule
+								</Button>
 							</Form.Item>
 						</Col>
 						<Col span={24}>
