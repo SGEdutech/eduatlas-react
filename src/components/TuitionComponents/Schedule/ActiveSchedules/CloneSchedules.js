@@ -33,17 +33,18 @@ function CloneSchedules(props) {
 				return;
 			}
 			const schedulesOfThisBatch = schedules.filter(schedule => schedule.batchId === batchId);
-			const schedulesToClone = getBatchWiseSchedule(schedulesOfThisBatch).find(schedulesObj => Object.keys(schedulesObj).length !== 0)[weekNumber];
-			const weekDiffrence = weekNumber - values.week.week();
-			console.log(schedulesToClone[0]._id);
-			schedulesToClone.forEach(schedule => {
-				delete schedule._id;
-				delete schedule.studentsAbsent;
-				delete schedule.courseId;
-				delete schedule.batchId;
-				delete schedule.batchCode;
-				schedule.date = schedule.date.add(weekDiffrence, 'w');
+			let schedulesToClone = getBatchWiseSchedule(schedulesOfThisBatch).find(schedulesObj => Object.keys(schedulesObj).length !== 0)[weekNumber];
+			const weekDiffrence = values.week.week() - weekNumber;
+			schedulesToClone = schedulesToClone.map(schedule => {
+				return {
+					date: schedule.date.clone(),
+					faculty: schedule.faculty,
+					fromTime: schedule.fromTime,
+					topic: schedule.topic,
+					toTime: schedule.toTime
+				};
 			});
+			schedulesToClone.forEach(schedule => schedule.date.add(weekDiffrence, 'w'));
 			addSchedule(tuitionId, { batches: values.batches, schedules: schedulesToClone });
 		});
 	};

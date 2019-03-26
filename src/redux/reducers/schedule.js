@@ -11,7 +11,6 @@ function scheduleReducer(state = initState, action) {
 		}
 		case 'ADD_SCHEDULE_FULFILLED': {
 			const newSchedules = action.payload.data;
-			console.log(action.payload.data);
 			dateToMoment(newSchedules);
 			return { ...state, schedules: [...state.schedules, ...newSchedules] };
 		}
