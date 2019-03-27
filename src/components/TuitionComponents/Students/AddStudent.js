@@ -22,7 +22,6 @@ import {
 	Row,
 	Select
 } from 'antd';
-import { exec } from 'child_process';
 
 const { Option } = Select;
 
@@ -239,7 +238,7 @@ class AddStudent extends Component {
 
 	render() {
 		const { getFieldDecorator } = this.props.form;
-		const { batches, courses, discounts, students, task } = this.props;
+		const { addStudent, batches, courses, discounts, students, task } = this.props;
 		const { selectedCourseIndex } = this.state;
 
 		const coursesAndBatchesOpts = courses.map(course => (
