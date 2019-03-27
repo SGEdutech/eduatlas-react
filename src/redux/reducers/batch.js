@@ -23,10 +23,15 @@ function batchReducer(state = initState, action) {
 			return { ...state, batches: state.batches.filter(batch => batch.courseId !== action.payload.data._id) };
 		}
 		case 'ADD_STUDENT_FULFILLED': {
-			const { _id: addedStudentId, batchAdded } = action.payload.data;
 			const batches = [...state.batches];
-			batches.forEach(batch => {
-				if (batch._id === batchAdded) batch.students.push(addedStudentId);
+			let studentsAdded = action.payload.data;
+			if (Array.isArray(studentsAdded) === false) studentsAdded = [studentsAdded];
+			studentsAdded.forEach(student => {
+				const { _id: addedStudentId, batchAdded } = student;
+				if (Boolean(batchAdded) === false) return;
+				batches.forEach(batch => {
+					if (batch._id === batchAdded) batch.students.push(addedStudentId);
+				});
 			});
 			return { ...state, batches };
 		}

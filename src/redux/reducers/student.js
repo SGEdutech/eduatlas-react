@@ -12,9 +12,12 @@ function studentReducer(state = initState, action) {
 			return { ...state, students };
 		}
 		case 'ADD_STUDENT_FULFILLED': {
-			const newStudent = action.payload.data;
-			dateToMoment(newStudent);
-			return { ...state, students: [...state.students, newStudent] };
+			let newStudents = action.payload.data;
+			if (Array.isArray(newStudents) === false) newStudents = [newStudents];
+			dateToMoment(newStudents);
+			newStudents = JSON.parse(JSON.stringify(newStudents));
+			newStudents.forEach(student => delete student.batchAdded);
+			return { ...state, students: [...state.students, ...newStudents] };
 		}
 		case 'EDIT_STUDENT_FULFILLED': {
 			const editedStudent = action.payload.data;
