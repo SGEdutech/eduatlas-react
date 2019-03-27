@@ -17,7 +17,8 @@ import {
 	Icon,
 	Input,
 	Row,
-	Select
+	Select,
+	TimePicker
 } from 'antd';
 
 import { DatePicker as DatePickerM, List } from 'antd-mobile';
@@ -184,14 +185,17 @@ class AddSchedule extends Component {
 							initialValue: form.getFieldValue('fromTime_' + (k - 1)),
 							rules: [{ required: true, message: 'Please enter dude!' }]
 						})(
-							<DatePickerM
-								mode="time"
-								minuteStep={2}
-								use12Hours={true}
-								locale={enUs}>
-								{/* TODO: Fix UI */}
-								<List.Item style={{ border: '1px solid #D3D3D3', borderRadius: '5px' }} arrow="horizontal"></List.Item>
-							</DatePickerM>
+							window.cordova ? (
+								<DatePickerM
+									mode="time"
+									minuteStep={2}
+									use12Hours={true}
+									locale={enUs}>
+									<List.Item style={{ border: '1px solid #D3D3D3', borderRadius: '5px' }} arrow="horizontal"></List.Item>
+								</DatePickerM>
+							) : (
+									<TimePicker use12Hours format="h:mm a" />
+								)
 						)}
 					</Form.Item>
 				</Col>
@@ -202,13 +206,17 @@ class AddSchedule extends Component {
 							initialValue: form.getFieldValue('toTime_' + (k - 1)),
 							validator: this.validateToTime, message: 'Must be less than From-Time'
 						})(
-							<DatePickerM
-								mode="time"
-								minuteStep={2}
-								use12Hours={true}
-								locale={enUs}>
-								<List.Item style={{ border: '1px solid #D3D3D3', borderRadius: '5px' }} arrow="horizontal"></List.Item>
-							</DatePickerM>
+							window.cordova ? (
+								<DatePickerM
+									mode="time"
+									minuteStep={2}
+									use12Hours={true}
+									locale={enUs}>
+									<List.Item style={{ border: '1px solid #D3D3D3', borderRadius: '5px' }} arrow="horizontal"></List.Item>
+								</DatePickerM>
+							) : (
+									<TimePicker use12Hours format="h:mm a" />
+								)
 						)}
 					</Form.Item>
 				</Col>
