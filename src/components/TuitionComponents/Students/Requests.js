@@ -3,18 +3,10 @@ import React, { Component } from 'react';
 import RequestCard from './Requests/RequestCard';
 
 import {
-	Avatar,
-	Card,
 	Col,
 	Empty,
-	Form,
-	Icon,
-	Input,
-	Row,
-	Select
+	Row
 } from 'antd';
-const { Meta } = Card;
-const Option = Select.Option;
 
 const colLayout = {
 	xs: 24,

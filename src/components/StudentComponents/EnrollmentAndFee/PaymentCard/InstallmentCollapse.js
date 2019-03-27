@@ -3,7 +3,6 @@ import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 
 import {
-	Button,
 	Col,
 	DatePicker,
 	Form,
@@ -13,13 +12,6 @@ import {
 	Select
 } from 'antd';
 const { Option } = Select;
-
-const formItemLayout = {
-	labelCol: {
-	},
-	wrapperCol: {
-	}
-};
 
 const colLayout = {
 	xs: 24,
@@ -32,21 +24,19 @@ class InstallmentCollapse extends Component {
 
 	render() {
 		const { installment } = this.props;
-		const { feeCollected, modeOfPayment, bank, dateOfCheque, chequeNumber, cardNumber, transactionId, createdAt } = installment;
+		const { feeCollected, modeOfPayment, bank, dateOfCheque, chequeNumber, transactionId, createdAt } = installment;
 
 		return (
 			<Form>
 				<Row gutter={16}>
 					<Col {...colLayout}>
 						<Form.Item
-							{...formItemLayout}
 							label="Paid On">
 							<DatePicker className="w-100" value={createdAt} disabled={true} />
 						</Form.Item>
 					</Col>
 					<Col {...colLayout}>
 						<Form.Item
-							{...formItemLayout}
 							label="Mode Of Payment">
 							<Select className="w-100" disabled={true} defaultValue={modeOfPayment}>
 								<Option value="cash">Cash</Option>
@@ -58,7 +48,6 @@ class InstallmentCollapse extends Component {
 					</Col>
 					<Col {...colLayout}>
 						<Form.Item
-							{...formItemLayout}
 							label="Fee Collected">
 							<InputNumber value={feeCollected} className="w-100" disabled={true} />
 						</Form.Item>
@@ -67,21 +56,18 @@ class InstallmentCollapse extends Component {
 						<>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="Date">
 									<DatePicker value={dateOfCheque} disabled={true} />
 								</Form.Item>
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="Bank Name">
 									<Input value={bank} disabled={true} />
 								</Form.Item>
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="Cheque Number">
 									<Input value={chequeNumber} disabled={true} />
 								</Form.Item>
@@ -92,14 +78,12 @@ class InstallmentCollapse extends Component {
 						<>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="Bank Name">
 									<Input value={bank} disabled={true} />
 								</Form.Item>
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="Transaction Id">
 									<Input value={transactionId} disabled={true} />
 								</Form.Item>
@@ -110,14 +94,12 @@ class InstallmentCollapse extends Component {
 						<>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="Name of Mode">
 									<Input value={modeOfPayment} disabled={true} />
 								</Form.Item>
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
-									{...formItemLayout}
 									label="Transaction Id">
 									<Input value={transactionId} disabled={true} />
 								</Form.Item>

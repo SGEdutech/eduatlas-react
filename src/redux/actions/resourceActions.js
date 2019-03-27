@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { schemeAndAuthority, tuitionId } from '../../config.json';
+import { schemeAndAuthority } from '../../config.json';
 import convertModelToFormData from '../../scripts/modelToFormdata';
 
 export function addResource(tuitionId, newResource) {

@@ -44,12 +44,14 @@ class ViewOrDeleteMaterials extends Component {
 				return false;
 			});
 		}
-		// console.log(this.state.vidDatas);
 		const resourcesJsx = resources.map(({ _id, path, title, students, description, type, ytUrl }) => {
-			if (type !== 'video') return <Col {...colLayout} key={_id}>
-				<FileCard deleteResource={deleteResource} description={description} _id={_id} path={path} showDelete={showDelete}
-					students={students} title={title} type={type} ytUrl={ytUrl} />
-			</Col>;
+			if (type !== 'video') return (
+				<Col {...colLayout} key={_id}>
+					<FileCard deleteResource={deleteResource} description={description} _id={_id} path={path} showDelete={showDelete}
+						students={students} title={title} type={type} ytUrl={ytUrl} />
+				</Col>
+			);
+			return false;
 		});
 		const videoResources = resources.filter(resource => resource.type === 'video');
 		const videoResourcesJsx = videoResources.map(({ _id, path, title, students, description, type, ytUrl }) => (

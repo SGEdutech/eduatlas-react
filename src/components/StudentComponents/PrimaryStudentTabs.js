@@ -10,7 +10,6 @@ import Attendance from './Attendance';
 import EnrollmentAndFee from './EnrollmentAndFee';
 import Notifications from './Notifications';
 import PerformanceReport from './PerformanceReport';
-import ViewOrDeleteMaterials from '../TuitionComponents/StudyMaterial/ViewOrDeleteMaterials';
 
 import { readNotification } from '../../redux/actions/notificationActions';
 
@@ -43,7 +42,7 @@ class PrimaryTuitionTabs extends Component {
 
 	render() {
 		const { value } = this.state;
-		const { batches, courses, messageInfo, notifications, readNotification, resources, schedules, students, tests, user } = this.props;
+		const { batches, courses, messageInfo, notifications, readNotification, schedules, students, tests, user } = this.props;
 		const { primaryEmail } = user;
 		const studentInfo = students.find(student => student.email === primaryEmail);
 		if (Boolean(studentInfo) === false) return <></>; // TODO: Handle this!!!!

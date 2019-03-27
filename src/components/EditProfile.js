@@ -11,12 +11,9 @@ import Navbar from './Navbar';
 
 import {
 	Button,
-	Checkbox,
 	Col,
-	Divider,
 	Form,
 	Input,
-	InputNumber,
 	Row
 } from 'antd';
 

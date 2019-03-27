@@ -7,7 +7,7 @@ import { Row, Col, Card } from 'antd';
 import IconsWithTooltip from '../../../SharedComponents/IconsWithTooltip';
 
 function ScheduleCard(props) {
-	const { id, date, faculty, topic, fromTime, toTime, courseId, batchCode, batchId, deleteSchedule, isAttendance } = props;
+	const { id, date, faculty, topic, fromTime, toTime, courseId, batchId, deleteSchedule, isAttendance } = props;
 	let iconsArray = [
 		<Link to={'./edit-schedule/' + id}><IconsWithTooltip tooltipMessage="Edit" iconType="edit" /></Link>,
 		<IconsWithTooltip tooltipMessage="Delete" iconType="delete" onClick={() => deleteSchedule(courseId, batchId, id)} />

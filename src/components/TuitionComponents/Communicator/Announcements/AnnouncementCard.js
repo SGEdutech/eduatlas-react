@@ -5,7 +5,7 @@ import moment from 'moment';
 import { Row, Col, Card } from 'antd';
 
 function AnnouncementCard(props) {
-	const { id, message, receivers, createdAt } = props;
+	const { message, receivers, createdAt } = props;
 
 	return (
 		<Card className="mb-3"

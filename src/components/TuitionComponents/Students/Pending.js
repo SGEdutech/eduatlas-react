@@ -8,11 +8,9 @@ import {
 	Empty,
 	Icon,
 	Input,
-	Modal,
 	Row,
 	Skeleton
 } from 'antd';
-const confirm = Modal.confirm;
 
 const colLayout = {
 	xs: 24,

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { useSwipeable, Swipeable } from 'react-swipeable';
+import { Swipeable } from 'react-swipeable';
 
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
@@ -12,7 +12,6 @@ import Schedule from './Schedule';
 import Attendance from './Attendance';
 import Communicator from './Communicator';
 import PerformanceReport from './PerformanceReport';
-import StudyMaterial from './StudyMaterial';
 
 import { changeTabs } from '../../redux/actions/navigationActions';
 
