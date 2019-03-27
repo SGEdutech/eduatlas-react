@@ -194,7 +194,7 @@ class AddSchedule extends Component {
 									<List.Item style={{ border: '1px solid #D3D3D3', borderRadius: '5px' }} arrow="horizontal"></List.Item>
 								</DatePickerM>
 							) : (
-									<TimePicker use12Hours format="h:mm a" />
+									<TimePicker className="w-100" use12Hours format="h:mm a" />
 								)
 						)}
 					</Form.Item>
@@ -215,7 +215,7 @@ class AddSchedule extends Component {
 									<List.Item style={{ border: '1px solid #D3D3D3', borderRadius: '5px' }} arrow="horizontal"></List.Item>
 								</DatePickerM>
 							) : (
-									<TimePicker use12Hours format="h:mm a" />
+									<TimePicker className="w-100" use12Hours format="h:mm a" />
 								)
 						)}
 					</Form.Item>
@@ -245,9 +245,11 @@ class AddSchedule extends Component {
 				<Col >
 					<Form.Item>
 						<Icon
-							className="dynamic-delete-button"
-							type="minus-circle-o"
-							onClick={() => this.remove(k)} />
+							className="dynamic-delete-button cursor-pointer"
+							onClick={() => this.remove(k)}
+							theme="twoTone"
+							twoToneColor="#FF0000"
+							type="minus-circle-o" />
 					</Form.Item>
 				</Col>
 			</Row>
