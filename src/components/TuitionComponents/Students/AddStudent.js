@@ -22,7 +22,6 @@ import {
 	Row,
 	Select
 } from 'antd';
-import { exec } from 'child_process';
 
 const { Option } = Select;
 

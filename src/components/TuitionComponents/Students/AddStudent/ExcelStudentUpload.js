@@ -98,7 +98,7 @@ class ExcelStudentUpload extends Component {
 		// Reordering every student to send to database
 		const studentObjs = this.getStudentObjects(studentDataJson);
 		addStudent(tuitionId, { students: studentObjs });
-		this.setState({ selectedFile: null,	selectedFileList: [] });
+		this.setState({ selectedFile: null, selectedFileList: [] });
 	}
 
 	validateBatchCode = studentsData => {
@@ -158,7 +158,7 @@ class ExcelStudentUpload extends Component {
 		const areUniqueFieldsValid = this.validateUniqueFields(studentsData);
 		const areCourseCodeValid = this.validateCourseCode(studentsData);
 		const areBatchCodeValid = this.validateBatchCode(studentsData);
-		return isAnyEntryDuplicate || areRequiredFieldsValid || areUniqueFieldsValid || areCourseCodeValid || areBatchCodeValid;
+		return isAnyEntryDuplicate && areRequiredFieldsValid && areUniqueFieldsValid && areCourseCodeValid && areBatchCodeValid;
 	}
 
 	validateUniqueFields = studentsData => {
@@ -166,8 +166,10 @@ class ExcelStudentUpload extends Component {
 		let isValid = true;
 		studentsData.forEach((studentData, index) => {
 			students.forEach(student => {
-				if (student.rollNumber === studentData['Roll Number'] || student.email === studentData['E-Mail']) this.showErrorMessage(`Email or roll number at row ${index + 2} already exists`);
-				isValid = false;
+				if (student.rollNumber === studentData['Roll Number'] || student.email === studentData['E-Mail']) {
+					this.showErrorMessage(`Email or roll number at row ${index + 2} already exists`);
+					isValid = false;
+				}
 			});
 		});
 		return isValid;
