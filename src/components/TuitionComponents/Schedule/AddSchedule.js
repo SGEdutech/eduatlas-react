@@ -167,7 +167,6 @@ class AddSchedule extends Component {
 						label="Day"
 						hasFeedback={true}>
 						{getFieldDecorator('date_' + k, {
-							initialValue: form.getFieldValue('date_' + (k - 1)),
 							rules: [{
 								required: true, message: 'Please choose day!'
 							}]
@@ -182,7 +181,6 @@ class AddSchedule extends Component {
 					<Form.Item
 						label="From Time">
 						{getFieldDecorator('fromTime_' + k, {
-							initialValue: form.getFieldValue('fromTime_' + (k - 1)),
 							rules: [{ required: true, message: 'Please enter dude!' }]
 						})(
 							window.cordova ? (
@@ -203,7 +201,6 @@ class AddSchedule extends Component {
 					<Form.Item
 						label="To Time">
 						{getFieldDecorator('toTime_' + k, {
-							initialValue: form.getFieldValue('toTime_' + (k - 1)),
 							validator: this.validateToTime, message: 'Must be less than From-Time'
 						})(
 							window.cordova ? (
@@ -224,9 +221,7 @@ class AddSchedule extends Component {
 					<Form.Item
 						label="Topic"
 						hasFeedback={true}>
-						{getFieldDecorator('topic_' + k, {
-							initialValue: form.getFieldValue('topic_' + (k - 1))
-						})(
+						{getFieldDecorator('topic_' + k)(
 							<Input />
 						)}
 					</Form.Item>
@@ -235,9 +230,7 @@ class AddSchedule extends Component {
 					<Form.Item
 						label="Faculty"
 						hasFeedback={true}>
-						{getFieldDecorator('faculty_' + k, {
-							initialValue: form.getFieldValue('faculty_' + (k - 1))
-						})(
+						{getFieldDecorator('faculty_' + k)(
 							<Input />
 						)}
 					</Form.Item>
