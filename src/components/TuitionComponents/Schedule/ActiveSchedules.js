@@ -139,7 +139,15 @@ class ActiveSchedules extends Component {
 				{Object.keys(batchWiseSchedulesArr[i]).map(weekNumber => {
 					return (
 						<div key={weekNumber}>
-							<Divider orientation="left"><small className="mx-1">Week {weekNumber}</small><Icon type="arrow-down" /><Button className="mx-1" dataweeknumber={weekNumber} databatchid={batch._id} onClick={this.openModal} type="primary" size="small" ghost>Clone</Button></Divider>
+							<Divider orientation="left">
+								<small className="mx-1">Week {weekNumber}</small>
+								<Icon type="arrow-down" />
+								{Boolean(isAttendance) === false && (
+									<Button className="mx-1" dataweeknumber={weekNumber} databatchid={batch._id} onClick={this.openModal} type="primary" size="small" ghost>
+										Clone
+									</Button>
+								)}
+							</Divider>
 							<Row gutter={16}>
 								{batchWiseSchedulesArr[i][weekNumber].map(({ _id, date, faculty, topic, fromTime, toTime, batchCode, courseId, batchId }) => (
 									<Col key={_id} {...cardColLayout}>
