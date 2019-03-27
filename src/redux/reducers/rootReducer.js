@@ -4,6 +4,7 @@ import batch from './batch';
 import course from './course';
 import discount from './discount';
 import messageInfo from './messageInfo';
+import navigation from './navigation';
 import notification from './notification';
 import request from './request';
 import resource from './resource';
@@ -18,6 +19,7 @@ export default combineReducers({
 	course,
 	discount,
 	messageInfo,
+	navigation,
 	notification,
 	request,
 	resource,

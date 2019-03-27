@@ -10,24 +10,26 @@ import Tab from '@material-ui/core/Tab';
 import { deleteCourse } from '../../redux/actions/courseActions';
 import { deleteBatch } from '../../redux/actions/batchActions';
 import { deleteDiscount } from '../../redux/actions/discountActions';
+import { changeTabs } from '../../redux/actions/navigationActions';
 
 import Course from './Configure/Course';
 import Batch from './Configure/Batch';
 import Discount from './Configure/Discount';
 
 class Configure extends Component {
-	state = { value: 0 };
-
-	handleChange = (e, value) => this.setState({ value });
+	handleChange = (e, value) => {
+		const { navigation: { primaryTabsValue } } = this.props;
+		this.props.changeTabs(primaryTabsValue, value);
+	};
 
 	render() {
-		const { value } = this.state;
+		const { navigation: { secondaryTabsValue } } = this.props;
 		return (
 			<>
 				<AppBar color="default" className="z101">
 					<Tabs
 						className="tabBar"
-						value={value}
+						value={secondaryTabsValue}
 						onChange={this.handleChange}
 						indicatorColor="primary"
 						textColor="primary"
@@ -38,9 +40,9 @@ class Configure extends Component {
 						<Tab label="Discounts" />
 					</Tabs>
 				</AppBar>
-				{value === 0 && <Course messageInfo={this.props.messageInfo} coursesInfo={this.props.course} deleteCourse={this.props.deleteCourse} />}
-				{value === 1 && <Batch messageInfo={this.props.messageInfo} batchesInfo={this.props.batch} deleteBatch={this.props.deleteBatch} />}
-				{value === 2 && <Discount messageInfo={this.props.messageInfo} discountsInfo={this.props.discount} deleteDiscount={this.props.deleteDiscount} />}
+				{secondaryTabsValue === 0 && <Course messageInfo={this.props.messageInfo} coursesInfo={this.props.course} deleteCourse={this.props.deleteCourse} />}
+				{secondaryTabsValue === 1 && <Batch messageInfo={this.props.messageInfo} batchesInfo={this.props.batch} deleteBatch={this.props.deleteBatch} />}
+				{secondaryTabsValue === 2 && <Discount messageInfo={this.props.messageInfo} discountsInfo={this.props.discount} deleteDiscount={this.props.deleteDiscount} />}
 			</>
 		);
 	}
@@ -52,11 +54,12 @@ function mapStateToProps(state) {
 		batch: state.batch,
 		course: state.course,
 		messageInfo: state.messageInfo,
+		navigation: state.navigation,
 		student: state.student,
 		discount: state.discount
 	};
 }
 
-export default connect(mapStateToProps, { deleteCourse, deleteBatch, deleteDiscount })(Configure);
+export default connect(mapStateToProps, { changeTabs, deleteCourse, deleteBatch, deleteDiscount })(Configure);
 
 // boxShadow: '0px -2px 4px -1px rgba(0,0,0,0.2), 0px -4px 5px 0px rgba(0,0,0,0.14), 0px -1px 10px 0px rgba(0,0,0,0.12)'

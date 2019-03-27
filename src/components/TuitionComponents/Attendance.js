@@ -8,20 +8,22 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
 import ActiveSchedules from './Schedule/ActiveSchedules';
+import { changeTabs } from '../../redux/actions/navigationActions';
 
 class Attendance extends Component {
-	state = { value: 0 };
-
-	handleChange = (e, value) => this.setState({ value });
+	handleChange = (e, value) => {
+		const { navigation: { primaryTabsValue } } = this.props;
+		this.props.changeTabs(primaryTabsValue, value);
+	};
 
 	render() {
-		const { value } = this.state;
+		const { navigation: { secondaryTabsValue } } = this.props;
 		return (
 			<>
 				<AppBar color="default" className="z101">
 					<Tabs
 						className="tabBar"
-						value={value}
+						value={secondaryTabsValue}
 						onChange={this.handleChange}
 						indicatorColor="primary"
 						textColor="primary"
@@ -29,14 +31,14 @@ class Attendance extends Component {
 						<Tab label="All" />
 					</Tabs>
 				</AppBar>
-				{value === 0 && <ActiveSchedules isAttendance={true} />}
+				{secondaryTabsValue === 0 && <ActiveSchedules isAttendance={true} />}
 			</>
 		);
 	}
 }
 
 function mapStateToProps(state) {
-	return { schedule: state.schedule };
+	return { navigation: state.navigation, schedule: state.schedule };
 }
 
-export default connect(mapStateToProps)(Attendance);
+export default connect(mapStateToProps, { changeTabs })(Attendance);

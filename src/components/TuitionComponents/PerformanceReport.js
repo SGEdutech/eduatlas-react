@@ -13,20 +13,23 @@ import AddScore from './PerformanceReport/AddScore';
 import PerformanceEvalReport from './PerformanceReport/PerformanceEvalReport';
 import Test from './PerformanceReport/Test';
 
-class PerformanceReport extends Component {
-	state = { value: 0 };
+import { changeTabs } from '../../redux/actions/navigationActions';
 
-	handleChange = (e, value) => this.setState({ value });
+class PerformanceReport extends Component {
+	handleChange = (e, value) => {
+		const { navigation: { primaryTabsValue } } = this.props;
+		this.props.changeTabs(primaryTabsValue, value);
+	};
 
 	render() {
 		const { addTest, batches, deleteTest, editTest, messageInfo, students, tests } = this.props;
-		const { value } = this.state;
+		const { navigation: { secondaryTabsValue } } = this.props;
 		return (
 			<>
 				<AppBar color="default" className="z101">
 					<Tabs
 						className="tabBar"
-						value={value}
+						value={secondaryTabsValue}
 						onChange={this.handleChange}
 						indicatorColor="primary"
 						textColor="primary"
@@ -36,9 +39,9 @@ class PerformanceReport extends Component {
 						<Tab label="PER" />
 					</Tabs>
 				</AppBar>
-				{value === 0 && <Test addTest={addTest} batches={batches} deleteTest={deleteTest} editTest={editTest} messageInfo={messageInfo} tests={tests} />}
-				{value === 1 && <AddScore batches={batches} editTest={editTest} students={students} tests={tests} />}
-				{value === 2 && <PerformanceEvalReport batches={batches} students={students} tests={tests} />}
+				{secondaryTabsValue === 0 && <Test addTest={addTest} batches={batches} deleteTest={deleteTest} editTest={editTest} messageInfo={messageInfo} tests={tests} />}
+				{secondaryTabsValue === 1 && <AddScore batches={batches} editTest={editTest} students={students} tests={tests} />}
+				{secondaryTabsValue === 2 && <PerformanceEvalReport batches={batches} students={students} tests={tests} />}
 			</>
 		);
 	}
@@ -48,12 +51,13 @@ function mapStateToProps(state) {
 	return {
 		batches: state.batch.batches,
 		messageInfo: state.messageInfo,
+		navigation: state.navigation,
 		schedule: state.schedule,
 		students: state.student.students,
 		tests: state.test.tests
 	};
 }
 
-export default connect(mapStateToProps, { addTest, deleteTest, editTest })(PerformanceReport);
+export default connect(mapStateToProps, { addTest,changeTabs, deleteTest, editTest })(PerformanceReport);
 
 

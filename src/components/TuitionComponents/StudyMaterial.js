@@ -7,18 +7,20 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
+import { changeTabs } from '../../redux/actions/navigationActions';
 import { addResource, deleteResource } from '../../redux/actions/resourceActions';
 
 import AddStudyMaterial from './StudyMaterial/AddStudyMaterial';
 import ViewOrDeleteMaterials from './StudyMaterial/ViewOrDeleteMaterials';
 
 class StudyMaterial extends Component {
-	state = { value: 0 };
-
-	handleChange = (e, value) => this.setState({ value });
+	handleChange = (e, value) => {
+		const { navigation: { primaryTabsValue } } = this.props;
+		this.props.changeTabs(primaryTabsValue, value);
+	};
 
 	render() {
-		const { value } = this.state;
+		const { navigation: { secondaryTabsValue } } = this.props;
 		const { addResource, batches, deleteResource, messageInfo, resources, students } = this.props;
 
 		return (
@@ -26,7 +28,7 @@ class StudyMaterial extends Component {
 				<AppBar color="default" className="z101">
 					<Tabs
 						className="tabBar"
-						value={value}
+						value={secondaryTabsValue}
 						onChange={this.handleChange}
 						indicatorColor="primary"
 						textColor="primary"
@@ -35,8 +37,8 @@ class StudyMaterial extends Component {
 						<Tab label="Add" />
 					</Tabs>
 				</AppBar>
-				{value === 0 && <ViewOrDeleteMaterials deleteResource={deleteResource} messageInfo={messageInfo} resources={resources} />}
-				{value === 1 && <AddStudyMaterial addResource={addResource} batches={batches} resources={resources} showDelete={true} students={students} />}
+				{secondaryTabsValue === 0 && <ViewOrDeleteMaterials deleteResource={deleteResource} messageInfo={messageInfo} resources={resources} />}
+				{secondaryTabsValue === 1 && <AddStudyMaterial addResource={addResource} batches={batches} resources={resources} showDelete={true} students={students} />}
 			</>
 		);
 	}
@@ -45,11 +47,12 @@ class StudyMaterial extends Component {
 
 function mapStateToProps(state) {
 	return {
-		messageInfo: state.messageInfo,
-		resources: state.resource.resources,
 		batches: state.batch.batches,
+		messageInfo: state.messageInfo,
+		navigation: state.navigation,
+		resources: state.resource.resources,
 		students: state.student.students
 	};
 }
 
-export default connect(mapStateToProps, { addResource, deleteResource })(StudyMaterial);
+export default connect(mapStateToProps, { addResource, changeTabs, deleteResource })(StudyMaterial);

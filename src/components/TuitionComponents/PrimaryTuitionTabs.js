@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { useSwipeable, Swipeable } from 'react-swipeable';
 
 import AppBar from '@material-ui/core/AppBar';
@@ -13,41 +14,39 @@ import Communicator from './Communicator';
 import PerformanceReport from './PerformanceReport';
 import StudyMaterial from './StudyMaterial';
 
-class PrimaryTuitionTabs extends Component {
-	state = { value: 0 };
+import { changeTabs } from '../../redux/actions/navigationActions';
 
-	handleChange = (e, value) => this.setState({ value });
+class PrimaryTuitionTabs extends Component {
+	handleChange = (e, value) => this.props.changeTabs(value, 0);
 
 	leftSwipe = () => {
-		this.setState(prevState => {
-			const minValue = 0;
-			const maxValue = 5;
-			let value = prevState.value + 1;
-			if (value < minValue) value = maxValue;
-			if (value > maxValue) value = minValue;
-			return { value };
-		});
+		const { changeTabs, navigation: { primaryTabsValue } } = this.props;
+		const minValue = 0;
+		const maxValue = 5;
+		let newPrimaryTabsValue = primaryTabsValue + 1;
+		if (newPrimaryTabsValue < minValue) newPrimaryTabsValue = maxValue;
+		if (newPrimaryTabsValue > maxValue) newPrimaryTabsValue = minValue;
+		changeTabs(newPrimaryTabsValue, 0);
 	}
 
 	rightSwipe = () => {
-		this.setState(prevState => {
-			const minValue = 0;
-			const maxValue = 5;
-			let value = prevState.value - 1;
-			if (value < minValue) value = maxValue;
-			if (value > maxValue) value = minValue;
-			return { value };
-		});
+		const { changeTabs, navigation: { primaryTabsValue } } = this.props;
+		const minValue = 0;
+		const maxValue = 5;
+		let newPrimaryTabsValue = primaryTabsValue - 1;
+		if (newPrimaryTabsValue < minValue) newPrimaryTabsValue = maxValue;
+		if (newPrimaryTabsValue > maxValue) newPrimaryTabsValue = minValue;
+		changeTabs(newPrimaryTabsValue, 0);
 	}
 
 	render() {
-		const { value } = this.state;
+		const { navigation: { primaryTabsValue } } = this.props;
 		return (
 			<>
 				<AppBar position="fixed" style={{ top: 40 }} className="z101">
 					<Tabs
 						style={{ background: '#f6f6f6' }}
-						value={value}
+						value={primaryTabsValue}
 						onChange={this.handleChange}
 						indicatorColor="primary"
 						textColor="primary"
@@ -63,12 +62,12 @@ class PrimaryTuitionTabs extends Component {
 				</AppBar>
 				<Swipeable delta={20} onSwipedLeft={this.leftSwipe} onSwipedRight={this.rightSwipe} style={{ minHeight: '80vh' }}>
 					<div className="py-3">
-						{value === 0 && <Configure />}
-						{value === 1 && <Students />}
-						{value === 2 && <Communicator />}
-						{value === 3 && <Schedule />}
-						{value === 4 && <Attendance />}
-						{value === 5 && <PerformanceReport />}
+						{primaryTabsValue === 0 && <Configure />}
+						{primaryTabsValue === 1 && <Students />}
+						{primaryTabsValue === 2 && <Communicator />}
+						{primaryTabsValue === 3 && <Schedule />}
+						{primaryTabsValue === 4 && <Attendance />}
+						{primaryTabsValue === 5 && <PerformanceReport />}
 						{/* {value === 6 && <StudyMaterial />} */}
 					</div>
 				</Swipeable>
@@ -77,4 +76,9 @@ class PrimaryTuitionTabs extends Component {
 	}
 }
 
-export default PrimaryTuitionTabs;
+function mapStateToProps(state) {
+	return { navigation: state.navigation };
+}
+
+export default connect(mapStateToProps, { changeTabs })(PrimaryTuitionTabs);
+

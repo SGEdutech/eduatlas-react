@@ -11,9 +11,10 @@ import Tab from '@material-ui/core/Tab';
 
 import { Modal } from 'antd';
 
-import { addStudent, deleteStudent } from '../../redux/actions/studentActions';
-import { deleteRequest } from '../../redux/actions/requestActions';
 import { addStudentInBatch } from '../../redux/actions/batchActions';
+import { changeTabs } from '../../redux/actions/navigationActions';
+import { deleteRequest } from '../../redux/actions/requestActions';
+import { addStudent, deleteStudent } from '../../redux/actions/studentActions';
 
 import Active from './Students/Active';
 import AddStudent from './Students/AddStudent';
@@ -25,9 +26,10 @@ import getTuitionIdFromUrl from '../../scripts/getTuitionIdFromUrl';
 const confirm = Modal.confirm;
 
 class Students extends Component {
-	state = { value: 0 };
-
-	handleChange = (e, value) => this.setState({ value });
+	handleChange = (e, value) => {
+		const { navigation: { primaryTabsValue } } = this.props;
+		this.props.changeTabs(primaryTabsValue, value);
+	};
 
 	showDeleteConfirm = studentId => {
 		const { deleteRequest, match: { url } } = this.props;
@@ -45,14 +47,14 @@ class Students extends Component {
 	};
 
 	render() {
-		const { value } = this.state;
+		const { navigation: { secondaryTabsValue } } = this.props;
 		const { request, addStudent, student, batch, course, deleteStudent, messageInfo, addStudentInBatch } = this.props;
 		return (
 			<>
 				<AppBar color="default" className="z101">
 					<Tabs
 						className="tabBar"
-						value={value}
+						value={secondaryTabsValue}
 						onChange={this.handleChange}
 						indicatorColor="primary"
 						textColor="primary"
@@ -63,10 +65,10 @@ class Students extends Component {
 						<Tab label="Add" />
 					</Tabs>
 				</AppBar>
-				{value === 0 && <Requests students={student.students} requests={request.requests} addStudent={addStudent} deleteRequest={this.showDeleteConfirm} batches={batch.batches} courses={course.courses} />}
-				{value === 1 && <Active batches={batch.batches} messageInfo={messageInfo} studentsInfo={student} deleteStudent={deleteStudent} />}
-				{value === 2 && <Pending addStudentInBatch={addStudentInBatch} batches={batch.batches} messageInfo={messageInfo} studentsInfo={student} />}
-				{value === 3 && <AddStudent students={student.students} />}
+				{secondaryTabsValue === 0 && <Requests students={student.students} requests={request.requests} addStudent={addStudent} deleteRequest={this.showDeleteConfirm} batches={batch.batches} courses={course.courses} />}
+				{secondaryTabsValue === 1 && <Active batches={batch.batches} messageInfo={messageInfo} studentsInfo={student} deleteStudent={deleteStudent} />}
+				{secondaryTabsValue === 2 && <Pending addStudentInBatch={addStudentInBatch} batches={batch.batches} messageInfo={messageInfo} studentsInfo={student} />}
+				{secondaryTabsValue === 3 && <AddStudent students={student.students} />}
 			</>
 		);
 	}
@@ -77,10 +79,11 @@ function mapStateToProps(state) {
 		batch: state.batch,
 		course: state.course,
 		messageInfo: state.messageInfo,
+		navigation: state.navigation,
 		student: state.student,
 		discount: state.discount,
 		request: state.request
 	};
 }
 
-export default compose(connect(mapStateToProps, { addStudent, deleteStudent, deleteRequest, addStudentInBatch }), withRouter)(Students);
+export default compose(connect(mapStateToProps, { addStudent, changeTabs, deleteStudent, deleteRequest, addStudentInBatch }), withRouter)(Students);

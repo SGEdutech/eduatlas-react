@@ -8,24 +8,26 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
 import { deleteSchedule } from '../../redux/actions/scheduleActions';
+import { changeTabs } from '../../redux/actions/navigationActions';
 
 import AddSchedule from './Schedule/AddSchedule';
 import ActiveSchedules from './Schedule/ActiveSchedules';
 
 
 class Schedule extends Component {
-	state = { value: 0 };
-
-	handleChange = (e, value) => this.setState({ value });
+	handleChange = (e, value) => {
+		const { navigation: { primaryTabsValue } } = this.props;
+		this.props.changeTabs(primaryTabsValue, value);
+	};
 
 	render() {
-		const { value } = this.state;
+		const { navigation: { secondaryTabsValue } } = this.props;
 		return (
 			<>
 				<AppBar color="default" className="z101">
 					<Tabs
 						className="tabBar"
-						value={value}
+						value={secondaryTabsValue}
 						onChange={this.handleChange}
 						indicatorColor="primary"
 						textColor="primary"
@@ -34,15 +36,15 @@ class Schedule extends Component {
 						<Tab label="Add" />
 					</Tabs>
 				</AppBar>
-				{value === 0 && <ActiveSchedules />}
-				{value === 1 && <AddSchedule />}
+				{secondaryTabsValue === 0 && <ActiveSchedules />}
+				{secondaryTabsValue === 1 && <AddSchedule />}
 			</>
 		);
 	}
 }
 
 function mapStateToProps(state) {
-	return { schedule: state.schedule };
+	return { navigation: state.navigation, schedule: state.schedule };
 }
 
-export default connect(mapStateToProps, { deleteSchedule })(Schedule);
+export default connect(mapStateToProps, { changeTabs, deleteSchedule })(Schedule);
