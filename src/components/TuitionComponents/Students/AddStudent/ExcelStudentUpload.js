@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 
 import { parse } from 'papaparse';
 
 import addStudentTemplate from '../../../../excel-templates/add-student.csv';
+
+import getTuitionIdFromUrl from '../../../../scripts/getTuitionIdFromUrl';
 
 import {
 	Button,
@@ -27,6 +30,24 @@ class ExcelStudentUpload extends Component {
 	}
 
 	dummyRequest = ({ onSuccess }) => setTimeout(() => onSuccess('ok'), 0);
+
+	getStudentObjects = studentsData => {
+		const { batches, courses } = this.props;
+		return studentsData.map(student => {
+			const courseInfo = courses.find(course => course.code === student['Course Code']);
+			const studentObj = {
+				email: student['E-Mail'],
+				name: student['Name'],
+				payments: [{ courseCode: courseInfo.code, courseFee: courseInfo.fees }],
+				rollNumber: student['Roll Number']
+			};
+			const batchCode = student['Batch Code(optional)'];
+			if (Boolean(batchCode) === false) return studentObj;
+			const batchInfo = batches.find(batch => batch.code === batchCode);
+			studentObj.batchInfo = { batchId: batchInfo._id, courseId: courseInfo._id };
+			return studentObj;
+		});
+	}
 
 	handleEmptyLastObj = studentsData => {
 		const lastStudentData = studentsData[studentsData.length - 1];
@@ -64,14 +85,19 @@ class ExcelStudentUpload extends Component {
 		notification.error({
 			description: message,
 			duration: 0,
-			message: 'Student can\'t be added',
+			message: 'Student can\'t be added'
 		});
 	}
 
 	validateAndAddStudents = studentDataJson => {
+		const { addStudent, match: { url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
 		this.calibrateCourseAndBatchCodeCasing(studentDataJson);
 		const isValid = this.validateStudentsData(studentDataJson);
 		if (isValid === false) return;
+		// Reordering every student to send to database
+		const studentObjs = this.getStudentObjects(studentDataJson);
+		addStudent(tuitionId, { students: studentObjs });
 		this.setState({ selectedFile: null,	selectedFileList: [] });
 	}
 
@@ -111,6 +137,7 @@ class ExcelStudentUpload extends Component {
 				isValid = false;
 			}
 		});
+		return isValid;
 	}
 
 	validateRequiredFields = studentsData => {
@@ -179,5 +206,5 @@ class ExcelStudentUpload extends Component {
 	}
 }
 
-export default ExcelStudentUpload;
+export default withRouter(ExcelStudentUpload);
 
