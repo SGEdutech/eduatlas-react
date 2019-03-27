@@ -7,8 +7,8 @@ import ExcelAttendanceUpload from './AttendanceDetails/ExcelAttendanceUpload';
 import Navbar from '../../Navbar';
 
 import { editSchedule } from '../../../redux/actions/scheduleActions';
-
 import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
+import fallBackDp from '../../../fallback-dp.svg';
 
 import {
 	Avatar,
@@ -97,7 +97,7 @@ class AttendanceDetails extends Component {
 										]
 									}>
 									<List.Item.Meta
-										avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+										avatar={<Avatar src={fallBackDp} />}
 										title={student.name}
 										description={'Roll Number: ' + student.rollNumber} />
 								</List.Item>

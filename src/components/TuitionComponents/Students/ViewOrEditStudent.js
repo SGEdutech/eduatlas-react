@@ -21,6 +21,8 @@ import sanatizeFormObj from '../../../scripts/sanatize-form-obj';
 // Actions
 import { addStudentInBatch, deleteStudentInBatch } from '../../../redux/actions/batchActions';
 
+import fallBackDp from '../../../fallback-dp.svg';
+
 import {
 	Avatar,
 	Button,
@@ -91,7 +93,7 @@ class ViewOrEditStudent extends Component {
 					<Row gutter={16}>
 						<Col className="pt-3">
 							<Meta
-								avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+								avatar={<Avatar src={fallBackDp} />}
 								title={<span className="text-capitalize" style={{ fontWeight: 'bold' }}>{name}</span>}
 								description={<small>EA ID: DWAD2324DAD</small>}
 							/>

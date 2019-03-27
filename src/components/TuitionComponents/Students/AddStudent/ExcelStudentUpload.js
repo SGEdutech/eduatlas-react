@@ -72,7 +72,7 @@ class ExcelStudentUpload extends Component {
 		this.calibrateCourseAndBatchCodeCasing(studentDataJson);
 		const isValid = this.validateStudentsData(studentDataJson);
 		if (isValid === false) return;
-		this.setState({ selectedFile: null,	selectedFileList: [] });
+		this.setState({ selectedFile: null, selectedFileList: [] });
 	}
 
 	validateBatchCode = studentsData => {
@@ -149,32 +149,35 @@ class ExcelStudentUpload extends Component {
 	render() {
 		const { selectedFileList } = this.state;
 		return (
-			<Col span={24}>
-				<Row align="middle" className="my-1" justify="center" type="flex">
+			<>
+				<Col className="my-1">
 					<a href={addStudentTemplate} download>
 						<Button block
 							type="primary">
 							Download Sample File
 						</Button>
 					</a>
+				</Col>
+				<Row type="flex" justify="center">
+					<Col className="my-1">
+						<Upload
+							accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+							customRequest={this.dummyRequest}
+							fileList={this.state.selectedFileList}
+							onChange={this.onChange}>
+							<Button block><Icon type="upload" /> Choose File</Button>
+						</Upload>
+					</Col>
 				</Row>
-				<Row align="middle" className="my-1" justify="center" type="flex">
-					<Upload
-						customRequest={this.dummyRequest}
-						fileList={this.state.selectedFileList}
-						onChange={this.onChange}>
-						<Button block><Icon type="upload" /> Choose File</Button>
-					</Upload>
-				</Row>
-				<Row align="middle" className="my-1" justify="center" type="flex">
-					<Button
+				<Col className="my-1" >
+					<Button block
 						disabled={selectedFileList.length === 0}
 						onClick={this.parseCsv}
 						type="primary">
 						Save
 					</Button>
-				</Row>
-			</Col>
+				</Col>
+			</>
 		);
 	}
 }
