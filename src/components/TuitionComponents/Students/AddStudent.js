@@ -30,21 +30,23 @@ const colLayout = {
 	lg: 12
 };
 
+const initialState = {
+	selectedCourseIndex: -1,
+	modeOfPayment: 'cash',
+	courseCode: '',
+	baseFee: 0,
+	discountInfo: {
+		code: '',
+		amount: 0,
+		isPercent: false
+	},
+	additionalDiscount: 0,
+	gstPercentage: 0,
+	feeCollected: 0
+};
+
 class AddStudent extends Component {
-	state = {
-		selectedCourseIndex: -1,
-		modeOfPayment: 'cash',
-		couseCode: '',
-		baseFee: 0,
-		discountInfo: {
-			code: '',
-			amount: 0,
-			isPercent: false
-		},
-		additionalDiscount: 0,
-		gstPercentage: 0,
-		feeCollected: 0
-	};
+	state = initialState;
 
 	validateRollNumber = (rule, rollNumber = '', callback) => {
 		const { students } = this.props;
@@ -232,6 +234,7 @@ class AddStudent extends Component {
 			} else {
 				this.initAddStudent(values);
 			}
+			this.setState(initialState);
 			resetFields();
 		});
 	}
@@ -510,7 +513,7 @@ class AddStudent extends Component {
 						<Form.Item
 							label="Course Code">
 							{getFieldDecorator('courseCode', { initialValue: this.state.courseCode })(
-								<Input readOnly={true} />
+								<Input readOnly />
 							)}
 						</Form.Item>
 					</Col>
