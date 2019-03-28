@@ -138,7 +138,7 @@ class AddSchedule extends Component {
 		});
 	}
 
-	addSchedule = () => {
+	cloneSchedule = () => {
 		const { form } = this.props;
 		// can use data-binding to get
 		const keys = form.getFieldValue('keys');
@@ -288,7 +288,7 @@ class AddSchedule extends Component {
 						</Col>
 						<Col span={24}>
 							<Form.Item>
-								<Button type="dashed" block onClick={this.addSchedule}>
+								<Button type="dashed" block onClick={this.cloneSchedule}>
 									<Icon type="plus" /> Add More Schedule
 								</Button>
 							</Form.Item>

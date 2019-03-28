@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 
 import getTuitionIdFromUrl from '../../../../scripts/getTuitionIdFromUrl';
@@ -25,7 +25,7 @@ function CloneSchedules(props) {
 
 	const handleSubmit = e => {
 		e.preventDefault();
-		const { addSchedule, batchId, form, match: { url }, schedules, weekNumber } = props;
+		const { addSchedule, batchId, form, form: { resetFields }, hideModal, match: { url }, schedules, weekNumber } = props;
 		const tuitionId = getTuitionIdFromUrl(url);
 		form.validateFieldsAndScroll((err, values) => {
 			if (err) {
@@ -46,6 +46,8 @@ function CloneSchedules(props) {
 			});
 			schedulesToClone.forEach(schedule => schedule.date.add(weekDiffrence, 'w'));
 			addSchedule(tuitionId, { batches: values.batches, schedules: schedulesToClone });
+			hideModal();
+			resetFields();
 		});
 	};
 

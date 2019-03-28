@@ -205,7 +205,7 @@ class ActiveSchedules extends Component {
 					onCancel={this.hideModal}
 					title="Clone Schedule"
 					visible={modalVisible}>
-					<CloneSchedules addSchedule={addSchedule} batches={batches} batchId={modalBatchId} getBatchWiseSchedule={this.getBatchWiseSchedule} schedules={schedules} weekNumber={modalWeekNumber} />
+					<CloneSchedules addSchedule={addSchedule} batches={batches} batchId={modalBatchId} getBatchWiseSchedule={this.getBatchWiseSchedule} hideModal={this.hideModal} schedules={schedules} weekNumber={modalWeekNumber} />
 				</Modal>
 			</div>
 		);
