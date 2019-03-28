@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 
+import { schemeAndAuthority } from '../../../../config.json';
 import { parse } from 'papaparse';
-
-import addStudentTemplate from '../../../../excel-templates/add-student.csv';
 
 import getTuitionIdFromUrl from '../../../../scripts/getTuitionIdFromUrl';
 
@@ -180,7 +179,7 @@ class ExcelStudentUpload extends Component {
 		return (
 			<>
 				<Col className="my-1">
-					<a href={addStudentTemplate} download>
+					<a href={`${schemeAndAuthority}/excel-template/add-student`} download="add-student.csv">
 						<Button block
 							type="primary">
 							Download Sample File

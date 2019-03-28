@@ -13,7 +13,7 @@ import {
 } from 'antd';
 
 import getTuitionIdFromUrl from '../../../../scripts/getTuitionIdFromUrl';
-import markAttendanceTemplate from '../../../../excel-templates/mark-attendance.csv';
+import { schemeAndAuthority } from '../../../../config.json';
 
 class ExcelAttendanceUpload extends Component {
 	state = {
@@ -107,7 +107,7 @@ class ExcelAttendanceUpload extends Component {
 		return (
 			<>
 				<Col className="my-1">
-					<a href={markAttendanceTemplate} download>
+					<a href={`${schemeAndAuthority}/excel-template/mark-attendance`} download="mark-attendance.csv">
 						<Button block
 							type="primary">
 							Download Sample File
