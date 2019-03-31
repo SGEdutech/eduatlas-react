@@ -1,5 +1,8 @@
 // TODO: Sort this mess out
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
+
+import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
 
 import {
 	Button,
@@ -113,15 +116,16 @@ class AddScore extends Component {
 	}
 
 	handleSaveBtnClick = () => {
-		const { editTest } = this.props;
+		const { editTest, match: { url } } = this.props;
 		const { currentTestStudents } = this.state;
+		const tuitionId = getTuitionIdFromUrl(url);
 		const reports = currentTestStudents.map(student => {
 			return {
 				studentId: student._id,
 				marksObtained: student.score || 0
 			};
 		});
-		editTest(this.currentTestId, { reports });
+		editTest(tuitionId, this.currentTestId, { reports });
 	}
 
 	static getDerivedStateFromProps(nextProps, prevState) {
@@ -267,5 +271,5 @@ class EditableCell extends Component {
 	}
 }
 
-export default AddScore;
+export default withRouter(AddScore);
 
