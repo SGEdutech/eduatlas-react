@@ -263,7 +263,7 @@ class AddStudyMaterial extends Component {
 							<Row type="flex" justify="end">
 								<Form.Item>
 									<Button type="primary" htmlType="submit">
-										{window.cordova ? 'Upload And Share' : 'Select File'}
+										{window.cordova ? 'Select File' : 'Upload And Share'}
 									</Button>
 								</Form.Item>
 							</Row>
