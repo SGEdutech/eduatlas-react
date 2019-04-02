@@ -20,7 +20,6 @@ import {
 	Select,
 	Upload
 } from 'antd';
-import { SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION } from 'constants';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -41,38 +40,6 @@ class AddStudyMaterial extends Component {
 		selectedFile: null,
 		resourceType: null
 	};
-
-	fileUploadPlugin = fileEntry => {
-		const { form, form: { resetFields }, match: { url } } = this.props;
-		const tuitionId = getTuitionIdFromUrl(url);
-		const fileURL = fileEntry.toURL();
-		SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION(fileURL);
-
-		const success = function (r) {
-			resetFields();
-		};
-
-		const fail = function (error) {
-			alert('An error has occurred: Code = ' + error.code);
-		};
-
-		form.validateFieldsAndScroll((err, values) => {
-			if (err) {
-				console.error(err);
-				return;
-			}
-			sanatizeFormObj(values);
-			const options = new FileUploadOptions();
-			options.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1);
-			options.fiileKey = 'file';
-			options.mimeType = 'text/plain';
-			options.httpMethod = 'POST';
-			options.params = values;
-
-			const ft = new FileTransfer();
-			ft.upload(fileURL, encodeURI(`${schemeAndAuthority}/tuition/${tuitionId}/resource`), success, fail, options);
-		});
-	}
 
 	filterOptions = (input, option) => {
 		if (option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0) return true;
@@ -107,9 +74,35 @@ class AddStudyMaterial extends Component {
 	}
 
 	handleCordovaUpload = () => {
-		window.plugins.mfilechooser.open([], uri => {
-			window.resolveLocalFileSystemURL('file://' + uri, fileEntry => this.fileUploadPlugin(fileEntry), err => alert(JSON.stringify(err)));
-		}, error => alert('Low Level Error' + error));
+		const { form, form: { resetFields }, match: { url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
+		const successCb = data => {
+			alert(JSON.stringify(data));
+			resetFields();
+		};
+		const errorCb = err => alert(err);
+		form.validateFieldsAndScroll((err, values) => {
+			window.plugins.mfilechooser.open([], uri => {
+				window.resolveLocalFileSystemURL('file://' + uri, fileEntry => {
+					this.fileUploadPlugin(fileEntry);
+					const fileURL = fileEntry.toURL();
+					if (err) {
+						console.error(err);
+						return;
+					}
+					sanatizeFormObj(values);
+					const opts = new FileUploadOptions();
+					opts.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1);
+					opts.fiileKey = 'file';
+					opts.mimeType = 'text/plain';
+					opts.httpMethod = 'POST';
+					opts.params = values;
+
+					const ft = new FileTransfer();
+					ft.upload(fileURL, encodeURI(`${schemeAndAuthority}/tuition/${tuitionId}/resource`), successCb, errorCb, opts);
+				}, errorCb);
+			}, errorCb);
+		});
 	}
 
 	handleStudentChange = selectedStudents => this.setState({ selectedStudents });
