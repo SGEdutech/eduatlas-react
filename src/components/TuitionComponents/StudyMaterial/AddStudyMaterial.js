@@ -1,3 +1,4 @@
+/* global FileUploadOptions, FileTransfer */
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
@@ -6,6 +7,8 @@ import StudentSelector from '../Communicator/NewAnnouncement/StudentSelector';
 
 import sanatizeFormObj from '../../../scripts/sanatize-form-obj';
 import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
+
+import { schemeAndAuthority } from '../../../config.json';
 
 import {
 	Button,
@@ -17,6 +20,7 @@ import {
 	Select,
 	Upload
 } from 'antd';
+import { SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION } from 'constants';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -38,6 +42,38 @@ class AddStudyMaterial extends Component {
 		resourceType: null
 	};
 
+	fileUploadPlugin = fileEntry => {
+		const { form, form: { resetFields }, match: { url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
+		const fileURL = fileEntry.toURL();
+		SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION(fileURL);
+
+		const success = function (r) {
+			resetFields();
+		};
+
+		const fail = function (error) {
+			alert('An error has occurred: Code = ' + error.code);
+		};
+
+		form.validateFieldsAndScroll((err, values) => {
+			if (err) {
+				console.error(err);
+				return;
+			}
+			sanatizeFormObj(values);
+			const options = new FileUploadOptions();
+			options.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1);
+			options.fiileKey = 'file';
+			options.mimeType = 'text/plain';
+			options.httpMethod = 'POST';
+			options.params = values;
+
+			const ft = new FileTransfer();
+			ft.upload(fileURL, encodeURI(`${schemeAndAuthority}/tuition/${tuitionId}/resource`), success, fail, options);
+		});
+	}
+
 	filterOptions = (input, option) => {
 		if (option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0) return true;
 	}
@@ -53,16 +89,7 @@ class AddStudyMaterial extends Component {
 		setFieldsValue({ students: studentEmailsOfSelectedBatch });
 	}
 
-	handleStudentChange = selectedStudents => this.setState({ selectedStudents });
-
-	handleSelectAll = isChecked => {
-		const { form: { setFieldsValue }, students } = this.props;
-		const allStudentsEmail = students.map(student => student.email);
-		isChecked ? setFieldsValue({ students: allStudentsEmail }) : setFieldsValue({ students: [] });
-	}
-
-	handleSubmit = e => {
-		e.preventDefault();
+	handleBrowserUpload = () => {
 		const { addResource, form, form: { resetFields }, match: { url } } = this.props;
 		const { selectedFile } = this.state;
 		const tuitionId = getTuitionIdFromUrl(url);
@@ -77,6 +104,29 @@ class AddStudyMaterial extends Component {
 			resetFields();
 			this.setState({ selectedFile: null });
 		});
+	}
+
+	handleCordovaUpload = () => {
+		window.plugins.mfilechooser.open([], uri => {
+			window.resolveLocalFileSystemURL('file://' + uri, fileEntry => this.fileUploadPlugin(fileEntry), err => alert(JSON.stringify(err)));
+		}, error => alert('Low Level Error' + error));
+	}
+
+	handleStudentChange = selectedStudents => this.setState({ selectedStudents });
+
+	handleSelectAll = isChecked => {
+		const { form: { setFieldsValue }, students } = this.props;
+		const allStudentsEmail = students.map(student => student.email);
+		isChecked ? setFieldsValue({ students: allStudentsEmail }) : setFieldsValue({ students: [] });
+	}
+
+	handleSubmit = e => {
+		e.preventDefault();
+		if (window.cordova) {
+			this.handleCordovaUpload();
+		} else {
+			this.handleBrowserUpload();
+		}
 	}
 
 	onFileInpChange = info => {
@@ -158,7 +208,7 @@ class AddStudyMaterial extends Component {
 										{getFieldDecorator('title', {
 											rules: [
 												{ required: 'true', message: 'Must provide title!!' },
-											{ validator: this.validateTitle }
+												{ validator: this.validateTitle }
 											]
 										})(
 											<Input />
@@ -174,25 +224,27 @@ class AddStudyMaterial extends Component {
 										)}
 									</Form.Item>
 								</Col>
-								<Col {...colLayout}>
-									<Form.Item label="File">
-										<div className="dropbox">
-											{getFieldDecorator('file', {
-												rules: [{ required: 'true', message: 'Must Choose File' }]
-											})(
-												<Upload.Dragger
-													fileList={selectedFile ? [selectedFile] : []}
-													customRequest={dummyRequest}
-													onChange={this.onFileInpChange}>
-													<p className="ant-upload-drag-icon">
-														<Icon type="inbox" />
-													</p>
-													<p className="ant-upload-text">Click or drag file to this area to upload</p>
-												</Upload.Dragger>
-											)}
-										</div>
-									</Form.Item>
-								</Col>
+								{Boolean(window.cordova) === false && (
+									<Col {...colLayout}>
+										<Form.Item label="File">
+											<div className="dropbox">
+												{getFieldDecorator('file', {
+													rules: [{ required: 'true', message: 'Must Choose File' }]
+												})(
+													<Upload.Dragger
+														fileList={selectedFile ? [selectedFile] : []}
+														customRequest={dummyRequest}
+														onChange={this.onFileInpChange}>
+														<p className="ant-upload-drag-icon">
+															<Icon type="inbox" />
+														</p>
+														<p className="ant-upload-text">Click or drag file to this area to upload</p>
+													</Upload.Dragger>
+												)}
+											</div>
+										</Form.Item>
+									</Col>
+								)}
 							</>
 						}
 
@@ -218,7 +270,7 @@ class AddStudyMaterial extends Component {
 							<Row type="flex" justify="end">
 								<Form.Item>
 									<Button type="primary" htmlType="submit">
-										Upload And Share
+										{window.cordova ? 'Upload And Share' : 'Select File'}
 									</Button>
 								</Form.Item>
 							</Row>
