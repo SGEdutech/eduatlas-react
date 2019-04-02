@@ -45,6 +45,10 @@ class EnrollmentReport extends Component {
 		toDateFilter: null
 	}
 
+	componentDidMount() {
+		this.resizeTable();
+	}
+
 	getStudentsToRender = () => {
 		const { students } = this.props;
 		const { fromDateFilter, toDateFilter } = this.state;
@@ -69,6 +73,10 @@ class EnrollmentReport extends Component {
 
 	handleFromDateChange = fromDateFilter => this.setState({ fromDateFilter })
 	handleToDateChange = toDateFilter => this.setState({ toDateFilter })
+
+	resizeTable = () => {
+		if (window.innerWidth <= 375) columns.find(col => col.key === 'rollNumber').className = 'd-none';
+	}
 
 	sortStudents = students => students.sort((a, b) => {
 		if (a.courseEnrollmentDate.valueOf() >= b.courseEnrollmentDate.valueOf()) return 1;
