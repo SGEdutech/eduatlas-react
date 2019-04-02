@@ -74,17 +74,16 @@ class AddStudyMaterial extends Component {
 	}
 
 	handleCordovaUpload = () => {
-		const { form, form: { resetFields }, match: { url } } = this.props;
+		const { fakeAddResource, form, form: { resetFields }, match: { url } } = this.props;
 		const tuitionId = getTuitionIdFromUrl(url);
-		const successCb = data => {
-			alert(JSON.stringify(data));
+		const successCb = newResource => {
+			fakeAddResource(JSON.parse(newResource.response));
 			resetFields();
 		};
 		const errorCb = err => alert(err);
 		form.validateFieldsAndScroll((err, values) => {
 			window.plugins.mfilechooser.open([], uri => {
 				window.resolveLocalFileSystemURL('file://' + uri, fileEntry => {
-					this.fileUploadPlugin(fileEntry);
 					const fileURL = fileEntry.toURL();
 					if (err) {
 						errorCb(err);
@@ -94,7 +93,7 @@ class AddStudyMaterial extends Component {
 					const opts = new FileUploadOptions();
 					opts.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1);
 					opts.httpMethod = 'POST';
-					opts.params = values;
+					opts.params = { dataInJson: JSON.stringify(values) };
 					const ft = new FileTransfer();
 					ft.upload(fileURL, encodeURI(`${schemeAndAuthority}/tuition/${tuitionId}/resource`), successCb, errorCb, opts);
 				}, errorCb);
