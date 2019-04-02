@@ -97,8 +97,6 @@ class PerformanceEvalReport extends Component {
 				if (series.name === 'your') series.data = studentScores;
 			});
 
-			console.log(graphOptionsOfThisBatch);
-
 			return <Panel
 				key={index + 1}
 				header={<Row>
