@@ -93,8 +93,6 @@ class AddStudyMaterial extends Component {
 					sanatizeFormObj(values);
 					const opts = new FileUploadOptions();
 					opts.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1);
-					opts.fiileKey = 'file';
-					opts.mimeType = 'text/plain';
 					opts.httpMethod = 'POST';
 					opts.params = values;
 
