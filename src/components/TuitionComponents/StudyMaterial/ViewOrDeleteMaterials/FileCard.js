@@ -34,6 +34,7 @@ class FileCard extends Component {
 
 	handleDeleteBtnClick = () => {
 		const { _id } = this.props;
+		console.log(_id);
 		this.showDeleteConfirm(_id);
 	}
 

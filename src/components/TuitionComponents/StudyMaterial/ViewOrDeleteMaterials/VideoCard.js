@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import axios from 'axios';
+
+import getTuitionIdFromUrl from '../../../../scripts/getTuitionIdFromUrl';
 
 import ytLogo from '../../../../youtube-logo.svg';
 
@@ -7,8 +10,7 @@ import {
 	Card,
 	Icon,
 	Modal,
-	Row,
-	Tag
+	Row
 } from 'antd';
 const { Meta } = Card;
 const { confirm } = Modal;
@@ -20,8 +22,9 @@ class VideoCard extends Component {
 		description: null
 	}
 
-	showDeleteConfirm = id => {
-		const { deleteResource } = this.props;
+	showDeleteConfirm = resourceId => {
+		const { deleteResource, match: { url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
 		confirm({
 			title: 'Are You Sure?',
 			content: 'This action is permanent!',
@@ -29,7 +32,7 @@ class VideoCard extends Component {
 			okType: 'danger',
 			cancelText: 'No',
 			onOk() {
-				deleteResource(id);
+				deleteResource(tuitionId, resourceId);
 			}
 		});
 	};
@@ -63,7 +66,7 @@ class VideoCard extends Component {
 	}
 
 	render() {
-		const { ytUrl, type, showDelete, students } = this.props;
+		const { ytUrl, showDelete, students } = this.props;
 		const { description, thumbnail, title } = this.state;
 
 		let actionsJsx = [<a href={ytUrl} target="_blank" rel="noopener noreferrer"><Icon type="eye" /></a>, <Icon type="delete" onClick={this.handleDeleteBtnClick} />];
@@ -92,4 +95,4 @@ class VideoCard extends Component {
 	}
 }
 
-export default VideoCard;
+export default withRouter(VideoCard);

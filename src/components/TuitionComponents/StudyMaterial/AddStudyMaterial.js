@@ -87,7 +87,7 @@ class AddStudyMaterial extends Component {
 					this.fileUploadPlugin(fileEntry);
 					const fileURL = fileEntry.toURL();
 					if (err) {
-						console.error(err);
+						errorCb(err);
 						return;
 					}
 					sanatizeFormObj(values);
@@ -95,7 +95,6 @@ class AddStudyMaterial extends Component {
 					opts.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1);
 					opts.httpMethod = 'POST';
 					opts.params = values;
-
 					const ft = new FileTransfer();
 					ft.upload(fileURL, encodeURI(`${schemeAndAuthority}/tuition/${tuitionId}/resource`), successCb, errorCb, opts);
 				}, errorCb);
