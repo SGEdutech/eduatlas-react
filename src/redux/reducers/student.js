@@ -14,8 +14,8 @@ function studentReducer(state = initState, action) {
 		case 'ADD_STUDENT_FULFILLED': {
 			let newStudents = action.payload.data;
 			if (Array.isArray(newStudents) === false) newStudents = [newStudents];
-			dateToMoment(newStudents);
 			newStudents = JSON.parse(JSON.stringify(newStudents));
+			dateToMoment(newStudents);
 			newStudents.forEach(student => delete student.batchAdded);
 			return { ...state, students: [...state.students, ...newStudents] };
 		}

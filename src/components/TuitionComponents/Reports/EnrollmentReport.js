@@ -70,6 +70,11 @@ class EnrollmentReport extends Component {
 	handleFromDateChange = fromDateFilter => this.setState({ fromDateFilter })
 	handleToDateChange = toDateFilter => this.setState({ toDateFilter })
 
+	sortStudents = students => students.sort((a, b) => {
+		if (a.courseEnrollmentDate.valueOf() >= b.courseEnrollmentDate.valueOf()) return 1;
+		return -1;
+	});
+
 	render() {
 		const { courses } = this.props;
 		const { courseCodeFilter, fromDateFilter, toDateFilter } = this.state;
@@ -82,6 +87,9 @@ class EnrollmentReport extends Component {
 		if (Boolean(courseCodeFilter) === true) {
 			studentsToRender = studentsToRender.filter(student => student.courseCode === courseCodeFilter);
 		}
+
+		// sort students on basis of courseEnrollmentDate
+		this.sortStudents(studentsToRender);
 
 		return (
 			<div className="container">
