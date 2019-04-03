@@ -8,7 +8,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
 import { changeTabs } from '../../redux/actions/navigationActions';
-import { addResource, deleteResource, fakeAddResource } from '../../redux/actions/resourceActions';
+import { addResource, deleteResource, fakeAddResourceFulfilled, fakeAddResourcePending, fakeAddResourceRejected } from '../../redux/actions/resourceActions';
 
 import AddStudyMaterial from './StudyMaterial/AddStudyMaterial';
 import ViewOrDeleteMaterials from './StudyMaterial/ViewOrDeleteMaterials';
@@ -21,7 +21,7 @@ class StudyMaterial extends Component {
 
 	render() {
 		const { navigation: { secondaryTabsValue } } = this.props;
-		const { addResource, batches, deleteResource, fakeAddResource, messageInfo, resources, students } = this.props;
+		const { addResource, batches, deleteResource, fakeAddResourceFulfilled, fakeAddResourcePending, fakeAddResourceRejected, messageInfo, resources, students } = this.props;
 
 		return (
 			<>
@@ -38,7 +38,7 @@ class StudyMaterial extends Component {
 					</Tabs>
 				</AppBar>
 				{secondaryTabsValue === 0 && <ViewOrDeleteMaterials deleteResource={deleteResource} messageInfo={messageInfo} resources={resources} />}
-				{secondaryTabsValue === 1 && <AddStudyMaterial addResource={addResource} batches={batches} fakeAddResource={fakeAddResource} resources={resources} showDelete={true} students={students} />}
+				{secondaryTabsValue === 1 && <AddStudyMaterial addResource={addResource} batches={batches} fakeAddResourceFulfilled={fakeAddResourceFulfilled} fakeAddResourcePending={fakeAddResourcePending} fakeAddResourceRejected={fakeAddResourceRejected} resources={resources} showDelete={true} students={students} />}
 			</>
 		);
 	}
@@ -55,4 +55,4 @@ function mapStateToProps(state) {
 	};
 }
 
-export default connect(mapStateToProps, { addResource, changeTabs, deleteResource, fakeAddResource })(StudyMaterial);
+export default connect(mapStateToProps, { addResource, changeTabs, deleteResource, fakeAddResourceFulfilled, fakeAddResourcePending, fakeAddResourceRejected })(StudyMaterial);

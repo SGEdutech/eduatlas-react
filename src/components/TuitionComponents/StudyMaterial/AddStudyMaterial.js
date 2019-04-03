@@ -81,7 +81,7 @@ class AddStudyMaterial extends Component {
 			resetFields();
 		};
 		const errorCb = err => alert(err);
-		const failureCb = () => fakeAddResourceRejected(); 
+		const failureCb = () => fakeAddResourceRejected();
 		form.validateFieldsAndScroll((err, values) => {
 			window.plugins.mfilechooser.open([], uri => {
 				window.resolveLocalFileSystemURL('file://' + uri, fileEntry => {
