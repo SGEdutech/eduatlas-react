@@ -25,3 +25,11 @@ export function deleteResource(tuitionId, resourceId) {
 export const fakeAddResourceFulfilled = newResource => {
 	return { type: 'ADD_RESOURCE_FULFILLED', payload: { data: newResource } };
 };
+
+export const fakeAddResourcePending = () => {
+	return { type: 'ADD_RESOURCE_PENDING' };
+};
+
+export const fakeAddResourceRejected = () => {
+	return { type: 'ADD_RESOURCE_REJECTED' };
+};

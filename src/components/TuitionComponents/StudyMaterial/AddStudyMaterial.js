@@ -74,13 +74,14 @@ class AddStudyMaterial extends Component {
 	}
 
 	handleCordovaUpload = () => {
-		const { fakeAddResourceFulfilled, form, form: { resetFields }, match: { url } } = this.props;
+		const { fakeAddResourceFulfilled, fakeAddResourcePending, fakeAddResourceRejected, form, form: { resetFields }, match: { url } } = this.props;
 		const tuitionId = getTuitionIdFromUrl(url);
 		const successCb = newResource => {
 			fakeAddResourceFulfilled(JSON.parse(newResource.response));
 			resetFields();
 		};
 		const errorCb = err => alert(err);
+		const failureCb = () => fakeAddResourceRejected(); 
 		form.validateFieldsAndScroll((err, values) => {
 			window.plugins.mfilechooser.open([], uri => {
 				window.resolveLocalFileSystemURL('file://' + uri, fileEntry => {
@@ -95,7 +96,8 @@ class AddStudyMaterial extends Component {
 					opts.httpMethod = 'POST';
 					opts.params = { dataInJson: JSON.stringify(values) };
 					const ft = new FileTransfer();
-					ft.upload(fileURL, encodeURI(`${schemeAndAuthority}/tuition/${tuitionId}/resource`), successCb, errorCb, opts);
+					fakeAddResourcePending();
+					ft.upload(fileURL, encodeURI(`${schemeAndAuthority}/tuition/${tuitionId}/resource`), successCb, failureCb, opts);
 				}, errorCb);
 			}, errorCb);
 		});
