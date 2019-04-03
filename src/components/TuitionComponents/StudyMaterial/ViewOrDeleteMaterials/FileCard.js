@@ -78,7 +78,7 @@ class FileCard extends Component {
 				notification.open(opts);
 			};
 			const error = () => showErrorModal('Permission not granted', 'To grant permission go to, Settings > Apps and Notification > App Name > Permissions > Storage');
-			const scucess = status => {
+			const success = status => {
 				if (status.hasPermission === false) {
 					error();
 					return;
@@ -90,7 +90,7 @@ class FileCard extends Component {
 				if (status.hasPermission) {
 					downloadFile();
 				} else {
-					permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, scucess, error);
+					permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
 				}
 			});
 		}

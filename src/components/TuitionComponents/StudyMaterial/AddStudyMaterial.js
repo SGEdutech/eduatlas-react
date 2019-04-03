@@ -16,6 +16,7 @@ import {
 	Form,
 	Icon,
 	Input,
+	notification,
 	Row,
 	Select,
 	Upload
@@ -82,24 +83,51 @@ class AddStudyMaterial extends Component {
 		};
 		const errorCb = err => alert(err);
 		const failureCb = () => fakeAddResourceRejected();
-		form.validateFieldsAndScroll((err, values) => {
-			window.plugins.mfilechooser.open([], uri => {
-				window.resolveLocalFileSystemURL('file://' + uri, fileEntry => {
-					const fileURL = fileEntry.toURL();
-					if (err) {
-						errorCb(err);
-						return;
-					}
-					sanatizeFormObj(values);
-					const opts = new FileUploadOptions();
-					opts.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1);
-					opts.httpMethod = 'POST';
-					opts.params = { dataInJson: JSON.stringify(values) };
-					const ft = new FileTransfer();
-					fakeAddResourcePending();
-					ft.upload(fileURL, encodeURI(`${schemeAndAuthority}/tuition/${tuitionId}/resource`), successCb, failureCb, opts);
+		const uploadResource = () => {
+			form.validateFieldsAndScroll((err, values) => {
+				window.plugins.mfilechooser.open([], uri => {
+					window.resolveLocalFileSystemURL('file://' + uri, fileEntry => {
+						const fileURL = fileEntry.toURL();
+						if (err) {
+							errorCb(err);
+							return;
+						}
+						sanatizeFormObj(values);
+						const opts = new FileUploadOptions();
+						opts.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1);
+						opts.httpMethod = 'POST';
+						opts.params = { dataInJson: JSON.stringify(values) };
+						const ft = new FileTransfer();
+						fakeAddResourcePending();
+						ft.upload(fileURL, encodeURI(`${schemeAndAuthority}/tuition/${tuitionId}/resource`), successCb, failureCb, opts);
+					}, errorCb);
 				}, errorCb);
-			}, errorCb);
+			});
+		};
+		const showErrorModal = (message, description) => {
+			const opts = {
+				message,
+				description,
+				duration: 0,
+				type: 'error'
+			};
+			notification.open(opts);
+		};
+		const error = () => showErrorModal('Permission not granted', 'To grant permission go to, Settings > Apps and Notification > App Name > Permissions > Storage');
+		const success = status => {
+			if (status.hasPermission === false) {
+				error();
+				return;
+			}
+			uploadResource();
+		};
+		const permissions = window.cordova.plugins.permissions;
+		permissions.hasPermission(permissions.WRITE_EXTERNAL_STORAGE, status => {
+			if (status.hasPermission) {
+				uploadResource();
+			} else {
+				permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
+			}
 		});
 	}
 
