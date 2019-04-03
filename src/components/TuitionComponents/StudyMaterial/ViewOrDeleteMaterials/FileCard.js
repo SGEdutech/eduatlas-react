@@ -34,7 +34,6 @@ class FileCard extends Component {
 
 	handleDeleteBtnClick = () => {
 		const { _id } = this.props;
-		console.log(_id);
 		this.showDeleteConfirm(_id);
 	}
 
@@ -44,12 +43,13 @@ class FileCard extends Component {
 			const downloadFile = () => {
 				const hideDownloadingMessage = message.loading('Downloading...', 0);
 				const fileTransfer = new FileTransfer();
-				const path = e.currentTarget.href;
+				// There is a bug in cordova which doesnot allow us to access currentTarget. It can be fixed with android studio though.
+				// Recreating path to avoid using currentTarget for now!
+				const path = `${schemeAndAuthority}/${this.props.path}`;
 				const splitPath = path.split('/');
 				const filename = splitPath[splitPath.length - 1];
 				const uri = encodeURI(path);
 				const fileUrl = `///storage/emulated/0/Download/${filename}`;
-				alert(fileUrl);
 				const successCb = () => {
 					hideDownloadingMessage();
 					showSuccessModal('File Saved', `Your file has been saved at /Download/${filename} in internal storage`);
@@ -98,9 +98,11 @@ class FileCard extends Component {
 
 	render() {
 		const { path, title, description, type, showDelete, students } = this.props;
-
-		let actionsJsx = [<a rel="noopener noreferrer" target="_blank" href={`${schemeAndAuthority}/${path}`} onClick={this.handleDownloadBtnClick} download><Icon type="download" /></a>, <Icon type="delete" onClick={this.handleDeleteBtnClick} />];
-		if (showDelete === false) actionsJsx = [<a rel="noopener noreferrer" target="_blank" href={`${schemeAndAuthority}/${path}`} onClick={this.handleDownloadBtnClick} download><Icon type="download" /></a>];
+		const actionsJsx = showDelete === false ? (
+			[<a rel="noopener noreferrer" target="_blank" href={`${schemeAndAuthority}/${path}`} onClick={this.handleDownloadBtnClick} download><Icon type="download" /></a>]
+		) : (
+				[<a rel="noopener noreferrer" target="_blank" href={`${schemeAndAuthority}/${path}`} onClick={this.handleDownloadBtnClick} download><Icon type="download" /></a>, <Icon type="delete" onClick={this.handleDeleteBtnClick} />]
+			);
 
 		return (
 			<Card
