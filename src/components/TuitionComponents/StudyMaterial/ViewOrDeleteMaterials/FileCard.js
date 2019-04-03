@@ -49,6 +49,7 @@ class FileCard extends Component {
 				const filename = splitPath[splitPath.length - 1];
 				const uri = encodeURI(path);
 				const fileUrl = `///storage/emulated/0/Download/${filename}`;
+				alert(fileUrl);
 				const successCb = () => {
 					hideDownloadingMessage();
 					showSuccessModal('File Saved', `Your file has been saved at /Download/${filename} in internal storage`);

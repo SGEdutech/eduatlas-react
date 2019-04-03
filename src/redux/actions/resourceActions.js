@@ -22,6 +22,6 @@ export function deleteResource(tuitionId, resourceId) {
 	};
 }
 
-export const fakeAddResource = newResource => {
+export const fakeAddResourceFulfilled = newResource => {
 	return { type: 'ADD_RESOURCE_FULFILLED', payload: { data: newResource } };
 };

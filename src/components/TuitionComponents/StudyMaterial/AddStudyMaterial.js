@@ -74,10 +74,10 @@ class AddStudyMaterial extends Component {
 	}
 
 	handleCordovaUpload = () => {
-		const { fakeAddResource, form, form: { resetFields }, match: { url } } = this.props;
+		const { fakeAddResourceFulfilled, form, form: { resetFields }, match: { url } } = this.props;
 		const tuitionId = getTuitionIdFromUrl(url);
 		const successCb = newResource => {
-			fakeAddResource(JSON.parse(newResource.response));
+			fakeAddResourceFulfilled(JSON.parse(newResource.response));
 			resetFields();
 		};
 		const errorCb = err => alert(err);
