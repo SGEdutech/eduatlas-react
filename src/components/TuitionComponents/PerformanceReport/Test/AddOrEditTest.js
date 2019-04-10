@@ -7,9 +7,13 @@ import { addTest, editTest } from '../../../../redux/actions/testActions';
 
 import getTuitionIdFromUrl from '../../../../scripts/getTuitionIdFromUrl';
 import sanatizeFormObj from '../../../../scripts/sanatize-form-obj';
+import { minutesFromMidnight } from '../../../../scripts/minutesToMidnight';
+import { inverseMinutesFromMidnight } from '../../../../scripts/minutesToMidnight';
 
 import Navbar from '../../../Navbar';
 
+import { DatePicker as DatePickerM, List } from 'antd-mobile';
+import enUs from 'antd-mobile/lib/date-picker/locale/en_US';
 import {
 	Button,
 	Col,
@@ -18,9 +22,11 @@ import {
 	Input,
 	InputNumber,
 	Row,
-	Select
+	Select,
+	TimePicker
 } from 'antd';
 const { Option } = Select;
+
 
 const colLayout = {
 	xs: 24,
@@ -42,6 +48,13 @@ class AddOrEditTest extends Component {
 		return { ...state, testInfo };
 	}
 
+	calibrateFromAndToTime = values => {
+		const timeRegex = new RegExp('^fromTime|^toTime');
+		const keys = Object.keys(values);
+		const timeKeys = keys.filter(key => timeRegex.test(key));
+		timeKeys.forEach(timeKey => values[timeKey] = minutesFromMidnight(values[timeKey]));
+	}
+
 	handleSubmit = e => {
 		e.preventDefault();
 		const { addTest, edit, editTest, form, form: { resetFields }, match: { params: { testId }, url } } = this.props;
@@ -52,6 +65,7 @@ class AddOrEditTest extends Component {
 				return;
 			}
 			sanatizeFormObj(values);
+			this.calibrateFromAndToTime(values);
 			edit ? editTest(tuitionId, testId, values) : addTest(tuitionId, values);
 			resetFields();
 		});
@@ -71,6 +85,10 @@ class AddOrEditTest extends Component {
 	render() {
 		const { batches, form: { getFieldDecorator } } = this.props;
 		const { batchIds, date, maxMarks, name } = this.state.testInfo;
+		let { fromTime, toTime } = this.state.testInfo;
+		fromTime = inverseMinutesFromMidnight(fromTime);
+		toTime = inverseMinutesFromMidnight(toTime);
+
 
 		return (
 			<>
@@ -119,6 +137,48 @@ class AddOrEditTest extends Component {
 										}]
 									})(
 										<DatePicker className="w-100" />
+									)}
+								</Form.Item>
+							</Col>
+							<Col {...colLayout}>
+								<Form.Item
+									label="From Time"
+									hasFeedback={true}>
+									{getFieldDecorator('fromTime', {
+										initialValue: fromTime
+									})(
+										window.cordova ? (
+											<DatePickerM
+												mode="time"
+												minuteStep={2}
+												use12Hours={true}
+												locale={enUs}>
+												<List.Item style={{ border: '1px solid #D3D3D3', borderRadius: '5px' }} arrow="horizontal"></List.Item>
+											</DatePickerM>
+										) : (
+												<TimePicker className="w-100" use12Hours format="h:mm a" />
+											)
+									)}
+								</Form.Item>
+							</Col>
+							<Col {...colLayout}>
+								<Form.Item
+									label="To Time"
+									hasFeedback={true}>
+									{getFieldDecorator('toTime', {
+										initialValue: toTime
+									})(
+										window.cordova ? (
+											<DatePickerM
+												mode="time"
+												minuteStep={2}
+												use12Hours={true}
+												locale={enUs}>
+												<List.Item style={{ border: '1px solid #D3D3D3', borderRadius: '5px' }} arrow="horizontal"></List.Item>
+											</DatePickerM>
+										) : (
+												<TimePicker className="w-100" use12Hours format="h:mm a" />
+											)
 									)}
 								</Form.Item>
 							</Col>
