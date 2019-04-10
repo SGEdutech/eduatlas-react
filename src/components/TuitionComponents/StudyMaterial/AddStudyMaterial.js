@@ -16,11 +16,11 @@ import {
 	Form,
 	Icon,
 	Input,
+	notification,
 	Row,
 	Select,
 	Upload
 } from 'antd';
-import { SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION } from 'constants';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -41,38 +41,6 @@ class AddStudyMaterial extends Component {
 		selectedFile: null,
 		resourceType: null
 	};
-
-	fileUploadPlugin = fileEntry => {
-		const { form, form: { resetFields }, match: { url } } = this.props;
-		const tuitionId = getTuitionIdFromUrl(url);
-		const fileURL = fileEntry.toURL();
-		SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION(fileURL);
-
-		const success = function (r) {
-			resetFields();
-		};
-
-		const fail = function (error) {
-			alert('An error has occurred: Code = ' + error.code);
-		};
-
-		form.validateFieldsAndScroll((err, values) => {
-			if (err) {
-				console.error(err);
-				return;
-			}
-			sanatizeFormObj(values);
-			const options = new FileUploadOptions();
-			options.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1);
-			options.fiileKey = 'file';
-			options.mimeType = 'text/plain';
-			options.httpMethod = 'POST';
-			options.params = values;
-
-			const ft = new FileTransfer();
-			ft.upload(fileURL, encodeURI(`${schemeAndAuthority}/tuition/${tuitionId}/resource`), success, fail, options);
-		});
-	}
 
 	filterOptions = (input, option) => {
 		if (option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0) return true;
@@ -107,9 +75,60 @@ class AddStudyMaterial extends Component {
 	}
 
 	handleCordovaUpload = () => {
-		window.plugins.mfilechooser.open([], uri => {
-			window.resolveLocalFileSystemURL('file://' + uri, fileEntry => this.fileUploadPlugin(fileEntry), err => alert(JSON.stringify(err)));
-		}, error => alert('Low Level Error' + error));
+		const { fakeAddResourceFulfilled, fakeAddResourcePending, fakeAddResourceRejected, form, form: { resetFields }, match: { url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
+		const successCb = newResource => {
+			fakeAddResourceFulfilled(JSON.parse(newResource.response));
+			resetFields();
+		};
+		const errorCb = err => alert(err);
+		const failureCb = () => fakeAddResourceRejected();
+		const uploadResource = () => {
+			form.validateFieldsAndScroll((err, values) => {
+				window.plugins.mfilechooser.open([], uri => {
+					window.resolveLocalFileSystemURL('file://' + uri, fileEntry => {
+						const fileURL = fileEntry.toURL();
+						if (err) {
+							errorCb(err);
+							return;
+						}
+						sanatizeFormObj(values);
+						const opts = new FileUploadOptions();
+						opts.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1);
+						opts.httpMethod = 'POST';
+						opts.params = { dataInJson: JSON.stringify(values) };
+						const ft = new FileTransfer();
+						fakeAddResourcePending();
+						ft.upload(fileURL, encodeURI(`${schemeAndAuthority}/tuition/${tuitionId}/resource`), successCb, failureCb, opts);
+					}, errorCb);
+				}, errorCb);
+			});
+		};
+		const showErrorModal = (message, description) => {
+			const opts = {
+				message,
+				description,
+				duration: 0,
+				type: 'error'
+			};
+			notification.open(opts);
+		};
+		const error = () => showErrorModal('Permission not granted', 'To grant permission go to, Settings > Apps and Notification > App Name > Permissions > Storage');
+		const success = status => {
+			if (status.hasPermission === false) {
+				error();
+				return;
+			}
+			uploadResource();
+		};
+		const permissions = window.cordova.plugins.permissions;
+		permissions.hasPermission(permissions.WRITE_EXTERNAL_STORAGE, status => {
+			if (status.hasPermission) {
+				uploadResource();
+			} else {
+				permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
+			}
+		});
 	}
 
 	handleStudentChange = selectedStudents => this.setState({ selectedStudents });
@@ -270,7 +289,7 @@ class AddStudyMaterial extends Component {
 							<Row type="flex" justify="end">
 								<Form.Item>
 									<Button type="primary" htmlType="submit">
-										{window.cordova ? 'Upload And Share' : 'Select File'}
+										{window.cordova ? 'Select File' : 'Upload And Share'}
 									</Button>
 								</Form.Item>
 							</Row>
