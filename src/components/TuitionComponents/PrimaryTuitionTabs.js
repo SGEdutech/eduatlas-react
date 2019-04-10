@@ -59,7 +59,7 @@ class PrimaryTuitionTabs extends Component {
 						<Tab label="Attendance" />
 						<Tab label="Performance Report" />
 						<Tab label="Study Material" />
-						<Tab label="Reports" />
+						{/* <Tab label="Reports" /> */}
 					</Tabs>
 				</AppBar>
 				<Swipeable delta={20} onSwipedLeft={this.leftSwipe} onSwipedRight={this.rightSwipe} style={{ minHeight: '80vh' }}>
@@ -71,7 +71,7 @@ class PrimaryTuitionTabs extends Component {
 						{primaryTabsValue === 4 && <Attendance />}
 						{primaryTabsValue === 5 && <PerformanceReport />}
 						{primaryTabsValue === 6 && <StudyMaterial />}
-						{primaryTabsValue === 7 && <Reports />}
+						{/* {primaryTabsValue === 7 && <Reports />} */}
 					</div>
 				</Swipeable>
 			</>
