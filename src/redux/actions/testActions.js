@@ -19,6 +19,15 @@ export function editTest(tuitionId, testId, editedTest) {
 	};
 }
 
+export function clearMarks(tuitionId, testId) {
+	return dispatch => {
+		dispatch({
+			type: 'CLEAR_MARKS',
+			payload: axios.delete(`${schemeAndAuthority}/tuition/${tuitionId}/test/${testId}/marks`)
+		});
+	};
+}
+
 export function deleteTest(tuitionId, testId) {
 	return dispatch => {
 		dispatch({

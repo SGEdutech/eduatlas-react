@@ -26,7 +26,7 @@ const columnsDef = [{
 	render: dateAndTime => {
 		return <>
 			<Row justify="center" type="flex">{dateAndTime.parsedDate}</Row>
-			<Row justify="center" type="flex">{dateAndTime.fromTime}</Row>
+			<Row justify="center" type="flex">{dateAndTime.fromTime}-{dateAndTime.toTime}</Row>
 		</>;
 	}
 }, {
@@ -53,8 +53,13 @@ class Score extends Component {
 				});
 				if (Boolean(test.marksObtained) === false) test.marksObtained = <Tag color="blue">NA</Tag>;
 				test.dateAndTime = {
-					fromTime: inverseMinutesFromMidnight(test.fromTime).format('LT'),
-					parsedDate: test.date.format('DD/MM/YY')
+					fromTime: Boolean(test.fromTime) === true ?
+						inverseMinutesFromMidnight(test.fromTime).format('LT') :
+						<Tag className="mx-0" color={'blue'}>NA</Tag>,
+					parsedDate: test.date.format('DD/MM/YY'),
+					toTime: Boolean(test.toTime) === true ?
+						inverseMinutesFromMidnight(test.toTime).format('LT') :
+						<Tag className="mx-0" color={'blue'}>NA</Tag>
 				};
 			});
 

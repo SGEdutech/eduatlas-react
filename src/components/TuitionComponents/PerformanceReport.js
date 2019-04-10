@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { addTest, deleteTest, editTest } from '../../redux/actions/testActions';
+import { addTest, clearMarks, deleteTest, editTest } from '../../redux/actions/testActions';
 
 import '../../core/css/tabBar.css';
 
@@ -40,7 +40,7 @@ class PerformanceReport extends Component {
 					</Tabs>
 				</AppBar>
 				{secondaryTabsValue === 0 && <Test addTest={addTest} batches={batches} deleteTest={deleteTest} editTest={editTest} messageInfo={messageInfo} tests={tests} />}
-				{secondaryTabsValue === 1 && <AddScore batches={batches} editTest={editTest} students={students} tests={tests} />}
+				{secondaryTabsValue === 1 && <AddScore batches={batches} clearMarks={clearMarks} editTest={editTest} students={students} tests={tests} />}
 				{secondaryTabsValue === 2 && <PerformanceEvalReport batches={batches} students={students} tests={tests} />}
 			</>
 		);
@@ -58,6 +58,6 @@ function mapStateToProps(state) {
 	};
 }
 
-export default connect(mapStateToProps, { addTest, changeTabs, deleteTest, editTest })(PerformanceReport);
+export default connect(mapStateToProps, { addTest, changeTabs, clearMarks, deleteTest, editTest })(PerformanceReport);
 
 
