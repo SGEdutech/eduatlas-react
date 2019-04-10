@@ -58,6 +58,6 @@ function mapStateToProps(state) {
 	};
 }
 
-export default connect(mapStateToProps, { addTest,changeTabs, deleteTest, editTest })(PerformanceReport);
+export default connect(mapStateToProps, { addTest, changeTabs, deleteTest, editTest })(PerformanceReport);
 
 

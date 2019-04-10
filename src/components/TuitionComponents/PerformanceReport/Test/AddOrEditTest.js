@@ -86,9 +86,8 @@ class AddOrEditTest extends Component {
 		const { batches, form: { getFieldDecorator } } = this.props;
 		const { batchIds, date, maxMarks, name } = this.state.testInfo;
 		let { fromTime, toTime } = this.state.testInfo;
-		fromTime = inverseMinutesFromMidnight(fromTime);
-		toTime = inverseMinutesFromMidnight(toTime);
-
+		fromTime = Boolean(fromTime) === true ? inverseMinutesFromMidnight(fromTime) : undefined;
+		toTime = Boolean(toTime) === true ? inverseMinutesFromMidnight(toTime) : undefined;
 
 		return (
 			<>

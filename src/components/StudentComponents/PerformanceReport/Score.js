@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import { inverseMinutesFromMidnight } from '../../../scripts/minutesToMidnight';
+
 import {
 	Col,
 	Collapse,
@@ -17,10 +19,16 @@ const columnsDef = [{
 	dataIndex: 'name',
 	key: 'name'
 }, {
-	title: 'Date',
-	dataIndex: 'parsedDate',
-	key: 'parsedDate',
-	width: '50'
+	title: 'Date Time',
+	dataIndex: 'dateAndTime',
+	key: 'dateAndTime',
+	width: '50',
+	render: dateAndTime => {
+		return <>
+			<Row justify="center" type="flex">{dateAndTime.parsedDate}</Row>
+			<Row justify="center" type="flex">{dateAndTime.fromTime}</Row>
+		</>;
+	}
 }, {
 	title: 'Score',
 	dataIndex: 'marksObtained',
@@ -44,7 +52,10 @@ class Score extends Component {
 					if (report.studentId === studentInfo._id) test.marksObtained = report.marksObtained + '/' + test.maxMarks;
 				});
 				if (Boolean(test.marksObtained) === false) test.marksObtained = <Tag color="blue">NA</Tag>;
-				test.parsedDate = test.date.format('DD/MM/YY');
+				test.dateAndTime = {
+					fromTime: inverseMinutesFromMidnight(test.fromTime).format('LT'),
+					parsedDate: test.date.format('DD/MM/YY')
+				};
 			});
 
 			return <Panel

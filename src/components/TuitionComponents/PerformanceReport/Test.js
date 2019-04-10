@@ -5,6 +5,7 @@ import { Link } from 'react-router-relative-link';
 import TestCard from './Test/TestCard';
 
 import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
+import { inverseMinutesFromMidnight } from '../../../scripts/minutesToMidnight';
 
 import {
 	Card,
@@ -53,15 +54,17 @@ class Test extends Component {
 	render() {
 		const { messageInfo, tests } = this.props;
 
-		const testsJsx = tests.map(({ _id, name, maxMarks, batchIds }) => (
+		const testsJsx = tests.map(({ batchIds, fromTime, _id, maxMarks, name, toTime }) => (
 			<Col {...colLayout} key={_id}>
 				<div className="mb-3">
 					<TestCard
-						id={_id}
-						name={name}
-						maxMarks={maxMarks}
 						batchIds={batchIds}
-						deleteTest={this.showDeleteConfirm} />
+						deleteTest={this.showDeleteConfirm}
+						fromTime={Boolean(fromTime) === true ? inverseMinutesFromMidnight(fromTime).format('LT') : undefined}
+						id={_id}
+						maxMarks={maxMarks}
+						name={name}
+						toTime={Boolean(toTime) === true ? inverseMinutesFromMidnight(toTime).format('LT') : undefined} />
 				</div>
 			</Col>
 		));
