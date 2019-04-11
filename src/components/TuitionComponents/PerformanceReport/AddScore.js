@@ -62,6 +62,13 @@ class AddScore extends Component {
 		currentTestStudents: []
 	}
 
+	handleClearBtnClick = () => {
+		const { clearMarks, match: { url } } = this.props;
+		if (Boolean(this.currentTestId) === false) return;
+		const tuitionId = getTuitionIdFromUrl(url);
+		clearMarks(tuitionId, this.currentTestId);
+	}
+
 	handleSave = testRow => {
 		this.setState(prevState => {
 			const prevTestData = [...prevState.currentTestStudents];
@@ -189,6 +196,9 @@ class AddScore extends Component {
 					<Form.Item>
 						<Button onClick={this.handleSaveBtnClick} type="primary">
 							Save Changes
+						</Button>
+						<Button onClick={this.handleClearBtnClick} type="danger">
+							Clear Score
 						</Button>
 					</Form.Item>
 				</Row>

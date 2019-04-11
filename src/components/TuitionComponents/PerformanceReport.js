@@ -22,7 +22,7 @@ class PerformanceReport extends Component {
 	};
 
 	render() {
-		const { addTest, batches, deleteTest, editTest, messageInfo, students, tests } = this.props;
+		const { addTest, batches, clearMarks, deleteTest, editTest, messageInfo, students, tests } = this.props;
 		const { navigation: { secondaryTabsValue } } = this.props;
 		return (
 			<>
