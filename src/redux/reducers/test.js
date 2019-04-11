@@ -14,6 +14,13 @@ function testReducer(state = initState, action) {
 			dateToMoment(newTest);
 			return { ...state, tests: [...state.tests, newTest] };
 		}
+		case 'CLEAR_MARKS_FULFILLED': {
+			const editedTest = action.payload.data;
+			const { _id: editedTestId } = editedTest;
+			const newTests = state.tests.map(test => test._id === editedTestId ? editedTest : test);
+			dateToMoment(newTests);
+			return { ...state, tests: newTests };
+		}
 		case 'EDIT_TEST_FULFILLED': {
 			const editedTest = action.payload.data;
 			const { _id: editedTestId } = editedTest;
