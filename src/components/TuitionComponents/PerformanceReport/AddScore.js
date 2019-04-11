@@ -123,6 +123,7 @@ class AddScore extends Component {
 	}
 
 	handleSaveBtnClick = () => {
+		if (Boolean(this.currentTestId) === false) return;
 		const { editTest, match: { url } } = this.props;
 		const { currentTestStudents } = this.state;
 		const tuitionId = getTuitionIdFromUrl(url);
@@ -136,13 +137,12 @@ class AddScore extends Component {
 	}
 
 	static getDerivedStateFromProps(nextProps, prevState) {
-		if (JSON.stringify(nextProps.tests) !== JSON.stringify(prevState.allTests)) return false;
+		if (JSON.stringify(nextProps.tests) === JSON.stringify(prevState.allTests)) return false;
 		return { allTests: nextProps.tests };
 	}
 
 	render() {
-		const { tests } = this.props;
-		const { currentTestStudents } = this.state;
+		const { allTests, currentTestStudents } = this.state;
 		const components = {
 			body: {
 				row: EditableFormRow,
@@ -177,7 +177,7 @@ class AddScore extends Component {
 							onChange={this.handleTestSelectChange}
 							placeholder="Select Test"
 							showSearch>
-							{tests.map(test => <Option key={test._id} value={test._id}>{test.name}</Option>)}
+							{allTests.map(test => <Option key={test._id} value={test._id}>{test.name}</Option>)}
 						</Select>
 					</Col>
 				</Row>
