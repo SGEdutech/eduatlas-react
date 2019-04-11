@@ -9,4 +9,4 @@ const middleware = window.cordova ?
 	compose(applyMiddleware(promise(), thunk)) :
 	compose(applyMiddleware(promise(), thunk), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
-export default createStore(reducer, compose(applyMiddleware(promise(), thunk)));
+export default createStore(reducer, middleware);

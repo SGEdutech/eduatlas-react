@@ -59,6 +59,7 @@ class AddScore extends Component {
 
 	state = {
 		allTests: [],
+		selectTestValue: null,
 		currentTestStudents: []
 	}
 
@@ -78,7 +79,9 @@ class AddScore extends Component {
 	}
 
 	getCurrentTestStudents = () => {
-		const { batches, students, tests } = this.props;
+		const { batches, tests } = this.props;
+		let { students } = this.props;
+		students = JSON.parse(JSON.stringify(students));
 		const currentTestId = this.currentTestId;
 		if (Boolean(currentTestId) === false) return;
 		const testInfo = tests.find(test => test._id === currentTestId);
@@ -119,7 +122,7 @@ class AddScore extends Component {
 
 	handleTestSelectChange = currentTestId => {
 		this.currentTestId = currentTestId;
-		this.setState({ currentTestStudents: this.getCurrentTestStudents() });
+		this.setState({ currentTestStudents: this.getCurrentTestStudents(), selectTestValue: currentTestId });
 	}
 
 	handleSaveBtnClick = () => {
@@ -138,7 +141,7 @@ class AddScore extends Component {
 
 	static getDerivedStateFromProps(nextProps, prevState) {
 		if (JSON.stringify(nextProps.tests) === JSON.stringify(prevState.allTests)) return false;
-		return { allTests: nextProps.tests };
+		return { allTests: nextProps.tests, selectTestValue: null, currentTestStudents: [] };
 	}
 
 	render() {
@@ -176,6 +179,7 @@ class AddScore extends Component {
 							filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
 							onChange={this.handleTestSelectChange}
 							placeholder="Select Test"
+							value={this.state.selectTestValue}
 							showSearch>
 							{allTests.map(test => <Option key={test._id} value={test._id}>{test.name}</Option>)}
 						</Select>
