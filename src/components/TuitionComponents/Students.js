@@ -67,7 +67,7 @@ class Students extends Component {
 				</AppBar>
 				{secondaryTabsValue === 0 && <Requests students={student.students} requests={request.requests} addStudent={addStudent} deleteRequest={this.showDeleteConfirm} batches={batch.batches} courses={course.courses} />}
 				{secondaryTabsValue === 1 && <Active batches={batch.batches} messageInfo={messageInfo} studentsInfo={student} deleteStudent={deleteStudent} />}
-				{secondaryTabsValue === 2 && <Pending addStudentInBatch={addStudentInBatch} batches={batch.batches} messageInfo={messageInfo} studentsInfo={student} />}
+				{secondaryTabsValue === 2 && <Pending addStudentInBatch={addStudentInBatch} batches={batch.batches} deleteStudent={deleteStudent} messageInfo={messageInfo} studentsInfo={student} />}
 				{secondaryTabsValue === 3 && <AddStudent students={student.students} />}
 			</>
 		);

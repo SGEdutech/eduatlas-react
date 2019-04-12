@@ -1,3 +1,5 @@
+import dateToMoment from '../../scripts/dateToMoment';
+
 const initState = {
 	notifications: []
 };
@@ -5,7 +7,9 @@ const initState = {
 function notificationReducer(state = initState, action) {
 	switch (action.type) {
 		case 'FETCH_ALL_FULFILLED':
-			return { ...state, notifications: action.payload.data.notifications };
+			const notifications = action.payload.data.notifications;
+			dateToMoment(notifications);
+			return { ...state, notifications };
 		case 'ADD_NOTIFICATION_FULFILLED':
 			return { ...state, notifications: [...state.notifications, action.payload.data] };
 		case 'READ_NOTIFICATION_FULFILLED': {

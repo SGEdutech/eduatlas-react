@@ -22,7 +22,7 @@ class Announcements extends Component {
 	render() {
 		const { announcements, messageInfo } = this.props;
 
-		const announcementsJsx = announcements.map(({ _id, message, receivers, senderId, createdAt }) => (
+		const announcementsJsx = announcements.reverse().map(({ _id, message, receivers, senderId, createdAt }) => (
 			<Col {...cardColLayout} key={_id}>
 				<AnnouncementCard
 					id={_id}

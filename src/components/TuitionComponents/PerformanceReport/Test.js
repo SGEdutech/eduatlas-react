@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-relative-link';
@@ -10,8 +11,10 @@ import { inverseMinutesFromMidnight } from '../../../scripts/minutesToMidnight';
 import {
 	Card,
 	Col,
+	DatePicker,
 	Empty,
 	Icon,
+	Input,
 	Modal,
 	Row,
 	Skeleton
@@ -35,7 +38,40 @@ const colLayout = {
 	xxl: 6
 };
 
+const filterColLayout = {
+	xs: 24,
+	sm: 12
+};
+
 class Test extends Component {
+	state = {
+		fromDate: moment(),
+		searchQuery: undefined,
+		toDate: undefined
+	}
+
+	getFilteredTests = () => {
+		let { tests } = this.props;
+		const { searchQuery, toDate } = this.state;
+		let { fromDate } = this.state;
+		if (searchQuery) {
+			const searchRegex = new RegExp(searchQuery, 'i');
+			tests = tests.filter(test => searchRegex.test(test.name));
+		}
+		if (Boolean(fromDate) === false) fromDate = moment(0);
+		tests = tests.filter(schedule => {
+			return schedule.date.startOf('day').diff(fromDate.startOf('day'), 'days') >= 0;
+		});
+		if (toDate) tests = tests.filter(schedule => schedule.date.startOf('day').diff(toDate.startOf('day'), 'days') <= 0);
+		return tests;
+	}
+
+	handleFromDateChange = fromDate => this.setState({ fromDate });
+
+	handleSearchChange = ({ currentTarget: { value: searchQuery } }) => this.setState({ searchQuery });
+
+	handleToDateChange = toDate => this.setState({ toDate });
+
 	showDeleteConfirm = testId => {
 		const { deleteTest, match: { url } } = this.props;
 		const tuitionId = getTuitionIdFromUrl(url);
@@ -53,8 +89,8 @@ class Test extends Component {
 
 	render() {
 		const { messageInfo, tests } = this.props;
-
-		const testsJsx = tests.map(({ batchIds, fromTime, _id, maxMarks, name, toTime }) => (
+		const filteredTests = this.getFilteredTests();
+		const testsJsx = filteredTests.map(({ batchIds, fromTime, _id, maxMarks, name, toTime }) => (
 			<Col {...colLayout} key={_id}>
 				<div className="mb-3">
 					<TestCard
@@ -88,8 +124,19 @@ class Test extends Component {
 		return (
 			<>
 				<div className="container">
+					<Row className="mb-3" type="flex" align="middle" justify="center">
+						<Col span={24} className="p-1">
+							<Input onChange={this.handleSearchChange} placeholder="Search" />
+						</Col>
+						<Col {...filterColLayout} className="p-1">
+							<DatePicker allowClear className="w-100" defaultValue={moment()} format="DD-MM-YYYY" onChange={this.handleFromDateChange} placeholder="From Date" />
+						</Col>
+						<Col {...filterColLayout} className="p-1">
+							<DatePicker allowClear className="w-100" format="DD-MM-YYYY" onChange={this.handleToDateChange} placeholder="To Date" />
+						</Col>
+					</Row>
 					<Row gutter={16}>
-						{messageInfo.fetching ? skeletonCards : (tests.length === 0 ? emptyJsx : testsJsx)}
+						{messageInfo.fetching ? skeletonCards : (filteredTests.length === 0 ? emptyJsx : testsJsx)}
 					</Row>
 				</div>
 				<Link to="./add-test">

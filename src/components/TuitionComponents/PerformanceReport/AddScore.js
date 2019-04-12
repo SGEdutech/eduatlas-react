@@ -9,12 +9,14 @@ import {
 	Col,
 	Form,
 	InputNumber,
+	Modal,
 	Row,
 	Select,
 	Table,
 	Tag
 } from 'antd';
 const { Option } = Select;
+const confirm = Modal.confirm;
 
 const columnsDef = [{
 	title: 'Name',
@@ -64,10 +66,20 @@ class AddScore extends Component {
 	}
 
 	handleClearBtnClick = () => {
+		const { currentTestId } = this;
 		const { clearMarks, match: { url } } = this.props;
 		if (Boolean(this.currentTestId) === false) return;
 		const tuitionId = getTuitionIdFromUrl(url);
-		clearMarks(tuitionId, this.currentTestId);
+		confirm({
+			title: 'Are You Sure?',
+			content: 'This action is permanent!',
+			okText: 'Yes',
+			okType: 'danger',
+			cancelText: 'No',
+			onOk() {
+				clearMarks(tuitionId, currentTestId);
+			}
+		});
 	}
 
 	handleSave = testRow => {
@@ -198,11 +210,11 @@ class AddScore extends Component {
 				</Row>
 				<Row type="flex" justify="end">
 					<Form.Item>
-						<Button onClick={this.handleSaveBtnClick} type="primary">
-							Save Changes
-						</Button>
-						<Button onClick={this.handleClearBtnClick} type="danger">
+						<Button className="mx-1" disabled={Boolean(this.currentTestId) === false} onClick={this.handleClearBtnClick} type="danger">
 							Clear Score
+						</Button>
+						<Button disabled={Boolean(this.currentTestId) === false} onClick={this.handleSaveBtnClick} type="primary">
+							Save Changes
 						</Button>
 					</Form.Item>
 				</Row>
@@ -264,12 +276,13 @@ class EditableCell extends Component {
 												onPressEnter={this.save}
 												onBlur={this.save}
 												ref={node => (this.input = node)}
+												size="large"
 											/>
 										)}
 									</FormItem>
 								) : (
 										<div
-											className="editable-cell-value-wrap"
+											className="py-3 editable-cell-value-wrap"
 											style={{ paddingRight: 24 }}
 											onClick={this.toggleEdit}
 										>

@@ -18,6 +18,7 @@ import AttendanceDetails from './components/TuitionComponents/Attendance/Attenda
 import EditProfile from './components/EditProfile';
 import EditSchedule from './components/TuitionComponents/Schedule/EditSchedule';
 import TuitionManager from './components/TuitionComponents/TuitionManager';
+import ViewAnnouncement from './components/TuitionComponents/Communicator/Announcements/ViewAnnouncement';
 import ViewOrEditStudent from './components/TuitionComponents/Students/ViewOrEditStudent';
 
 // Shared components
@@ -92,6 +93,7 @@ class App extends Component {
 					<Route exact path={url + '/receipt-config'} component={ReceiptConfig}></Route>
 					<Route exact path={url + '/tuition/add-test'} component={AddOrEditTest}></Route>
 					<Route exact path={url + '/tuition/edit-test/:testId'} render={() => <AddOrEditTest edit={true} />}></Route>
+					<Route exact path={url + '/tuition/view-announcement/:announcementId'} render={() => <ViewAnnouncement notifications={this.props.notifications} students={this.props.students} />}></Route>
 				</Switch>
 			</Router>
 		);
@@ -101,6 +103,7 @@ class App extends Component {
 function mapStateToProps(state) {
 	return {
 		messageInfo: state.messageInfo,
+		notifications: state.notification.notifications,
 		requests: state.request.requests,
 		students: state.student.students,
 		user: state.user.userInfo

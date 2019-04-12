@@ -26,7 +26,7 @@ class Pending extends Component {
 	handleSearchInpChange = e => this.setState({ search: e.target.value });
 
 	render() {
-		const { batches, messageInfo, studentsInfo, addStudentInBatch } = this.props;
+		const { addStudentInBatch, batches, deleteStudent, messageInfo, studentsInfo } = this.props;
 
 		// filter out students with batches
 		const studentsToShow = studentsInfo.students.filter(student => {
@@ -48,6 +48,7 @@ class Pending extends Component {
 				<div className="mb-3">
 					<PendingCard
 						batches={batches}
+						deleteStudent={deleteStudent}
 						id={_id}
 						name={name}
 						rollNumber={rollNumber}
