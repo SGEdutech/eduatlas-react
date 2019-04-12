@@ -88,13 +88,14 @@ class Test extends Component {
 	};
 
 	render() {
-		const { messageInfo, tests } = this.props;
+		const { messageInfo } = this.props;
 		const filteredTests = this.getFilteredTests();
-		const testsJsx = filteredTests.map(({ batchIds, fromTime, _id, maxMarks, name, toTime }) => (
+		const testsJsx = filteredTests.map(({ batchIds, date, fromTime, _id, maxMarks, name, toTime }) => (
 			<Col {...colLayout} key={_id}>
 				<div className="mb-3">
 					<TestCard
 						batchIds={batchIds}
+						date={date}
 						deleteTest={this.showDeleteConfirm}
 						fromTime={Boolean(fromTime) === true ? inverseMinutesFromMidnight(fromTime).format('LT') : undefined}
 						id={_id}
