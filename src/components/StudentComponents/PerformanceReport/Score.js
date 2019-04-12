@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import { inverseMinutesFromMidnight } from '../../../scripts/minutesToMidnight';
+import cloneObj from '../../../scripts/cloneObj';
 
 import {
 	Col,
@@ -39,8 +40,11 @@ const columnsDef = [{
 
 class Score extends Component {
 	render() {
-		const { batches, tests, studentInfo } = this.props;
+		const { batches, studentInfo } = this.props;
+		let { tests } = this.props;
 		const studentBatches = batches.filter(batch => Boolean(batch.students.find(student => student === studentInfo._id)));
+
+		tests = cloneObj(tests);
 
 		const panelsJsx = studentBatches.map((batch, index) => {
 			let testsOfThisBatch = tests.filter(test => test.batchIds.find(batchId => batchId === batch._id));
