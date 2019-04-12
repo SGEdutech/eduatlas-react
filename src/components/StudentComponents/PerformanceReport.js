@@ -28,8 +28,8 @@ class PerformanceReport extends Component {
 						textColor="primary"
 						value={value}
 						variant="fullWidth">
-						<Tab label="Score" />
-						<Tab label="PER" />
+						<Tab label="Table" />
+						<Tab label="Graph" />
 					</Tabs>
 				</AppBar>
 				{value === 0 && <Score batches={batches} studentInfo={studentInfo} tests={tests} />}
