@@ -50,7 +50,6 @@ class PerformanceEvalReport extends Component {
 		const { batches, tests, studentInfo } = this.props;
 		const studentBatches = batches.filter(batch => Boolean(batch.students.find(student => student === studentInfo._id)));
 
-
 		const panelsJsx = studentBatches.map((batch, index) => {
 			let testsOfThisBatch = tests.filter(test => test.batchIds.find(batchId => batchId === batch._id));
 			testsOfThisBatch = testsOfThisBatch.sort((a, b) => a.date.startOf('day').diff(b.date.startOf('day'), 'days'));
@@ -61,6 +60,7 @@ class PerformanceEvalReport extends Component {
 				testNames = [];
 
 			testsOfThisBatch.forEach(test => {
+				let numAbsents = 0;
 				let isTestRelevant = false;
 				let averageScore = 0, highestScore = 0;
 				let lowestScore = test.maxMarks;
@@ -69,17 +69,22 @@ class PerformanceEvalReport extends Component {
 
 				test.reports.forEach(report => {
 					const { marksObtained, studentId } = report;
-					if (studentId === studentInfo._id) {
-						isTestRelevant = true;
-						studentScore = marksObtained;
+					// check if student absent
+					if (-marksObtained === Number.MAX_VALUE - 1) {
+						numAbsents++;
+					} else {
+						if (studentId === studentInfo._id) {
+							isTestRelevant = true;
+							studentScore = marksObtained;
+						}
+						averageScore += marksObtained;
+						if (marksObtained > highestScore) highestScore = marksObtained;
+						if (marksObtained < lowestScore) lowestScore = marksObtained;
 					}
-					averageScore += marksObtained;
-					if (marksObtained > highestScore) highestScore = marksObtained;
-					if (marksObtained < lowestScore) lowestScore = marksObtained;
 				});
 				if (isTestRelevant) {
 					testNames.push(testName);
-					averageScore /= test.reports.length;
+					averageScore /= (test.reports.length - numAbsents);
 					averageScores.push(parseFloat((averageScore / test.maxMarks) * 100).toFixed(2));
 					highestScores.push(parseFloat((highestScore / test.maxMarks) * 100).toFixed(2));
 					lowestScores.push(parseFloat((lowestScore / test.maxMarks) * 100).toFixed(2));

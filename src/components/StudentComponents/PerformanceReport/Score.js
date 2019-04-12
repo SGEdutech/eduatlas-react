@@ -53,7 +53,11 @@ class Score extends Component {
 			testsOfThisBatch.forEach(test => {
 				test.marksObtained = null;
 				test.reports.forEach(report => {
-					if (report.studentId === studentInfo._id) test.marksObtained = report.marksObtained + '/' + test.maxMarks;
+					if (report.studentId === studentInfo._id) {
+						// check if marks are NEGATIVE MAXVALUE
+						if (-report.marksObtained === Number.MAX_VALUE - 1) test.marksObtained = <Tag color="volcano">Absent</Tag>;
+						else test.marksObtained = report.marksObtained + '/' + test.maxMarks;
+					}
 				});
 				if (Boolean(test.marksObtained) === false) test.marksObtained = <Tag color="blue">NA</Tag>;
 				test.dateAndTime = {

@@ -8,6 +8,7 @@ import {
 	Button,
 	Col,
 	Form,
+	Input,
 	InputNumber,
 	Modal,
 	Row,
@@ -15,6 +16,7 @@ import {
 	Table,
 	Tag
 } from 'antd';
+import { number } from 'prop-types';
 const { Option } = Select;
 const confirm = Modal.confirm;
 
@@ -39,7 +41,8 @@ const columnsDef = [{
 	dataIndex: 'score',
 	key: 'score',
 	width: '80',
-	editable: 'true'
+	editable: 'true',
+	render: score => (-score === Number.MAX_VALUE - 1) ? 'a' : score
 }];
 
 const FormItem = Form.Item;
@@ -142,10 +145,13 @@ class AddScore extends Component {
 		const { editTest, match: { url } } = this.props;
 		const { currentTestStudents } = this.state;
 		const tuitionId = getTuitionIdFromUrl(url);
-		const reports = currentTestStudents.map(student => {
+		// filter students whose marks were not updated
+		let reports = currentTestStudents.filter(student => Boolean(student.score) === true);
+		reports = reports.map(student => {
+			if (student.score === 'a') student.score = -(Number.MAX_VALUE - 1);
 			return {
 				studentId: student._id,
-				marksObtained: student.score || 0
+				marksObtained: parseFloat(student.score)
 			};
 		});
 		editTest(tuitionId, this.currentTestId, { reports });
@@ -248,6 +254,15 @@ class EditableCell extends Component {
 		});
 	}
 
+	validateMarks = (rule, marks = '', callback) => {
+		// This case will be taken care of required validator
+		if (Boolean(marks) === false) callback();
+		if (isNaN(parseFloat(marks))) {
+			if (marks !== 'a') callback('Invalid Input!');
+		}
+		callback();
+	}
+
 	render() {
 		const { editing } = this.state;
 		const {
@@ -269,9 +284,12 @@ class EditableCell extends Component {
 								editing ? (
 									<FormItem style={{ margin: 0 }}>
 										{form.getFieldDecorator(dataIndex, {
-											initialValue: record[dataIndex]
+											initialValue: record[dataIndex],
+											rules: [{
+												validator: this.validateMarks
+											}]
 										})(
-											<InputNumber
+											<Input
 												className="w-100"
 												onPressEnter={this.save}
 												onBlur={this.save}
@@ -282,7 +300,7 @@ class EditableCell extends Component {
 									</FormItem>
 								) : (
 										<div
-											className="py-3 editable-cell-value-wrap"
+											className="py-2 editable-cell-value-wrap"
 											style={{ paddingRight: 24 }}
 											onClick={this.toggleEdit}
 										>
