@@ -204,6 +204,7 @@ class AddScore extends Component {
 					</Col>
 				</Row>
 				<Row gutter={16}>
+					<small className="text-info">Type "a" to mark student absent.</small>
 					<Table
 						rowClassName="editable-row"
 						components={components}
