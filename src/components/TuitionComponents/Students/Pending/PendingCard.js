@@ -14,13 +14,30 @@ import {
 	Card,
 	Form,
 	Input,
+	Modal,
 	Select
 } from 'antd';
 const { Meta } = Card;
 const Option = Select.Option;
+const confirm = Modal.confirm;
 
 
 class PendingCard extends Component {
+	handleDeleteBtnClick = () => {
+		const { deleteStudent, id, match: { url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
+		confirm({
+			title: 'Are You Sure?',
+			content: 'This action is permanent!',
+			okText: 'Yes',
+			okType: 'danger',
+			cancelText: 'No',
+			onOk() {
+				deleteStudent(tuitionId, id);
+			}
+		});
+	}
+
 	handleSubmit = e => {
 		e.preventDefault();
 		const { addStudentInBatch, batches, form, match: { url } } = this.props;
@@ -46,6 +63,7 @@ class PendingCard extends Component {
 					className="mb-3"
 					actions={[
 						<IconsWithTooltip onClick={this.handleSubmit} iconType="check" tooltipMessage="Add To Batch" />,
+						<IconsWithTooltip onClick={this.handleDeleteBtnClick} iconType="delete" tooltipMessage="Delete Student" />
 					]}
 					title={
 						<Meta
