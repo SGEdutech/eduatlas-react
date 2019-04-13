@@ -4,12 +4,15 @@ import { withRouter } from 'react-router-dom';
 
 import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
 
+import ExcelScoreUpload from './AddScore/ExcelScoreUpload';
+
 import {
 	Button,
 	Col,
+	Divider,
 	Form,
+	Icon,
 	Input,
-	InputNumber,
 	Modal,
 	Row,
 	Select,
@@ -163,6 +166,7 @@ class AddScore extends Component {
 	}
 
 	render() {
+		const { editTest } = this.props;
 		const { allTests, currentTestStudents } = this.state;
 		const components = {
 			body: {
@@ -203,6 +207,9 @@ class AddScore extends Component {
 						</Select>
 					</Col>
 				</Row>
+				{Boolean(window.cordova) === false && <Divider orientation="left"><small className="mx-1">Bulk Upload Score</small><Icon type="arrow-down" /></Divider>}
+				{Boolean(window.cordova) === false && <ExcelScoreUpload allTests={allTests} currentTestId={this.currentTestId} currentTestStudents={currentTestStudents} editTest={editTest} />}
+				{Boolean(window.cordova) === false && <Divider orientation="left"><small className="mx-1">Manually Upload Score</small><Icon type="arrow-down" /></Divider>}
 				<Row gutter={16}>
 					<small className="text-info">Type "a" to mark student absent.</small>
 					<Table
