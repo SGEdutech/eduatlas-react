@@ -35,8 +35,8 @@ class PerformanceReport extends Component {
 						textColor="primary"
 						variant="fullWidth">
 						<Tab label="Tests" />
-						<Tab label="Score" />
-						<Tab label="PER" />
+						<Tab label="Add Score" />
+						<Tab label="Reports" />
 					</Tabs>
 				</AppBar>
 				{secondaryTabsValue === 0 && <Test addTest={addTest} batches={batches} deleteTest={deleteTest} editTest={editTest} messageInfo={messageInfo} tests={tests} />}
