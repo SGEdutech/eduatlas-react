@@ -135,7 +135,7 @@ class AddOrEditTest extends Component {
 											required: true, message: 'Date is required!'
 										}]
 									})(
-										<DatePicker className="w-100" />
+										<DatePicker className="w-100" format="DD/MM/YYYY" />
 									)}
 								</Form.Item>
 							</Col>

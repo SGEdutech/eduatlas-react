@@ -32,7 +32,7 @@ class InstallmentCollapse extends Component {
 					<Col {...colLayout}>
 						<Form.Item
 							label="Paid On">
-							<DatePicker className="w-100" value={createdAt} disabled={true} />
+							<DatePicker className="w-100" value={createdAt} disabled={true} format="DD/MM/YYYY" />
 						</Form.Item>
 					</Col>
 					<Col {...colLayout}>
@@ -57,7 +57,7 @@ class InstallmentCollapse extends Component {
 							<Col {...colLayout}>
 								<Form.Item
 									label="Date">
-									<DatePicker value={dateOfCheque} disabled={true} />
+									<DatePicker value={dateOfCheque} disabled={true} format="DD/MM/YYYY" />
 								</Form.Item>
 							</Col>
 							<Col {...colLayout}>

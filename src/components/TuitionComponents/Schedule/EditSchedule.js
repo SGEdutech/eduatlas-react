@@ -92,7 +92,7 @@ class EditSchedule extends Component {
 											required: true, message: 'Please choose date!'
 										}]
 									})(
-										<DatePicker className="w-100" />
+										<DatePicker className="w-100" format="DD/MM/YYYY" />
 									)}
 								</Form.Item>
 							</Col>

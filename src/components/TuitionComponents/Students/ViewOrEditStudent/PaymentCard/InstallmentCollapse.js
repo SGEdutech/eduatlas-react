@@ -141,7 +141,7 @@ class InstallmentCollapse extends Component {
 									{getFieldDecorator('dateOfCheque', {
 										initialValue: dateOfCheque
 									})(
-										<DatePicker disabled={!editable} />
+										<DatePicker className="w-100" disabled={!editable} format="DD/MM/YYYY" />
 									)}
 								</Form.Item>
 							</Col>
