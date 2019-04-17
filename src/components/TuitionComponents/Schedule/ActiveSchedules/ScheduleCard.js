@@ -7,7 +7,7 @@ import { Row, Col, Card } from 'antd';
 import IconsWithTooltip from '../../../SharedComponents/IconsWithTooltip';
 
 function ScheduleCard(props) {
-	const { id, date, faculty, topic, fromTime, toTime, courseId, batchId, deleteSchedule, isAttendance } = props;
+	const { id, batchCode, date, faculty, topic, fromTime, toTime, courseId, batchId, deleteSchedule, isAttendance, showBatchCode } = props;
 	let iconsArray = [
 		<Link to={'./edit-schedule/' + id}><IconsWithTooltip tooltipMessage="Edit" iconType="edit" /></Link>,
 		<IconsWithTooltip tooltipMessage="Delete" iconType="delete" onClick={() => deleteSchedule(courseId, batchId, id)} />
@@ -23,6 +23,9 @@ function ScheduleCard(props) {
 			title={<div className="text-capitalize"><span className="font-weight-bold">Topic: </span> {topic}</div>}
 			actions={iconsArray}>
 			<Row>
+				{showBatchCode ?
+					<Col><div><span className="font-weight-bold">Batch: </span> {batchCode}</div></Col> :
+					undefined}
 				<Col>
 					<div><span className="font-weight-bold">Date: </span> {moment(date).format('MMM Do YYYY')}</div>
 				</Col>

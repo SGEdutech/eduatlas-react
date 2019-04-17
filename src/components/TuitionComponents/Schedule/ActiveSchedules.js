@@ -66,6 +66,29 @@ class ActiveSchedules extends Component {
 		});
 	}
 
+	getCardsJsx = (filteredSchedules, emptyJsx, isAttendance) => {
+		let cardsJsx = filteredSchedules.map(({ _id, date, faculty, topic, fromTime, toTime, batchCode, courseId, batchId }) => (
+			<Col key={_id} {...cardColLayout}>
+				<ScheduleCard
+					batchCode={batchCode}
+					batchId={batchId}
+					courseId={courseId}
+					date={date}
+					deleteSchedule={this.showDeleteConfirm}
+					faculty={faculty}
+					fromTime={inverseMinutesFromMidnight(fromTime).format('LT')}
+					id={_id}
+					isAttendance={isAttendance}
+					key={_id}
+					showBatchCode={true}
+					topic={topic}
+					toTime={inverseMinutesFromMidnight(toTime).format('LT')} />
+			</Col>
+		));
+		if (filteredSchedules.length === 0) cardsJsx = emptyJsx;
+		return <Row gutter={16}>{cardsJsx}</Row>;
+	}
+
 	getFilteredSchedules = () => {
 		let { schedules } = this.props;
 		const { batchId, searchQuery, toDate } = this.state;
@@ -83,60 +106,7 @@ class ActiveSchedules extends Component {
 		return schedules;
 	}
 
-	sortSchedules = schedules => schedules.sort((a, b) => {
-		if (a.date.valueOf() > b.date.valueOf()) return 1;
-		if (a.date.valueOf() < b.date.valueOf()) return -1;
-		return a.fromTime > b.fromTime ? 1 : -1;
-	});
-
-	handleBatchChange = batchId => this.setState({ batchId });
-
-	handleFromDateChange = fromDate => this.setState({ fromDate });
-
-	handleSearchChange = ({ currentTarget: { value: searchQuery } }) => this.setState({ searchQuery });
-
-	handleToDateChange = toDate => this.setState({ toDate });
-
-	hideModal = () => this.setState({ modalBatchId: null, modalVisible: false, modalWeekNumber: null });
-
-	openModal = e => {
-		const { currentTarget: { attributes: { databatchid: { value: modalBatchId }, dataweeknumber: { value: modalWeekNumber } } } } = e;
-		this.setState({ modalBatchId, modalVisible: true, modalWeekNumber });
-	};
-
-	showDeleteConfirm = (courseId, batchId, scheduleId) => {
-		const { deleteSchedule, match: { url } } = this.props;
-		const tuitionId = getTuitionIdFromUrl(url);
-		confirm({
-			title: 'Are You Sure?',
-			content: 'This action is permanent!',
-			okText: 'Yes',
-			okType: 'danger',
-			cancelText: 'No',
-			onOk() {
-				deleteSchedule(tuitionId, courseId, batchId, scheduleId);
-			}
-		});
-	};
-
-	render() {
-		const { modalBatchId, modalVisible, modalWeekNumber } = this.state;
-		const { addSchedule, batches, isAttendance, schedules } = this.props;
-		const filteredSchedules = this.getFilteredSchedules();
-		this.sortSchedules(filteredSchedules);
-
-		const batchWiseSchedulesArr = this.getBatchWiseSchedule(filteredSchedules);
-		const emptyJsx = <Empty className="mt-4"
-			image="https://gw.alipayobjects.com/mdn/miniapp_social/afts/img/A*pevERLJC9v0AAAAAAAAAAABjAQAAAQ/original"
-			description={<span>Nothing is better than something...</span>}></Empty>;
-
-		// SORT Batches in Alphabatical Order
-		batches.sort((a, b) => {
-			if (a.code < b.code) return -1;
-			if (a.code > b.code) return 1;
-			return 0;
-		});
-
+	getPanelsJsx = (batches, batchWiseSchedulesArr, emptyJsx, isAttendance) => {
 		const panelsJsx = batches.map((batch, i) => {
 			return (<Panel header={batch.code} key={batch._id}>
 
@@ -180,6 +150,67 @@ class ActiveSchedules extends Component {
 			</Panel>);
 		});
 
+		return <Collapse>{panelsJsx}</Collapse>;
+	}
+
+	sortSchedules = schedules => schedules.sort((a, b) => {
+		if (a.date.valueOf() > b.date.valueOf()) return 1;
+		if (a.date.valueOf() < b.date.valueOf()) return -1;
+		return a.fromTime > b.fromTime ? 1 : -1;
+	});
+
+	handleBatchChange = batchId => this.setState({ batchId });
+
+	handleFromDateChange = fromDate => this.setState({ fromDate });
+
+	handleSearchChange = ({ currentTarget: { value: searchQuery } }) => this.setState({ searchQuery });
+
+	handleToDateChange = toDate => this.setState({ toDate });
+
+	hideModal = () => this.setState({ modalBatchId: null, modalVisible: false, modalWeekNumber: null });
+
+	openModal = e => {
+		const { currentTarget: { attributes: { databatchid: { value: modalBatchId }, dataweeknumber: { value: modalWeekNumber } } } } = e;
+		this.setState({ modalBatchId, modalVisible: true, modalWeekNumber });
+	};
+
+	showDeleteConfirm = (courseId, batchId, scheduleId) => {
+		const { deleteSchedule, match: { url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
+		confirm({
+			title: 'Are You Sure?',
+			content: 'This action is permanent!',
+			okText: 'Yes',
+			okType: 'danger',
+			cancelText: 'No',
+			onOk() {
+				deleteSchedule(tuitionId, courseId, batchId, scheduleId);
+			}
+		});
+	};
+
+	render() {
+		const { modalBatchId, modalVisible, modalWeekNumber, searchQuery } = this.state;
+		const { addSchedule, batches, isAttendance, schedules } = this.props;
+		// SORT Batches in Alphabatical Order
+		batches.sort((a, b) => {
+			if (a.code < b.code) return -1;
+			if (a.code > b.code) return 1;
+			return 0;
+		});
+
+		const filteredSchedules = this.getFilteredSchedules();
+		this.sortSchedules(filteredSchedules);
+
+		const batchWiseSchedulesArr = this.getBatchWiseSchedule(filteredSchedules);
+		const emptyJsx = <Empty className="mt-4"
+			image="https://gw.alipayobjects.com/mdn/miniapp_social/afts/img/A*pevERLJC9v0AAAAAAAAAAABjAQAAAQ/original"
+			description={<span>Nothing is better than something...</span>}></Empty>;
+
+		const panelsJsx = Boolean(searchQuery) === false ? this.getPanelsJsx(batches, batchWiseSchedulesArr, emptyJsx, isAttendance) : undefined;
+		// On Searching show cards instead of panels
+		const cardsJsx = Boolean(searchQuery) === true ? this.getCardsJsx(filteredSchedules, emptyJsx, isAttendance) : undefined;
+
 		const skeletonCards = [];
 		for (let i = 0; i < 5; i++) {
 			skeletonCards.push(
@@ -195,7 +226,7 @@ class ActiveSchedules extends Component {
 			<div className="container">
 				<Row className="mb-3" type="flex" align="middle" justify="center">
 					<Col span={24} className="p-1">
-						<Input onChange={this.handleSearchChange} placeholder="Search" />
+						<Input allowClear onChange={this.handleSearchChange} placeholder="Search" />
 					</Col>
 					<Col {...colLayout} className="p-1">
 						<DatePicker allowClear className="w-100" defaultValue={moment()} format="DD-MM-YYYY" onChange={this.handleFromDateChange} placeholder="From Date" />
@@ -204,9 +235,7 @@ class ActiveSchedules extends Component {
 						<DatePicker allowClear className="w-100" format="DD-MM-YYYY" onChange={this.handleToDateChange} placeholder="To Date" />
 					</Col>
 				</Row>
-				<Collapse>
-					{panelsJsx}
-				</Collapse>
+				{Boolean(searchQuery) === false ? panelsJsx : cardsJsx}
 				<Modal
 					footer={null}
 					onCancel={this.hideModal}
