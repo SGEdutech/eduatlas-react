@@ -14,6 +14,7 @@ import {
 } from 'antd';
 
 import { logOut } from '../redux/actions/userActions';
+import fetchAll from '../redux/actions/fetchAllAction';
 
 import getTuitionIdFromUrl from '../scripts/getTuitionIdFromUrl';
 
@@ -57,6 +58,12 @@ class Navbar extends Component {
 		setTimeout(() => replace(`/app/${tuitionId}`), 100);
 	}
 
+	handleRefresh = () => {
+		const { fetchAll, match: { url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
+		fetchAll(tuitionId);
+	}
+
 	render() {
 		const { match: { url }, navText, renderBackBtn = false, user } = this.props;
 		const tuitionId = getTuitionIdFromUrl(url);
@@ -69,11 +76,13 @@ class Navbar extends Component {
 								<>
 									<Icon style={cursorStyle} type="arrow-left" onClick={this.props.history.goBack} />
 									<span className="ml-auto mr-auto">{navText}</span>
+									{Boolean(window.cordova) === false ? <Icon onClick={this.handleRefresh} style={cursorStyle} type="sync" /> : undefined}
 								</>
 							) : (
 									<>
 										<Icon style={cursorStyle} type="menu-fold" onClick={this.showDrawer} />
 										<span className="ml-auto mr-auto"><span className="text-uppercase" style={{ color: '#fff', fontWeight: 700 }}>{tuitionName}</span></span>
+										{Boolean(window.cordova) === false ? <Icon onClick={this.handleRefresh} style={cursorStyle} type="sync" /> : undefined}
 									</>
 								)
 						}
@@ -100,6 +109,6 @@ function mapStateToProps(state) {
 	return { user: state.user.userInfo };
 }
 
-export default compose(connect(mapStateToProps, { logOut }), withRouter)(Navbar);
+export default compose(connect(mapStateToProps, { fetchAll, logOut }), withRouter)(Navbar);
 
 
