@@ -151,7 +151,7 @@ class AddScore extends Component {
 		// filter students whose marks were not updated
 		let reports = currentTestStudents.filter(student => Boolean(student.score) === true);
 		reports = reports.map(student => {
-			if (student.score === 'a') student.score = -(Number.MAX_VALUE - 1);
+			if (student.score.toLowerCase() === 'a' || student.score.toLowerCase() === 'absent') student.score = -(Number.MAX_VALUE - 1);
 			return {
 				studentId: student._id,
 				marksObtained: parseFloat(student.score)
@@ -266,7 +266,7 @@ class EditableCell extends Component {
 		// This case will be taken care of required validator
 		if (Boolean(marks) === false) callback();
 		if (isNaN(parseFloat(marks))) {
-			if (marks !== 'a') callback('Invalid Input!');
+			if (marks.toLowerCase() !== 'a' && marks.toLowerCase() !== 'absent') callback('Invalid Input!');
 		}
 		callback();
 	}

@@ -130,6 +130,13 @@ class ActiveSchedules extends Component {
 			image="https://gw.alipayobjects.com/mdn/miniapp_social/afts/img/A*pevERLJC9v0AAAAAAAAAAABjAQAAAQ/original"
 			description={<span>Nothing is better than something...</span>}></Empty>;
 
+		// SORT Batches in Alphabatical Order
+		batches.sort((a, b) => {
+			if (a.code < b.code) return -1;
+			if (a.code > b.code) return 1;
+			return 0;
+		});
+
 		const panelsJsx = batches.map((batch, i) => {
 			return (<Panel header={batch.code} key={batch._id}>
 
