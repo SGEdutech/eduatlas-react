@@ -388,7 +388,7 @@ class AddStudent extends Component {
 						hasFeedback={true}>
 						{getFieldDecorator('nextInstallmentDate', {
 						})(
-							<DatePicker className="w-100" />
+							<DatePicker className="w-100" format="DD/MM/YYYY" />
 						)}
 					</Form.Item>
 				</Col>
@@ -437,7 +437,7 @@ class AddStudent extends Component {
 								hasFeedback={true}>
 								{getFieldDecorator('dateOfCheque', {
 								})(
-									<DatePicker />
+									<DatePicker className="w-100" format="DD/MM/YYYY" />
 								)}
 							</Form.Item>
 						</Col>
