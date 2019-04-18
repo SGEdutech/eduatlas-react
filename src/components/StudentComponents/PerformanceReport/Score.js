@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React, { Component } from 'react';
 
 import { inverseMinutesFromMidnight } from '../../../scripts/minutesToMidnight';
@@ -34,8 +35,7 @@ const columnsDef = [{
 	title: 'Score',
 	dataIndex: 'marksObtained',
 	key: 'marksObtained',
-	width: '80',
-	editable: 'true'
+	width: '80'
 }];
 
 class Score extends Component {
@@ -43,14 +43,19 @@ class Score extends Component {
 		const { batches, studentInfo } = this.props;
 		let { tests } = this.props;
 		const studentBatches = batches.filter(batch => Boolean(batch.students.find(student => student === studentInfo._id)));
-
+		// SORT alphabetically
+		studentBatches.sort((a, b) => {
+			if (a.code < b.code) return -1;
+			if (a.code > b.code) return 1;
+			return 0;
+		});
 		tests = cloneObj(tests);
 
 		const panelsJsx = studentBatches.map((batch, index) => {
 			let testsOfThisBatch = tests.filter(test => test.batchIds.find(batchId => batchId === batch._id));
 			testsOfThisBatch = testsOfThisBatch.sort((a, b) => a.date.startOf('day').diff(b.date.startOf('day'), 'days'));
 
-			testsOfThisBatch.forEach(test => {
+			testsOfThisBatch.reverse().forEach(test => {
 				test.marksObtained = null;
 				test.reports.forEach(report => {
 					if (report.studentId === studentInfo._id) {
@@ -60,6 +65,7 @@ class Score extends Component {
 					}
 				});
 				if (Boolean(test.marksObtained) === false) test.marksObtained = <Tag color="blue">NA</Tag>;
+				if (moment().isBefore(test.date)) test.marksObtained = <Tag color="blue">Scheduled</Tag>;
 				test.dateAndTime = {
 					fromTime: Boolean(test.fromTime) === true ?
 						inverseMinutesFromMidnight(test.fromTime).format('LT') :

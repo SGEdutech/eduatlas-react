@@ -61,7 +61,7 @@ class PrimaryTuitionTabs extends Component {
 						<Tab label="Notifications" />
 						<Tab label="Attendance and Schedule" />
 						<Tab label="Enrollment and Fee" />
-						<Tab label="Performance Report" />
+						<Tab label="Tests and Reports" />
 						<Tab label="Study Material" />
 					</Tabs>
 				</AppBar>

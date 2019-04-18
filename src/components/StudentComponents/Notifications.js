@@ -63,26 +63,6 @@ export default class Notifications extends Component {
 				icon={window.cordova ? <Avatar src={tuitionLogo} /> : <Avatar src={eduatlasLogo} />}
 				type="info" />
 		));
-		notificationJsx.push(
-			<Alert
-				className="mb-3"
-				description={
-					<Row>
-						<Col {...messageLayout}>Hi this is to inform all students of class 12B that you have to be in formals for annual fest. Regards Principal.</Col>
-						<Col className="text-right" {...dateNTimeLayout}><small>20 hours ago</small></Col>
-					</Row>
-				}
-				key='fafage sef'
-				message={
-					<Row>
-						<Col className="one-line-ellipsis" span={20}>Some Big Random NAme to emulate a tuition</Col>
-						<Col className="text-right" span={4}><small className="cursor-pointer" onClick={() => this.onClose('dada')}>close</small></Col>
-					</Row>
-				}
-				showIcon
-				icon={window.cordova ? <Avatar src={tuitionLogo} /> : <Avatar src={eduatlasLogo} />}
-				type="info" />
-		);
 
 		return (
 			< div className="container" >{messageInfo.fetching ? skeletonCards : (notificationsOfThisStudent.length === 0 ? emptyJsx : notificationJsx)}</div >
