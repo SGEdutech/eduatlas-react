@@ -135,7 +135,7 @@ class AddOrEditTest extends Component {
 											required: true, message: 'Date is required!'
 										}]
 									})(
-										<DatePicker className="w-100" />
+										<DatePicker className="w-100" format="DD/MM/YYYY" />
 									)}
 								</Form.Item>
 							</Col>
@@ -192,9 +192,12 @@ class AddOrEditTest extends Component {
 										}]
 									})(
 										<Select
-											placeholder="Select"
+											allowClear
+											filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
 											mode="multiple"
-											allowClear >
+											placeholder="Select"
+											showSearch
+										>
 											{batches.map(batch => <Option key={batch._id} value={batch._id}>{batch.code}</Option>)}
 										</Select>
 									)}

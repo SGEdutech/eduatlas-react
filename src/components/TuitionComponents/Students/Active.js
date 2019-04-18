@@ -61,6 +61,13 @@ class Active extends Component {
 
 		const studentsToRender = filterStudents(studentsToShow, this.state.search);
 
+		// Sort Students in Alphabetical order
+		studentsToRender.sort((a, b) => {
+			if (a.name < b.name) return -1;
+			if (a.name > b.name) return 1;
+			return 0;
+		});
+
 		const studentsJsx = studentsToRender.map(({ _id, name, rollNumber, email }) => (
 			<Col {...colLayout} key={_id}>
 				<div className="mb-3">

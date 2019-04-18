@@ -13,6 +13,7 @@ import {
 } from 'antd';
 
 import { logOut } from '../redux/actions/userActions';
+import fetchAll from '../redux/actions/fetchAllAction';
 
 import getTuitionIdFromUrl from '../scripts/getTuitionIdFromUrl';
 
@@ -41,16 +42,21 @@ const NavListItem = props => (
 class Navbar extends Component {
 	state = { visible: false };
 
-	showDrawer = () => this.setState({ visible: true });
-
-	onClose = () => this.setState({ visible: false });
-
 	handleLogout = () => {
 		const { history: { replace }, match: { url }, logOut, user: { primaryEmail } } = this.props;
 		const tuitionId = getTuitionIdFromUrl(url);
 		logOut(primaryEmail);
 		setTimeout(() => replace(`/app/${tuitionId}`), 100);
 	}
+
+	handleRefresh = () => {
+		const { fetchAll, match: { url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
+		fetchAll(tuitionId);
+	}
+
+	onClose = () => this.setState({ visible: false });
+	showDrawer = () => this.setState({ visible: true });
 
 	render() {
 		const { match: { url }, navText, renderBackBtn = false, user } = this.props;
@@ -69,11 +75,13 @@ class Navbar extends Component {
 								<>
 									<Icon style={cursorStyle} type="arrow-left" onClick={this.props.history.goBack} />
 									<span className="ml-auto mr-auto">{navText}</span>
+									{Boolean(window.cordova) === false ? <Icon onClick={this.handleRefresh} style={cursorStyle} type="sync" /> : undefined}
 								</>
 							) : (
 									<>
 										<Icon style={cursorStyle} type="menu-fold" onClick={this.showDrawer} />
 										<span className="ml-auto mr-auto"><Link to={`/${tuitionId}`}><span className="text-uppercase" style={{ color: '#fff', fontWeight: 700 }}>{tuitionName}</span></Link></span>
+										{Boolean(window.cordova) === false ? <Icon onClick={this.handleRefresh} style={cursorStyle} type="sync" /> : undefined}
 									</>
 								)
 						}
@@ -101,6 +109,6 @@ function mapStateToProps(state) {
 	};
 }
 
-export default compose(connect(mapStateToProps, { logOut }), withRouter)(Navbar);
+export default compose(connect(mapStateToProps, { fetchAll, logOut }), withRouter)(Navbar);
 
 

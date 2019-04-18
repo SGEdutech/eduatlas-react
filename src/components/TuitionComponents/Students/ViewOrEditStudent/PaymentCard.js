@@ -189,7 +189,7 @@ class PaymentCard extends Component {
 									{getFieldDecorator('nextInstallmentDate', {
 										initialValue: nextInstallmentDate
 									})(
-										<DatePicker className="w-100" disabled={!editable} />
+										<DatePicker className="w-100" disabled={!editable} format="DD/MM/YYYY" />
 									)}
 								</Form.Item>
 							</Col>

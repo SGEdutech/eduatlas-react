@@ -57,7 +57,7 @@ class PrimaryTuitionTabs extends Component {
 						<Tab label="Communicator" />
 						<Tab label="Schedule" />
 						<Tab label="Attendance" />
-						<Tab label="Performance Report" />
+						<Tab label="Tests And Reports" />
 						<Tab label="Study Material" />
 						{/* <Tab label="Reports" /> */}
 					</Tabs>

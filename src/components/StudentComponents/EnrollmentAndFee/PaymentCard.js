@@ -112,7 +112,7 @@ class PaymentCard extends Component {
 								<Form.Item
 									{...formItemLayout}
 									label="Next Installment Date">
-									<DatePicker value={nextInstallmentDate} className="w-100" disabled={true} />
+									<DatePicker value={nextInstallmentDate} className="w-100" disabled={true} format="DD/MM/YYYY" />
 								</Form.Item>
 							</Col>
 						</Row>

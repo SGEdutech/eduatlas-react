@@ -23,7 +23,7 @@ const { Panel } = Collapse;
 // TODO: Shove this in constructor
 const options = {
 	tooltip: { trigger: 'axis' },
-	legend: { data: ['average', 'highest', 'lowest', 'your'] },
+	legend: { data: ['average %', 'highest %', 'lowest %', 'your %'] },
 	grid: {
 		left: '3%',
 		right: '4%',
@@ -38,10 +38,10 @@ const options = {
 		type: 'value'
 	},
 	series: [
-		{ name: 'average', type: 'line' },
-		{ name: 'highest', type: 'line' },
-		{ name: 'lowest', type: 'line' },
-		{ name: 'your', type: 'line' }
+		{ name: 'average %', type: 'line' },
+		{ name: 'highest %', type: 'line' },
+		{ name: 'lowest %', type: 'line' },
+		{ name: 'your %', type: 'line' }
 	]
 };
 
@@ -96,10 +96,10 @@ class PerformanceEvalReport extends Component {
 			const graphOptionsOfThisBatch = JSON.parse(JSON.stringify(options));
 			graphOptionsOfThisBatch.xAxis.data = testNames;
 			graphOptionsOfThisBatch.series.forEach(series => {
-				if (series.name === 'average') series.data = averageScores;
-				if (series.name === 'highest') series.data = highestScores;
-				if (series.name === 'lowest') series.data = lowestScores;
-				if (series.name === 'your') series.data = studentScores;
+				if (series.name === 'average %') series.data = averageScores;
+				if (series.name === 'highest %') series.data = highestScores;
+				if (series.name === 'lowest %') series.data = lowestScores;
+				if (series.name === 'your %') series.data = studentScores;
 			});
 
 			return <Panel

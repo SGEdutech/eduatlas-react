@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 
+import { inverseMinutesFromMidnight } from '../../scripts/minutesToMidnight';
+
 import {
 	Col,
 	Collapse,
@@ -14,10 +16,16 @@ import {
 const { Panel } = Collapse;
 
 const columns = [{
-	title: 'Date',
-	dataIndex: 'parsedDate',
-	key: 'parsedDate',
-	width: '100'
+	title: 'Date And Time',
+	dataIndex: 'dateAndTime',
+	key: 'dateAndTime',
+	width: '100',
+	render: dateAndTime => {
+		return <>
+			<Row justify="center" type="flex">{dateAndTime.parsedDate}</Row>
+			<Row justify="center" type="flex">{dateAndTime.fromTime}-{dateAndTime.toTime}</Row>
+		</>;
+	}
 }, {
 	title: 'Topic',
 	dataIndex: 'topic',
@@ -50,7 +58,7 @@ export default class Attendance extends Component {
 
 			let daysPresent = 0;
 			let totalClassesPassed = 0;
-			schedulesOfThisBatch.forEach(schedule => {
+			schedulesOfThisBatch.reverse().forEach(schedule => {
 				// Injecting status
 				if (moment().startOf('day').diff(schedule.date.startOf('day'), 'days') < 1) {
 					schedule.status = 'scheduled';
@@ -62,7 +70,10 @@ export default class Attendance extends Component {
 					daysPresent++;
 					schedule.status = 'present';
 				}
-				schedule.parsedDate = schedule.date.format('DD/MM/YY');
+				schedule.dateAndTime = {};
+				schedule.dateAndTime.parsedDate = schedule.date.format('DD/MM/YY');
+				schedule.dateAndTime.fromTime = Boolean(schedule.fromTime) === true ? inverseMinutesFromMidnight(schedule.fromTime).format('LT'): <Tag className="mx-0" color={'blue'}>NA</Tag>;
+				schedule.dateAndTime.toTime = Boolean(schedule.toTime) === true ? inverseMinutesFromMidnight(schedule.toTime).format('LT'): <Tag className="mx-0" color={'blue'}>NA</Tag>;
 			});
 
 			return <Panel

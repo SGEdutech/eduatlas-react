@@ -1,14 +1,21 @@
 import React, { Component } from 'react';
 import { tuitionName } from '../../config.json';
 
+import eduatlasLogo from '../../fallback-dp.svg';
+import tuitionLogo from '../../tuition-logo.svg';
+
 import {
 	Alert,
+	Avatar,
 	Card,
 	Col,
 	Empty,
 	Row,
 	Skeleton
 } from 'antd';
+
+const dateNTimeLayout = { xs: 24, md: 4 };
+const messageLayout = { xs: 24, md: 20 };
 
 export default class Notifications extends Component {
 	onClose = id => {
@@ -39,15 +46,21 @@ export default class Notifications extends Component {
 		const notificationJsx = notificationsOfThisStudent.map(notification => (
 			<Alert
 				className="mb-3"
-				description={notification.message}
+				description={
+					<Row>
+						<Col {...messageLayout}>{notification.message}</Col>
+						<Col className="text-right" {...dateNTimeLayout}><small>{notification.createdAt.fromNow()}</small></Col>
+					</Row>
+				}
 				key={notification._id}
 				message={
 					<Row>
-						<Col className="one-line-ellipsis" span={22}>{tuitionName}</Col>
-						<Col className="text-right" span={2}><small className="cursor-pointer" onClick={() => this.onClose(notification._id)}>close</small></Col>
+						<Col className="one-line-ellipsis" span={20}>{tuitionName}</Col>
+						<Col className="text-right" span={4}><small className="cursor-pointer" onClick={() => this.onClose(notification._id)}>close</small></Col>
 					</Row>
 				}
 				showIcon
+				icon={window.cordova ? <Avatar src={tuitionLogo} /> : <Avatar src={eduatlasLogo} />}
 				type="info" />
 		));
 
