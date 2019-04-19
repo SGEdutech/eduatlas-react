@@ -1,3 +1,4 @@
+const { primaryColor } = require('./src/config.json');
 const { injectBabelPlugin } = require('react-app-rewired');
 const rewireLess = require('react-app-rewire-less');
 
@@ -11,7 +12,7 @@ module.exports = function override(config, env) {
 		config,
 	);
 	config = rewireLess.withLoaderOptions({
-		modifyVars: { '@primary-color': '#00bcd4', '@brand-primary': '#00bcd4' },
+		modifyVars: { '@primary-color': primaryColor, '@brand-primary': primaryColor },
 		javascriptEnabled: true
 	})(config, env);
 	return config;

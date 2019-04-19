@@ -17,7 +17,7 @@ import fetchAll from '../redux/actions/fetchAllAction';
 
 import getTuitionIdFromUrl from '../scripts/getTuitionIdFromUrl';
 
-import { tuitionName } from '../config.json';
+import { tuitionName, primaryColor } from '../config.json';
 import fallbackDp from '../fallback-dp.svg';
 
 const { Meta } = Card;
@@ -68,7 +68,9 @@ class Navbar extends Component {
 
 		return (
 			<>
-				<nav className="navbar fixed-top bg-info mb-0" style={headerStyle}>
+				<nav className="navbar fixed-top bg-info mb-0" style={headerStyle} ref={el => {
+					if (el) el.style.setProperty('background-color', primaryColor, 'important');
+				}}>
 					<div className="container" style={{ justifyContent: 'start' }}>
 						{
 							renderBackBtn ? (
