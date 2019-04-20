@@ -148,17 +148,12 @@ class AddSchedule extends Component {
 		form.setFieldsValue({ keys: nextKeys });
 	}
 
-	validateToTime = (rule, value, callback) => {
-		callback();
-	}
-
 	render() {
 		const { form } = this.props;
 		const { getFieldDecorator, getFieldValue } = form;
 
 		getFieldDecorator('keys', { initialValue: [0] });
 		const keys = getFieldValue('keys');
-
 
 		const scheduleInps = keys.map((k, index) => (
 			<Row gutter={16} key={k} type="flex" justify="space-around" align="bottom">
@@ -200,9 +195,7 @@ class AddSchedule extends Component {
 				<Col {...scheduleColLayout} >
 					<Form.Item
 						label="To Time">
-						{getFieldDecorator('toTime_' + k, {
-							validator: this.validateToTime, message: 'Must be less than From-Time'
-						})(
+						{getFieldDecorator('toTime_' + k)(
 							window.cordova ? (
 								<DatePickerM
 									mode="time"

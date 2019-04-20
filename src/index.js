@@ -12,12 +12,12 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 
 import store from './redux/store';
 
-import { tuitionId } from './config.json';
+import { tuitionId, primaryColor } from './config.json';
 
 const theme = createMuiTheme({
 	palette: {
 		primary: {
-			main: '#00bcd4'
+			main: primaryColor
 		},
 		background: {
 			default: 'white'
