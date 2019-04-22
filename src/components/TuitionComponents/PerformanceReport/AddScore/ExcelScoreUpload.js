@@ -121,7 +121,12 @@ class ExcelScoreUpload extends Component {
 		const { maxMarks } = currentTestDetails;
 		let isValid = true;
 		studentsData.forEach((studentData, index) => {
-			const isScoreInRange = (typeof parseFloat(studentData['Score']) === 'number') && studentData['Score'] <= maxMarks;
+			let isScoreInRange = (typeof parseFloat(studentData['Score']) === 'number') && studentData['Score'] <= maxMarks;
+			if (studentData['Score'] === 'a' || studentData['Score'] === 'A' || studentData['Score'] === 'Absent' || studentData['Score'] === 'absent') {
+				// handle special case
+				studentData['Score'] = -(Number.MAX_VALUE - 1);
+				isScoreInRange = true;
+			}
 			if (isScoreInRange === false) {
 				this.showErrorMessage(`Student with roll-number ${studentData['Roll Number']} at row ${index + 2} has score more than maximum marks or marks contain illegal character`);
 				isValid = false;
