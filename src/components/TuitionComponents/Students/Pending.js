@@ -40,10 +40,11 @@ class Pending extends Component {
 
 		// filter out students with batches
 		let studentsToRender = students.filter(student => {
+			let isBatchless = true;
 			batches.forEach(batch => {
-				if (batch.students.find(studentId => student._id === studentId)) return false;
+				if (batch.students.find(studentId => student._id === studentId)) isBatchless = false;
 			});
-			return true;
+			return isBatchless;
 		});
 
 		studentsToRender = studentsToRender.filter(student => {
@@ -52,9 +53,9 @@ class Pending extends Component {
 			return searchRegex.test(rollNumber) || searchRegex.test(name) || searchRegex.test(email);
 		});
 
-		studentsToRender = studentsToRender.slice(itemsPerPage * (currentPage - 1), currentPage * itemsPerPage);
+		const studentsToRenderOnThisPage = studentsToRender.slice(itemsPerPage * (currentPage - 1), currentPage * itemsPerPage);
 
-		const studentsJsx = studentsToRender.map(({ _id, name, rollNumber, email }) => (
+		const studentsJsx = studentsToRenderOnThisPage.map(({ _id, name, rollNumber, email }) => (
 			<Col {...colLayout} key={_id}>
 				<div className="mb-3">
 					<PendingCard
@@ -91,9 +92,9 @@ class Pending extends Component {
 						<Input allowClear addonAfter={<Icon type="search" />} onChange={this.handleSearchInpChange} placeholder="Search Students" />
 					</Row>
 					<Row gutter={16}>
-						{messageInfo.fetching ? skeletonCards : (studentsToRender.length === 0 ? emptyJsx : studentsJsx)}
+						{messageInfo.fetching ? skeletonCards : (studentsToRenderOnThisPage.length === 0 ? emptyJsx : studentsJsx)}
 					</Row>
-					<Pagination current={currentPage} onChange={this.handlePaginationChange} pageSize={pageSize} total={students.length} />
+					<Pagination current={currentPage} hideOnSinglePage={true} onChange={this.handlePaginationChange} pageSize={pageSize} total={studentsToRender.length} />
 				</div>
 			</>
 		);
