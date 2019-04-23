@@ -67,7 +67,7 @@ class AddScore extends Component {
 
 	state = {
 		allTests: [],
-		selectTestValue: null,
+		selectTestValue: undefined,
 		currentTestStudents: []
 	}
 
@@ -162,12 +162,12 @@ class AddScore extends Component {
 
 	static getDerivedStateFromProps(nextProps, prevState) {
 		if (JSON.stringify(nextProps.tests) === JSON.stringify(prevState.allTests)) return false;
-		return { allTests: nextProps.tests, selectTestValue: null, currentTestStudents: [] };
+		return { allTests: nextProps.tests, selectTestValue: undefined, currentTestStudents: [] };
 	}
 
 	render() {
 		const { editTest } = this.props;
-		const { allTests, currentTestStudents } = this.state;
+		const { allTests, currentTestStudents, selectTestValue } = this.state;
 		const components = {
 			body: {
 				row: EditableFormRow,
@@ -201,7 +201,7 @@ class AddScore extends Component {
 							filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
 							onChange={this.handleTestSelectChange}
 							placeholder="Select Test"
-							value={this.state.selectTestValue}
+							value={selectTestValue}
 							showSearch>
 							{allTests.map(test => <Option key={test._id} value={test._id}>{test.name}</Option>)}
 						</Select>

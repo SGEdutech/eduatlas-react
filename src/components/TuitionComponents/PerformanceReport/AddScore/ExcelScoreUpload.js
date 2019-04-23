@@ -178,7 +178,7 @@ class ExcelScoreUpload extends Component {
 							disabled={Boolean(currentTestId) === false}
 							fileList={this.state.selectedFileList}
 							onChange={this.onChange}>
-							<Button block><Icon type="upload" /> Choose File</Button>
+							<Button disabled={Boolean(currentTestId) === false} block><Icon type="upload" /> Choose File</Button>
 						</Upload>
 					</Col>
 				</Row>
