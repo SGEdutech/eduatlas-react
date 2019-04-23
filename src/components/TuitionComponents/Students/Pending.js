@@ -29,16 +29,14 @@ class Pending extends Component {
 		const { addStudentInBatch, batches, deleteStudent, messageInfo, studentsInfo } = this.props;
 
 		// filter out students with batches
-		const studentsToShow = studentsInfo.students.filter(student => {
-			let isInAnyBatch = false;
+		let studentsToRender = studentsInfo.students.filter(student => {
 			batches.forEach(batch => {
-				if (batch.students.find(studentId => student._id === studentId)) isInAnyBatch = true;
+				if (batch.students.find(studentId => student._id === studentId)) return false;
 			});
-			if (isInAnyBatch) return false;
-			return student;
+			return true;
 		});
 
-		const studentsToRender = studentsToShow.filter(student => {
+		studentsToRender = studentsToRender.filter(student => {
 			const { rollNumber, name, email } = student;
 			const searchRegex = new RegExp(this.state.search, 'i');
 			return searchRegex.test(rollNumber) || searchRegex.test(name) || searchRegex.test(email)
@@ -81,7 +79,7 @@ class Pending extends Component {
 						<Input allowClear addonAfter={<Icon type="search" />} onChange={this.handleSearchInpChange} placeholder="Search Students" />
 					</Row>
 					<Row gutter={16}>
-						{messageInfo.fetching ? skeletonCards : (studentsToShow.length === 0 ? emptyJsx : studentsJsx)}
+						{messageInfo.fetching ? skeletonCards : (studentsToRender.length === 0 ? emptyJsx : studentsJsx)}
 					</Row>
 				</div>
 			</>

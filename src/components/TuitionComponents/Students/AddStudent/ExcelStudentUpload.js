@@ -180,8 +180,7 @@ class ExcelStudentUpload extends Component {
 			<>
 				<Col className="my-1">
 					<a href={`${schemeAndAuthority}/excel-template/add-student`} download="add-student.csv">
-						<Button block
-							type="primary">
+						<Button block type="primary">
 							Download Sample File
 						</Button>
 					</a>
