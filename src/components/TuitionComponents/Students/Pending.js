@@ -32,7 +32,7 @@ class Pending extends Component {
 
 	handlePaginationChange = (currentPage, itemsPerPage) => this.setState({ currentPage, itemsPerPage });
 
-	handleSearchInpChange = e => this.setState({ search: e.target.value });
+	handleSearchInpChange = e => this.setState({ search: e.target.value, currentPage: 1 });
 
 	render() {
 		const { addStudentInBatch, batches, deleteStudent, messageInfo, students } = this.props;
@@ -93,7 +93,7 @@ class Pending extends Component {
 					<Row gutter={16}>
 						{messageInfo.fetching ? skeletonCards : (studentsToRender.length === 0 ? emptyJsx : studentsJsx)}
 					</Row>
-					<Pagination onChange={this.handlePaginationChange} pageSize={pageSize} total={students.length} />
+					<Pagination current={currentPage} onChange={this.handlePaginationChange} pageSize={pageSize} total={students.length} />
 				</div>
 			</>
 		);
