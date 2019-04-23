@@ -38,7 +38,7 @@ class Active extends Component {
 
 	handlePaginationChange = (currentPage, itemsPerPage) => this.setState({ currentPage, itemsPerPage });
 
-	handleSearchInpChange = e => this.setState({ search: e.target.value, currentPage: 1 });
+	handleSearchInpChange = e => this.setState({ search: e.currentTarget.value, currentPage: 1 });
 
 	showDeleteConfirm = id => {
 		const { deleteStudent, match: { url } } = this.props;
