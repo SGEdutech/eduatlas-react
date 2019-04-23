@@ -21,11 +21,13 @@ const colLayout = {
 	xxl: 6
 };
 
+const pageSize = 12;
+
 class Pending extends Component {
 	state = {
 		search: '',
 		currentPage: 1,
-		itemsPerPage: 10
+		itemsPerPage: pageSize
 	};
 
 	handlePaginationChange = (currentPage, itemsPerPage) => this.setState({ currentPage, itemsPerPage });
@@ -91,7 +93,7 @@ class Pending extends Component {
 					<Row gutter={16}>
 						{messageInfo.fetching ? skeletonCards : (studentsToRender.length === 0 ? emptyJsx : studentsJsx)}
 					</Row>
-					<Pagination onChange={this.handlePaginationChange} total={students.length} />
+					<Pagination onChange={this.handlePaginationChange} pageSize={pageSize} total={students.length} />
 				</div>
 			</>
 		);
