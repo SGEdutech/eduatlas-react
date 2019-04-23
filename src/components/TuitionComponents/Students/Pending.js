@@ -8,6 +8,7 @@ import {
 	Empty,
 	Icon,
 	Input,
+	Pagination,
 	Row,
 	Skeleton
 } from 'antd';
@@ -21,15 +22,22 @@ const colLayout = {
 };
 
 class Pending extends Component {
-	state = { search: '' };
+	state = {
+		search: '',
+		currentPage: 1,
+		itemsPerPage: 10
+	};
+
+	handlePaginationChange = (currentPage, itemsPerPage) => this.setState({ currentPage, itemsPerPage });
 
 	handleSearchInpChange = e => this.setState({ search: e.target.value });
 
 	render() {
-		const { addStudentInBatch, batches, deleteStudent, messageInfo, studentsInfo } = this.props;
+		const { addStudentInBatch, batches, deleteStudent, messageInfo, students } = this.props;
+		const { currentPage, itemsPerPage } = this.state;
 
 		// filter out students with batches
-		let studentsToRender = studentsInfo.students.filter(student => {
+		let studentsToRender = students.filter(student => {
 			batches.forEach(batch => {
 				if (batch.students.find(studentId => student._id === studentId)) return false;
 			});
@@ -39,8 +47,11 @@ class Pending extends Component {
 		studentsToRender = studentsToRender.filter(student => {
 			const { rollNumber, name, email } = student;
 			const searchRegex = new RegExp(this.state.search, 'i');
-			return searchRegex.test(rollNumber) || searchRegex.test(name) || searchRegex.test(email)
+			return searchRegex.test(rollNumber) || searchRegex.test(name) || searchRegex.test(email);
 		});
+
+		studentsToRender = studentsToRender.slice(itemsPerPage * (currentPage - 1), currentPage * itemsPerPage);
+
 		const studentsJsx = studentsToRender.map(({ _id, name, rollNumber, email }) => (
 			<Col {...colLayout} key={_id}>
 				<div className="mb-3">
@@ -65,8 +76,7 @@ class Pending extends Component {
 			skeletonCards.push(
 				<Col {...colLayout} key={i}>
 					<Card className="mb-3">
-						<Skeleton loading={true} active>
-						</Skeleton>
+						<Skeleton loading={true} active></Skeleton>
 					</Card>
 				</Col>
 			);
@@ -81,6 +91,7 @@ class Pending extends Component {
 					<Row gutter={16}>
 						{messageInfo.fetching ? skeletonCards : (studentsToRender.length === 0 ? emptyJsx : studentsJsx)}
 					</Row>
+					<Pagination onChange={this.handlePaginationChange} total={students.length} />
 				</div>
 			</>
 		);

@@ -47,10 +47,10 @@ class Active extends Component {
 	};
 
 	render() {
-		const { batches, messageInfo, studentsInfo } = this.props;
+		const { batches, messageInfo, students } = this.props;
 
 		// filter out students without batches
-		const studentsToShow = studentsInfo.students.filter(student => {
+		const studentsToShow = students.filter(student => {
 			let isInAnyBatch = false;
 			batches.forEach(batch => {
 				if (batch.students.find(studentId => student._id === studentId)) isInAnyBatch = true;

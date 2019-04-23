@@ -48,7 +48,7 @@ class Students extends Component {
 
 	render() {
 		const { navigation: { secondaryTabsValue } } = this.props;
-		const { request, addStudent, student, batch, course, deleteStudent, messageInfo, addStudentInBatch } = this.props;
+		const { request, addStudent, students, batch, course, deleteStudent, messageInfo, addStudentInBatch } = this.props;
 		return (
 			<>
 				<AppBar color="default" className="z101">
@@ -65,22 +65,23 @@ class Students extends Component {
 						<Tab label="Add" />
 					</Tabs>
 				</AppBar>
-				{secondaryTabsValue === 0 && <Requests students={student.students} requests={request.requests} addStudent={addStudent} deleteRequest={this.showDeleteConfirm} batches={batch.batches} courses={course.courses} />}
-				{secondaryTabsValue === 1 && <Active batches={batch.batches} messageInfo={messageInfo} studentsInfo={student} deleteStudent={deleteStudent} />}
-				{secondaryTabsValue === 2 && <Pending addStudentInBatch={addStudentInBatch} batches={batch.batches} deleteStudent={deleteStudent} messageInfo={messageInfo} studentsInfo={student} />}
-				{secondaryTabsValue === 3 && <AddStudent students={student.students} />}
+				{secondaryTabsValue === 0 && <Requests students={students} requests={request.requests} addStudent={addStudent} deleteRequest={this.showDeleteConfirm} batches={batch.batches} courses={course.courses} />}
+				{secondaryTabsValue === 1 && <Active batches={batch.batches} messageInfo={messageInfo} students={students} deleteStudent={deleteStudent} />}
+				{secondaryTabsValue === 2 && <Pending addStudentInBatch={addStudentInBatch} batches={batch.batches} deleteStudent={deleteStudent} messageInfo={messageInfo} students={students} />}
+				{secondaryTabsValue === 3 && <AddStudent students={students} />}
 			</>
 		);
 	}
 }
 
 function mapStateToProps(state) {
+	console.log(state);
 	return {
 		batch: state.batch,
 		course: state.course,
 		messageInfo: state.messageInfo,
 		navigation: state.navigation,
-		student: state.student,
+		students: state.student.students,
 		discount: state.discount,
 		request: state.request
 	};
