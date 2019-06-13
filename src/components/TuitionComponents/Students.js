@@ -75,7 +75,6 @@ class Students extends Component {
 }
 
 function mapStateToProps(state) {
-	console.log(state);
 	return {
 		batch: state.batch,
 		course: state.course,

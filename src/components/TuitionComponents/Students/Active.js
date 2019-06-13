@@ -13,6 +13,7 @@ import {
 	Icon,
 	Input,
 	Modal,
+	Pagination,
 	Row,
 	Skeleton
 } from 'antd';
@@ -26,10 +27,18 @@ const colLayout = {
 	xxl: 6
 };
 
-class Active extends Component {
-	state = { search: '' };
+const pageSize = 12;
 
-	handleSearchInpChange = e => this.setState({ search: e.target.value });
+class Active extends Component {
+	state = {
+		search: '',
+		currentPage: 1,
+		itemsPerPage: pageSize
+	};
+
+	handlePaginationChange = (currentPage, itemsPerPage) => this.setState({ currentPage, itemsPerPage });
+
+	handleSearchInpChange = e => this.setState({ search: e.currentTarget.value, currentPage: 1 });
 
 	showDeleteConfirm = id => {
 		const { deleteStudent, match: { url } } = this.props;
@@ -48,6 +57,7 @@ class Active extends Component {
 
 	render() {
 		const { batches, messageInfo, students } = this.props;
+		const { currentPage, itemsPerPage } = this.state;
 
 		// filter out students without batches
 		const studentsToShow = students.filter(student => {
@@ -68,7 +78,9 @@ class Active extends Component {
 			return 0;
 		});
 
-		const studentsJsx = studentsToRender.map(({ _id, name, rollNumber, email }) => (
+		const studentsToRenderOnThisPage = studentsToRender.slice(itemsPerPage * (currentPage - 1), currentPage * itemsPerPage);
+
+		const studentsJsx = studentsToRenderOnThisPage.map(({ _id, name, rollNumber, email }) => (
 			<Col {...colLayout} key={_id}>
 				<div className="mb-3">
 					<StudentCard
@@ -90,8 +102,7 @@ class Active extends Component {
 			skeletonCards.push(
 				<Col {...colLayout} key={i}>
 					<Card className="mb-3">
-						<Skeleton loading={true} active>
-						</Skeleton>
+						<Skeleton loading={true} active></Skeleton>
 					</Card>
 				</Col>
 			);
@@ -106,6 +117,7 @@ class Active extends Component {
 					<Row gutter={16}>
 						{messageInfo.fetching ? skeletonCards : (studentsToShow.length === 0 ? emptyJsx : studentsJsx)}
 					</Row>
+					<Pagination current={currentPage} hideOnSinglePage={true} onChange={this.handlePaginationChange} pageSize={pageSize} total={studentsToRender.length} />
 				</div>
 			</>
 		);

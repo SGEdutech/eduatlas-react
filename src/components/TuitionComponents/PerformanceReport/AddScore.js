@@ -149,9 +149,10 @@ class AddScore extends Component {
 		const { currentTestStudents } = this.state;
 		const tuitionId = getTuitionIdFromUrl(url);
 		// filter students whose marks were not updated
-		let reports = currentTestStudents.filter(student => Boolean(student.score) === true);
+		let reports = currentTestStudents.filter(student => student.score);
 		reports = reports.map(student => {
-			if (student.score.toLowerCase() === 'a' || student.score.toLowerCase() === 'absent') student.score = -(Number.MAX_VALUE - 1);
+			const { score } = student;
+			if (typeof score === 'string' && (score.toLowerCase() === 'a' || score.toLowerCase() === 'absent')) student.score = -(Number.MAX_VALUE - 1);
 			return {
 				studentId: student._id,
 				marksObtained: parseFloat(student.score)
