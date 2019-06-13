@@ -7,13 +7,13 @@ function getAmountCollected(installmentInfo) {
 
 function getDate() {
 	return [
-		{ text: 'Date', style: 'bigger' },
+		{ text: 'Dated', style: 'bigger' },
 		moment().format('MMM Do YY')
 	];
 }
 
 function getDescription(installmentInfo) {
-	const names = ['Course Code/Name:', 'Mode Of Payment:'];
+	const names = ['Course Code/Name: ', 'Mode Of Payment: '];
 	const values = [installmentInfo.courseCode, installmentInfo.modeOfPayment];
 	if (installmentInfo.modeOfPayment === 'card') {
 		const { bank, transactionId } = installmentInfo;
@@ -50,13 +50,14 @@ function getDescription(installmentInfo) {
 	return [
 		{
 			width: '*',
-			stack: names
-
+			stack: names,
+			style: 'm1'
 		},
 		{
 			alignment: 'right',
 			width: '*',
-			stack: values
+			stack: values,
+			style: 'm1'
 		}];
 }
 
@@ -72,7 +73,11 @@ function getFromAndToDetails(receiptConfig, studentInfo) {
 	if (receiptConfigGstNumber) toReturn.push('Tax/GST ID: ' + receiptConfigGstNumber);
 
 	toReturn.push({ text: 'To', style: 'bigger' });
-	toReturn.push(titleCase(studentInfo.name), 'India');
+	toReturn.push(
+		titleCase(studentInfo.name),
+		'Roll No: ' + studentInfo.rollNumber,
+		'Email: ' + studentInfo.email
+	);
 	return toReturn;
 	/* return [
 		{ text: 'From', style: 'bigger' },
@@ -83,13 +88,17 @@ function getFromAndToDetails(receiptConfig, studentInfo) {
 		'Tax ID: 23534654765876',
 		{ text: 'To', style: 'bigger' },
 		'Navjot Singh',
-		'India'
+		'Roll No: 23',
+		'Email: navjotsidhu234@gmail.com',
+		'EA ID: EA000132'
 	]; */
 }
 
 function getTermsNConditions(receiptInfo) {
 	return [
-		'Fee is non refundable.'
+		'Any changes in Govt. levies/taxes on fees will be borne by the student.',
+		'The validity of this receipt is subject to the realization of cheque/pay order/DD.',
+		'Fee once paid will NOT BE REFUNDED in any case, except, when the company decides to cancel the product which may happen at the sole discretion of the company.'
 	];
 }
 
@@ -101,15 +110,16 @@ export function getDocDef(receiptConfig, studentInfo, installmentInfo) {
 			fontSize: 10,
 			margin: [40, 0, 0, 0],
 			stack: [
-				'Eduatlas.com',
-				{ text: 'this invoice cum receipt is electronically generated and does not require any sign' }
+				{ text: 'This is an electronic receipt and does not require a physical stamp or signature.', alignment: 'center' },
+				{ text: 'STUDY MONITOR APP powered by EDUATLAS.COM', alignment: 'center', fontSize: '12', style: 'mt1' }
 			]
 		},
 		content: [
 			{
 				margin: [0, 0, 0, 30],
+				alignment: 'center',
 				style: 'header',
-				text: 'Receipt'
+				text: 'Fee Receipt'
 			},
 			{
 				alignment: 'justify',
@@ -120,6 +130,7 @@ export function getDocDef(receiptConfig, studentInfo, installmentInfo) {
 
 					},
 					{
+						alignment: 'right',
 						width: '*',
 						stack: getDate()
 					}]
@@ -130,43 +141,18 @@ export function getDocDef(receiptConfig, studentInfo, installmentInfo) {
 					headerRows: 1,
 					widths: ['*', 'auto'],
 					body: [
-						[{ text: 'Description', bold: true }, { text: 'Amount Collected', bold: true }],
+						[{ alignment: 'center', text: 'Details/Description', bold: true, style: 'my1' },
+						{ alignment: 'center', text: 'Amount', bold: true, style: 'm1' }],
 						[{
 							columns: getDescription(installmentInfo)
-						}, { alignment: 'right', text: getAmountCollected(installmentInfo) }]
+						}, { alignment: 'center', text: getAmountCollected(installmentInfo), style: 'm1' }],
+						[{ alignment: 'center', text: 'Total', bold: true, style: 'my1' }, { alignment: 'center', text: getAmountCollected(installmentInfo), bold: true, style: 'm1' }]
 					]
 				}
 			},
 			{
-				margin: [0, 20, 0, 0],
-				alignment: 'justify',
-				columns: [
-					{
-						width: '50%',
-						text: ''
-
-					},
-					{
-						columns: [
-							{
-								width: '60%',
-								stack: [
-									{ text: 'Total', style: 'bigger' }
-								],
-							},
-							{
-								alignment: 'right',
-								width: '*',
-								stack: [
-									{ text: getAmountCollected(installmentInfo), style: 'bigger' }
-								]
-							}]
-					}]
-			},
-			{
 				stack: [
-					{ text: 'Invoice Note', style: 'bigger', margin: [0, 50, 0, 0] },
-					{ text: 'terms and conditions', margin: [0, 10, 0, 10] },
+					{ text: 'INVOICE NOTES/ TERMS & CONDITIONS:', style: 'bigger', margin: [0, 50, 0, 0] },
 					{
 						ol: getTermsNConditions(receiptConfig)
 					}
@@ -189,6 +175,15 @@ export function getDocDef(receiptConfig, studentInfo, installmentInfo) {
 			},
 			mt1: {
 				margin: [0, 10, 0, 0]
+			},
+			my1: {
+				margin: [0, 10, 0, 10]
+			},
+			m1: {
+				margin: [10, 10, 10, 10]
+			},
+			alignMid: {
+				align: 'center'
 			}
 		},
 		defaultStyle: {
