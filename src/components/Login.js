@@ -92,6 +92,7 @@ class Login extends Component {
 						</Col>
 						<Col {...colLayout}>
 							<Form.Item>
+								<a href="https://eduatlas.com/forgot-password" target="_blank" rel="noopener noreferrer">Forgot Password</a>
 								<Button type="primary" block htmlType="submit">
 									Login
 								</Button>
