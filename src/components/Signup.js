@@ -13,6 +13,7 @@ import {
 	Icon,
 	Form,
 	Input,
+	Modal,
 	Row
 } from 'antd';
 
@@ -37,11 +38,12 @@ const colLayout = {
 
 class Signup extends Component {
 	state = {
-		confirmDirty: false
+		confirmDirty: false,
+		isModalVisible: false,
+		formData: {}
 	};
 
-	handleSubmit = e => {
-		e.preventDefault();
+	initSubmit = () => {
 		const { form, form: { resetFields }, history: { push }, match: { url }, signUp } = this.props;
 		const tuitionId = getTuitionIdFromUrl(url);
 		form.validateFieldsAndScroll((err, values) => {
@@ -54,6 +56,20 @@ class Signup extends Component {
 			push(`/app/${tuitionId}/login`);
 		});
 	}
+
+	handleSubmit = e => {
+		e.preventDefault();
+		const { form: { validateFieldsAndScroll } } = this.props;
+		validateFieldsAndScroll((err, values) => {
+			if (err) {
+				console.error(err);
+				return;
+			}
+			this.setState({ isModalVisible: true, formData: values });
+		});
+	}
+
+	handleModalCancel = () => this.setState({ isModalVisible: false });
 
 	compareToFirstPassword = (rule, value, callback) => {
 		const form = this.props.form;
@@ -79,6 +95,8 @@ class Signup extends Component {
 
 	render() {
 		const { getFieldDecorator } = this.props.form;
+		const { formData } = this.state;
+		console.log(formData);
 		return (
 			<div className="container">
 				<Row className="mt-3" type="flex" justify="center">
@@ -105,7 +123,7 @@ class Signup extends Component {
 								// {...formItemLayout}
 								hasFeedback={true}>
 								{getFieldDecorator('primaryEmail', {
-									rules: [{ type: 'email', message: 'Not a valid E-mail!'	},
+									rules: [{ type: 'email', message: 'Not a valid E-mail!' },
 									{ required: true, message: 'Please provide email!' }]
 								})(
 									<Input prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Email Address" />
@@ -150,6 +168,13 @@ class Signup extends Component {
 						</Col>
 					</Row>
 				</Form>
+				<Modal
+					title="Please confirm details"
+					visible={this.state.isModalVisible}
+					onOk={this.initSubmit}
+					onCancel={this.handleModalCancel}>
+					{Object.keys(formData).map(key => <p key={key}>{`${key}- ${formData[key]}`}</p>)}
+				</Modal>
 			</div>
 		);
 	}
