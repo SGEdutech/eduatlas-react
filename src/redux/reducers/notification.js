@@ -11,7 +11,9 @@ function notificationReducer(state = initState, action) {
 			dateToMoment(notifications);
 			return { ...state, notifications };
 		case 'ADD_NOTIFICATION_FULFILLED':
-			return { ...state, notifications: [...state.notifications, dateToMoment(action.payload.data)] };
+			const notification = action.payload.data;
+			dateToMoment(notification);
+			return { ...state, notifications: [...state.notifications, notification] };
 		case 'READ_NOTIFICATION_FULFILLED': {
 			const editedNotification = action.payload.data;
 			const { _id } = editedNotification;
