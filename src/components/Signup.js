@@ -13,6 +13,7 @@ import {
 	Icon,
 	Form,
 	Input,
+	InputNumber,
 	Modal,
 	Row
 } from 'antd';
@@ -127,6 +128,17 @@ class Signup extends Component {
 									{ required: true, message: 'Please provide email!' }]
 								})(
 									<Input prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Email Address" />
+								)}
+							</Form.Item>
+						</Col>
+						<Col {...colLayout}>
+							<Form.Item
+								// {...formItemLayout}
+								hasFeedback={true}>
+								{getFieldDecorator('phone', {
+									rules: [{ required: true, message: 'Please provide phone number!' }]
+								})(
+									<InputNumber className="w-100" prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Phone Number" />
 								)}
 							</Form.Item>
 						</Col>
