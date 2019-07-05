@@ -9,7 +9,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
-import { Modal } from 'antd';
+import { Icon,Modal,Row } from 'antd';
 
 import { addStudentInBatch } from '../../redux/actions/batchActions';
 import { changeTabs } from '../../redux/actions/navigationActions';
@@ -18,6 +18,7 @@ import { addStudent, deleteStudent } from '../../redux/actions/studentActions';
 
 import Active from './Students/Active';
 import AddStudent from './Students/AddStudent';
+import Navbar from '../Navbar';
 import Pending from './Students/Pending';
 import Requests from './Students/Requests';
 
@@ -31,44 +32,47 @@ class Students extends Component {
 		this.props.changeTabs(primaryTabsValue, value);
 	};
 
-	showDeleteConfirm = studentId => {
-		const { deleteRequest, match: { url } } = this.props;
-		const tuitionId = getTuitionIdFromUrl(url);
-		confirm({
-			title: 'Are You Sure?',
-			content: 'This action is permanent!',
-			okText: 'Yes',
-			okType: 'danger',
-			cancelText: 'No',
-			onOk() {
-				deleteRequest(tuitionId, studentId);
-			}
-		});
-	};
-
 	render() {
 		const { navigation: { secondaryTabsValue } } = this.props;
 		const { request, addStudent, students, batch, course, deleteStudent, messageInfo, addStudentInBatch } = this.props;
 		return (
 			<>
-				<AppBar color="default" className="z101">
-					<Tabs
-						className="tabBar"
-						value={secondaryTabsValue}
-						onChange={this.handleChange}
-						indicatorColor="primary"
-						textColor="primary"
-						variant="fullWidth">
-						<Tab label="Requests" />
-						<Tab label="Active" />
-						<Tab label="Pending" />
-						<Tab label="Add" />
-					</Tabs>
-				</AppBar>
-				{secondaryTabsValue === 0 && <Requests students={students} requests={request.requests} addStudent={addStudent} deleteRequest={this.showDeleteConfirm} batches={batch.batches} courses={course.courses} />}
-				{secondaryTabsValue === 1 && <Active batches={batch.batches} messageInfo={messageInfo} students={students} deleteStudent={deleteStudent} />}
-				{secondaryTabsValue === 2 && <Pending addStudentInBatch={addStudentInBatch} batches={batch.batches} deleteStudent={deleteStudent} messageInfo={messageInfo} students={students} />}
-				{secondaryTabsValue === 3 && <AddStudent students={students} />}
+				<Navbar renderBackBtn={true} navText="Students" />
+				<div className="container below-nav">
+					<AppBar color="default" className="z101">
+						<Tabs
+							className="tabBar"
+							value={secondaryTabsValue}
+							onChange={this.handleChange}
+							indicatorColor="primary"
+							textColor="primary"
+							variant="fullWidth">
+							{/* <Tab label="Requests" /> */}
+							<Tab label={
+								<>
+									<Row><Icon type="check-circle" /></Row>
+									<Row><small>Active</small></Row>
+								</>
+							} />
+							<Tab label={
+								<>
+									<Row><Icon type="exclamation-circle" /></Row>
+									<Row><small>Pending</small></Row>
+								</>
+							} />
+							<Tab label={
+								<>
+									<Row><Icon type="book" /></Row>
+									<Row><small>Add</small></Row>
+								</>
+							} />
+						</Tabs>
+					</AppBar>
+					{/* {secondaryTabsValue === 0 && <Requests students={students} requests={request.requests} addStudent={addStudent} deleteRequest={this.showDeleteConfirm} batches={batch.batches} courses={course.courses} />} */}
+					{secondaryTabsValue === 0 && <Active batches={batch.batches} messageInfo={messageInfo} students={students} deleteStudent={deleteStudent} />}
+					{secondaryTabsValue === 1 && <Pending addStudentInBatch={addStudentInBatch} batches={batch.batches} deleteStudent={deleteStudent} messageInfo={messageInfo} students={students} />}
+					{secondaryTabsValue === 2 && <AddStudent students={students} />}
+				</div>
 			</>
 		);
 	}

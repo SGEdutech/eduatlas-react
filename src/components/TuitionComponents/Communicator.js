@@ -7,8 +7,9 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
-import NewAnnouncement from './Communicator/NewAnnouncement';
 import Announcements from './Communicator/Announcements';
+import Navbar from '../Navbar';
+import NewAnnouncement from './Communicator/NewAnnouncement';
 
 import { changeTabs } from '../../redux/actions/navigationActions';
 import { addNotification } from '../../redux/actions/notificationActions';
@@ -23,20 +24,23 @@ class Communicator extends Component {
 		const { navigation: { secondaryTabsValue } } = this.props;
 		return (
 			<>
-				<AppBar color="default" className="z101">
-					<Tabs
-						className="tabBar"
-						value={secondaryTabsValue}
-						onChange={this.handleChange}
-						indicatorColor="primary"
-						textColor="primary"
-						variant="fullWidth">
-						<Tab label="View" />
-						<Tab label="Add" />
-					</Tabs>
-				</AppBar>
-				{secondaryTabsValue === 0 && <Announcements messageInfo={this.props.messageInfo} announcements={this.props.notifications} />}
-				{secondaryTabsValue === 1 && <NewAnnouncement messageInfo={this.props.messageInfo} batches={this.props.batches} students={this.props.students} addNotification={this.props.addNotification} />}
+				<Navbar renderBackBtn={true} navText="Communicator" />
+				<div className="container below-nav">
+					<AppBar color="default" className="z101">
+						<Tabs
+							className="tabBar"
+							value={secondaryTabsValue}
+							onChange={this.handleChange}
+							indicatorColor="primary"
+							textColor="primary"
+							variant="fullWidth">
+							<Tab label="View" />
+							<Tab label="Add" />
+						</Tabs>
+					</AppBar>
+					{secondaryTabsValue === 0 && <Announcements messageInfo={this.props.messageInfo} announcements={this.props.notifications} />}
+					{secondaryTabsValue === 1 && <NewAnnouncement messageInfo={this.props.messageInfo} batches={this.props.batches} students={this.props.students} addNotification={this.props.addNotification} />}
+				</div>
 			</>
 		);
 	}

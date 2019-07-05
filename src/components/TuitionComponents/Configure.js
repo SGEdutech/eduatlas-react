@@ -15,10 +15,17 @@ import { changeTabs } from '../../redux/actions/navigationActions';
 import Course from './Configure/Course';
 import Batch from './Configure/Batch';
 import Discount from './Configure/Discount';
+import Navbar from '../Navbar';
+
+import {
+	Icon,
+	Row
+} from 'antd';
 
 class Configure extends Component {
 	handleChange = (e, value) => {
 		const { navigation: { primaryTabsValue } } = this.props;
+		console.log(primaryTabsValue)
 		this.props.changeTabs(primaryTabsValue, value);
 	};
 
@@ -26,23 +33,41 @@ class Configure extends Component {
 		const { navigation: { secondaryTabsValue } } = this.props;
 		return (
 			<>
-				<AppBar color="default" className="z101">
-					<Tabs
-						className="tabBar"
-						value={secondaryTabsValue}
-						onChange={this.handleChange}
-						indicatorColor="primary"
-						textColor="primary"
-						variant="fullWidth"
-						scrollButtons="auto">
-						<Tab label="Courses" />
-						<Tab label="Batches" />
-						<Tab label="Discounts" />
-					</Tabs>
-				</AppBar>
-				{secondaryTabsValue === 0 && <Course messageInfo={this.props.messageInfo} coursesInfo={this.props.course} deleteCourse={this.props.deleteCourse} />}
-				{secondaryTabsValue === 1 && <Batch messageInfo={this.props.messageInfo} batchesInfo={this.props.batch} deleteBatch={this.props.deleteBatch} />}
-				{secondaryTabsValue === 2 && <Discount messageInfo={this.props.messageInfo} discountsInfo={this.props.discount} deleteDiscount={this.props.deleteDiscount} />}
+				<Navbar renderBackBtn={true} navText="Configure" />
+				<div className="container below-nav">
+					<AppBar color="default" className="z101">
+						<Tabs
+							className="tabBar"
+							value={secondaryTabsValue}
+							onChange={this.handleChange}
+							indicatorColor="primary"
+							textColor="primary"
+							variant="fullWidth"
+							scrollButtons="auto">
+							<Tab label={
+								<>
+									<Row><Icon type="book" /></Row>
+									<Row><small>Courses</small></Row>
+								</>
+							} />
+							<Tab label={
+								<>
+									<Row><Icon type="solution" /></Row>
+									<Row><small>Batches</small></Row>
+								</>
+							} />
+							<Tab label={
+								<>
+									<Row><Icon type="tags" /></Row>
+									<Row><small>Discounts</small></Row>
+								</>
+							} />
+						</Tabs>
+					</AppBar>
+					{secondaryTabsValue === 0 && <Course messageInfo={this.props.messageInfo} coursesInfo={this.props.course} deleteCourse={this.props.deleteCourse} />}
+					{secondaryTabsValue === 1 && <Batch messageInfo={this.props.messageInfo} batchesInfo={this.props.batch} deleteBatch={this.props.deleteBatch} />}
+					{secondaryTabsValue === 2 && <Discount messageInfo={this.props.messageInfo} discountsInfo={this.props.discount} deleteDiscount={this.props.deleteDiscount} />}
+				</div>
 			</>
 		);
 	}

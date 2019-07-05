@@ -10,6 +10,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
 import AddScore from './PerformanceReport/AddScore';
+import Navbar from '../Navbar';
 import PerformanceEvalReport from './PerformanceReport/PerformanceEvalReport';
 import Test from './PerformanceReport/Test';
 
@@ -26,22 +27,25 @@ class PerformanceReport extends Component {
 		const { navigation: { secondaryTabsValue } } = this.props;
 		return (
 			<>
-				<AppBar color="default" className="z101">
-					<Tabs
-						className="tabBar"
-						value={secondaryTabsValue}
-						onChange={this.handleChange}
-						indicatorColor="primary"
-						textColor="primary"
-						variant="fullWidth">
-						<Tab label="Tests" />
-						<Tab label="Add Score" />
-						<Tab label="Reports" />
-					</Tabs>
-				</AppBar>
-				{secondaryTabsValue === 0 && <Test addTest={addTest} batches={batches} deleteTest={deleteTest} editTest={editTest} messageInfo={messageInfo} tests={tests} />}
-				{secondaryTabsValue === 1 && <AddScore batches={batches} clearMarks={clearMarks} editTest={editTest} students={students} tests={tests} />}
-				{secondaryTabsValue === 2 && <PerformanceEvalReport batches={batches} students={students} tests={tests} />}
+				<Navbar renderBackBtn={true} navText="Test And Reports" />
+				<div className="container below-nav">
+					<AppBar color="default" className="z101">
+						<Tabs
+							className="tabBar"
+							value={secondaryTabsValue}
+							onChange={this.handleChange}
+							indicatorColor="primary"
+							textColor="primary"
+							variant="fullWidth">
+							<Tab label="Tests" />
+							<Tab label="Add Score" />
+							<Tab label="Reports" />
+						</Tabs>
+					</AppBar>
+					{secondaryTabsValue === 0 && <Test addTest={addTest} batches={batches} deleteTest={deleteTest} editTest={editTest} messageInfo={messageInfo} tests={tests} />}
+					{secondaryTabsValue === 1 && <AddScore batches={batches} clearMarks={clearMarks} editTest={editTest} students={students} tests={tests} />}
+					{secondaryTabsValue === 2 && <PerformanceEvalReport batches={batches} students={students} tests={tests} />}
+				</div>
 			</>
 		);
 	}

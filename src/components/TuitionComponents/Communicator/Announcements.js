@@ -21,7 +21,7 @@ const cardColLayout = {
 class Announcements extends Component {
 	render() {
 		const { announcements, messageInfo } = this.props;
-
+		console.log(announcements)
 		const announcementsJsx = announcements.reverse().map(({ _id, message, receivers, senderId, createdAt }) => (
 			<Col {...cardColLayout} key={_id}>
 				<AnnouncementCard

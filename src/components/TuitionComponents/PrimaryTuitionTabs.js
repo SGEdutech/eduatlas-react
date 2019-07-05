@@ -8,7 +8,7 @@ import Tab from '@material-ui/core/Tab';
 
 import Attendance from './Attendance';
 import Communicator from './Communicator';
-import Configure from './Configure';
+// import Configure from './Configure';
 import PerformanceReport from './PerformanceReport';
 import Reports from './Reports';
 import Schedule from './Schedule';
@@ -23,7 +23,7 @@ class PrimaryTuitionTabs extends Component {
 	leftSwipe = () => {
 		const { changeTabs, navigation: { primaryTabsValue } } = this.props;
 		const minValue = 0;
-		const maxValue = 7;
+		const maxValue = 2;
 		let newPrimaryTabsValue = primaryTabsValue + 1;
 		if (newPrimaryTabsValue < minValue) newPrimaryTabsValue = maxValue;
 		if (newPrimaryTabsValue > maxValue) newPrimaryTabsValue = minValue;
@@ -33,7 +33,7 @@ class PrimaryTuitionTabs extends Component {
 	rightSwipe = () => {
 		const { changeTabs, navigation: { primaryTabsValue } } = this.props;
 		const minValue = 0;
-		const maxValue = 7;
+		const maxValue = 2;
 		let newPrimaryTabsValue = primaryTabsValue - 1;
 		if (newPrimaryTabsValue < minValue) newPrimaryTabsValue = maxValue;
 		if (newPrimaryTabsValue > maxValue) newPrimaryTabsValue = minValue;
@@ -41,7 +41,7 @@ class PrimaryTuitionTabs extends Component {
 	}
 
 	render() {
-		const { navigation: { primaryTabsValue } } = this.props;
+		const { courses, batches, navigation: { primaryTabsValue }, students } = this.props;
 		return (
 			<>
 				<AppBar position="fixed" style={{ top: 40 }} className="z101">
@@ -52,26 +52,26 @@ class PrimaryTuitionTabs extends Component {
 						indicatorColor="primary"
 						textColor="primary"
 						variant="scrollable">
-						<Tab label="Configure" />
-						<Tab label="Students" />
-						<Tab label="Communicator" />
+						{/* <Tab label="Configure" /> */}
+						{/* <Tab label="Students" /> */}
+						{/* <Tab label="Communicator" /> */}
 						<Tab label="Schedule" />
 						<Tab label="Attendance" />
-						<Tab label="Tests And Reports" />
+						{/* <Tab label="Tests And Reports" /> */}
 						<Tab label="Study Material" />
 						{/* <Tab label="Reports" /> */}
 					</Tabs>
 				</AppBar>
 				<Swipeable delta={20} onSwipedLeft={this.leftSwipe} onSwipedRight={this.rightSwipe} style={{ minHeight: '80vh' }}>
 					<div className="py-3">
-						{primaryTabsValue === 0 && <Configure />}
-						{primaryTabsValue === 1 && <Students />}
-						{primaryTabsValue === 2 && <Communicator />}
-						{primaryTabsValue === 3 && <Schedule />}
-						{primaryTabsValue === 4 && <Attendance />}
-						{primaryTabsValue === 5 && <PerformanceReport />}
-						{primaryTabsValue === 6 && <StudyMaterial />}
-						{/* {primaryTabsValue === 7 && <Reports />} */}
+						{/* {primaryTabsValue === 0 && <Configure />} */}
+						{/* {primaryTabsValue === 0 && <Students />} */}
+						{/* {primaryTabsValue === 1 && <Communicator />} */}
+						{primaryTabsValue === 0 && <Schedule />}
+						{primaryTabsValue === 1 && <Attendance />}
+						{/* {primaryTabsValue === 4 && <PerformanceReport />} */}
+						{primaryTabsValue === 2 && <StudyMaterial />}
+						{/* {primaryTabsValue === 6 && <Reports batches={batches} courses={courses} students={students} />} */}
 					</div>
 				</Swipeable>
 			</>
@@ -80,7 +80,12 @@ class PrimaryTuitionTabs extends Component {
 }
 
 function mapStateToProps(state) {
-	return { navigation: state.navigation };
+	return {
+		batches: state.batch.batches,
+		courses: state.course.courses,
+		navigation: state.navigation,
+		students: state.student.students
+	};
 }
 
 export default connect(mapStateToProps, { changeTabs })(PrimaryTuitionTabs);

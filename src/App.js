@@ -16,8 +16,13 @@ import AddOrEditDiscount from './components/TuitionComponents/Configure/AddOrEdi
 import AddOrEditTest from './components/TuitionComponents/PerformanceReport/Test/AddOrEditTest';
 import AddStudent from './components/TuitionComponents/Students/AddStudent';
 import AttendanceDetails from './components/TuitionComponents/Attendance/AttendanceDetails';
+import Communicator from './components/TuitionComponents/Communicator';
+import Configure from './components/TuitionComponents/Configure';
 import EditProfile from './components/EditProfile';
 import EditSchedule from './components/TuitionComponents/Schedule/EditSchedule';
+import PerformanceReport from './components/TuitionComponents/PerformanceReport';
+import Requests from './components/TuitionComponents/Students/Requests';
+import Students from './components/TuitionComponents/Students';
 import TuitionManager from './components/TuitionComponents/TuitionManager';
 import ViewAnnouncement from './components/TuitionComponents/Communicator/Announcements/ViewAnnouncement';
 import ViewOrEditStudent from './components/TuitionComponents/Students/ViewOrEditStudent';
@@ -32,14 +37,20 @@ import ReceiptConfig from './components/ReceiptConfig';
 import StudentManager from './components/StudentComponents/StudentManager';
 import SendRequest from './components/StudentComponents/SendRequest';
 
-import { message } from 'antd';
+// AntD Components
+import { message, Modal } from 'antd';
 
+// Actions
 import fetchAll from './redux/actions/fetchAllAction';
+import { addStudent } from './redux/actions/studentActions';
+import { addRequest, deleteRequest } from './redux/actions/requestActions';
 import { resetSandesh } from './redux/actions/mesageActions';
-import { addRequest } from './redux/actions/requestActions';
 
 // Scripts
 import refreshRegistrationId from './scripts/refreshRegistrationId';
+import getTuitionIdFromUrl from './scripts/getTuitionIdFromUrl';
+
+const confirm = Modal.confirm;
 
 class App extends Component {
 	componentDidMount() {
@@ -73,6 +84,21 @@ class App extends Component {
 		await fetchAll(tuitionId);
 	}
 
+	showDeleteConfirm = studentId => {
+		const { deleteRequest, match: { url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
+		confirm({
+			title: 'Are You Sure?',
+			content: 'This action is permanent!',
+			okText: 'Yes',
+			okType: 'danger',
+			cancelText: 'No',
+			onOk() {
+				deleteRequest(tuitionId, studentId);
+			}
+		});
+	};
+
 	render() {
 		const { url } = this.props.match;
 		return (
@@ -104,6 +130,14 @@ class App extends Component {
 						<Route exact path={url + '/tuition/add-test'} component={AddOrEditTest}></Route>
 						<Route exact path={url + '/tuition/edit-test/:testId'} render={() => <AddOrEditTest edit={true} />}></Route>
 						<Route exact path={url + '/tuition/view-announcement/:announcementId'} render={() => <ViewAnnouncement notifications={this.props.notifications} students={this.props.students} />}></Route>
+
+
+
+						<Route exact path={url + '/configure'} component={Configure}></Route>
+						<Route exact path={url + '/students'} component={Students}></Route>
+						<Route exact path={url + '/communicator'} component={Communicator}></Route>
+						<Route exact path={url + '/performance-report'} component={PerformanceReport}></Route>
+						<Route exact path={url + '/app-downloads'} render={() => <Requests students={this.props.students} requests={this.props.requests} addStudent={this.props.addStudent} deleteRequest={this.showDeleteConfirm} batches={this.props.batches} courses={this.props.courses} />}></Route>
 					</Switch>
 				</Router>
 			</PullRefresh>
@@ -113,6 +147,8 @@ class App extends Component {
 
 function mapStateToProps(state) {
 	return {
+		batches: state.batch.batches,
+		courses: state.course.courses,
 		messageInfo: state.messageInfo,
 		notifications: state.notification.notifications,
 		requests: state.request.requests,
@@ -121,4 +157,4 @@ function mapStateToProps(state) {
 	};
 }
 
-export default compose(connect(mapStateToProps, { addRequest, resetSandesh, fetchAll }), withRouter)(App);
+export default compose(connect(mapStateToProps, { addRequest,addStudent, deleteRequest, resetSandesh, fetchAll }), withRouter)(App);

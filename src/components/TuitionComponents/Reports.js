@@ -1,56 +1,208 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 
-import '../../core/css/tabBar.css';
-import { changeTabs } from '../../redux/actions/navigationActions'
+import {
+	Col,
+	DatePicker,
+	Row,
+	Select,
+	Table
+} from 'antd';
 
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
+const columns = [{
+	title: 'Roll Number',
+	dataIndex: 'rollNumber',
+	key: 'rollNumber',
+}, {
+	title: 'Name',
+	dataIndex: 'name',
+	key: 'name',
+}, {
+	title: 'Contact  Number',
+	dataIndex: 'contactNumber',
+	key: 'contactNumber',
+}, {
+	title: 'Email',
+	dataIndex: 'email',
+	key: 'email',
+}, {
+	title: 'Batch Code',
+	dataIndex: 'batchCode',
+	key: 'batchCode',
+	render: batchCodes => batchCodes.join(', ')
+}, {
+	title: 'DOE',
+	dataIndex: 'doe',
+	key: 'doe'
+}, {
+	title: 'Course',
+	dataIndex: 'courseCode',
+	key: 'courseCode'
+}, {
+	title: 'Fee',
+	dataIndex: 'fee',
+	key: 'fee'
+}, {
+	title: 'Discount',
+	dataIndex: 'discount',
+	key: 'discount'
+}, {
+	title: 'Received',
+	dataIndex: 'received',
+	key: 'received'
+}, {
+	title: 'Balance',
+	dataIndex: 'balance',
+	key: 'balance'
+}];
 
-import EnrollmentReport from './Reports/EnrollmentReport';
-import OutstandingReport from './Reports/OutstandingReport';
+const datePickerLayout = {
+	xs: 24,
+	md: 12
+};
+
+// WARNING: Don't rename these things else you die
+const typesAndNamesOfReports = {
+	enrollmentReport: ['Batchwise Student Report', 'Coursewise Enrollment Report', 'DOEwise Enrollment Report'],
+	paymentReport: ['Collection Report', 'DOEwise balance outstanding report']
+};
 
 class Reports extends Component {
-	handleChange = (e, value) => {
-		const { navigation: { primaryTabsValue } } = this.props;
-		this.props.changeTabs(primaryTabsValue, value);
-	};
+	state = {
+		nameOfReport: undefined,
+		selectedBatch: undefined,
+		selectedCourse: undefined,
+		selectedFromDate: undefined,
+		selectedToDate: undefined,
+		typeOfReport: undefined
+	}
+
+	getBatchWiseEnrollmentData = () => {
+		const { batches, courses, students } = this.props;
+		const { selectedBatch } = this.state;
+		if (Boolean(selectedBatch) === false) return [];
+
+		const selectedBatchInfo = batches.find(batch => batch._id === selectedBatch);
+		const selectedBatchStudentsInfo = selectedBatchInfo.students.map(studentId => students.find(student => student._id === studentId));
+
+		const dataToReturn = [];
+		selectedBatchStudentsInfo.forEach(studentInfo => {
+			studentInfo.payments.map(payment => {
+				// find all batchCodes children of payment.courseCode and has studentId in their students array
+				const batchCodes = [];
+				const courseInfo = courses.find(course => course.code === payment.courseCode);
+				if (courseInfo) courseInfo.batches.forEach(batch => {
+					if (batch.students.find(studentId => studentId === studentInfo._id)) batchCodes.push(batch.code);
+				});
+
+				// compute amount received
+				let amountReceivedTillDate = 0;
+				payment.installments.forEach(installment => amountReceivedTillDate += installment.feeCollected);
+
+				dataToReturn.push({
+					rollNumber: studentInfo.rollNumber,
+					name: studentInfo.name,
+					contactNumber: studentInfo.contactNumber,
+					email: studentInfo.email,
+					batchCode: batchCodes,
+					doe: payment.createdAt.format('DD/MM/YY'),
+					courseCode: payment.courseCode,
+					fee: payment.courseFee,
+					discount: payment.discountAmount,
+					received: amountReceivedTillDate,
+					balance: payment.courseFee - amountReceivedTillDate
+				});
+			});
+		});
+		return dataToReturn;
+	}
+
+	getDynamicSelect = () => {
+		const { nameOfReport } = this.state;
+		const { batches, courses } = this.props;
+		if (Boolean(nameOfReport) === false) return undefined;
+
+		if (nameOfReport.includes('Batchwise')) {
+			return <Col span={24} className="p-1">
+				<Select
+					allowClear
+					className="w-100"
+					onChange={this.handleBatchSelectChange}
+					placeholder="Select Batch">
+					{batches.map(batch => <Select.Option key={batch._id} value={batch._id}>{batch.code}</Select.Option>)}
+				</Select>
+			</Col>;
+		}
+		if (nameOfReport.includes('Coursewise')) {
+			return <Col span={24} className="p-1"><Select
+				allowClear
+				className="w-100"
+				onChange={this.handleCourseSelectChange}
+				placeholder="Select Course">
+				{courses.map(course => <Select.Option key={course._id} value={course._id}>{course.code}</Select.Option>)}
+			</Select></Col>;
+		}
+		if (nameOfReport.includes('DOEwise')) {
+			return <>
+				<Col className="p-1" {...datePickerLayout}><DatePicker className="w-100" placeholder="From Date" /></Col>
+				<Col className="p-1" {...datePickerLayout}><DatePicker className="w-100" placeholder="To Date" /></Col>
+			</>;
+		}
+	}
+
+	getTable = () => {
+		const { nameOfReport } = this.state;
+		let dataSource = [];
+		if (nameOfReport === 'Batchwise Student Report') dataSource = this.getBatchWiseEnrollmentData();
+		return <Table
+			rowKey="_id"
+			className="my-3"
+			bordered={true}
+			pagination={false}
+			dataSource={dataSource}
+			columns={columns} />;
+	}
+
+	handleBatchSelectChange = selectedBatch => this.setState({ selectedBatch });
+	handleNameOfReportSelectChange = nameOfReport => this.setState({ nameOfReport });
+	handleTypeOfReportSelectChange = typeOfReport => this.setState({ nameOfReport: undefined, typeOfReport });
 
 	render() {
-		const { batches, courses, navigation: { secondaryTabsValue }, students } = this.props;
+		const { nameOfReport, typeOfReport } = this.state;
+		const nameOfReports = typeOfReport ? typesAndNamesOfReports[typeOfReport] : [];
+
+		const dynamicSelectJsx = this.getDynamicSelect();
+		const tableJsx = this.getTable();
+
 		return (
-			<>
-				<AppBar color="default" className="z101">
-					<Tabs
-						className="tabBar"
-						value={secondaryTabsValue}
-						onChange={this.handleChange}
-						indicatorColor="primary"
-						textColor="primary"
-						variant="fullWidth"
-						scrollButtons="auto">
-						<Tab label="Enrollment" />
-						<Tab label="Outstanding" />
-					</Tabs>
-				</AppBar>
-				{secondaryTabsValue === 0 && <EnrollmentReport courses={courses} students={students} />}
-				{secondaryTabsValue === 1 && <OutstandingReport batches={batches} courses={courses} students={students} />}
-			</>
+			<div className="container">
+				<Row className="mb-3" type="flex" align="middle" justify="center">
+					<Col span={24} className="p-1">
+						<Select
+							allowClear
+							className="w-100"
+							onChange={this.handleTypeOfReportSelectChange}
+							placeholder="Type Of Report">
+							<Select.Option value="enrollmentReport">Enrollment Report</Select.Option>
+							<Select.Option value="paymentReport">Payment Report</Select.Option>
+						</Select>
+					</Col>
+					<Col span={24} className="p-1">
+						<Select
+							allowClear
+							className="w-100"
+							onChange={this.handleNameOfReportSelectChange}
+							placeholder="Report Name"
+							value={nameOfReport}>
+							{nameOfReports.map(name => <Select.Option key={name} value={name}>{name}</Select.Option>)}
+						</Select>
+					</Col>
+					{dynamicSelectJsx}
+					{tableJsx}
+				</Row>
+			</div>
 		);
 	}
 }
 
+export default Reports;
 
-function mapStateToProps(state) {
-	return {
-		batches: state.batch.batches,
-		courses: state.course.courses,
-		navigation: state.navigation,
-		students: state.student.students
-	};
-}
-
-export default connect(mapStateToProps, { changeTabs })(Reports);
-
-// boxShadow: '0px -2px 4px -1px rgba(0,0,0,0.2), 0px -4px 5px 0px rgba(0,0,0,0.14), 0px -1px 10px 0px rgba(0,0,0,0.12)'

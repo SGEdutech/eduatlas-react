@@ -97,7 +97,6 @@ class Signup extends Component {
 	render() {
 		const { getFieldDecorator } = this.props.form;
 		const { formData } = this.state;
-		console.log(formData);
 		return (
 			<div className="container">
 				<Row className="mt-3" type="flex" justify="center">
