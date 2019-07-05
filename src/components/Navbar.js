@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 import {
 	Avatar,
-	Card,
+	Col,
 	Drawer,
 	Icon,
 	List,
@@ -21,8 +21,6 @@ import getTuitionIdFromUrl from '../scripts/getTuitionIdFromUrl';
 import { tuitionName, primaryColor } from '../config.json';
 import fallbackDp from '../fallback-dp.svg';
 
-const { Meta } = Card;
-
 const headerStyle = {
 	height: '40px',
 	zIndex: 101
@@ -32,10 +30,13 @@ const cursorStyle = {
 	cursor: 'pointer'
 };
 
-const DrawerHeader = <Meta
-	avatar={<Avatar src={fallbackDp} />}
-	title={tuitionName}
-	description="Role: Admin" />;
+const DrawerHeader = (
+	<Row>
+		<Col className="mb-1" span={24}><Avatar size={64} src={fallbackDp} /></Col>
+		<Col span={24}>{tuitionName}</Col>
+		<Col span={24}><small>Role: Admin</small></Col>
+	</Row>
+);
 
 const NavListItem = props => (
 	<Row type="flex" align="middle" className="my-3" style={cursorStyle} onClick={props.onClick}>
@@ -66,7 +67,7 @@ class Navbar extends Component {
 
 	render() {
 		const { match: { url }, navText, renderBackBtn = false, user } = this.props;
-		const tuitionId = getTuitionIdFromUrl(url);
+		// const tuitionId = getTuitionIdFromUrl(url);
 		return (
 			<>
 				<nav className="navbar fixed-top mb-0 primary-color" style={headerStyle} ref={el => {
