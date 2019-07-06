@@ -84,21 +84,6 @@ class App extends Component {
 		await fetchAll(tuitionId);
 	}
 
-	showDeleteConfirm = studentId => {
-		const { deleteRequest, match: { url } } = this.props;
-		const tuitionId = getTuitionIdFromUrl(url);
-		confirm({
-			title: 'Are You Sure?',
-			content: 'This action is permanent!',
-			okText: 'Yes',
-			okType: 'danger',
-			cancelText: 'No',
-			onOk() {
-				deleteRequest(tuitionId, studentId);
-			}
-		});
-	};
-
 	render() {
 		const { url } = this.props.match;
 		return (
@@ -111,15 +96,15 @@ class App extends Component {
 						<Route exact path={url + '/'} render={() => <Loading messageInfo={this.props.messageInfo} user={this.props.user} students={this.props.students} />}></Route>
 						<Route exact path={url + '/send-request'} render={() => <SendRequest addRequest={this.props.addRequest} requests={this.props.requests} userInfo={this.props.user} />}></Route>
 						<Route exact path={url + '/tuition'} component={TuitionManager}></Route>
-						<Route exact path={url + '/tuition/add-course'} component={AddOrEditCourse}></Route>
-						<Route exact path={url + '/tuition/add-batch'} component={AddOrEditBatch}></Route>
-						<Route exact path={url + '/tuition/add-discount'} component={AddOrEditDiscount}></Route>
-						<Route exact path={url + '/tuition/edit-course/:courseId'} render={() => <AddOrEditCourse edit={true} />}></Route>
-						<Route exact path={url + '/tuition/edit-batch/:batchId'} render={() => <AddOrEditBatch edit={true} />}></Route>
-						<Route exact path={url + '/tuition/edit-discount/:discountId'} render={() => <AddOrEditDiscount edit={true} />}></Route>
-						<Route exact path={url + '/tuition/student/:studentId/payment/:paymentId/add-installment'} render={() => <AddStudent task="add-installment" />}></Route>
-						<Route exact path={url + '/tuition/student/:studentId/add-payment'} render={() => <AddStudent task="add-payment" />}></Route>
-						<Route exact path={url + '/tuition/student/:studentId'} render={() => <ViewOrEditStudent />}></Route>
+						<Route exact path={url + '/tuition/configure/add-course'} component={AddOrEditCourse}></Route>
+						<Route exact path={url + '/tuition/configure/add-batch'} component={AddOrEditBatch}></Route>
+						<Route exact path={url + '/tuition/configure/add-discount'} component={AddOrEditDiscount}></Route>
+						<Route exact path={url + '/tuition/configure/edit-course/:courseId'} render={() => <AddOrEditCourse edit={true} />}></Route>
+						<Route exact path={url + '/tuition/configure/edit-batch/:batchId'} render={() => <AddOrEditBatch edit={true} />}></Route>
+						<Route exact path={url + '/tuition/configure/edit-discount/:discountId'} render={() => <AddOrEditDiscount edit={true} />}></Route>
+						<Route exact path={url + '/tuition/students/:studentId/payment/:paymentId/add-installment'} render={() => <AddStudent task="add-installment" />}></Route>
+						<Route exact path={url + '/tuition/students/:studentId/add-payment'} render={() => <AddStudent task="add-payment" />}></Route>
+						<Route exact path={url + '/tuition/students/:studentId'} render={() => <ViewOrEditStudent />}></Route>
 						<Route exact path={url + '/tuition/edit-schedule/:scheduleId'} render={() => <EditSchedule />}></Route>
 						<Route exact path={url + '/tuition/attendance/:scheduleId'} render={() => <AttendanceDetails />}></Route>
 						<Route exact path={url + '/edit-profile/:userId'} render={() => <EditProfile />}></Route>
@@ -127,17 +112,16 @@ class App extends Component {
 						<Route exact path={url + '/signup'} component={Signup}></Route>
 						<Route exact path={url + '/student'} component={StudentManager}></Route>
 						<Route exact path={url + '/receipt-config'} component={ReceiptConfig}></Route>
-						<Route exact path={url + '/tuition/add-test'} component={AddOrEditTest}></Route>
-						<Route exact path={url + '/tuition/edit-test/:testId'} render={() => <AddOrEditTest edit={true} />}></Route>
-						<Route exact path={url + '/tuition/view-announcement/:announcementId'} render={() => <ViewAnnouncement notifications={this.props.notifications} students={this.props.students} />}></Route>
+						<Route exact path={url + '/tuition/performance-report/add-test'} component={AddOrEditTest}></Route>
+						<Route exact path={url + '/tuition/performance-report/edit-test/:testId'} render={() => <AddOrEditTest edit={true} />}></Route>
+						<Route exact path={url + '/tuition/communicator/view-announcement/:announcementId'} render={() => <ViewAnnouncement notifications={this.props.notifications} students={this.props.students} />}></Route>
 
 
-
-						<Route exact path={url + '/configure'} component={Configure}></Route>
-						<Route exact path={url + '/students'} component={Students}></Route>
-						<Route exact path={url + '/communicator'} component={Communicator}></Route>
-						<Route exact path={url + '/performance-report'} component={PerformanceReport}></Route>
-						<Route exact path={url + '/app-downloads'} render={() => <Requests students={this.props.students} requests={this.props.requests} addStudent={this.props.addStudent} deleteRequest={this.showDeleteConfirm} batches={this.props.batches} courses={this.props.courses} />}></Route>
+						<Route exact path={url + '/tuition/configure'} component={Configure}></Route>
+						<Route exact path={url + '/tuition/students'} component={Students}></Route>
+						<Route exact path={url + '/tuition/communicator'} component={Communicator}></Route>
+						<Route exact path={url + '/tuition/performance-report'} component={PerformanceReport}></Route>
+						<Route exact path={url + '/tuition/app-downloads'} render={() => <Requests students={this.props.students} requests={this.props.requests} addStudent={this.props.addStudent} deleteRequest={this.props.deleteRequest} batches={this.props.batches} courses={this.props.courses} />}></Route>
 					</Switch>
 				</Router>
 			</PullRefresh>
@@ -157,4 +141,4 @@ function mapStateToProps(state) {
 	};
 }
 
-export default compose(connect(mapStateToProps, { addRequest,addStudent, deleteRequest, resetSandesh, fetchAll }), withRouter)(App);
+export default compose(connect(mapStateToProps, { addRequest, addStudent, deleteRequest, resetSandesh, fetchAll }), withRouter)(App);

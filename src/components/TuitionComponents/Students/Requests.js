@@ -39,18 +39,17 @@ class Requests extends Component {
 		showAddStudentModal: false
 	};
 
+	handleMenuClick = requestInfo => this.setState({ requestInfo });
+
 	handleRequestDelete = () => {
-		const { requestInfo, deleteRequest } = this.props;
+		const { deleteRequest, match: { url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
+		const { requestInfo } = this.state;
 		const reqId = requestInfo._id;
-		deleteRequest(reqId);
+		deleteRequest(tuitionId, reqId);
 	}
 
-	handleRequestClick = ({ _id, name, email }) => {
-		this.setState({
-			requestInfo: { _id, name, email },
-			showAddStudentModal: true
-		});
-	}
+	handleRequestClick = () => this.setState({ showAddStudentModal: true });
 
 	handleRequestModalCancel = () => this.setState({ showAddStudentModal: false })
 
@@ -124,7 +123,7 @@ class Requests extends Component {
 				renderItem={request => (
 					<List.Item actions={[
 						<Dropdown overlay={
-							<Menu onClick={this.handleMenuClick}>
+							<Menu onClick={() => this.handleMenuClick(request)}>
 								<Menu.Item className="pb-2" key="1" onClick={() => this.handleRequestClick(request)}>
 									<Icon type="solution" />
 									Add to Batch

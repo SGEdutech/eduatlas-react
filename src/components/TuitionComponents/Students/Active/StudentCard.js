@@ -15,8 +15,8 @@ function StudentCard(props) {
 	const { id, name, rollNumber, deleteStudent } = props;
 
 	const iconsArray = [
-		<Link to={'./student/' + id}><IconsWithTooltip tooltipMessage="View" iconType="eye" /></Link>,
-		<Link to={'./student/' + id}><IconsWithTooltip tooltipMessage="Edit" iconType="edit" /></Link>,
+		<Link to={'./' + id}><IconsWithTooltip tooltipMessage="View" iconType="eye" /></Link>,
+		<Link to={'./' + id}><IconsWithTooltip tooltipMessage="Edit" iconType="edit" /></Link>,
 		<IconsWithTooltip tooltipMessage="Delete" iconType="delete" onClick={() => deleteStudent(id)} />
 	];
 

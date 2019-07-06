@@ -9,7 +9,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
-import { Icon,Modal,Row } from 'antd';
+import { Icon, Row } from 'antd';
 
 import { addStudentInBatch } from '../../redux/actions/batchActions';
 import { changeTabs } from '../../redux/actions/navigationActions';
@@ -20,11 +20,6 @@ import Active from './Students/Active';
 import AddStudent from './Students/AddStudent';
 import Navbar from '../Navbar';
 import Pending from './Students/Pending';
-import Requests from './Students/Requests';
-
-import getTuitionIdFromUrl from '../../scripts/getTuitionIdFromUrl';
-
-const confirm = Modal.confirm;
 
 class Students extends Component {
 	handleChange = (e, value) => {
@@ -34,7 +29,7 @@ class Students extends Component {
 
 	render() {
 		const { navigation: { secondaryTabsValue } } = this.props;
-		const { request, addStudent, students, batch, course, deleteStudent, messageInfo, addStudentInBatch } = this.props;
+		const { students, batch, deleteStudent, messageInfo, addStudentInBatch } = this.props;
 		return (
 			<>
 				<Navbar renderBackBtn={true} navText="Students" />

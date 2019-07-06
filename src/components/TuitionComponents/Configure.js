@@ -25,7 +25,6 @@ import {
 class Configure extends Component {
 	handleChange = (e, value) => {
 		const { navigation: { primaryTabsValue } } = this.props;
-		console.log(primaryTabsValue)
 		this.props.changeTabs(primaryTabsValue, value);
 	};
 
