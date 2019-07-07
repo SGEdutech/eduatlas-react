@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import { Link } from 'react-router-relative-link';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import moment from 'moment';
@@ -8,6 +9,7 @@ import CloneSchedules from './ActiveSchedules/CloneSchedules';
 import ScheduleCard from './ActiveSchedules/ScheduleCard';
 
 import { addSchedule, deleteSchedule } from '../../../redux/actions/scheduleActions';
+import { getFloatingBtnCss } from '../../../scripts/sharedCss';
 import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
 import { inverseMinutesFromMidnight } from '../../../scripts/minutesToMidnight';
 
@@ -243,6 +245,9 @@ class ActiveSchedules extends Component {
 					visible={modalVisible}>
 					<CloneSchedules addSchedule={addSchedule} batches={batches} batchId={modalBatchId} getBatchWiseSchedule={this.getBatchWiseSchedule} hideModal={this.hideModal} schedules={schedules} weekNumber={modalWeekNumber} />
 				</Modal>
+				<Link to="./add-schedule">
+					<Icon type="plus-circle" theme="filled" style={getFloatingBtnCss()} />
+				</Link>
 			</div>
 		);
 	}

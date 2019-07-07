@@ -4,6 +4,7 @@ import { Link } from 'react-router-relative-link';
 
 import CourseCard from './Course/CourseCard';
 
+import { getFloatingBtnCss } from '../../../scripts/sharedCss';
 import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
 
 import {
@@ -17,14 +18,6 @@ import {
 } from 'antd';
 
 const confirm = Modal.confirm;
-
-const plusIconStyle = {
-	fontSize: '2.6rem',
-	color: '#00bcd4',
-	position: 'fixed',
-	bottom: 70,
-	right: 10
-};
 
 const colLayout = {
 	xs: 24,
@@ -91,7 +84,7 @@ class Course extends Component {
 					</Row>
 				</div>
 				<Link to="./add-course">
-					<Icon type="plus-circle" theme="filled" style={plusIconStyle} />
+					<Icon type="plus-circle" theme="filled" style={getFloatingBtnCss()} />
 				</Link>
 			</>
 		);

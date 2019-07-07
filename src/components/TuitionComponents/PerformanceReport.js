@@ -16,6 +16,11 @@ import Test from './PerformanceReport/Test';
 
 import { changeTabs } from '../../redux/actions/navigationActions';
 
+import {
+	Icon,
+	Row
+} from 'antd';
+
 class PerformanceReport extends Component {
 	handleChange = (e, value) => {
 		const { navigation: { primaryTabsValue } } = this.props;
@@ -37,9 +42,24 @@ class PerformanceReport extends Component {
 							indicatorColor="primary"
 							textColor="primary"
 							variant="fullWidth">
-							<Tab label="Tests" />
-							<Tab label="Add Score" />
-							<Tab label="Reports" />
+							<Tab label={
+								<>
+									<Row><Icon type="form" /></Row>
+									<Row><small>Tests</small></Row>
+								</>
+							} />
+							<Tab label={
+								<>
+									<Row><Icon type="plus-square" /></Row>
+									<Row><small>Add Score</small></Row>
+								</>
+							} />
+							<Tab label={
+								<>
+									<Row><Icon type="line-chart" /></Row>
+									<Row><small>Reports</small></Row>
+								</>
+							} />
 						</Tabs>
 					</AppBar>
 					{secondaryTabsValue === 0 && <Test addTest={addTest} batches={batches} deleteTest={deleteTest} editTest={editTest} messageInfo={messageInfo} tests={tests} />}

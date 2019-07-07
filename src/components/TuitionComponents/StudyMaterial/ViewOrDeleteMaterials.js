@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-relative-link';
 
 import FileCard from './ViewOrDeleteMaterials/FileCard';
 import VideoCard from './ViewOrDeleteMaterials/VideoCard';
+
+import { getFloatingBtnCss } from '../../../scripts/sharedCss';
 
 import {
 	Card,
 	Col,
 	Empty,
+	Icon,
 	Row,
 	Select,
 	Skeleton
@@ -100,6 +104,9 @@ class ViewOrDeleteMaterials extends Component {
 				<Row gutter={16}>
 					{messageInfo.fetching ? skeletonCards : videoResourcesJsx}
 				</Row>
+				<Link to="./add-resource">
+					<Icon type="plus-circle" theme="filled" style={getFloatingBtnCss()} />
+				</Link>
 			</div>
 		);
 	}

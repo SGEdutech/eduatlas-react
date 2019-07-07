@@ -1,3 +1,4 @@
+// TODO: Deprecated
 import React, { Component } from 'react';
 import { compose } from 'redux';
 import { withRouter } from 'react-router-dom';

@@ -3,7 +3,6 @@ import { compose } from 'redux';
 import { withRouter } from 'react-router-dom';
 
 import Navbar from '../../Navbar';
-import RequestCard from './Requests/RequestCard';
 
 // Scripts
 import getRandomColor from '../../../scripts/randomColor';

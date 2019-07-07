@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 
 import StudentSelector from '../Communicator/NewAnnouncement/StudentSelector';
+import Navbar from '../../Navbar';
 
 import sanatizeFormObj from '../../../scripts/sanatize-form-obj';
 import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
@@ -189,7 +190,9 @@ class AddStudyMaterial extends Component {
 		const { resourceType, selectedFile } = this.state;
 
 		return (
-			<div className="container">
+			<>
+			<Navbar renderBackBtn={true} navText="Add Study Material" />
+			<div className="container below-nav">
 				<Form onSubmit={this.handleSubmit} className="pt-3">
 					<Row gutter={16}>
 						<StudentSelector
@@ -297,6 +300,7 @@ class AddStudyMaterial extends Component {
 					</Row>
 				</Form>
 			</div>
+			</>
 		);
 	}
 }

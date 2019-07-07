@@ -14,12 +14,16 @@ import AddOrEditBatch from './components/TuitionComponents/Configure/AddOrEditBa
 import AddOrEditCourse from './components/TuitionComponents/Configure/AddOrEditCourse';
 import AddOrEditDiscount from './components/TuitionComponents/Configure/AddOrEditDiscount';
 import AddOrEditTest from './components/TuitionComponents/PerformanceReport/Test/AddOrEditTest';
+import AddSchedule from './components/TuitionComponents/Schedule/AddSchedule';
 import AddStudent from './components/TuitionComponents/Students/AddStudent';
+import AddStudyMaterial from './components/TuitionComponents/StudyMaterial/AddStudyMaterial';
+import Announcements from './components/TuitionComponents/Communicator/Announcements';
 import AttendanceDetails from './components/TuitionComponents/Attendance/AttendanceDetails';
 import Communicator from './components/TuitionComponents/Communicator';
 import Configure from './components/TuitionComponents/Configure';
 import EditProfile from './components/EditProfile';
 import EditSchedule from './components/TuitionComponents/Schedule/EditSchedule';
+import NewAnnouncement from './components/TuitionComponents/Communicator/NewAnnouncement';
 import PerformanceReport from './components/TuitionComponents/PerformanceReport';
 import Requests from './components/TuitionComponents/Students/Requests';
 import Students from './components/TuitionComponents/Students';
@@ -38,19 +42,19 @@ import StudentManager from './components/StudentComponents/StudentManager';
 import SendRequest from './components/StudentComponents/SendRequest';
 
 // AntD Components
-import { message, Modal } from 'antd';
+import { message } from 'antd';
 
 // Actions
 import fetchAll from './redux/actions/fetchAllAction';
+import { addNotification } from './redux/actions/notificationActions';
 import { addStudent } from './redux/actions/studentActions';
 import { addRequest, deleteRequest } from './redux/actions/requestActions';
 import { resetSandesh } from './redux/actions/mesageActions';
+import { addResource, fakeAddResourceFulfilled, fakeAddResourcePending, fakeAddResourceRejected } from './redux/actions/resourceActions';
 
 // Scripts
 import refreshRegistrationId from './scripts/refreshRegistrationId';
 import getTuitionIdFromUrl from './scripts/getTuitionIdFromUrl';
-
-const confirm = Modal.confirm;
 
 class App extends Component {
 	componentDidMount() {
@@ -117,9 +121,12 @@ class App extends Component {
 						<Route exact path={url + '/tuition/communicator/view-announcement/:announcementId'} render={() => <ViewAnnouncement notifications={this.props.notifications} students={this.props.students} />}></Route>
 
 
+						<Route exact path={url + '/tuition/communicator/add-announcement'} render={() => <NewAnnouncement messageInfo={this.props.messageInfo} batches={this.props.batches} students={this.props.students} addNotification={this.props.addNotification} />}></Route>
+						<Route exact path={url + '/tuition/add-schedule'} component={AddSchedule}></Route>
+						<Route exact path={url + '/tuition/add-resource'} render={() => <AddStudyMaterial addResource={this.props.addResource} batches={this.props.batches} fakeAddResourceFulfilled={this.props.fakeAddResourceFulfilled} fakeAddResourcePending={this.props.fakeAddResourcePending} fakeAddResourceRejected={this.props.fakeAddResourceRejected} resources={this.props.resources} showDelete={true} students={this.props.students} />}></Route>
 						<Route exact path={url + '/tuition/configure'} component={Configure}></Route>
 						<Route exact path={url + '/tuition/students'} component={Students}></Route>
-						<Route exact path={url + '/tuition/communicator'} component={Communicator}></Route>
+						<Route exact path={url + '/tuition/communicator'} render={() => <Announcements messageInfo={this.props.messageInfo} announcements={this.props.notifications} />}></Route>
 						<Route exact path={url + '/tuition/performance-report'} component={PerformanceReport}></Route>
 						<Route exact path={url + '/tuition/app-downloads'} render={() => <Requests students={this.props.students} requests={this.props.requests} addStudent={this.props.addStudent} deleteRequest={this.props.deleteRequest} batches={this.props.batches} courses={this.props.courses} />}></Route>
 					</Switch>
@@ -136,9 +143,10 @@ function mapStateToProps(state) {
 		messageInfo: state.messageInfo,
 		notifications: state.notification.notifications,
 		requests: state.request.requests,
+		resources: state.resource.resources,
 		students: state.student.students,
 		user: state.user.userInfo
 	};
 }
 
-export default compose(connect(mapStateToProps, { addRequest, addStudent, deleteRequest, resetSandesh, fetchAll }), withRouter)(App);
+export default compose(connect(mapStateToProps, { addNotification, addRequest, addResource, addStudent, deleteRequest, resetSandesh, fetchAll }), withRouter)(App);

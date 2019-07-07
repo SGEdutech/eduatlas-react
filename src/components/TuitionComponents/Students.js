@@ -57,7 +57,7 @@ class Students extends Component {
 							} />
 							<Tab label={
 								<>
-									<Row><Icon type="book" /></Row>
+									<Row><Icon type="user-add" /></Row>
 									<Row><small>Add</small></Row>
 								</>
 							} />

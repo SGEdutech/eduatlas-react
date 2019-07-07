@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-relative-link';
 
 import AnnouncementCard from './Announcements/AnnouncementCard';
+import Navbar from '../../Navbar';
+
+import { getFloatingBtnCss } from '../../../scripts/sharedCss';
 
 import {
 	Card,
 	Col,
 	Empty,
+	Icon,
 	Row,
 	Skeleton
 } from 'antd';
@@ -47,11 +52,17 @@ class Announcements extends Component {
 		}
 
 		return (
-			<div className="container">
-				<Row gutter={16}>
-					{messageInfo.fetching ? skeletonCards : (announcements.length === 0 ? emptyJsx : announcementsJsx)}
-				</Row>
-			</div>
+			<>
+				<Navbar renderBackBtn={true} navText="Announcements" />
+				<div className="container below-nav">
+					<Row gutter={16}>
+						{messageInfo.fetching ? skeletonCards : (announcements.length === 0 ? emptyJsx : announcementsJsx)}
+					</Row>
+					<Link to="./add-announcement">
+						<Icon type="plus-circle" theme="filled" style={getFloatingBtnCss()} />
+					</Link>
+				</div>
+			</>
 		);
 	}
 }

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-relative-link';
 
+import { getFloatingBtnCss } from '../../../scripts/sharedCss';
 import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
 
 import BatchCard from './Batch/BatchCard';
@@ -17,14 +18,6 @@ import {
 } from 'antd';
 
 const confirm = Modal.confirm;
-
-const plusIconStyle = {
-	fontSize: '2.6rem',
-	color: '#00bcd4',
-	position: 'fixed',
-	bottom: 70,
-	right: 10
-};
 
 const colLayout = {
 	xs: 24,
@@ -90,7 +83,7 @@ class Batch extends Component {
 					</Row>
 				</div>
 				<Link to="./add-batch">
-					<Icon type="plus-circle" theme="filled" style={plusIconStyle} />
+					<Icon type="plus-circle" theme="filled" style={getFloatingBtnCss()} />
 				</Link>
 			</>
 		);

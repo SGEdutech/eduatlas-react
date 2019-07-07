@@ -9,6 +9,8 @@ import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
 import sanatizeFormObj from '../../../scripts/sanatize-form-obj';
 import { minutesFromMidnight } from '../../../scripts/minutesToMidnight';
 
+import Navbar from '../../Navbar';
+
 import {
 	Button,
 	Col,
@@ -242,62 +244,65 @@ class AddSchedule extends Component {
 		));
 
 		return (
-			<div className="container">
-				<Form onSubmit={this.handleSubmit} className="pt-3">
-					<Row gutter={16}>
-						<Col {...colLayout} >
-							<Form.Item
-								label="From Date">
-								<DatePicker format="DD-MM-YYYY" onChange={this.handleFromDateChange} className="w-100" />
-							</Form.Item>
-						</Col>
-						<Col {...colLayout} >
-							<Form.Item
-								label="To Date"
-								hasFeedback={true}>
-								<DatePicker value={this.getToDate()} format="DD-MM-YYYY" className="w-100" disabled={true} />
-							</Form.Item>
-						</Col>
-						<Col span={24}>
-							<Form.Item
-								label="Select Batches"
-								hasFeedback={true}>
-								{getFieldDecorator('batches', {
-									rules: [{
-										required: true, message: 'Please input batch!'
-									}]
-								})(
-									<Select
-										filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-										mode="multiple">
-										{this.props.batches &&
-											this.props.batches.map(batch => <Option key={batch._id} value={batch._id}>{batch.code}</Option>)}
-									</Select>
-								)}
-							</Form.Item>
-						</Col>
-						<Col className="p-1 mb-3" span={24} style={{ border: 'thick double #00bcd4' }}>
-							{scheduleInps}
-						</Col>
-						<Col span={24}>
-							<Form.Item>
-								<Button type="dashed" block onClick={this.cloneSchedule}>
-									<Icon type="plus" /> Add More Schedule
-								</Button>
-							</Form.Item>
-						</Col>
-						<Col span={24}>
-							<Row type="flex" justify="end">
-								<Form.Item>
-									<Button type="primary" htmlType="submit">
-										Add Schedule(s)
-									</Button>
+			<>
+				<Navbar renderBackBtn={true} navText="Add Schedule" />
+				<div className="container below-nav">
+					<Form onSubmit={this.handleSubmit} className="pt-3">
+						<Row gutter={16}>
+							<Col {...colLayout} >
+								<Form.Item
+									label="From Date">
+									<DatePicker format="DD-MM-YYYY" onChange={this.handleFromDateChange} className="w-100" />
 								</Form.Item>
-							</Row>
-						</Col>
-					</Row>
-				</Form>
-			</div >
+							</Col>
+							<Col {...colLayout} >
+								<Form.Item
+									label="To Date"
+									hasFeedback={true}>
+									<DatePicker value={this.getToDate()} format="DD-MM-YYYY" className="w-100" disabled={true} />
+								</Form.Item>
+							</Col>
+							<Col span={24}>
+								<Form.Item
+									label="Select Batches"
+									hasFeedback={true}>
+									{getFieldDecorator('batches', {
+										rules: [{
+											required: true, message: 'Please input batch!'
+										}]
+									})(
+										<Select
+											filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+											mode="multiple">
+											{this.props.batches &&
+												this.props.batches.map(batch => <Option key={batch._id} value={batch._id}>{batch.code}</Option>)}
+										</Select>
+									)}
+								</Form.Item>
+							</Col>
+							<Col className="p-1 mb-3" span={24} style={{ border: 'thick double #00bcd4' }}>
+								{scheduleInps}
+							</Col>
+							<Col span={24}>
+								<Form.Item>
+									<Button type="dashed" block onClick={this.cloneSchedule}>
+										<Icon type="plus" /> Add More Schedule
+								</Button>
+								</Form.Item>
+							</Col>
+							<Col span={24}>
+								<Row type="flex" justify="end">
+									<Form.Item>
+										<Button type="primary" htmlType="submit">
+											Add Schedule(s)
+									</Button>
+									</Form.Item>
+								</Row>
+							</Col>
+						</Row>
+					</Form>
+				</div >
+			</>
 		);
 	}
 }

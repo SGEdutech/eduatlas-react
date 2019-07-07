@@ -6,16 +6,11 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
-import Attendance from './Attendance';
-import Communicator from './Communicator';
-// import Configure from './Configure';
-import PerformanceReport from './PerformanceReport';
-import Reports from './Reports';
-import Schedule from './Schedule';
-import Students from './Students';
-import StudyMaterial from './StudyMaterial';
+import ActiveSchedules from './Schedule/ActiveSchedules';
+import ViewOrDeleteMaterials from './StudyMaterial/ViewOrDeleteMaterials';
 
 import { changeTabs } from '../../redux/actions/navigationActions';
+import { deleteResource } from '../../redux/actions/resourceActions';
 
 class PrimaryTuitionTabs extends Component {
 	handleChange = (e, value) => this.props.changeTabs(value, 0);
@@ -41,7 +36,8 @@ class PrimaryTuitionTabs extends Component {
 	}
 
 	render() {
-		const { courses, batches, navigation: { primaryTabsValue }, students } = this.props;
+		const { navigation: { primaryTabsValue } } = this.props;
+		const { deleteResource, messageInfo, resources } = this.props;
 		return (
 			<>
 				<AppBar position="fixed" style={{ top: 40 }} className="z101">
@@ -52,26 +48,16 @@ class PrimaryTuitionTabs extends Component {
 						indicatorColor="primary"
 						textColor="primary"
 						variant="scrollable">
-						{/* <Tab label="Configure" /> */}
-						{/* <Tab label="Students" /> */}
-						{/* <Tab label="Communicator" /> */}
 						<Tab label="Schedule" />
 						<Tab label="Attendance" />
-						{/* <Tab label="Tests And Reports" /> */}
 						<Tab label="Study Material" />
-						{/* <Tab label="Reports" /> */}
 					</Tabs>
 				</AppBar>
 				<Swipeable delta={20} onSwipedLeft={this.leftSwipe} onSwipedRight={this.rightSwipe} style={{ minHeight: '80vh' }}>
 					<div className="py-3">
-						{/* {primaryTabsValue === 0 && <Configure />} */}
-						{/* {primaryTabsValue === 0 && <Students />} */}
-						{/* {primaryTabsValue === 1 && <Communicator />} */}
-						{primaryTabsValue === 0 && <Schedule />}
-						{primaryTabsValue === 1 && <Attendance />}
-						{/* {primaryTabsValue === 4 && <PerformanceReport />} */}
-						{primaryTabsValue === 2 && <StudyMaterial />}
-						{/* {primaryTabsValue === 6 && <Reports batches={batches} courses={courses} students={students} />} */}
+						{primaryTabsValue === 0 && <ActiveSchedules />}
+						{primaryTabsValue === 1 && <ActiveSchedules isAttendance={true} />}
+						{primaryTabsValue === 2 && <ViewOrDeleteMaterials deleteResource={deleteResource} messageInfo={messageInfo} resources={resources} />}
 					</div>
 				</Swipeable>
 			</>
@@ -81,12 +67,11 @@ class PrimaryTuitionTabs extends Component {
 
 function mapStateToProps(state) {
 	return {
-		batches: state.batch.batches,
-		courses: state.course.courses,
+		messageInfo: state.messageInfo,
 		navigation: state.navigation,
-		students: state.student.students
+		resources: state.resource.resources
 	};
 }
 
-export default connect(mapStateToProps, { changeTabs })(PrimaryTuitionTabs);
+export default connect(mapStateToProps, { changeTabs, deleteResource })(PrimaryTuitionTabs);
 
