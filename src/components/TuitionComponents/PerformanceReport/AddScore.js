@@ -193,7 +193,7 @@ class AddScore extends Component {
 		});
 
 		return (
-			<div className="container">
+			<div className="container py-5">
 				<Row className="mb-3" type="flex" align="middle" justify="center">
 					<Col span={24} className="p-1">
 						<Select

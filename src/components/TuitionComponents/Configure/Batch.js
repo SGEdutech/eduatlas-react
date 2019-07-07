@@ -77,7 +77,7 @@ class Batch extends Component {
 
 		return (
 			<>
-				<div className="container">
+				<div className="container py-5">
 					<Row gutter={16}>
 						{messageInfo.fetching ? skeletonCards : (batchesInfo.batches.length === 0 ? emptyJsx : batchesJsx)}
 					</Row>

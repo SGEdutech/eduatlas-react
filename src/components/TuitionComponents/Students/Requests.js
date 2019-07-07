@@ -153,7 +153,7 @@ class Requests extends Component {
 		return (
 			<>
 				<Navbar renderBackBtn={true} navText="App Downloads" />
-				<div className="container below-nav">
+				<div className="container below-nav py-5">
 					<Row className="mb-3">
 						<Input allowClear addonAfter={<Icon type="search" />} onChange={this.handleSearchInpChange} placeholder="Search Students" />
 					</Row>

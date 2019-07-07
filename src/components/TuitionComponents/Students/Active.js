@@ -110,7 +110,7 @@ class Active extends Component {
 
 		return (
 			<>
-				<div className="container">
+				<div className="container py-5">
 					<Row className="mb-3">
 						<Input allowClear addonAfter={<Icon type="search" />} onChange={this.handleSearchInpChange} placeholder="Search Students" />
 					</Row>

@@ -574,7 +574,7 @@ class AddStudent extends Component {
 			<>
 				{task === 'add-payment' && <Navbar renderBackBtn={true} navText="Add Course" />}
 				{task === 'add-installment' && <Navbar renderBackBtn={true} navText="Add Installment" />}
-				<div className={'container' + (task === 'add-payment' || task === 'add-installment' ? ' below-nav' : '')}>
+				<div className={'container py-5' + (task === 'add-payment' || task === 'add-installment' ? ' below-nav' : '')}>
 					<Form onSubmit={this.handleSubmit}>
 						<Row gutter={16}>
 							<Col xs={24} md={17}>

@@ -78,7 +78,7 @@ class Course extends Component {
 
 		return (
 			<>
-				<div className="container">
+				<div className="container py-5">
 					<Row gutter={16}>
 						{messageInfo.fetching ? skeletonCards : (coursesInfo.courses.length === 0 ? emptyJsx : coursesJsx)}
 					</Row>
