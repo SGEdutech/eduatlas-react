@@ -246,7 +246,7 @@ class ActiveSchedules extends Component {
 					<CloneSchedules addSchedule={addSchedule} batches={batches} batchId={modalBatchId} getBatchWiseSchedule={this.getBatchWiseSchedule} hideModal={this.hideModal} schedules={schedules} weekNumber={modalWeekNumber} />
 				</Modal>
 				<Link to="./add-schedule">
-					<Icon type="plus-circle" theme="filled" style={getFloatingBtnCss()} />
+					<Icon type="plus-circle" theme="filled" style={getFloatingBtnCss(false)} />
 				</Link>
 			</div>
 		);

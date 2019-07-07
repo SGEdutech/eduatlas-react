@@ -2,16 +2,20 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import {
-	Row,
-	Table
+	Avatar,
+	Comment,
+	Table,
+	Tooltip
 } from 'antd';
 
 import Navbar from '../../../Navbar';
 
+import getRandomColor from '../../../../scripts/randomColor';
+
 const columns = [{
 	title: 'Name',
 	dataIndex: 'name',
-	key: 'name',
+	key: 'name'
 }, {
 	title: 'Roll Number',
 	dataIndex: 'rollNumber',
@@ -28,12 +32,20 @@ class ViewAnnouncement extends Component {
 			<>
 				<Navbar renderBackBtn={true} navText="View Announcement" />
 				<div className="container below-nav">
-					<Row className="pt-3">
-						<span className="font-weight-bold">Date And Time :</span> {Boolean(notificationDetails) === true ? notificationDetails.createdAt.format('lll') : undefined}
-					</Row>
-					<Row className="pt-3">
-						<span className="font-weight-bold">Message :</span> {Boolean(notificationDetails) === true ? notificationDetails.message : undefined}
-					</Row>
+					{notificationDetails && <Comment
+						author={`Received By: ${notificationDetails.receivers.length}`}
+						avatar={
+							<Avatar style={{ backgroundColor: getRandomColor() }}>{notificationDetails.message.slice(0, 1).toUpperCase()}</Avatar>
+						}
+						content={
+							<p>{notificationDetails.message}</p>
+						}
+						datetime={
+							<Tooltip title={notificationDetails.createdAt.format('lll')}>
+								<span>{notificationDetails.createdAt.format('lll')}</span>
+							</Tooltip>
+						}
+					/>}
 					<Table
 						bordered={true}
 						className="mb-3 pt-3"

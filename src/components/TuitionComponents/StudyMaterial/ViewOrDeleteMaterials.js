@@ -105,7 +105,7 @@ class ViewOrDeleteMaterials extends Component {
 					{messageInfo.fetching ? skeletonCards : videoResourcesJsx}
 				</Row>
 				<Link to="./add-resource">
-					<Icon type="plus-circle" theme="filled" style={getFloatingBtnCss()} />
+					<Icon type="plus-circle" theme="filled" style={getFloatingBtnCss(false)} />
 				</Link>
 			</div>
 		);
