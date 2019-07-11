@@ -141,7 +141,7 @@ class Requests extends Component {
 						</Dropdown>
 					]}>
 						<List.Item.Meta
-							avatar={<Avatar style={{ backgroundColor: getRandomColor() }}>{request.name.slice(0, 1).toUpperCase()}</Avatar>}
+							avatar={<Avatar style={{ backgroundColor: getRandomColor(request._id) }}>{request.name.slice(0, 1).toUpperCase()}</Avatar>}
 							title={request.name}
 							description={request.email}
 						/>

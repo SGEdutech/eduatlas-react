@@ -17,9 +17,9 @@ import { logOut } from '../redux/actions/userActions';
 import fetchAll from '../redux/actions/fetchAllAction';
 
 import getTuitionIdFromUrl from '../scripts/getTuitionIdFromUrl';
+import getRandomColor from '../scripts/randomColor';
 
 import { tuitionName, primaryColor } from '../config.json';
-import fallbackDp from '../fallback-dp.svg';
 
 const headerStyle = {
 	height: '40px',
@@ -32,7 +32,7 @@ const cursorStyle = {
 
 const DrawerHeader = (
 	<Row>
-		<Col className="mb-1" span={24}><Avatar size={64} src={fallbackDp} /></Col>
+		<Col className="mb-1" span={24}><Avatar size={64} style={{ backgroundColor: getRandomColor(tuitionName) }}>{tuitionName.slice(0, 1).toUpperCase()}</Avatar></Col>
 		<Col span={24}>{tuitionName}</Col>
 		<Col span={24}><small>Role: Admin</small></Col>
 	</Row>

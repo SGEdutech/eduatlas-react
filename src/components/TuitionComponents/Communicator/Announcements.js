@@ -36,7 +36,7 @@ class Announcements extends Component {
 				<Comment
 					author={`Received By: ${receivers.length}`}
 					avatar={
-						<Avatar style={{ backgroundColor: getRandomColor() }}>{message.slice(0, 1).toUpperCase()}</Avatar>
+						<Avatar style={{ backgroundColor: getRandomColor(_id) }}>{message.slice(0, 1).toUpperCase()}</Avatar>
 					}
 					content={
 						<div className="one-line-ellipsis text-dark">{message}</div>

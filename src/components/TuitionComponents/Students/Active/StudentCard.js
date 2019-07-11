@@ -2,8 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-relative-link';
 
 import IconsWithTooltip from '../../../SharedComponents/IconsWithTooltip';
-
-import fallBackDp from '../../../../fallback-dp.svg';
+import getRandomColor from '../../../../scripts/randomColor';
 
 import {
 	Avatar,
@@ -25,7 +24,7 @@ function StudentCard(props) {
 			<Card
 				actions={iconsArray}>
 				<Meta
-					avatar={<Avatar src={fallBackDp} />}
+					avatar={<Avatar style={{ backgroundColor: getRandomColor(id) }}>{name.slice(0, 1).toUpperCase()}</Avatar>}
 					title={name}
 					description={'Roll Number: ' + rollNumber}
 				/>

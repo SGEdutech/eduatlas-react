@@ -35,7 +35,7 @@ class ViewAnnouncement extends Component {
 					{notificationDetails && <Comment
 						author={`Received By: ${notificationDetails.receivers.length}`}
 						avatar={
-							<Avatar style={{ backgroundColor: getRandomColor() }}>{notificationDetails.message.slice(0, 1).toUpperCase()}</Avatar>
+							<Avatar style={{ backgroundColor: getRandomColor(notificationDetails._id) }}>{notificationDetails.message.slice(0, 1).toUpperCase()}</Avatar>
 						}
 						content={
 							<p>{notificationDetails.message}</p>

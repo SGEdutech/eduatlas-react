@@ -6,8 +6,8 @@ import IconsWithTooltip from '../../../SharedComponents/IconsWithTooltip';
 
 import getTuitionIdFromUrl from '../../../../scripts/getTuitionIdFromUrl';
 import sanatizeFormObj from '../../../../scripts/sanatize-form-obj';
+import getRandomColor from '../../../../scripts/randomColor';
 
-import fallBackDp from '../../../../fallback-dp.svg';
 
 import {
 	Avatar,
@@ -67,7 +67,7 @@ class PendingCard extends Component {
 					]}
 					title={
 						<Meta
-							avatar={<Avatar src={fallBackDp} />}
+							avatar={<Avatar style={{ backgroundColor: getRandomColor(id) }}>{name.slice(0, 1).toUpperCase()}</Avatar>}
 							title={name} />
 					}>
 					<Form.Item className="d-none">
