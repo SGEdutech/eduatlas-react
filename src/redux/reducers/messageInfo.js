@@ -34,12 +34,17 @@ function messageReducer(state = initState, action) {
 	} else if (pendingRegex.test(action.type)) {
 		return { ...state, kaamChaluHai: true };
 	} else if (rejectedRegex.test(action.type)) {
+		// FIXME: send proper error messages from backend
+		let errorMessageReceived = null;
+		if (action.payload.response && action.payload.response.data) {
+			errorMessageReceived = action.payload.response.data.includes('<pre>') ? action.payload.response.data.split('<pre>')[1].split('</pre>')[0] : action.payload.response.data;
+		}
 		return {
 			...state,
 			kaamChaluHai: false,
 			kaamHoGaya: true,
 			lifafa: {
-				sandesh: 'There was a problem connecting to the server.',
+				sandesh: errorMessageReceived ? errorMessageReceived : 'There was a problem connecting to the server.',
 				level: 'error'
 			}
 		};
