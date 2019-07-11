@@ -38,7 +38,7 @@ const colLayout = {
 class Login extends Component {
 	handleSubmit = e => {
 		e.preventDefault();
-		const { form, form: { resetFields }, history: { push }, logIn, match: { url } } = this.props;
+		const { form, form: { resetFields }, history: { replace }, logIn, match: { url } } = this.props;
 		const tuitionId = getTuitionIdFromUrl(url);
 		form.validateFieldsAndScroll((err, values) => {
 			if (err) {
@@ -47,7 +47,7 @@ class Login extends Component {
 			}
 			logIn(values);
 			resetFields();
-			setTimeout(() => push(`/app/${tuitionId}`), 100);
+			setTimeout(() => replace(`/app/${tuitionId}`), 100);
 		});
 	}
 
