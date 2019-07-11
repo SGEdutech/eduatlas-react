@@ -94,7 +94,7 @@ class Pending extends Component {
 					<Row gutter={16}>
 						{messageInfo.fetching ? skeletonCards : (studentsToRenderOnThisPage.length === 0 ? emptyJsx : studentsJsx)}
 					</Row>
-					<Pagination current={currentPage} hideOnSinglePage={true} onChange={this.handlePaginationChange} pageSize={pageSize} total={studentsToRender.length} />
+					<Pagination className="mb-3" current={currentPage} hideOnSinglePage={true} onChange={this.handlePaginationChange} pageSize={pageSize} total={studentsToRender.length} />
 				</div>
 			</>
 		);

@@ -42,7 +42,6 @@ class Students extends Component {
 							indicatorColor="primary"
 							textColor="primary"
 							variant="fullWidth">
-							{/* <Tab label="Requests" /> */}
 							<Tab label={
 								<>
 									<Row><Icon type="check-circle" /></Row>
@@ -63,7 +62,6 @@ class Students extends Component {
 							} />
 						</Tabs>
 					</AppBar>
-					{/* {secondaryTabsValue === 0 && <Requests students={students} requests={request.requests} addStudent={addStudent} deleteRequest={this.showDeleteConfirm} batches={batch.batches} courses={course.courses} />} */}
 					{secondaryTabsValue === 0 && <Active batches={batch.batches} messageInfo={messageInfo} students={students} deleteStudent={deleteStudent} />}
 					{secondaryTabsValue === 1 && <Pending addStudentInBatch={addStudentInBatch} batches={batch.batches} deleteStudent={deleteStudent} messageInfo={messageInfo} students={students} />}
 					{secondaryTabsValue === 2 && <AddStudent students={students} />}
