@@ -10,7 +10,6 @@ import {
 	Button,
 	Col,
 	Icon,
-	message,
 	notification,
 	Row,
 	Upload

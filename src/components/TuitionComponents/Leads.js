@@ -88,18 +88,22 @@ class Leads extends Component {
 									<Row><small>Closed</small></Row>
 								</>
 							} />
-							<Tab label={
-								<>
-									<Row><Icon type="upload" /></Row>
-									<Row><small>Upload</small></Row>
-								</>
-							} />
-							<Tab label={
-								<>
-									<Row><Icon type="download" /></Row>
-									<Row><small>Reports</small></Row>
-								</>
-							} /> 
+							{Boolean(window.cordova) === false &&
+								<Tab label={
+									<>
+										<Row><Icon type="upload" /></Row>
+										<Row><small>Upload</small></Row>
+									</>
+								} />
+							}
+							{Boolean(window.cordova) === false &&
+								<Tab label={
+									<>
+										<Row><Icon type="download" /></Row>
+										<Row><small>Reports</small></Row>
+									</>
+								} />
+							}
 						</Tabs>
 					</AppBar>
 					{secondaryTabsValue === 0 && <NewLeads addLead={addLead} colLayout={colLayout} courses={courses} editLead={editLead} editLeadWithComment={editLeadWithComment} emptyJsx={emptyJsx} newLeads={newLeads} />}
@@ -112,8 +116,8 @@ class Leads extends Component {
 								</Col>;
 							})
 					)}
-					{secondaryTabsValue === 3 && <ExcelLeadUpload addLeads={addLead} />}
-					{secondaryTabsValue === 4 && <ExcelLeadDownload colLayout={colLayout} courses={courses} emptyJsx={emptyJsx} leads={leads ? leads : []} />}
+					{Boolean(window.cordova) === false && secondaryTabsValue === 3 && <ExcelLeadUpload addLeads={addLead} />}
+					{Boolean(window.cordova) === false && secondaryTabsValue === 4 && <ExcelLeadDownload colLayout={colLayout} courses={courses} emptyJsx={emptyJsx} leads={leads ? leads : []} />}
 				</div>
 			</>
 		);
