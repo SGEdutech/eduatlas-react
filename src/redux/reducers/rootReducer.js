@@ -3,6 +3,7 @@ import { combineReducers } from 'redux';
 import batch from './batch';
 import course from './course';
 import discount from './discount';
+import lead from './lead';
 import messageInfo from './messageInfo';
 import navigation from './navigation';
 import notification from './notification';
@@ -18,6 +19,7 @@ export default combineReducers({
 	batch,
 	course,
 	discount,
+	lead,
 	messageInfo,
 	navigation,
 	notification,

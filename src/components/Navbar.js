@@ -39,7 +39,7 @@ const DrawerHeader = (
 );
 
 const NavListItem = props => (
-	<Row type="flex" align="middle" className="my-3" style={cursorStyle} onClick={props.onClick}>
+	<Row type="flex" align="middle" className="py-2" style={cursorStyle} onClick={props.onClick}>
 		<Icon type={props.iconType} className="mr-3" />
 		<span>{props.content}</span>
 	</Row>
@@ -92,6 +92,7 @@ class Navbar extends Component {
 					</div>
 				</nav>
 				<Drawer
+					bodyStyle={{ paddingTop: 8 }}
 					title={DrawerHeader}
 					placement="left"
 					closable={true}
@@ -104,6 +105,7 @@ class Navbar extends Component {
 							<Link to={'./tuition/communicator'}><span style={{ color: '#000' }}><NavListItem iconType="notification" content="Communicator" /></span></Link>
 							<Link to={'./tuition/performance-report'}><span style={{ color: '#000' }}><NavListItem iconType="line-chart" content="Test And Reports" /></span></Link>
 							<Link to={'./tuition/app-downloads'}><span style={{ color: '#000' }}><NavListItem iconType="cloud-download" content="App Downloads" /></span></Link>
+							<Link to={'./tuition/leads'}><span style={{ color: '#000' }}><NavListItem iconType="monitor" content="Leads" /></span></Link>
 							<Link to={`./edit-profile/${user._id}`}><span style={{ color: '#000' }}><NavListItem iconType="edit" content="Edit Profile" /></span></Link>
 							<Link to={'./receipt-config'}><span style={{ color: '#000' }}><NavListItem iconType="form" content="Receipt Config" /></span></Link>
 							<NavListItem iconType="logout" content="Logout" onClick={this.handleLogout} />

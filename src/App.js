@@ -23,6 +23,7 @@ import Communicator from './components/TuitionComponents/Communicator';
 import Configure from './components/TuitionComponents/Configure';
 import EditProfile from './components/EditProfile';
 import EditSchedule from './components/TuitionComponents/Schedule/EditSchedule';
+import Leads from './components/TuitionComponents/Leads';
 import NewAnnouncement from './components/TuitionComponents/Communicator/NewAnnouncement';
 import PerformanceReport from './components/TuitionComponents/PerformanceReport';
 import Requests from './components/TuitionComponents/Students/Requests';
@@ -129,6 +130,7 @@ class App extends Component {
 						<Route exact path={url + '/tuition/communicator'} render={() => <Announcements messageInfo={this.props.messageInfo} announcements={this.props.notifications} />}></Route>
 						<Route exact path={url + '/tuition/performance-report'} component={PerformanceReport}></Route>
 						<Route exact path={url + '/tuition/app-downloads'} render={() => <Requests students={this.props.students} requests={this.props.requests} addStudent={this.props.addStudent} deleteRequest={this.props.deleteRequest} batches={this.props.batches} courses={this.props.courses} />}></Route>
+						<Route exact path={url + '/tuition/leads'} component={Leads}></Route>
 					</Switch>
 				</Router>
 			</PullRefresh>
