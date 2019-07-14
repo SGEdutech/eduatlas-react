@@ -23,10 +23,10 @@ class ExcelLeadUpload extends Component {
 
 	addLeads = async values => {
 		// TODO: backend path for adding multiple leads does not exist
-		const { addLead, match: { url } } = this.props;
+		const { addMultipleLeads, match: { url } } = this.props;
 		const tuitionId = getTuitionIdFromUrl(url);
 		try {
-			addLead(tuitionId, values);
+			addMultipleLeads(tuitionId, values);
 		} catch (error) {
 			console.error(error);
 		}

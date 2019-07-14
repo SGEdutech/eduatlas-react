@@ -8,6 +8,8 @@ function leadReducer(state = initState, action) {
 			return { ...state, leads: action.payload.data.leads };
 		case 'ADD_LEAD_FULFILLED':
 			return { ...state, leads: [...state.leads, action.payload.data] };
+		case 'ADD_MULTIPLE_LEAD_FULFILLED':
+			return { ...state, leads: [...state.leads, ...action.payload.data] };
 		case 'EDIT_LEAD_FULFILLED':
 			const editedLead = action.payload.data;
 			const { _id } = editedLead;

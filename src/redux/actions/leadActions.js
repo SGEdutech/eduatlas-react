@@ -28,6 +28,15 @@ export function editLeadWithComment(tuitionId, leadId, editedLead) {
 	};
 }
 
+export function addMultipleLeads(tuitionId, leads) {
+	return dispatch => {
+		dispatch({
+			type: 'ADD_MULTIPLE_LEAD',
+			payload: axios.post(`${schemeAndAuthority}/tuition/${tuitionId}/lead/multiple`, { leads })
+		});
+	};
+}
+
 /* export function deleteDiscount(tuitionId, discountId) {
 	return dispatch => {
 		dispatch({

@@ -16,7 +16,7 @@ import {
 	Row
 } from 'antd';
 
-import { addLead, editLead, editLeadWithComment } from '../../redux/actions/leadActions';
+import { addLead, addMultipleLeads, editLead, editLeadWithComment } from '../../redux/actions/leadActions';
 import { changeTabs } from '../../redux/actions/navigationActions';
 
 import ExcelLeadDownload from './Leads/ExcelLeadDownload';
@@ -37,7 +37,7 @@ class Leads extends Component {
 	};
 
 	render() {
-		const { addLead, courses, editLead, editLeadWithComment, leads, navigation: { secondaryTabsValue } } = this.props;
+		const { addLead, addMultipleLeads, courses, editLead, editLeadWithComment, leads, navigation: { secondaryTabsValue } } = this.props;
 
 		const newLeads = [];
 		const followUpLeads = [];
@@ -116,7 +116,7 @@ class Leads extends Component {
 								</Col>;
 							})
 					)}
-					{Boolean(window.cordova) === false && secondaryTabsValue === 3 && <ExcelLeadUpload addLeads={addLead} />}
+					{Boolean(window.cordova) === false && secondaryTabsValue === 3 && <ExcelLeadUpload addMultipleLeads={addMultipleLeads} />}
 					{Boolean(window.cordova) === false && secondaryTabsValue === 4 && <ExcelLeadDownload colLayout={colLayout} courses={courses} emptyJsx={emptyJsx} leads={leads ? leads : []} />}
 				</div>
 			</>
@@ -133,4 +133,4 @@ function mapStateToProps(state) {
 	};
 }
 
-export default compose(connect(mapStateToProps, { addLead, changeTabs, editLead, editLeadWithComment }), withRouter)(Leads);
+export default compose(connect(mapStateToProps, { addLead, addMultipleLeads, changeTabs, editLead, editLeadWithComment }), withRouter)(Leads);
