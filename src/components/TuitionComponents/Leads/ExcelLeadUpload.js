@@ -9,11 +9,26 @@ import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
 import {
 	Button,
 	Col,
+	Collapse,
 	Icon,
+	List,
 	notification,
 	Row,
 	Upload
 } from 'antd';
+const { Panel } = Collapse;
+
+const uploadInstructions = [
+	'Don\'t change sample CSV file headers',
+	'No duplicate entries should be there',
+	'Name, Phone Number must be provided for each entry',
+	'Phone Number must be a number, no characters allowed',
+	'Valid Scources are: eduatlas.com, school campaign, pamphlets, facebook, walkin, sulekha, justdial, urbanpro, shiksha, google maps, other',
+	'Valid Strength are: hot, cold, warm',
+	'Valid Status are: active, enrolled, closed',
+	'Email Address (if provided) must be valid. Example: text@text.text',
+	'Dates must be of format: DD/MM/YY or DD/MM/YYYY'
+];
 
 class ExcelLeadUpload extends Component {
 	state = {
@@ -319,9 +334,20 @@ class ExcelLeadUpload extends Component {
 						disabled={selectedFileList.length === 0}
 						onClick={this.parseCsv}
 						type="primary">
-						Save
+						Upload
 					</Button>
 				</Col>
+				<Row>
+					<Collapse className="my-5">
+						<Panel header="Instructions" key="1">
+							<List
+								size="large"
+								dataSource={uploadInstructions}
+								renderItem={item => <List.Item>{item}</List.Item>}
+							/>
+						</Panel>
+					</Collapse>
+				</Row>
 			</>
 		);
 	}
