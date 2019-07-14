@@ -12,6 +12,11 @@ import ViewOrDeleteMaterials from './StudyMaterial/ViewOrDeleteMaterials';
 import { changeTabs } from '../../redux/actions/navigationActions';
 import { deleteResource } from '../../redux/actions/resourceActions';
 
+import {
+	Icon,
+	Row
+} from 'antd';
+
 class PrimaryTuitionTabs extends Component {
 	handleChange = (e, value) => this.props.changeTabs(value, 0);
 
@@ -40,17 +45,33 @@ class PrimaryTuitionTabs extends Component {
 		const { deleteResource, messageInfo, resources } = this.props;
 		return (
 			<>
-				<AppBar position="fixed" style={{ top: 40 }} className="z101">
+				<AppBar className="z101">
 					<Tabs
+						className="tabBar"
 						style={{ background: '#f6f6f6' }}
 						value={primaryTabsValue}
 						onChange={this.handleChange}
 						indicatorColor="primary"
 						textColor="primary"
-						variant="scrollable">
-						<Tab label="Schedule" />
-						<Tab label="Attendance" />
-						<Tab label="Study Material" />
+						variant="fullWidth">
+						<Tab label={
+							<>
+								<Row><Icon type="schedule" /></Row>
+								<Row><small>Schedule</small></Row>
+							</>
+						} />
+						<Tab label={
+							<>
+								<Row><Icon type="carry-out" /></Row>
+								<Row><small>Attendance</small></Row>
+							</>
+						} />
+						<Tab label={
+							<>
+								<Row><Icon type="file-text" /></Row>
+								<Row><small>Study Material</small></Row>
+							</>
+						} />
 					</Tabs>
 				</AppBar>
 				<Swipeable delta={20} onSwipedLeft={this.leftSwipe} onSwipedRight={this.rightSwipe} style={{ minHeight: '80vh' }}>

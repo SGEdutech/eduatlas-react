@@ -82,7 +82,7 @@ class ViewOrDeleteMaterials extends Component {
 		}
 
 		return (
-			<div className="container">
+			<div className="container py-5">
 				<Row className="mb-3" type="flex" align="middle" justify="center">
 					<Col span={24} className="p-1">
 						<Select
@@ -105,7 +105,7 @@ class ViewOrDeleteMaterials extends Component {
 					{messageInfo.fetching ? skeletonCards : videoResourcesJsx}
 				</Row>
 				<Link to="./add-resource">
-					<Icon type="plus-circle" theme="filled" style={getFloatingBtnCss(false)} />
+					<Icon type="plus-circle" theme="filled" style={getFloatingBtnCss()} />
 				</Link>
 			</div>
 		);

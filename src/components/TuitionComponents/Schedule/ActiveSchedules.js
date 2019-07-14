@@ -225,7 +225,7 @@ class ActiveSchedules extends Component {
 		}
 
 		return (
-			<div className="container">
+			<div className="container py-5">
 				<Row className="mb-3" type="flex" align="middle" justify="center">
 					<Col span={24} className="p-1">
 						<Input allowClear onChange={this.handleSearchChange} placeholder="Search" />
@@ -246,7 +246,7 @@ class ActiveSchedules extends Component {
 					<CloneSchedules addSchedule={addSchedule} batches={batches} batchId={modalBatchId} getBatchWiseSchedule={this.getBatchWiseSchedule} hideModal={this.hideModal} schedules={schedules} weekNumber={modalWeekNumber} />
 				</Modal>
 				<Link to="./add-schedule">
-					<Icon type="plus-circle" theme="filled" style={getFloatingBtnCss(false)} />
+					<Icon type="plus-circle" theme="filled" style={getFloatingBtnCss()} />
 				</Link>
 			</div>
 		);

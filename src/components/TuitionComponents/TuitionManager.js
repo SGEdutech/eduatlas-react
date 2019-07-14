@@ -5,7 +5,7 @@ import PrimaryTuitionTabs from './PrimaryTuitionTabs';
 
 function TuitionManager() {
 	return (
-		<div className="below-nav-and-tab">
+		<div className="below-nav">
 			<Navbar />
 			<PrimaryTuitionTabs />
 		</div>
