@@ -97,16 +97,19 @@ class Navbar extends Component {
 					closable={true}
 					onClose={this.onClose}
 					visible={this.state.visible}>
-					<List split={true} style={{ fontSize: 18 }}>
-						<Link to={'./tuition/configure'}><span style={{ color: '#000' }}><NavListItem iconType="setting" content="Configure" /></span></Link>
-						<Link to={'./tuition/students'}><span style={{ color: '#000' }}><NavListItem iconType="team" content="Student Register" /></span></Link>
-						<Link to={'./tuition/communicator'}><span style={{ color: '#000' }}><NavListItem iconType="notification" content="Communicator" /></span></Link>
-						<Link to={'./tuition/performance-report'}><span style={{ color: '#000' }}><NavListItem iconType="line-chart" content="Test And Reports" /></span></Link>
-						<Link to={'./tuition/app-downloads'}><span style={{ color: '#000' }}><NavListItem iconType="cloud-download" content="App Downloads" /></span></Link>
-						<Link to={`./edit-profile/${user._id}`}><span style={{ color: '#000' }}><NavListItem iconType="edit" content="Edit Profile" /></span></Link>
-						<Link to={'./receipt-config'}><span style={{ color: '#000' }}><NavListItem iconType="form" content="Receipt Config" /></span></Link>
-						<NavListItem iconType="logout" content="Logout" onClick={this.handleLogout} />
-					</List>
+					<>
+						<List split={true} style={{ fontSize: 18 }}>
+							<Link to={'./tuition/configure'}><span style={{ color: '#000' }}><NavListItem iconType="setting" content="Configure" /></span></Link>
+							<Link to={'./tuition/students'}><span style={{ color: '#000' }}><NavListItem iconType="team" content="Student Register" /></span></Link>
+							<Link to={'./tuition/communicator'}><span style={{ color: '#000' }}><NavListItem iconType="notification" content="Communicator" /></span></Link>
+							<Link to={'./tuition/performance-report'}><span style={{ color: '#000' }}><NavListItem iconType="line-chart" content="Test And Reports" /></span></Link>
+							<Link to={'./tuition/app-downloads'}><span style={{ color: '#000' }}><NavListItem iconType="cloud-download" content="App Downloads" /></span></Link>
+							<Link to={`./edit-profile/${user._id}`}><span style={{ color: '#000' }}><NavListItem iconType="edit" content="Edit Profile" /></span></Link>
+							<Link to={'./receipt-config'}><span style={{ color: '#000' }}><NavListItem iconType="form" content="Receipt Config" /></span></Link>
+							<NavListItem iconType="logout" content="Logout" onClick={this.handleLogout} />
+						</List>
+						<small style={{ position: 'absolute', bottom: 24 }}>Made with <Icon style={{ color: 'red' }} theme="filled" type="heart" /> at eduatlas</small>
+					</>
 				</Drawer>
 			</>
 		);
