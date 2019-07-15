@@ -127,10 +127,10 @@ class Requests extends Component {
 									<Icon type="solution" />
 									Add to Batch
 			  					</Menu.Item>
-								<Menu.Item className="pb-2" key="2">
+								{/* <Menu.Item className="pb-2" key="2">
 									<Icon type="monitor" />
 									Add to Leads
-			  					</Menu.Item>
+			  					</Menu.Item> */}
 								<Menu.Item className="pb-2" key="3" onClick={this.showDeleteConfirm}>
 									<Icon type="delete" />
 									Delete
