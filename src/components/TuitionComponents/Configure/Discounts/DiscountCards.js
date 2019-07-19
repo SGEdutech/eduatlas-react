@@ -16,9 +16,13 @@ function DiscountCard(props) {
 
 	return (
 		<Card
+			size="small"
+			style={{ border: '1px solid lightblue' }}
+			headStyle={{ backgroundColor: 'lightblue' }}
+			title={code}
 			actions={iconsArray}>
 			<Meta
-				title={<span className="text-uppercase">{code}</span>}
+				// title={<span className="text-uppercase">{code}</span>}
 				description={
 					<Row>
 						<Col>

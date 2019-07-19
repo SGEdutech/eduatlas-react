@@ -146,7 +146,7 @@ class Requests extends Component {
 				dataSource={requestsToRenderOnThisPage}
 				renderItem={request => (
 					<List.Item actions={[
-						<Dropdown overlay={
+						<Dropdown trigger={['hover', 'click']} overlay={
 							<Menu onClick={() => this.handleMenuClick(request)}>
 								<Menu.Item className="pb-2" key="1" onClick={() => this.handleRequestClick(request)}>
 									<Icon type="solution" />
@@ -182,9 +182,9 @@ class Requests extends Component {
 					<Row className="mb-3">
 						<Input allowClear addonAfter={<Icon type="search" />} onChange={this.handleSearchInpChange} placeholder="Search Students" />
 					</Row>
-					<Row gutter={16}>
+					{/* <Row gutter={16}> */}
 						{requestsToRender.length === 0 ? emptyJsx : requestListJsx}
-					</Row>
+					{/* </Row> */}
 					<Pagination current={currentPage} hideOnSinglePage={true} onChange={this.handlePaginationChange} pageSize={pageSize} total={requestsToRender.length} />
 				</div>
 				{/* Request Modal */}

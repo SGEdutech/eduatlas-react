@@ -60,6 +60,7 @@ class PendingCard extends Component {
 		return (
 			<Form onSubmit={this.handleSubmit}>
 				<Card
+					size="small"
 					className="mb-3"
 					actions={[
 						<IconsWithTooltip onClick={this.handleSubmit} iconType="check" tooltipMessage="Add To Batch" />,
