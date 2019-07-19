@@ -70,7 +70,6 @@ class EditInstituteProfile extends Component {
 	render() {
 		const { getFieldDecorator } = this.props.form;
 		const { tuitionInfo } = this.props;
-		console.log(tuitionInfo)
 
 		return (
 			<>
