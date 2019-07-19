@@ -331,6 +331,26 @@ class AddStudent extends Component {
 						)}
 					</Form.Item>
 				</Col>
+				<Col {...colLayout}>
+					<Form.Item
+						label="Parent Name"
+						hasFeedback={true}>
+						{getFieldDecorator('parantName', {
+						})(
+							<Input className="w-100" />
+						)}
+					</Form.Item>
+				</Col>
+				<Col {...colLayout}>
+					<Form.Item
+						label="Parent Number"
+						hasFeedback={true}>
+						{getFieldDecorator('parentPhone', {
+						})(
+							<InputNumber className="w-100" />
+						)}
+					</Form.Item>
+				</Col>
 			</>
 		);
 

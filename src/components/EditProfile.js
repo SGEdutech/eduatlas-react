@@ -14,7 +14,8 @@ import {
 	Col,
 	Form,
 	Input,
-	Row
+	Row,
+	InputNumber
 } from 'antd';
 
 const formItemLayout = {
@@ -47,7 +48,7 @@ class EditProfile extends Component {
 
 	render() {
 		const { getFieldDecorator } = this.props.form;
-		const { firstName, middleName, lastName, primaryEmail, secondaryEmail, addressLine1, addressLine2, city } = this.props.userInfo;
+		const { firstName, middleName, lastName, primaryEmail, phone, secondaryEmail, addressLine1, addressLine2, city } = this.props.userInfo;
 
 		return (
 			<>
@@ -123,6 +124,18 @@ class EditProfile extends Component {
 										}]
 									})(
 										<Input placeholder="secondary email" />
+									)}
+								</Form.Item>
+							</Col>
+							<Col {...colLayout}>
+								<Form.Item
+									{...formItemLayout}
+									label="Phone Number"
+									hasFeedback={true}>
+									{getFieldDecorator('phone', {
+										initialValue: phone
+									})(
+										<InputNumber className="w-100" placeholder="phone number" />
 									)}
 								</Form.Item>
 							</Col>

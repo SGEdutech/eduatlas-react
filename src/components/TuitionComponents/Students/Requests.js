@@ -30,6 +30,8 @@ const { confirm } = Modal;
 const { Option } = Select;
 const pageSize = 12;
 
+const ifMobile = window.screen.width ? window.screen.width <= 320 : true;
+
 class Requests extends Component {
 	state = {
 		search: '',
@@ -167,8 +169,10 @@ class Requests extends Component {
 					]}>
 						<List.Item.Meta
 							avatar={<Avatar style={{ backgroundColor: getRandomColor(request._id) }}>{request.name.slice(0, 1).toUpperCase()}</Avatar>}
-							title={request.name}
-							description={request.email}
+							title={ifMobile && request.name.length > 18 ? request.name.slice(0, 15) + '...' : request.name}
+							description={ifMobile && request.email.length > 18 ? request.email.slice(0, 15) + '...' : request.email}
+							// title={request.name}
+							// description={request.email}
 						/>
 					</List.Item>
 				)}
@@ -182,9 +186,7 @@ class Requests extends Component {
 					<Row className="mb-3">
 						<Input allowClear addonAfter={<Icon type="search" />} onChange={this.handleSearchInpChange} placeholder="Search Students" />
 					</Row>
-					{/* <Row gutter={16}> */}
-						{requestsToRender.length === 0 ? emptyJsx : requestListJsx}
-					{/* </Row> */}
+					{requestsToRender.length === 0 ? emptyJsx : requestListJsx}
 					<Pagination current={currentPage} hideOnSinglePage={true} onChange={this.handlePaginationChange} pageSize={pageSize} total={requestsToRender.length} />
 				</div>
 				{/* Request Modal */}

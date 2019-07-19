@@ -84,7 +84,7 @@ class ViewOrEditStudent extends Component {
 
 	render() {
 		const { getFieldDecorator } = this.props.form;
-		const { _id, name, rollNumber, email, contactNumber, address, payments } = this.state.studentInfo;
+		const { _id, name, rollNumber, email, contactNumber, address, payments, parentName, parentPhone } = this.state.studentInfo;
 		const { editable } = this.state;
 
 		return (
@@ -165,6 +165,28 @@ class ViewOrEditStudent extends Component {
 											initialValue: address
 										})(
 											<Input disabled={!editable} />
+										)}
+									</Form.Item>
+								</Col>
+								<Col {...colLayout}>
+									<Form.Item
+										label="Parent Name"
+										hasFeedback={editable}>
+										{getFieldDecorator('parentName', {
+											initialValue: parentName
+										})(
+											<Input disabled={!editable} />
+										)}
+									</Form.Item>
+								</Col>
+								<Col {...colLayout}>
+									<Form.Item
+										label="Parent Phone"
+										hasFeedback={editable}>
+										{getFieldDecorator('parentPhone', {
+											initialValue: parentPhone
+										})(
+											<InputNumber className="w-100" disabled={!editable} />
 										)}
 									</Form.Item>
 								</Col>

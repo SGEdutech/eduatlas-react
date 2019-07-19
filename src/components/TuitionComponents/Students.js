@@ -33,7 +33,7 @@ class Students extends Component {
 		return (
 			<>
 				<Navbar renderBackBtn={true} navText="Students" />
-				<div className="container below-nav">
+				<div className="below-nav">
 					<AppBar color="default" className="z101">
 						<Tabs
 							className="tabBar"

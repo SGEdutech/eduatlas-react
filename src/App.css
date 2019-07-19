@@ -61,3 +61,7 @@
 .ant-card-actions {
 	background: white !important
 }
+
+.border-bottom-fine {
+	border-bottom: 1px solid #e8e8e8;
+}

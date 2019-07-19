@@ -14,7 +14,6 @@ import {
 	Comment,
 	Empty,
 	Icon,
-	Row,
 	Skeleton,
 	Tooltip
 } from 'antd';
@@ -38,6 +37,7 @@ class Announcements extends Component {
 					avatar={
 						<Avatar style={{ backgroundColor: getRandomColor(_id) }}>{message.slice(0, 1).toUpperCase()}</Avatar>
 					}
+					className="border-bottom-fine"
 					content={
 						<div className="one-line-ellipsis text-dark">{message}</div>
 					}
@@ -49,7 +49,6 @@ class Announcements extends Component {
 				/>
 			</Link>
 		));
-
 
 		const emptyJsx = <Empty className="mt-4"
 			image="https://gw.alipayobjects.com/mdn/miniapp_social/afts/img/A*pevERLJC9v0AAAAAAAAAAABjAQAAAQ/original"
@@ -70,9 +69,9 @@ class Announcements extends Component {
 			<>
 				<Navbar renderBackBtn={true} navText="Announcements" />
 				<div className="container below-nav">
-					<Row gutter={16}>
-						{messageInfo.fetching ? skeletonCards : (announcements.length === 0 ? emptyJsx : announcementsJsx)}
-					</Row>
+					{/* <Row gutter={16}> */}
+					{messageInfo.fetching ? skeletonCards : (announcements.length === 0 ? emptyJsx : announcementsJsx)}
+					{/* </Row> */}
 					<Link to="./add-announcement">
 						<Icon type="plus-circle" theme="filled" style={getFloatingBtnCss(false)} />
 					</Link>
