@@ -19,6 +19,7 @@ import {
 	Input,
 	List,
 	Menu,
+	message,
 	Modal,
 	Row,
 	Select,
@@ -78,6 +79,19 @@ class Requests extends Component {
 		});
 	}
 
+	initAddToLeads = async request => {
+		const { addLead, deleteRequest, match: { url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
+		const { _id, name, email, phone } = request;
+		try {
+			if (Boolean(phone) === false) message.warning('No phone number found');
+			const data = await addLead({ name, phone, email });
+			const deleteData = await deleteRequest(tuitionId, _id);
+		} catch (err) {
+			console.log(err);
+		}
+	}
+
 	showDeleteConfirm = () => {
 		confirm({
 			title: 'Are you sure delete this request?',
@@ -86,6 +100,17 @@ class Requests extends Component {
 			okType: 'danger',
 			cancelText: 'No',
 			onOk: this.handleRequestDelete
+		});
+	}
+
+	showAddToLeadConfirm = () => {
+		confirm({
+			title: 'Are you sure move this request?',
+			content: 'This action is permanent',
+			okText: 'Yes',
+			okType: 'danger',
+			cancelText: 'No',
+			onOk: this.initAddToLeads
 		});
 	}
 
@@ -127,10 +152,10 @@ class Requests extends Component {
 									<Icon type="solution" />
 									Add to Batch
 			  					</Menu.Item>
-								{/* <Menu.Item className="pb-2" key="2">
+								<Menu.Item className="pb-2" key="2" onClick={() => this.showAddToLeadConfirm(request)}>
 									<Icon type="monitor" />
 									Add to Leads
-			  					</Menu.Item> */}
+			  					</Menu.Item>
 								<Menu.Item className="pb-2" key="3" onClick={this.showDeleteConfirm}>
 									<Icon type="delete" />
 									Delete

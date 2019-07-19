@@ -51,6 +51,7 @@ import { addNotification } from './redux/actions/notificationActions';
 import { addStudent } from './redux/actions/studentActions';
 import { addRequest, deleteRequest } from './redux/actions/requestActions';
 import { resetSandesh } from './redux/actions/mesageActions';
+import { addLead } from './redux/actions/leadActions';
 import { addResource, fakeAddResourceFulfilled, fakeAddResourcePending, fakeAddResourceRejected } from './redux/actions/resourceActions';
 
 // Scripts
@@ -129,7 +130,7 @@ class App extends Component {
 						<Route exact path={url + '/tuition/students'} component={Students}></Route>
 						<Route exact path={url + '/tuition/communicator'} render={() => <Announcements messageInfo={this.props.messageInfo} announcements={this.props.notifications} />}></Route>
 						<Route exact path={url + '/tuition/performance-report'} component={PerformanceReport}></Route>
-						<Route exact path={url + '/tuition/app-downloads'} render={() => <Requests students={this.props.students} requests={this.props.requests} addStudent={this.props.addStudent} deleteRequest={this.props.deleteRequest} batches={this.props.batches} courses={this.props.courses} />}></Route>
+						<Route exact path={url + '/tuition/app-downloads'} render={() => <Requests addLead={this.props.addLead} students={this.props.students} requests={this.props.requests} addStudent={this.props.addStudent} deleteRequest={this.props.deleteRequest} batches={this.props.batches} courses={this.props.courses} />}></Route>
 						<Route exact path={url + '/tuition/leads'} component={Leads}></Route>
 					</Switch>
 				</Router>
@@ -151,4 +152,4 @@ function mapStateToProps(state) {
 	};
 }
 
-export default compose(connect(mapStateToProps, { addNotification, addRequest, addResource, addStudent, deleteRequest, resetSandesh, fetchAll }), withRouter)(App);
+export default compose(connect(mapStateToProps, { addLead, addNotification, addRequest, addResource, addStudent, deleteRequest, resetSandesh, fetchAll }), withRouter)(App);
