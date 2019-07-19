@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import NewLeadCard from './NewLeadCard';
 import sanatizeFormObj from '../../../scripts/sanatize-form-obj';
 import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
+import scrollToTop from '../../../scripts/scrollToTop';
 
 import {
 	Card,
@@ -36,6 +37,11 @@ class NewLeads extends Component {
 		showRespondModal: false,
 		toDate: null
 	}
+
+	componentDidMount() {
+		scrollToTop();
+	}
+
 	getFilteredLeads = () => {
 		let { newLeads = [] } = this.props;
 		const { searchQuery, toDate } = this.state;

@@ -11,6 +11,7 @@ import Navbar from '../../Navbar';
 import Highlighter from 'react-highlight-words';
 
 import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
+import scrollToTop from '../../../scripts/scrollToTop';
 
 import {
 	Button,
@@ -30,7 +31,7 @@ const studentTableLayout = {
 	wrapperCol: { xs: { span: 24 } }
 };
 
-const colLayout = { xs: 24,	md: 12 };
+const colLayout = { xs: 24, md: 12 };
 
 class AddBatch extends Component {
 	state = {
@@ -39,6 +40,10 @@ class AddBatch extends Component {
 		autoCompleteResult: [],
 		batchInfo: {}
 	};
+
+	componentDidMount() {
+		scrollToTop();
+	}
 
 	enterLoading = () => this.setState({ loading: true });
 

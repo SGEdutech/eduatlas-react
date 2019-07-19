@@ -7,6 +7,7 @@ import { addCourse, editCourse } from '../../../redux/actions/courseActions';
 
 import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
 import sanatizeFormObj from '../../../scripts/sanatize-form-obj';
+import scrollToTop from '../../../scripts/scrollToTop';
 
 import Navbar from '../../Navbar';
 import {
@@ -38,6 +39,10 @@ class AddCourse extends Component {
 		courseInfo: {},
 		inclusiveOfTaxes: false,
 		totalFees: 0
+	}
+
+	componentDidMount() {
+		scrollToTop();
 	}
 
 	validateGst = (rule, value, callback) => value < 0 ? callback('GST must be more than 0%') : callback();

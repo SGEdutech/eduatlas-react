@@ -18,6 +18,7 @@ import PaymentCard from './ViewOrEditStudent/PaymentCard';
 import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
 import sanatizeFormObj from '../../../scripts/sanatize-form-obj';
 import getRandomColor from '../../../scripts/randomColor';
+import scrollToTop from '../../../scripts/scrollToTop';
 
 // Actions
 import { addStudentInBatch, deleteStudentInBatch } from '../../../redux/actions/batchActions';
@@ -47,6 +48,10 @@ class ViewOrEditStudent extends Component {
 	state = {
 		studentInfo: {},
 		editable: false
+	}
+
+	componentDidMount() {
+		scrollToTop();
 	}
 
 	handleEditBtnClick = e => this.setState({ editable: true });
@@ -94,9 +99,9 @@ class ViewOrEditStudent extends Component {
 					<Row gutter={16}>
 						<Col className="pt-3">
 							<Meta
-								avatar={<Avatar style={{ backgroundColor: getRandomColor(_id) }}>{name ? name.slice(0, 1).toUpperCase(): undefined}</Avatar>}
+								avatar={<Avatar style={{ backgroundColor: getRandomColor(_id) }}>{name ? name.slice(0, 1).toUpperCase() : undefined}</Avatar>}
 								title={<span className="text-capitalize" style={{ fontWeight: 'bold' }}>{name}</span>}
-								// description={<small>EA ID: DWAD2324DAD</small>}
+							// description={<small>EA ID: DWAD2324DAD</small>}
 							/>
 							<Divider orientation="left"><small>Personal Details<Icon type="arrow-down" /></small></Divider>
 						</Col>

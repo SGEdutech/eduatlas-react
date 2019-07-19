@@ -6,6 +6,7 @@ import Navbar from '../../Navbar';
 
 import { getFloatingBtnCss } from '../../../scripts/sharedCss';
 import getRandomColor from '../../../scripts/randomColor';
+import scrollToTop from '../../../scripts/scrollToTop';
 
 import {
 	Avatar,
@@ -28,6 +29,9 @@ const cardColLayout = {
 };
 
 class Announcements extends Component {
+	componentDidMount() {
+		scrollToTop();
+	}
 	render() {
 		const { announcements, messageInfo } = this.props;
 

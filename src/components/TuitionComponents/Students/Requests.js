@@ -8,6 +8,7 @@ import Navbar from '../../Navbar';
 import getRandomColor from '../../../scripts/randomColor';
 import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
 import sanatizeFormObj from '../../../scripts/sanatize-form-obj';
+import scrollToTop from '../../../scripts/scrollToTop';
 
 import {
 	Avatar,
@@ -40,6 +41,10 @@ class Requests extends Component {
 		requestInfo: null,
 		showAddStudentModal: false
 	};
+
+	componentDidMount() {
+		scrollToTop();
+	}
 
 	handleMenuClick = requestInfo => this.setState({ requestInfo });
 
@@ -171,8 +176,8 @@ class Requests extends Component {
 							avatar={<Avatar style={{ backgroundColor: getRandomColor(request._id) }}>{request.name.slice(0, 1).toUpperCase()}</Avatar>}
 							title={ifMobile && request.name.length > 18 ? request.name.slice(0, 15) + '...' : request.name}
 							description={ifMobile && request.email.length > 18 ? request.email.slice(0, 15) + '...' : request.email}
-							// title={request.name}
-							// description={request.email}
+						// title={request.name}
+						// description={request.email}
 						/>
 					</List.Item>
 				)}

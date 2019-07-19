@@ -6,6 +6,7 @@ import DiscountCards from './Discounts/DiscountCards';
 
 import { getFloatingBtnCss } from '../../../scripts/sharedCss';
 import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
+import scrollToTop from '../../../scripts/scrollToTop';
 
 import {
 	Card,
@@ -28,6 +29,9 @@ const colLayout = {
 };
 
 class Discount extends Component {
+	componentDidMount() {
+		scrollToTop();
+	}
 	showDeleteConfirm = discountId => {
 		const { deleteDiscount, match: { url } } = this.props;
 		const tuitionId = getTuitionIdFromUrl(url);

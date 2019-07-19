@@ -5,6 +5,7 @@ import { compose } from 'redux';
 
 import { editProfile, getUserInfo } from '../redux/actions/userActions';
 
+import scrollToTop from '../scripts/scrollToTop';
 import sanatizeFormObj from '../scripts/sanatize-form-obj';
 
 import Navbar from './Navbar';
@@ -31,6 +32,10 @@ const colLayout = {
 };
 
 class EditProfile extends Component {
+	componentDidMount() {
+		scrollToTop();
+	}
+
 	handleSubmit = e => {
 		e.preventDefault();
 		const { form, editProfile, match, history } = this.props;

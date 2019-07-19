@@ -13,6 +13,8 @@ import { getFloatingBtnCss } from '../../../scripts/sharedCss';
 import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
 import { inverseMinutesFromMidnight } from '../../../scripts/minutesToMidnight';
 import getRandomColor from '../../../scripts/randomColor';
+import scrollToTop from '../../../scripts/scrollToTop';
+
 
 import {
 	Avatar,
@@ -54,6 +56,10 @@ class ActiveSchedules extends Component {
 		modalWeekNumber: null,
 		searchQuery: undefined,
 		toDate: undefined
+	}
+
+	componentDidMount() {
+		scrollToTop();
 	}
 
 	getBatchWiseSchedule = schedules => {

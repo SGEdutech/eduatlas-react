@@ -7,6 +7,7 @@ import { addDiscount, editDiscount } from '../../../redux/actions/discountAction
 
 import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
 import sanatizeFormObj from '../../../scripts/sanatize-form-obj';
+import scrollToTop from '../../../scripts/scrollToTop';
 
 import Navbar from '../../Navbar';
 
@@ -33,6 +34,10 @@ class AddDiscount extends Component {
 		max: 9999999999,
 		discountInfo: {}
 	};
+
+	componentDidMount() {
+		scrollToTop();
+	}
 
 	conditionalFormatter = value => {
 		if (this.state.saveAsPercentage) return `${value}%`

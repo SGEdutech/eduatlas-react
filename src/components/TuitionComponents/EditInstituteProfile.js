@@ -8,6 +8,7 @@ import { editTuitionInfo } from '../../redux/actions/tuitionInfoActions';
 import sanatizeFormObj from '../../scripts/sanatize-form-obj';
 import getTuitionIdFromUrl from '../../scripts/getTuitionIdFromUrl';
 import convertModelToFormData from '../../scripts/modelToFormdata';
+import scrollToTop from '../../scripts/scrollToTop';
 
 import Navbar from '../Navbar';
 
@@ -37,6 +38,10 @@ const tuitionCategories = [
 ];
 
 class EditInstituteProfile extends Component {
+	componentDidMount() {
+		scrollToTop();
+	}
+
 	handleSubmit = e => {
 		e.preventDefault();
 		const { form, editTuitionInfo, match, history } = this.props;

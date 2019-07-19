@@ -10,6 +10,8 @@ import { editSchedule } from '../../../redux/actions/scheduleActions';
 import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
 import fallBackDp from '../../../fallback-dp.svg';
 
+import scrollToTop from '../../../scripts/scrollToTop';
+
 import {
 	Avatar,
 	Button,
@@ -23,6 +25,10 @@ import {
 
 class AttendanceDetails extends Component {
 	state = { students: [] }
+
+	componentDidMount() {
+		scrollToTop();
+	}
 
 	handleSubmit = e => {
 		e.preventDefault();

@@ -25,12 +25,17 @@ import FollowUpLeads from './Leads/FollowUpLeads';
 import Navbar from '../Navbar';
 import NewLeads from './Leads/NewLeads';
 import NewLeadCard from './Leads/NewLeadCard';
+import scrollToTop from '../../scripts/scrollToTop';
 
 const colLayout = {
 	xs: 24, md: 12, lg: 8
 };
 
 class Leads extends Component {
+	componentDidMount() {
+		scrollToTop();
+	}
+
 	handleChange = (e, value) => {
 		const { navigation: { primaryTabsValue } } = this.props;
 		this.props.changeTabs(primaryTabsValue, value);

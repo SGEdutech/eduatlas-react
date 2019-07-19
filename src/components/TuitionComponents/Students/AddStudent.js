@@ -8,6 +8,7 @@ import Navbar from '../../Navbar';
 
 import { addStudent, addPayment, addInstallment } from '../../../redux/actions/studentActions';
 import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
+import scrollToTop from '../../../scripts/scrollToTop';
 import sanatizeFormObj from '../../../scripts/sanatize-form-obj';
 
 import {
@@ -47,6 +48,10 @@ const initialState = {
 
 class AddStudent extends Component {
 	state = initialState;
+
+	componentDidMount() {
+		scrollToTop();
+	}
 
 	validateRollNumber = (rule, rollNumber = '', callback) => {
 		const { students } = this.props;

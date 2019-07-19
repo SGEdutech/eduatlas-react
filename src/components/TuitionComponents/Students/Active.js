@@ -7,6 +7,7 @@ import StudentCard from './Active/StudentCard';
 import filterStudents from '../../../scripts/filterStudents';
 import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
 import getRandomColor from '../../../scripts/randomColor';
+import scrollToTop from '../../../scripts/scrollToTop';
 
 import {
 	Avatar,
@@ -44,6 +45,10 @@ class Active extends Component {
 		currentPage: 1,
 		itemsPerPage: pageSize
 	};
+
+	componentDidMount() {
+		scrollToTop();
+	}
 
 	handlePaginationChange = (currentPage, itemsPerPage) => this.setState({ currentPage, itemsPerPage });
 

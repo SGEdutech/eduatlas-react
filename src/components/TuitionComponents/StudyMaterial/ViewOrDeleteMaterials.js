@@ -5,6 +5,7 @@ import FileCard from './ViewOrDeleteMaterials/FileCard';
 import VideoCard from './ViewOrDeleteMaterials/VideoCard';
 
 import { getFloatingBtnCss } from '../../../scripts/sharedCss';
+import scrollToTop from '../../../scripts/scrollToTop';
 
 import {
 	Card,
@@ -27,6 +28,10 @@ class ViewOrDeleteMaterials extends Component {
 		vidDatas: [],
 		filterResourceType: []
 	};
+
+	componentDidMount() {
+		scrollToTop();
+	}
 
 	handleSelectChange = updatedFilterVal => {
 		this.setState({ filterResourceType: updatedFilterVal });

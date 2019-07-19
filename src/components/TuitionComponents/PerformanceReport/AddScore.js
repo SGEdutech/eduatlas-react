@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
+import scrollToTop from '../../../scripts/scrollToTop';
 
 import ExcelScoreUpload from './AddScore/ExcelScoreUpload';
 
@@ -69,6 +70,10 @@ class AddScore extends Component {
 		allTests: [],
 		selectTestValue: undefined,
 		currentTestStudents: []
+	}
+
+	componentDidMount() {
+		scrollToTop();
 	}
 
 	handleClearBtnClick = () => {
