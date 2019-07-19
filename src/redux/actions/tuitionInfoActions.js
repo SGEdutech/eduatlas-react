@@ -9,3 +9,12 @@ export function editReceipt(tuitionId, receiptInfo) {
 		});
 	};
 }
+
+export function editTuitionInfo(tuitionId, tuitionInfo) {
+	return dispatch => {
+		dispatch({
+			type: 'EDIT_TUITION_INFO',
+			payload: axios.put(`${schemeAndAuthority}/tuition/${tuitionId}`, tuitionInfo)
+		});
+	};
+}

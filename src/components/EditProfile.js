@@ -166,7 +166,7 @@ class EditProfile extends Component {
 								<Row type="flex" justify="end">
 									<Form.Item>
 										<Button type="primary" htmlType="submit">
-											Edit Profile
+											Save Changes
 										</Button>
 									</Form.Item>
 								</Row>
