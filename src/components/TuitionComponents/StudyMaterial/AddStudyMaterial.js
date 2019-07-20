@@ -77,6 +77,12 @@ class AddStudyMaterial extends Component {
 
 	handleCordovaUpload = () => {
 		const { fakeAddResourceFulfilled, fakeAddResourcePending, fakeAddResourceRejected, form, form: { resetFields }, match: { url } } = this.props;
+		const { resourceType } = this.state;
+		// If there is no file to share, browser upload function should be able to handle everything
+		if (resourceType === 'video') {
+			this.handleBrowserUpload();
+			return;
+		}
 		const tuitionId = getTuitionIdFromUrl(url);
 		const successCb = newResource => {
 			fakeAddResourceFulfilled(JSON.parse(newResource.response));
@@ -188,6 +194,14 @@ class AddStudyMaterial extends Component {
 	render() {
 		const { batches, students, form: { getFieldDecorator } } = this.props;
 		const { resourceType, selectedFile } = this.state;
+		let submitBtnText;
+		if (window.cordova && resourceType === 'video') {
+			submitBtnText = 'Share';
+		} else if (window.cordova) {
+			submitBtnText = 'Select File';
+		} else {
+			submitBtnText = 'Upload And Share';
+		}
 
 		return (
 			<>
@@ -292,7 +306,7 @@ class AddStudyMaterial extends Component {
 							<Row type="flex" justify="end">
 								<Form.Item>
 									<Button type="primary" htmlType="submit">
-										{window.cordova ? 'Select File' : 'Upload And Share'}
+										{submitBtnText}
 									</Button>
 								</Form.Item>
 							</Row>
