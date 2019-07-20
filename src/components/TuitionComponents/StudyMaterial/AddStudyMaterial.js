@@ -200,7 +200,7 @@ class AddStudyMaterial extends Component {
 		const { batches, students, form: { getFieldDecorator } } = this.props;
 		const { resourceType, selectedFile } = this.state;
 		let submitBtnText;
-		if (window.cordova && resourceType === 'video') {
+		if (resourceType === 'video') {
 			submitBtnText = 'Share';
 		} else if (window.cordova) {
 			submitBtnText = 'Select File';
