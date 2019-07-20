@@ -22,3 +22,4 @@ config.xml
 
 # Config file
 src/config.json
+google-services.json
