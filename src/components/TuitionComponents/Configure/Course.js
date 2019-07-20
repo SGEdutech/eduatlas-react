@@ -6,6 +6,7 @@ import CourseCard from './Course/CourseCard';
 
 import { getFloatingBtnCss } from '../../../scripts/sharedCss';
 import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
+import scrollToTop from '../../../scripts/scrollToTop';
 
 import {
 	Card,
@@ -28,6 +29,10 @@ const colLayout = {
 };
 
 class Course extends Component {
+	componentDidMount() {
+		scrollToTop();
+	}
+
 	showDeleteConfirm = id => {
 		const { deleteCourse, match: { url } } = this.props;
 		const tuitionId = getTuitionIdFromUrl(url);

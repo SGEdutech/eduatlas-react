@@ -3,6 +3,7 @@ import { unparse } from 'papaparse';
 import React, { Component } from 'react';
 
 import NewLeadCard from './NewLeadCard';
+import scrollToTop from '../../../scripts/scrollToTop';
 
 import {
 	Col,
@@ -30,6 +31,10 @@ class ExcelLeadDownload extends Component {
 		searchQuery: null,
 		toDate: null,
 		toFollowUpDate: null
+	}
+
+	componentDidMount() {
+		scrollToTop();
 	}
 
 	getFilteredLeads = () => {

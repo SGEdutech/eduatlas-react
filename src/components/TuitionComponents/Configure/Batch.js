@@ -4,6 +4,7 @@ import { Link } from 'react-router-relative-link';
 
 import { getFloatingBtnCss } from '../../../scripts/sharedCss';
 import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
+import scrollToTop from '../../../scripts/scrollToTop';
 
 import BatchCard from './Batch/BatchCard';
 
@@ -28,6 +29,9 @@ const colLayout = {
 };
 
 class Batch extends Component {
+	componentDidMount() {
+		scrollToTop();
+	}
 	showDeleteConfirm = (courseId, batchId) => {
 		const { deleteBatch, match: { url } } = this.props;
 		const tuitionId = getTuitionIdFromUrl(url);

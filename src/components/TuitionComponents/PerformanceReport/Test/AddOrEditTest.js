@@ -9,6 +9,7 @@ import getTuitionIdFromUrl from '../../../../scripts/getTuitionIdFromUrl';
 import sanatizeFormObj from '../../../../scripts/sanatize-form-obj';
 import { minutesFromMidnight } from '../../../../scripts/minutesToMidnight';
 import { inverseMinutesFromMidnight } from '../../../../scripts/minutesToMidnight';
+import scrollToTop from '../../../../scripts/scrollToTop';
 
 import Navbar from '../../../Navbar';
 
@@ -36,6 +37,10 @@ const colLayout = {
 class AddOrEditTest extends Component {
 	state = {
 		testInfo: {}
+	}
+
+	componentDidMount() {
+		scrollToTop();
 	}
 
 	static getDerivedStateFromProps(props, state) {

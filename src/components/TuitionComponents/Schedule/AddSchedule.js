@@ -8,6 +8,7 @@ import { addSchedule } from '../../../redux/actions/scheduleActions';
 import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
 import sanatizeFormObj from '../../../scripts/sanatize-form-obj';
 import { minutesFromMidnight } from '../../../scripts/minutesToMidnight';
+import scrollToTop from '../../../scripts/scrollToTop';
 
 import Navbar from '../../Navbar';
 
@@ -46,6 +47,10 @@ class AddSchedule extends Component {
 	state = {
 		fromDate: undefined
 	};
+
+	componentDidMount() {
+		scrollToTop();
+	}
 
 	_addDays = (date, days) => {
 		if (date instanceof Date === false) throw new Error('Type of date must be a date');

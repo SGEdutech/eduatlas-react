@@ -20,6 +20,7 @@ class SendRequest extends Component {
 		const request = requests.find(request => request.email === userInfo.primaryEmail);
 		if (request) return;
 		const studentInfo = { email: userInfo.primaryEmail };
+		studentInfo.phone = userInfo.phone;
 		studentInfo.name = userInfo.lastName ? userInfo.firstName + ' ' + userInfo.lastName : userInfo.firstName;
 		addRequest(tuitionId, studentInfo);
 	}

@@ -18,6 +18,7 @@ import {
 	Row
 } from 'antd';
 import getTuitionIdFromUrl from '../scripts/getTuitionIdFromUrl';
+import scrollToTop from '../scripts/scrollToTop';
 
 const colLayout = {
 	xs: 24,
@@ -25,6 +26,10 @@ const colLayout = {
 };
 
 class ReceiptConfig extends Component {
+	componentDidMount() {
+		scrollToTop();
+	}
+
 	handleSubmit = e => {
 		e.preventDefault();
 		const { editReceipt, form, history, match: { url } } = this.props;

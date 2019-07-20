@@ -6,6 +6,7 @@ import Navbar from '../../Navbar';
 
 import { getFloatingBtnCss } from '../../../scripts/sharedCss';
 import getRandomColor from '../../../scripts/randomColor';
+import scrollToTop from '../../../scripts/scrollToTop';
 
 import {
 	Avatar,
@@ -28,28 +29,38 @@ const cardColLayout = {
 };
 
 class Announcements extends Component {
+	componentDidMount() {
+		scrollToTop();
+	}
 	render() {
 		const { announcements, messageInfo } = this.props;
 
 		const announcementsJsx = announcements.reverse().map(({ _id, message, receivers, senderId, createdAt }) => (
 			<Link to={'./view-announcement/' + _id} key={_id}>
-				<Comment
-					author={`Received By: ${receivers.length}`}
-					avatar={
-						<Avatar style={{ backgroundColor: getRandomColor(_id) }}>{message.slice(0, 1).toUpperCase()}</Avatar>
-					}
-					content={
-						<div className="one-line-ellipsis text-dark">{message}</div>
-					}
-					datetime={
-						<Tooltip title={moment(createdAt).fromNow()}>
-							<span>{moment(createdAt).fromNow()}</span>
-						</Tooltip>
-					}
-				/>
+				<Row align="middle" className="border-bottom-fine" type="flex">
+					<Col span={22}>
+						<Comment
+							author={`Received By: ${receivers.length}`}
+							avatar={
+								<Avatar style={{ backgroundColor: getRandomColor(_id) }}>{message.slice(0, 1).toUpperCase()}</Avatar>
+							}
+							content={
+								<div className="one-line-ellipsis text-dark">{message}</div>
+							}
+							datetime={
+								<Tooltip title={moment(createdAt).fromNow()}>
+									<span>{moment(createdAt).fromNow()}</span>
+								</Tooltip>
+							}
+						/>
+					</Col>
+					<Col span={2}>
+						<div><Icon className="text-dark" style={{ fontSize: 20 }} type="fullscreen" /></div>
+					</Col>
+				</Row>
+
 			</Link>
 		));
-
 
 		const emptyJsx = <Empty className="mt-4"
 			image="https://gw.alipayobjects.com/mdn/miniapp_social/afts/img/A*pevERLJC9v0AAAAAAAAAAABjAQAAAQ/original"
@@ -70,9 +81,9 @@ class Announcements extends Component {
 			<>
 				<Navbar renderBackBtn={true} navText="Announcements" />
 				<div className="container below-nav">
-					<Row gutter={16}>
-						{messageInfo.fetching ? skeletonCards : (announcements.length === 0 ? emptyJsx : announcementsJsx)}
-					</Row>
+					{/* <Row gutter={16}> */}
+					{messageInfo.fetching ? skeletonCards : (announcements.length === 0 ? emptyJsx : announcementsJsx)}
+					{/* </Row> */}
 					<Link to="./add-announcement">
 						<Icon type="plus-circle" theme="filled" style={getFloatingBtnCss(false)} />
 					</Link>

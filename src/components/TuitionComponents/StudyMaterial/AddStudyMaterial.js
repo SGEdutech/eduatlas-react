@@ -8,6 +8,7 @@ import Navbar from '../../Navbar';
 
 import sanatizeFormObj from '../../../scripts/sanatize-form-obj';
 import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
+import scrollToTop from '../../../scripts/scrollToTop';
 
 import { schemeAndAuthority } from '../../../config.json';
 
@@ -42,6 +43,10 @@ class AddStudyMaterial extends Component {
 		selectedFile: null,
 		resourceType: null
 	};
+
+	componentDidMount() {
+		scrollToTop();
+	}
 
 	filterOptions = (input, option) => {
 		if (option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0) return true;
@@ -205,115 +210,115 @@ class AddStudyMaterial extends Component {
 
 		return (
 			<>
-			<Navbar renderBackBtn={true} navText="Add Study Material" />
-			<div className="container below-nav">
-				<Form onSubmit={this.handleSubmit} className="pt-3">
-					<Row gutter={16}>
-						<StudentSelector
-							fieldName="students"
-							colLayout={colLayout}
-							filterOptions={this.filterOptions}
-							students={students}
-							handleBatchChange={this.handleBatchChange}
-							batches={batches}
-							handleSelectAll={this.handleSelectAll}
-							getFieldDecorator={getFieldDecorator} />
-						<Col {...colLayout}>
-							<Form.Item
-								label="Type Of Resource"
-								hasFeedback={true}>
-								{getFieldDecorator('type', {
-									defaultValue: 'reference material',
-									rules: [{ required: 'true', message: 'Must Choose Type' }]
-								})(
-									<Select onChange={this.handleTypeOfMaterialChange}>
-										<Option className="text-uppercase" value="reference material">Reference Material</Option>
-										<Option className="text-uppercase" value="homework">Homework</Option>
-										<Option className="text-uppercase" value="test">Assignment/Test</Option>
-										<Option className="text-uppercase" value="video">Video</Option>
-									</Select>
-								)}
-							</Form.Item>
-						</Col>
-						{resourceType !== 'video' &&
-							<>
-								<Col {...colLayout}>
-									<Form.Item
-										label="Title"
-										hasFeedback={true}>
-										{getFieldDecorator('title', {
-											rules: [
-												{ required: 'true', message: 'Must provide title!!' },
-												{ validator: this.validateTitle }
-											]
-										})(
-											<Input />
-										)}
-									</Form.Item>
-								</Col>
-								<Col {...colLayout}>
-									<Form.Item
-										label="Description"
-										hasFeedback={true}>
-										{getFieldDecorator('description')(
-											<TextArea autosize={{ minRows: 4 }} />
-										)}
-									</Form.Item>
-								</Col>
-								{Boolean(window.cordova) === false && (
-									<Col {...colLayout}>
-										<Form.Item label="File">
-											<div className="dropbox">
-												{getFieldDecorator('file', {
-													rules: [{ required: 'true', message: 'Must Choose File' }]
-												})(
-													<Upload.Dragger
-														fileList={selectedFile ? [selectedFile] : []}
-														customRequest={dummyRequest}
-														onChange={this.onFileInpChange}>
-														<p className="ant-upload-drag-icon">
-															<Icon type="inbox" />
-														</p>
-														<p className="ant-upload-text">Click or drag file to this area to upload</p>
-													</Upload.Dragger>
-												)}
-											</div>
-										</Form.Item>
-									</Col>
-								)}
-							</>
-						}
-
-						{resourceType === 'video' &&
+				<Navbar renderBackBtn={true} navText="Add Study Material" />
+				<div className="container below-nav">
+					<Form onSubmit={this.handleSubmit} className="pt-3">
+						<Row gutter={16}>
+							<StudentSelector
+								fieldName="students"
+								colLayout={colLayout}
+								filterOptions={this.filterOptions}
+								students={students}
+								handleBatchChange={this.handleBatchChange}
+								batches={batches}
+								handleSelectAll={this.handleSelectAll}
+								getFieldDecorator={getFieldDecorator} />
 							<Col {...colLayout}>
-								<Form.Item label="YouTube Url/Link"
+								<Form.Item
+									label="Type Of Resource"
 									hasFeedback={true}>
-									{getFieldDecorator('ytUrl', {
-										rules: [
-											{ required: 'true', message: 'Must Provide Link!!' },
-											{ validator: this.validateYoutubeLink }
-										]
+									{getFieldDecorator('type', {
+										defaultValue: 'reference material',
+										rules: [{ required: 'true', message: 'Must Choose Type' }]
 									})(
-										<Input
-											placeholder="URL/Link"
-											pattern={'^((?:https?:)?\\/\\/)?((?:www|m)\\.)?((?:youtube\\.com|youtu.be))(\\/(?:[\\w\\-]+\\?v=|embed\\/|v\\/)?)([\\w\\-]+)(\\S+)?$'}
-											title="Please provide valid youtube url" />
+										<Select onChange={this.handleTypeOfMaterialChange}>
+											<Option className="text-uppercase" value="reference material">Reference Material</Option>
+											<Option className="text-uppercase" value="homework">Homework</Option>
+											<Option className="text-uppercase" value="test">Assignment/Test</Option>
+											<Option className="text-uppercase" value="video">Video</Option>
+										</Select>
 									)}
 								</Form.Item>
 							</Col>
-						}
-						<Col span={24}>
-							<Row type="flex" justify="end">
-								<Form.Item>
-									<Button type="primary" htmlType="submit">
-										{submitBtnText}
-									</Button>
-								</Form.Item>
-							</Row>
-						</Col>
-					</Row>
-				</Form>
-			</div>
+							{resourceType !== 'video' &&
+								<>
+									<Col {...colLayout}>
+										<Form.Item
+											label="Title"
+											hasFeedback={true}>
+											{getFieldDecorator('title', {
+												rules: [
+													{ required: 'true', message: 'Must provide title!!' },
+													{ validator: this.validateTitle }
+												]
+											})(
+												<Input />
+											)}
+										</Form.Item>
+									</Col>
+									<Col {...colLayout}>
+										<Form.Item
+											label="Description"
+											hasFeedback={true}>
+											{getFieldDecorator('description')(
+												<TextArea autosize={{ minRows: 4 }} />
+											)}
+										</Form.Item>
+									</Col>
+									{Boolean(window.cordova) === false && (
+										<Col {...colLayout}>
+											<Form.Item label="File">
+												<div className="dropbox">
+													{getFieldDecorator('file', {
+														rules: [{ required: 'true', message: 'Must Choose File' }]
+													})(
+														<Upload.Dragger
+															fileList={selectedFile ? [selectedFile] : []}
+															customRequest={dummyRequest}
+															onChange={this.onFileInpChange}>
+															<p className="ant-upload-drag-icon">
+																<Icon type="inbox" />
+															</p>
+															<p className="ant-upload-text">Click or drag file to this area to upload</p>
+														</Upload.Dragger>
+													)}
+												</div>
+											</Form.Item>
+										</Col>
+									)}
+								</>
+							}
+
+							{resourceType === 'video' &&
+								<Col {...colLayout}>
+									<Form.Item label="YouTube Url/Link"
+										hasFeedback={true}>
+										{getFieldDecorator('ytUrl', {
+											rules: [
+												{ required: 'true', message: 'Must Provide Link!!' },
+												{ validator: this.validateYoutubeLink }
+											]
+										})(
+											<Input
+												placeholder="URL/Link"
+												pattern={'^((?:https?:)?\\/\\/)?((?:www|m)\\.)?((?:youtube\\.com|youtu.be))(\\/(?:[\\w\\-]+\\?v=|embed\\/|v\\/)?)([\\w\\-]+)(\\S+)?$'}
+												title="Please provide valid youtube url" />
+										)}
+									</Form.Item>
+								</Col>
+							}
+							<Col span={24}>
+								<Row type="flex" justify="end">
+									<Form.Item>
+										<Button type="primary" htmlType="submit">
+											{submitBtnText}
+										</Button>
+									</Form.Item>
+								</Row>
+							</Col>
+						</Row>
+					</Form>
+				</div>
 			</>
 		);
 	}

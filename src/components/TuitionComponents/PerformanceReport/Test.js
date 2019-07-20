@@ -6,6 +6,7 @@ import { Link } from 'react-router-relative-link';
 import TestCard from './Test/TestCard';
 
 import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
+import scrollToTop from '../../../scripts/scrollToTop';
 import { inverseMinutesFromMidnight } from '../../../scripts/minutesToMidnight';
 
 import {
@@ -48,6 +49,10 @@ class Test extends Component {
 		fromDate: moment(),
 		searchQuery: undefined,
 		toDate: undefined
+	}
+
+	componentDidMount() {
+		scrollToTop();
 	}
 
 	getFilteredTests = () => {

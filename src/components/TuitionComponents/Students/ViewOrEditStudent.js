@@ -17,6 +17,8 @@ import PaymentCard from './ViewOrEditStudent/PaymentCard';
 // Scripts
 import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
 import sanatizeFormObj from '../../../scripts/sanatize-form-obj';
+import getRandomColor from '../../../scripts/randomColor';
+import scrollToTop from '../../../scripts/scrollToTop';
 
 // Actions
 import { addStudentInBatch, deleteStudentInBatch } from '../../../redux/actions/batchActions';
@@ -46,6 +48,10 @@ class ViewOrEditStudent extends Component {
 	state = {
 		studentInfo: {},
 		editable: false
+	}
+
+	componentDidMount() {
+		scrollToTop();
 	}
 
 	handleEditBtnClick = e => this.setState({ editable: true });
@@ -83,7 +89,7 @@ class ViewOrEditStudent extends Component {
 
 	render() {
 		const { getFieldDecorator } = this.props.form;
-		const { name, rollNumber, email, contactNumber, address, payments } = this.state.studentInfo;
+		const { _id, name, rollNumber, email, contactNumber, address, payments, parentName, parentPhone } = this.state.studentInfo;
 		const { editable } = this.state;
 
 		return (
@@ -93,9 +99,9 @@ class ViewOrEditStudent extends Component {
 					<Row gutter={16}>
 						<Col className="pt-3">
 							<Meta
-								avatar={<Avatar src={fallBackDp} />}
+								avatar={<Avatar style={{ backgroundColor: getRandomColor(_id) }}>{name ? name.slice(0, 1).toUpperCase() : undefined}</Avatar>}
 								title={<span className="text-capitalize" style={{ fontWeight: 'bold' }}>{name}</span>}
-								description={<small>EA ID: DWAD2324DAD</small>}
+							// description={<small>EA ID: DWAD2324DAD</small>}
 							/>
 							<Divider orientation="left"><small>Personal Details<Icon type="arrow-down" /></small></Divider>
 						</Col>
@@ -164,6 +170,28 @@ class ViewOrEditStudent extends Component {
 											initialValue: address
 										})(
 											<Input disabled={!editable} />
+										)}
+									</Form.Item>
+								</Col>
+								<Col {...colLayout}>
+									<Form.Item
+										label="Parent Name"
+										hasFeedback={editable}>
+										{getFieldDecorator('parentName', {
+											initialValue: parentName
+										})(
+											<Input disabled={!editable} />
+										)}
+									</Form.Item>
+								</Col>
+								<Col {...colLayout}>
+									<Form.Item
+										label="Parent Phone"
+										hasFeedback={editable}>
+										{getFieldDecorator('parentPhone', {
+											initialValue: parentPhone
+										})(
+											<InputNumber className="w-100" disabled={!editable} />
 										)}
 									</Form.Item>
 								</Col>

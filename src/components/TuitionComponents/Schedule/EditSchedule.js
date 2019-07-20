@@ -8,6 +8,7 @@ import { editSchedule } from '../../../redux/actions/scheduleActions';
 import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
 import sanatizeFormObj from '../../../scripts/sanatize-form-obj';
 import { inverseMinutesFromMidnight, minutesFromMidnight } from '../../../scripts/minutesToMidnight';
+import scrollToTop from '../../../scripts/scrollToTop';
 
 import Navbar from '../../Navbar';
 
@@ -37,6 +38,10 @@ const colLayout = {
 
 class EditSchedule extends Component {
 	state = { scheduleInfo: {} };
+
+	componentDidMount() {
+		scrollToTop();
+	}
 
 	calibrateTimeInps = values => {
 		if (values.fromTime) values.fromTime = minutesFromMidnight(values.fromTime.toDate());

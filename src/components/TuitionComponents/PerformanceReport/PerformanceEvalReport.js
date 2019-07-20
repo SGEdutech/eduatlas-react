@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import ScoreTable from '../../StudentComponents/PerformanceReport/Score';
 import Graph from '../../StudentComponents/PerformanceReport/PerformanceEvalReport';
+import scrollToTop from '../../../scripts/scrollToTop';
 
 import {
 	Col,
@@ -16,6 +17,10 @@ class PerformanceEvalReport extends Component {
 		selectedStudentId: null,
 		view: 'table'
 	};
+
+	componentDidMount() {
+		scrollToTop();
+	}
 
 	handleStudentChange = updatedStudent => this.setState({ selectedStudentId: updatedStudent });
 	handleViewChange = updatedViewVal => this.setState({ view: updatedViewVal });

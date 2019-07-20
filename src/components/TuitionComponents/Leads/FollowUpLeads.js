@@ -2,6 +2,7 @@ import moment from 'moment';
 import React, { Component } from 'react';
 
 import NewLeadCard from './NewLeadCard';
+import scrollToTop from '../../../scripts/scrollToTop';
 
 import {
 	Col,
@@ -20,6 +21,9 @@ class FollowUpLeads extends Component {
 		fromDate: null,
 		searchQuery: null,
 		toDate: null
+	}
+	componentDidMount() {
+		scrollToTop();
 	}
 	getFilteredLeads = () => {
 		let { followUpLeads } = this.props;

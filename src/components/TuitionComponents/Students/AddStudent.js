@@ -8,6 +8,7 @@ import Navbar from '../../Navbar';
 
 import { addStudent, addPayment, addInstallment } from '../../../redux/actions/studentActions';
 import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
+import scrollToTop from '../../../scripts/scrollToTop';
 import sanatizeFormObj from '../../../scripts/sanatize-form-obj';
 
 import {
@@ -47,6 +48,10 @@ const initialState = {
 
 class AddStudent extends Component {
 	state = initialState;
+
+	componentDidMount() {
+		scrollToTop();
+	}
 
 	validateRollNumber = (rule, rollNumber = '', callback) => {
 		const { students } = this.props;
@@ -326,6 +331,26 @@ class AddStudent extends Component {
 						label="Contact Number"
 						hasFeedback={true}>
 						{getFieldDecorator('contactNumber', {
+						})(
+							<InputNumber className="w-100" />
+						)}
+					</Form.Item>
+				</Col>
+				<Col {...colLayout}>
+					<Form.Item
+						label="Parent Name"
+						hasFeedback={true}>
+						{getFieldDecorator('parantName', {
+						})(
+							<Input className="w-100" />
+						)}
+					</Form.Item>
+				</Col>
+				<Col {...colLayout}>
+					<Form.Item
+						label="Parent Number"
+						hasFeedback={true}>
+						{getFieldDecorator('parentPhone', {
 						})(
 							<InputNumber className="w-100" />
 						)}

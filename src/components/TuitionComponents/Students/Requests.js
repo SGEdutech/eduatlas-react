@@ -8,6 +8,7 @@ import Navbar from '../../Navbar';
 import getRandomColor from '../../../scripts/randomColor';
 import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
 import sanatizeFormObj from '../../../scripts/sanatize-form-obj';
+import scrollToTop from '../../../scripts/scrollToTop';
 
 import {
 	Avatar,
@@ -19,6 +20,7 @@ import {
 	Input,
 	List,
 	Menu,
+	message,
 	Modal,
 	Row,
 	Select,
@@ -29,6 +31,8 @@ const { confirm } = Modal;
 const { Option } = Select;
 const pageSize = 12;
 
+const ifMobile = window.screen.width ? window.screen.width <= 320 : true;
+
 class Requests extends Component {
 	state = {
 		search: '',
@@ -37,6 +41,10 @@ class Requests extends Component {
 		requestInfo: null,
 		showAddStudentModal: false
 	};
+
+	componentDidMount() {
+		scrollToTop();
+	}
 
 	handleMenuClick = requestInfo => this.setState({ requestInfo });
 
@@ -78,6 +86,19 @@ class Requests extends Component {
 		});
 	}
 
+	initAddToLeads = async request => {
+		const { addLead, deleteRequest, match: { url } } = this.props;
+		const tuitionId = getTuitionIdFromUrl(url);
+		const { _id, name, email, phone } = request;
+		try {
+			if (Boolean(phone) === false) message.warning('No phone number found');
+			const data = await addLead({ name, phone, email });
+			const deleteData = await deleteRequest(tuitionId, _id);
+		} catch (err) {
+			console.log(err);
+		}
+	}
+
 	showDeleteConfirm = () => {
 		confirm({
 			title: 'Are you sure delete this request?',
@@ -86,6 +107,17 @@ class Requests extends Component {
 			okType: 'danger',
 			cancelText: 'No',
 			onOk: this.handleRequestDelete
+		});
+	}
+
+	showAddToLeadConfirm = () => {
+		confirm({
+			title: 'Are you sure move this request?',
+			content: 'This action is permanent',
+			okText: 'Yes',
+			okType: 'danger',
+			cancelText: 'No',
+			onOk: this.initAddToLeads
 		});
 	}
 
@@ -121,16 +153,16 @@ class Requests extends Component {
 				dataSource={requestsToRenderOnThisPage}
 				renderItem={request => (
 					<List.Item actions={[
-						<Dropdown overlay={
+						<Dropdown trigger={['hover', 'click']} overlay={
 							<Menu onClick={() => this.handleMenuClick(request)}>
 								<Menu.Item className="pb-2" key="1" onClick={() => this.handleRequestClick(request)}>
 									<Icon type="solution" />
 									Add to Batch
 			  					</Menu.Item>
-								{/* <Menu.Item className="pb-2" key="2">
+								<Menu.Item className="pb-2" key="2" onClick={() => this.showAddToLeadConfirm(request)}>
 									<Icon type="monitor" />
 									Add to Leads
-			  					</Menu.Item> */}
+			  					</Menu.Item>
 								<Menu.Item className="pb-2" key="3" onClick={this.showDeleteConfirm}>
 									<Icon type="delete" />
 									Delete
@@ -142,8 +174,10 @@ class Requests extends Component {
 					]}>
 						<List.Item.Meta
 							avatar={<Avatar style={{ backgroundColor: getRandomColor(request._id) }}>{request.name.slice(0, 1).toUpperCase()}</Avatar>}
-							title={request.name}
-							description={request.email}
+							title={ifMobile && request.name.length > 18 ? request.name.slice(0, 15) + '...' : request.name}
+							description={ifMobile && request.email.length > 18 ? request.email.slice(0, 15) + '...' : request.email}
+						// title={request.name}
+						// description={request.email}
 						/>
 					</List.Item>
 				)}
@@ -157,9 +191,7 @@ class Requests extends Component {
 					<Row className="mb-3">
 						<Input allowClear addonAfter={<Icon type="search" />} onChange={this.handleSearchInpChange} placeholder="Search Students" />
 					</Row>
-					<Row gutter={16}>
-						{requestsToRender.length === 0 ? emptyJsx : requestListJsx}
-					</Row>
+					{requestsToRender.length === 0 ? emptyJsx : requestListJsx}
 					<Pagination current={currentPage} hideOnSinglePage={true} onChange={this.handlePaginationChange} pageSize={pageSize} total={requestsToRender.length} />
 				</div>
 				{/* Request Modal */}

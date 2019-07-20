@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import PendingCard from './Pending/PendingCard';
+import scrollToTop from '../../../scripts/scrollToTop';
 
 import {
 	Card,
@@ -29,6 +30,10 @@ class Pending extends Component {
 		currentPage: 1,
 		itemsPerPage: pageSize
 	};
+
+	componentDidMount() {
+		scrollToTop();
+	}
 
 	handlePaginationChange = (currentPage, itemsPerPage) => this.setState({ currentPage, itemsPerPage });
 

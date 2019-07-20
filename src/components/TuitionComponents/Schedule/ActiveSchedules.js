@@ -12,8 +12,12 @@ import { addSchedule, deleteSchedule } from '../../../redux/actions/scheduleActi
 import { getFloatingBtnCss } from '../../../scripts/sharedCss';
 import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
 import { inverseMinutesFromMidnight } from '../../../scripts/minutesToMidnight';
+import getRandomColor from '../../../scripts/randomColor';
+import scrollToTop from '../../../scripts/scrollToTop';
+
 
 import {
+	Avatar,
 	Button,
 	Card,
 	Col,
@@ -52,6 +56,10 @@ class ActiveSchedules extends Component {
 		modalWeekNumber: null,
 		searchQuery: undefined,
 		toDate: undefined
+	}
+
+	componentDidMount() {
+		scrollToTop();
 	}
 
 	getBatchWiseSchedule = schedules => {
@@ -110,7 +118,13 @@ class ActiveSchedules extends Component {
 
 	getPanelsJsx = (batches, batchWiseSchedulesArr, emptyJsx, isAttendance) => {
 		const panelsJsx = batches.map((batch, i) => {
-			return (<Panel header={batch.code} key={batch._id}>
+			return (<Panel header={
+				<Row>
+					<Avatar className="mr-2" size="small" style={{ backgroundColor: getRandomColor(batch._id) }}>{batch.code.slice(0, 1).toUpperCase()}</Avatar>
+					{batch.code}
+				</Row>
+			}
+				key={batch._id}>
 
 				{/* Show Empty if there are no schedules for a batch */}
 				{Boolean(Object.keys(batchWiseSchedulesArr[i]).length === 0) && emptyJsx}

@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 
 import { schemeAndAuthority } from '../../../config.json';
 import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
+import scrollToTop from '../../../scripts/scrollToTop.js';
 
 import {
 	Button,
@@ -35,6 +36,10 @@ class ExcelLeadUpload extends Component {
 		selectedFile: null,
 		selectedFileList: []
 	};
+
+	componentDidMount() {
+		scrollToTop();
+	}
 
 	addLeads = async values => {
 		// TODO: backend path for adding multiple leads does not exist

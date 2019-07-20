@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 
 import {
 	Avatar,
+	Button,
 	Col,
 	Drawer,
 	Icon,
@@ -32,14 +33,14 @@ const cursorStyle = {
 
 const DrawerHeader = (
 	<Row>
-		<Col className="mb-1" span={24}><Avatar size={64} style={{ backgroundColor: getRandomColor(tuitionName) }}>{tuitionName.slice(0, 1).toUpperCase()}</Avatar></Col>
+		<Col className="mb-1" span={24}><Avatar size={64} style={{ backgroundColor: '#00bcd4' }}>{tuitionName.slice(0, 1).toUpperCase()}</Avatar></Col>
 		<Col span={24}>{tuitionName}</Col>
 		<Col span={24}><small>Role: Admin</small></Col>
 	</Row>
 );
 
 const NavListItem = props => (
-	<Row type="flex" align="middle" className="py-2" style={cursorStyle} onClick={props.onClick}>
+	<Row type="flex" align="middle" className="pb-2" style={cursorStyle} onClick={props.onClick}>
 		<Icon type={props.iconType} className="mr-3" />
 		<span>{props.content}</span>
 	</Row>
@@ -105,10 +106,14 @@ class Navbar extends Component {
 							<Link to={'./tuition/communicator'}><span style={{ color: '#000' }}><NavListItem iconType="notification" content="Communicator" /></span></Link>
 							<Link to={'./tuition/performance-report'}><span style={{ color: '#000' }}><NavListItem iconType="line-chart" content="Test And Reports" /></span></Link>
 							<Link to={'./tuition/app-downloads'}><span style={{ color: '#000' }}><NavListItem iconType="cloud-download" content="App Downloads" /></span></Link>
-							<Link to={'./tuition/leads'}><span style={{ color: '#000' }}><NavListItem iconType="monitor" content="Leads" /></span></Link>
-							<Link to={`./edit-profile/${user._id}`}><span style={{ color: '#000' }}><NavListItem iconType="edit" content="Edit Profile" /></span></Link>
+							<Link to={`./edit-profile/${user._id}`}><span style={{ color: '#000' }}><NavListItem iconType="edit" content="Edit User Profile" /></span></Link>
+							<Link to={`./tuition/edit-institute`}><span style={{ color: '#000' }}><NavListItem iconType="edit" content="Edit Institute Profile" /></span></Link>
 							<Link to={'./receipt-config'}><span style={{ color: '#000' }}><NavListItem iconType="form" content="Receipt Config" /></span></Link>
 							<NavListItem iconType="logout" content="Logout" onClick={this.handleLogout} />
+							<Link to={'./tuition/leads'}><Button className="mt-2" type="primary" icon="monitor" block>Leads</Button></Link>
+							{/* <Button className="mt-2" type="primary" icon="share-alt" block>
+								Share on Whatsapp
+    						</Button> */}
 						</List>
 						<small style={{ position: 'absolute', bottom: 24 }}>Made with <Icon style={{ color: 'red' }} theme="filled" type="heart" /> at eduatlas</small>
 					</>

@@ -19,9 +19,14 @@ function ScheduleCard(props) {
 	}
 
 	return (
-		<Card className="mb-3"
+		<Card
+			actions={iconsArray}
+			headStyle={{ backgroundColor: 'lightblue' }}
+			className="mb-3"
+			size="small"
+			style={{ border: '1px solid lightblue' }}
 			title={<div className="text-capitalize"><span className="font-weight-bold">Topic: </span> {topic}</div>}
-			actions={iconsArray}>
+		>
 			<Row>
 				{showBatchCode ?
 					<Col><div><span className="font-weight-bold">Batch: </span> {batchCode}</div></Col> :
