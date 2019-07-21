@@ -27,9 +27,11 @@ class PrimaryTuitionTabs extends Component {
 		const { messageInfo: { fetched }, roles, match: { url }, user: { claims = [], primaryEmail } } = this.props;
 		if (!fetched) return;
 		const tuitionId = getTuitionIdFromUrl(url);
-		return claims.some(claim => claim.listingId === tuitionId) ?
-			'super admin' :
-			roles.find(role => role.email === primaryEmail).type;
+		let roleType = null;
+		const roleFromConfig = roles.find(role => role.email === primaryEmail);
+		if (claims.some(claim => claim.listingId === tuitionId)) return 'super admin';
+		if (roleFromConfig) roleType = roleFromConfig;
+		return roleType;
 	}
 
 	handleChange = (e, value) => this.props.changeTabs(value, 0);
