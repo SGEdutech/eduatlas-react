@@ -18,7 +18,7 @@ import { logOut } from '../redux/actions/userActions';
 import fetchAll from '../redux/actions/fetchAllAction';
 
 import getTuitionIdFromUrl from '../scripts/getTuitionIdFromUrl';
-import getRandomColor from '../scripts/randomColor';
+import rolesConfig from '../roles-config.json'
 
 import { tuitionName, primaryColor } from '../config.json';
 
@@ -31,27 +31,21 @@ const cursorStyle = {
 	cursor: 'pointer'
 };
 
-const DrawerHeader = (
-	<Row>
-		<Col className="mb-1" span={24}><Avatar size={64} style={{ backgroundColor: '#00bcd4' }}>{tuitionName.slice(0, 1).toUpperCase()}</Avatar></Col>
-		<Col span={24}>{tuitionName}</Col>
-		<Col span={24}><small>Role: Admin</small></Col>
-	</Row>
-);
-
-const NavListItem = props => (
-	<Row type="flex" align="middle" className="pb-2" style={cursorStyle} onClick={props.onClick}>
-		<Icon type={props.iconType} className="mr-3" />
-		<span>{props.content}</span>
-	</Row>
-);
-
 class Navbar extends Component {
 	state = { visible: false };
 
 	showDrawer = () => this.setState({ visible: true });
 
 	onClose = () => this.setState({ visible: false });
+
+	getRoleType = () => {
+		const { fetched, roles, match: { url }, user: { claims = [], primaryEmail } } = this.props;
+		if (!fetched) return;
+		const tuitionId = getTuitionIdFromUrl(url);
+		return claims.some(claim => claim.listingId === tuitionId) ?
+			'super admin' :
+			roles.find(role => role.email === primaryEmail).type;
+	}
 
 	handleLogout = () => {
 		const { history: { replace }, match: { url }, logOut, user: { primaryEmail } } = this.props;
@@ -66,9 +60,31 @@ class Navbar extends Component {
 		fetchAll(tuitionId);
 	}
 
+	//FIXME: This should be on shared scripts
+	isAccessGranted = moduleName => {
+		const { fetched } = this.props;
+		if (!fetched) return false;
+		const roleType = this.getRoleType();
+		if (roleType === 'super admin') return true;
+		return rolesConfig[roleType].some(accessModules => accessModules === moduleName);
+	}
+
 	render() {
-		const { match: { url }, navText, renderBackBtn = false, user } = this.props;
-		// const tuitionId = getTuitionIdFromUrl(url);
+		const { navText, renderBackBtn = false, user: { userId } } = this.props;
+		const DrawerHeader = (
+			<Row>
+				<Col className="mb-1" span={24}><Avatar size={64} style={{ backgroundColor: '#00bcd4' }}>{tuitionName.slice(0, 1).toUpperCase()}</Avatar></Col>
+				<Col span={24}>{tuitionName}</Col>
+				<Col span={24}><small className="text-capitalize">Role: {this.getRoleType()}</small></Col>
+			</Row>
+		);
+
+		const NavListItem = props => (
+			<Row type="flex" align="middle" className="pb-2" style={cursorStyle} onClick={props.onClick}>
+				<Icon type={props.iconType} className="mr-3" />
+				<span>{props.content}</span>
+			</Row>
+		);
 		return (
 			<>
 				<nav className="navbar fixed-top mb-0 primary-color" style={headerStyle} ref={el => {
@@ -101,16 +117,17 @@ class Navbar extends Component {
 					visible={this.state.visible}>
 					<>
 						<List split={true} style={{ fontSize: 18 }}>
-							<Link to={'./tuition/configure'}><span style={{ color: '#000' }}><NavListItem iconType="setting" content="Configure" /></span></Link>
-							<Link to={'./tuition/students'}><span style={{ color: '#000' }}><NavListItem iconType="team" content="Student Register" /></span></Link>
-							<Link to={'./tuition/communicator'}><span style={{ color: '#000' }}><NavListItem iconType="notification" content="Communicator" /></span></Link>
-							<Link to={'./tuition/performance-report'}><span style={{ color: '#000' }}><NavListItem iconType="line-chart" content="Test And Reports" /></span></Link>
-							<Link to={'./tuition/app-downloads'}><span style={{ color: '#000' }}><NavListItem iconType="cloud-download" content="App Downloads" /></span></Link>
-							<Link to={`./edit-profile/${user._id}`}><span style={{ color: '#000' }}><NavListItem iconType="edit" content="Edit User Profile" /></span></Link>
-							<Link to={`./tuition/edit-institute`}><span style={{ color: '#000' }}><NavListItem iconType="edit" content="Edit Institute Profile" /></span></Link>
-							<Link to={'./receipt-config'}><span style={{ color: '#000' }}><NavListItem iconType="form" content="Receipt Config" /></span></Link>
+							{this.isAccessGranted('configure') && <Link to={'./tuition/configure'}><span style={{ color: '#000' }}><NavListItem iconType="setting" content="Configure" /></span></Link>}
+							{this.isAccessGranted('students') && <Link to={'./tuition/students'}><span style={{ color: '#000' }}><NavListItem iconType="team" content="Student Register" /></span></Link>}
+							{this.isAccessGranted('communicator') && <Link to={'./tuition/communicator'}><span style={{ color: '#000' }}><NavListItem iconType="notification" content="Communicator" /></span></Link>}
+							{this.isAccessGranted('test') && <Link to={'./tuition/performance-report'}><span style={{ color: '#000' }}><NavListItem iconType="line-chart" content="Test And Reports" /></span></Link>}
+							{this.isAccessGranted('requests') && <Link to={'./tuition/app-downloads'}><span style={{ color: '#000' }}><NavListItem iconType="cloud-download" content="App Downloads" /></span></Link>}
+							{this.isAccessGranted('edit user profile') && <Link to={`./edit-profile/${userId}`}><span style={{ color: '#000' }}><NavListItem iconType="edit" content="Edit User Profile" /></span></Link>}
+							{this.isAccessGranted('edit institute profile') && <Link to={'./tuition/edit-institute'}><span style={{ color: '#000' }}><NavListItem iconType="edit" content="Edit Institute Profile" /></span></Link>}
+							{this.isAccessGranted('reciept config') && <Link to={'./receipt-config'}><span style={{ color: '#000' }}><NavListItem iconType="form" content="Receipt Config" /></span></Link>}
+							{this.isAccessGranted('role management') && <Link to={'./tuition/roles-management'}><span style={{ color: '#000' }}><NavListItem iconType="usergroup-add" content="Roles Management" /></span></Link>}
 							<NavListItem iconType="logout" content="Logout" onClick={this.handleLogout} />
-							<Link to={'./tuition/leads'}><Button className="mt-2" type="primary" icon="monitor" block>Leads</Button></Link>
+							{this.isAccessGranted('leads') && <Link to={'./tuition/leads'}><Button className="mt-2" type="primary" icon="monitor" block>Leads</Button></Link>}
 							{/* <Button className="mt-2" type="primary" icon="share-alt" block>
 								Share on Whatsapp
     						</Button> */}
@@ -124,7 +141,11 @@ class Navbar extends Component {
 }
 
 function mapStateToProps(state) {
-	return { user: state.user.userInfo };
+	return {
+		user: state.user.userInfo,
+		roles: state.role.roles,
+		fetched: state.messageInfo.fetched
+	};
 }
 
 export default compose(connect(mapStateToProps, { fetchAll, logOut }), withRouter)(Navbar);

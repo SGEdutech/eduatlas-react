@@ -28,6 +28,7 @@ import Leads from './components/TuitionComponents/Leads';
 import NewAnnouncement from './components/TuitionComponents/Communicator/NewAnnouncement';
 import PerformanceReport from './components/TuitionComponents/PerformanceReport';
 import Requests from './components/TuitionComponents/Students/Requests';
+import RolesManagement from './components/TuitionComponents/RolesManagement';
 import Students from './components/TuitionComponents/Students';
 import TuitionManager from './components/TuitionComponents/TuitionManager';
 import ViewAnnouncement from './components/TuitionComponents/Communicator/Announcements/ViewAnnouncement';
@@ -100,9 +101,10 @@ class App extends Component {
 			>
 				<Router>
 					<Switch>
-						<Route exact path={url + '/'} render={() => <Loading messageInfo={this.props.messageInfo} user={this.props.user} students={this.props.students} />}></Route>
+						<Route exact path={url + '/'} render={() => <Loading messageInfo={this.props.messageInfo} roles={this.props.roles} user={this.props.user} students={this.props.students} />}></Route>
 						<Route exact path={url + '/send-request'} render={() => <SendRequest addRequest={this.props.addRequest} requests={this.props.requests} userInfo={this.props.user} />}></Route>
 						<Route exact path={url + '/tuition'} component={TuitionManager}></Route>
+						<Route exact path={url + '/tuition/roles-management'} component={RolesManagement}></Route>
 						<Route exact path={url + '/tuition/configure/add-course'} component={AddOrEditCourse}></Route>
 						<Route exact path={url + '/tuition/configure/add-batch'} component={AddOrEditBatch}></Route>
 						<Route exact path={url + '/tuition/configure/add-discount'} component={AddOrEditDiscount}></Route>
@@ -122,8 +124,6 @@ class App extends Component {
 						<Route exact path={url + '/tuition/performance-report/add-test'} component={AddOrEditTest}></Route>
 						<Route exact path={url + '/tuition/performance-report/edit-test/:testId'} render={() => <AddOrEditTest edit={true} />}></Route>
 						<Route exact path={url + '/tuition/communicator/view-announcement/:announcementId'} render={() => <ViewAnnouncement notifications={this.props.notifications} students={this.props.students} />}></Route>
-
-
 						<Route exact path={url + '/tuition/communicator/add-announcement'} render={() => <NewAnnouncement messageInfo={this.props.messageInfo} batches={this.props.batches} students={this.props.students} addNotification={this.props.addNotification} />}></Route>
 						<Route exact path={url + '/tuition/add-schedule'} component={AddSchedule}></Route>
 						<Route exact path={url + '/tuition/add-resource'} render={() => <AddStudyMaterial addResource={this.props.addResource} batches={this.props.batches} fakeAddResourceFulfilled={this.props.fakeAddResourceFulfilled} fakeAddResourcePending={this.props.fakeAddResourcePending} fakeAddResourceRejected={this.props.fakeAddResourceRejected} resources={this.props.resources} showDelete={true} students={this.props.students} />}></Route>
@@ -149,6 +149,7 @@ function mapStateToProps(state) {
 		notifications: state.notification.notifications,
 		requests: state.request.requests,
 		resources: state.resource.resources,
+		roles: state.role.roles,
 		students: state.student.students,
 		user: state.user.userInfo
 	};

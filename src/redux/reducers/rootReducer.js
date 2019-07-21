@@ -9,6 +9,7 @@ import navigation from './navigation';
 import notification from './notification';
 import request from './request';
 import resource from './resource';
+import role from './role';
 import student from './student';
 import schedule from './schedule';
 import test from './test';
@@ -25,6 +26,7 @@ export default combineReducers({
 	notification,
 	request,
 	resource,
+	role,
 	student,
 	schedule,
 	test,

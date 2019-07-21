@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Swipeable } from 'react-swipeable';
+import { withRouter } from 'react-router-dom';
+import { compose } from 'redux';
 
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
@@ -12,12 +14,24 @@ import ViewOrDeleteMaterials from './StudyMaterial/ViewOrDeleteMaterials';
 import { changeTabs } from '../../redux/actions/navigationActions';
 import { deleteResource } from '../../redux/actions/resourceActions';
 
+import getTuitionIdFromUrl from '../../scripts/getTuitionIdFromUrl';
+import rolesConfig from '../../roles-config.json';
+
 import {
 	Icon,
 	Row
 } from 'antd';
 
 class PrimaryTuitionTabs extends Component {
+	getRoleType = () => {
+		const { messageInfo: { fetched }, roles, match: { url }, user: { claims = [], primaryEmail } } = this.props;
+		if (!fetched) return;
+		const tuitionId = getTuitionIdFromUrl(url);
+		return claims.some(claim => claim.listingId === tuitionId) ?
+			'super admin' :
+			roles.find(role => role.email === primaryEmail).type;
+	}
+
 	handleChange = (e, value) => this.props.changeTabs(value, 0);
 
 	leftSwipe = () => {
@@ -40,6 +54,15 @@ class PrimaryTuitionTabs extends Component {
 		changeTabs(newPrimaryTabsValue, 0);
 	}
 
+	//FIXME: This should be on shared scripts
+	isAccessGranted = moduleName => {
+		const { messageInfo: { fetched } } = this.props;
+		if (!fetched) return false;
+		const roleType = this.getRoleType();
+		if (roleType === 'super admin') return true;
+		return rolesConfig[roleType].some(accessModules => accessModules === moduleName);
+	}
+
 	render() {
 		const { navigation: { primaryTabsValue } } = this.props;
 		const { deleteResource, messageInfo, resources } = this.props;
@@ -54,31 +77,31 @@ class PrimaryTuitionTabs extends Component {
 						indicatorColor="primary"
 						textColor="primary"
 						variant="fullWidth">
-						<Tab label={
+						{this.isAccessGranted('schedules') && <Tab label={
 							<>
 								<Row><Icon type="schedule" /></Row>
 								<Row><small>Schedule</small></Row>
 							</>
-						} />
-						<Tab label={
+						} />}
+						{this.isAccessGranted('attendance') && <Tab label={
 							<>
 								<Row><Icon type="carry-out" /></Row>
 								<Row><small>Attendance</small></Row>
 							</>
-						} />
-						<Tab label={
+						} />}
+						{this.isAccessGranted('study material') && <Tab label={
 							<>
 								<Row><Icon type="file-text" /></Row>
 								<Row><small>Study Material</small></Row>
 							</>
-						} />
+						} />}
 					</Tabs>
 				</AppBar>
 				<Swipeable delta={20} onSwipedLeft={this.leftSwipe} onSwipedRight={this.rightSwipe} style={{ minHeight: '80vh' }}>
 					<div className="py-3">
-						{primaryTabsValue === 0 && <ActiveSchedules />}
-						{primaryTabsValue === 1 && <ActiveSchedules isAttendance={true} />}
-						{primaryTabsValue === 2 && <ViewOrDeleteMaterials deleteResource={deleteResource} messageInfo={messageInfo} resources={resources} />}
+						{this.isAccessGranted('schedules') && primaryTabsValue === 0 && <ActiveSchedules />}
+						{this.isAccessGranted('attendance') && primaryTabsValue === 1 && <ActiveSchedules isAttendance={true} />}
+						{this.isAccessGranted('study material') && primaryTabsValue === 2 && <ViewOrDeleteMaterials deleteResource={deleteResource} messageInfo={messageInfo} resources={resources} />}
 					</div>
 				</Swipeable>
 			</>
@@ -90,9 +113,10 @@ function mapStateToProps(state) {
 	return {
 		messageInfo: state.messageInfo,
 		navigation: state.navigation,
-		resources: state.resource.resources
+		resources: state.resource.resources,
+		roles: state.role.roles,
+		user: state.user.userInfo
 	};
 }
 
-export default connect(mapStateToProps, { changeTabs, deleteResource })(PrimaryTuitionTabs);
-
+export default compose(connect(mapStateToProps, { changeTabs, deleteResource }), withRouter)(PrimaryTuitionTabs);

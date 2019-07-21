@@ -1,5 +1,5 @@
 const initState = {
-	fetching: false,
+	fetching: true,
 	fetched: false,
 	fetchFailed: false,
 	kaamChaluHai: false,

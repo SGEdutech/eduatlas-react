@@ -9,7 +9,7 @@ import {
 } from 'antd';
 
 function Loading(props) {
-	const { match: { url }, messageInfo: { fetched, kaamChaluHai }, history: { replace }, students, user } = props;
+	const { match: { url }, messageInfo: { fetched, kaamChaluHai }, roles, history: { replace }, students, user } = props;
 	const tuitionId = getTuitionIdFromUrl(url);
 	function redirectToLogin() {
 		replace(url + '/login');
@@ -39,8 +39,9 @@ function Loading(props) {
 		return loadingJsx;
 	}
 	const claims = user.claims || [];
-	const thisTuition = claims.find(claim => claim.listingId === tuitionId);
-	if (thisTuition) {
+	const isAuthenticatedUser = claims.some(claim => claim.listingId === tuitionId);
+	const isAuthorizedUser = roles.some(role => role.email === user.primaryEmail);
+	if (isAuthenticatedUser || isAuthorizedUser) {
 		redirectToTuitionManager();
 		return loadingJsx;
 	}
