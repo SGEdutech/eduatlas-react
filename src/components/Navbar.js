@@ -45,7 +45,7 @@ class Navbar extends Component {
 		let roleType = null;
 		const roleFromConfig = roles.find(role => role.email === primaryEmail);
 		if (claims.some(claim => claim.listingId === tuitionId)) return 'super admin';
-		if (roleFromConfig) roleType = roleFromConfig;
+		if (roleFromConfig) roleType = roleFromConfig.type;
 		return roleType;
 	}
 
@@ -64,8 +64,8 @@ class Navbar extends Component {
 
 	//FIXME: This should be on shared scripts
 	isAccessGranted = moduleName => {
-		const { fetched } = this.props;
-		if (!fetched) return false;
+		const { fetched, user: { primaryEmail } } = this.props;
+		if (!fetched || !primaryEmail) return false;
 		const roleType = this.getRoleType();
 		if (roleType === 'super admin') return true;
 		return rolesConfig[roleType].some(accessModules => accessModules === moduleName);
