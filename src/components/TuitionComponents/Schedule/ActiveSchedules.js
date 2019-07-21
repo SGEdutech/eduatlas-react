@@ -166,7 +166,7 @@ class ActiveSchedules extends Component {
 			</Panel>);
 		});
 
-		return <Collapse>{panelsJsx}</Collapse>;
+		return <Collapse expandIconPosition="right">{panelsJsx}</Collapse>;
 	}
 
 	sortSchedules = schedules => schedules.sort((a, b) => {

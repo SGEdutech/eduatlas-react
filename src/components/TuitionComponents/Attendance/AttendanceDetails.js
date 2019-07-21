@@ -8,6 +8,7 @@ import Navbar from '../../Navbar';
 
 import { editSchedule } from '../../../redux/actions/scheduleActions';
 import getTuitionIdFromUrl from '../../../scripts/getTuitionIdFromUrl';
+import getRandomColor from '../../../scripts/randomColor';
 import fallBackDp from '../../../fallback-dp.svg';
 
 import scrollToTop from '../../../scripts/scrollToTop';
@@ -103,7 +104,7 @@ class AttendanceDetails extends Component {
 										]
 									}>
 									<List.Item.Meta
-										avatar={<Avatar src={fallBackDp} />}
+										avatar={<Avatar style={{ backgroundColor: getRandomColor(student._id) }}>{student.name.slice(0, 1).toUpperCase()}</Avatar>}
 										title={student.name}
 										description={'Roll Number: ' + student.rollNumber} />
 								</List.Item>
