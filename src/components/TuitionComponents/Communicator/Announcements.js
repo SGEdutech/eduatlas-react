@@ -32,10 +32,18 @@ class Announcements extends Component {
 	componentDidMount() {
 		scrollToTop();
 	}
+	getSortedAnnouncements = () => {
+		const { announcements } = this.props;
+		announcements.sort((a, b) => {
+			if (a.createdAt.valueOf() >= b.createdAt.valueOf()) return 1;
+			return -1;
+		});
+		return announcements;
+	}
 	render() {
 		const { announcements, messageInfo } = this.props;
-
-		const announcementsJsx = announcements.reverse().map(({ _id, message, receivers, senderId, createdAt }) => (
+		const sortedAnnouncements = this.getSortedAnnouncements();
+		const announcementsJsx = sortedAnnouncements.map(({ _id, message, receivers, senderId, createdAt }) => (
 			<Link to={'./view-announcement/' + _id} key={_id}>
 				<Row align="middle" className="border-bottom-fine" type="flex">
 					<Col span={22}>

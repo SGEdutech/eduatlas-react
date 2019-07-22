@@ -11,6 +11,7 @@ import {
 import Navbar from '../../../Navbar';
 
 import getRandomColor from '../../../../scripts/randomColor';
+import scrollToTop from '../../../../scripts/scrollToTop';
 
 const columns = [{
 	title: 'Name',
@@ -24,6 +25,9 @@ const columns = [{
 }];
 
 class ViewAnnouncement extends Component {
+	componentDidMount() {
+		scrollToTop();
+	}
 	render() {
 		const { match: { params: { announcementId }, url }, notifications, students } = this.props;
 		const notificationDetails = notifications.find(notification => notification._id === announcementId);

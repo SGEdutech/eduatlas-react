@@ -84,6 +84,8 @@ class Requests extends Component {
 			delete values.batchId;
 			addStudent(tuitionId, values);
 		});
+		// close modal
+		this.handleRequestModalCancel();
 	}
 
 	initAddToLeads = async () => {
