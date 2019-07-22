@@ -42,9 +42,11 @@ class Navbar extends Component {
 		const { fetched, roles, match: { url }, user: { claims = [], primaryEmail } } = this.props;
 		if (!fetched) return;
 		const tuitionId = getTuitionIdFromUrl(url);
-		return claims.some(claim => claim.listingId === tuitionId) ?
-			'super admin' :
-			roles.find(role => role.email === primaryEmail).type;
+		let roleType = null;
+		const roleFromConfig = roles.find(role => role.email === primaryEmail);
+		if (claims.some(claim => claim.listingId === tuitionId)) return 'super admin';
+		if (roleFromConfig) roleType = roleFromConfig.type;
+		return roleType;
 	}
 
 	handleLogout = () => {
@@ -62,8 +64,8 @@ class Navbar extends Component {
 
 	//FIXME: This should be on shared scripts
 	isAccessGranted = moduleName => {
-		const { fetched } = this.props;
-		if (!fetched) return false;
+		const { fetched, user: { primaryEmail } } = this.props;
+		if (!fetched || !primaryEmail) return false;
 		const roleType = this.getRoleType();
 		if (roleType === 'super admin') return true;
 		return rolesConfig[roleType].some(accessModules => accessModules === moduleName);
