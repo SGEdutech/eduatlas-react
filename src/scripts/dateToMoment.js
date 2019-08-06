@@ -4,7 +4,8 @@ import moment from 'moment';
 function isDate(date) {
 	if (typeof date === 'string') {
 		const splitStr = date.split('T')[0];
-		if ((splitStr.length === 10) === false) return false;
+		if (splitStr.length !== 10) return false;
+		if (date.slice(-1) !== 'Z') return false;
 		return splitStr.split('-').length === 3;
 	}
 	if (typeof date === 'object') return date instanceof Date;
