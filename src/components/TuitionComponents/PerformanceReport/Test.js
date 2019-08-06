@@ -64,8 +64,9 @@ class Test extends Component {
 			tests = tests.filter(test => searchRegex.test(test.name));
 		}
 		if (Boolean(fromDate) === false) fromDate = moment(0);
-		tests = tests.filter(schedule => {
-			return schedule.date.startOf('day').diff(fromDate.startOf('day'), 'days') >= 0;
+		tests = tests.filter(test => {
+			if (moment.isMoment(test.date) === false) test.date = moment(test.date)
+			return test.date.startOf('day').diff(fromDate.startOf('day'), 'days') >= 0;
 		});
 		if (toDate) tests = tests.filter(schedule => schedule.date.startOf('day').diff(toDate.startOf('day'), 'days') <= 0);
 		return tests;
