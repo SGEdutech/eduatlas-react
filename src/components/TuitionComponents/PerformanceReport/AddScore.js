@@ -102,6 +102,7 @@ class AddScore extends Component {
 	}
 
 	getCurrentTestStudents = () => {
+		// FIXME: handle deleted student, batch and tests
 		const { batches, tests } = this.props;
 		let { students } = this.props;
 		students = JSON.parse(JSON.stringify(students));
@@ -133,12 +134,14 @@ class AddScore extends Component {
 		});
 		// Injecting score ands merging rollNumber and batches
 		currentTestStudents.forEach(student => {
-			const studentReport = testInfo.reports.find(report => report.studentId === student._id);
-			if (studentReport) student.score = studentReport.marksObtained;
-			// TODO: Sort students by batch
-			student.rollNumberAndBatches = { rollNumber: student.rollNumber, batchCodes: student.batchCodes };
-			delete student.rollNumber;
-			delete student.batchCodes;
+			if (student._id) {
+				const studentReport = testInfo.reports.find(report => report.studentId === student._id);
+				if (studentReport) student.score = studentReport.marksObtained;
+				// TODO: Sort students by batch
+				student.rollNumberAndBatches = { rollNumber: student.rollNumber, batchCodes: student.batchCodes };
+				delete student.rollNumber;
+				delete student.batchCodes;
+			}
 		});
 		return currentTestStudents;
 	}
