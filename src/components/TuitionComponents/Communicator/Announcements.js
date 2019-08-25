@@ -35,8 +35,8 @@ class Announcements extends Component {
 	getSortedAnnouncements = () => {
 		const { announcements } = this.props;
 		announcements.sort((a, b) => {
-			if (a.createdAt.valueOf() >= b.createdAt.valueOf()) return 1;
-			return -1;
+			if (a.createdAt.valueOf() >= b.createdAt.valueOf()) return -1;
+			return 1;
 		});
 		return announcements;
 	}

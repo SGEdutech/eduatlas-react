@@ -36,6 +36,15 @@ class InstallmentCollapse extends Component {
 		editable: false
 	}
 
+	handleDownloadReceiptBtnClick = () => {
+		const { installment, match, students, courseCode, tuitionInfo } = this.props;
+		installment.courseCode = courseCode;
+		const { studentId } = match.params;
+		const studentInfo = students.find(student => studentId === student._id);
+		const docDefinition = getDocDef(tuitionInfo, studentInfo, installment);
+		pdfMake.createPdf(docDefinition).download();
+	}
+
 	handleMailReceiptBtnClick = () => {
 		const { installment, match, mailReceipt, students, courseCode, tuitionInfo } = this.props;
 		installment.courseCode = courseCode;
@@ -44,6 +53,7 @@ class InstallmentCollapse extends Component {
 		const docDefinition = getDocDef(tuitionInfo, studentInfo, installment);
 		mailReceipt(docDefinition, studentInfo.email);
 	}
+
 
 	showDeleteConfirm = (paymentId, installmentId) => {
 		const { deleteInstallment, match: { params: { studentId }, url } } = this.props;
@@ -236,9 +246,12 @@ class InstallmentCollapse extends Component {
 								</Row>
 								<Row type="flex" justify="end">
 									<Form.Item>
-										<Button type="primary" onClick={this.handleMailReceiptBtnClick}>
+										<Button className="mr-1" type="primary" onClick={this.handleMailReceiptBtnClick}>
 											Mail Receipt to student
 										</Button>
+										{!Boolean(window.cordova) && <Button type="primary" onClick={this.handleDownloadReceiptBtnClick}>
+											Download Receipt
+										</Button>}
 									</Form.Item>
 								</Row>
 							</>
