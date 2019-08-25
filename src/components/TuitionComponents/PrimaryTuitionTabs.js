@@ -103,7 +103,7 @@ class PrimaryTuitionTabs extends Component {
 					<div className="py-3">
 						{this.isAccessGranted('schedules') && primaryTabsValue === 0 && <ActiveSchedules />}
 						{this.isAccessGranted('attendance') && primaryTabsValue === 1 && <ActiveSchedules isAttendance={true} />}
-						{this.isAccessGranted('study material') && primaryTabsValue === 2 && <ViewOrDeleteMaterials deleteResource={deleteResource} messageInfo={messageInfo} resources={resources} />}
+						{this.isAccessGranted('study material') && primaryTabsValue === 2 && <ViewOrDeleteMaterials deleteResource={deleteResource} messageInfo={messageInfo} resources={resources} showDelete={true} />}
 					</div>
 				</Swipeable>
 			</>

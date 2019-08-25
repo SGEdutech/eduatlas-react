@@ -115,9 +115,9 @@ class ViewOrDeleteMaterials extends Component {
 				<Row gutter={16}>
 					{messageInfo.fetching ? skeletonCards : videoResourcesJsx}
 				</Row>
-				<Link to="./add-resource">
+				{this.props.showDelete && <Link to="./add-resource">
 					<Icon type="plus-circle" theme="filled" style={getFloatingBtnCss()} />
-				</Link>
+				</Link>}
 			</div>
 		);
 	}

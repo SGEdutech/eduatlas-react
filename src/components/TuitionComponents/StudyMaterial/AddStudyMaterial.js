@@ -214,7 +214,7 @@ class AddStudyMaterial extends Component {
 				<div className="container below-nav">
 					<Form onSubmit={this.handleSubmit} className="pt-3">
 						<Row gutter={16}>
-							<StudentSelector
+							{this.state.resourceType !== 'free' && <StudentSelector
 								fieldName="students"
 								colLayout={colLayout}
 								filterOptions={this.filterOptions}
@@ -222,7 +222,7 @@ class AddStudyMaterial extends Component {
 								handleBatchChange={this.handleBatchChange}
 								batches={batches}
 								handleSelectAll={this.handleSelectAll}
-								getFieldDecorator={getFieldDecorator} />
+								getFieldDecorator={getFieldDecorator} />}
 							<Col {...colLayout}>
 								<Form.Item
 									label="Type Of Resource"
