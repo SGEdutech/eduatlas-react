@@ -128,6 +128,7 @@ class Navbar extends Component {
 							{this.isAccessGranted('edit institute profile') && <Link to={'./tuition/edit-institute'}><span style={{ color: '#000' }}><NavListItem iconType="edit" content="Edit Institute Profile" /></span></Link>}
 							{this.isAccessGranted('reciept config') && <Link to={'./receipt-config'}><span style={{ color: '#000' }}><NavListItem iconType="form" content="Receipt Config" /></span></Link>}
 							{this.isAccessGranted('role management') && <Link to={'./tuition/roles-management'}><span style={{ color: '#000' }}><NavListItem iconType="usergroup-add" content="Roles Management" /></span></Link>}
+							{this.isAccessGranted('reports') && <Link to={'./tuition/reports'}><span style={{ color: '#000' }}><NavListItem iconType="usergroup-add" content="Reports" /></span></Link>}
 							<NavListItem iconType="logout" content="Logout" onClick={this.handleLogout} />
 							{this.isAccessGranted('leads') && <Link to={'./tuition/leads'}><Button className="mt-2" type="primary" icon="monitor" block>Leads</Button></Link>}
 							{/* <Button className="mt-2" type="primary" icon="share-alt" block>
@@ -151,5 +152,3 @@ function mapStateToProps(state) {
 }
 
 export default compose(connect(mapStateToProps, { fetchAll, logOut }), withRouter)(Navbar);
-
-

@@ -1,4 +1,6 @@
+import moment from 'moment';
 import React, { Component } from 'react';
+import Navbar from '../Navbar';
 
 import {
 	Col,
@@ -62,7 +64,8 @@ const datePickerLayout = {
 
 // WARNING: Don't rename these things else you die
 const typesAndNamesOfReports = {
-	enrollmentReport: ['Batchwise Student Report', 'Coursewise Enrollment Report', 'DOEwise Enrollment Report'],
+	// enrollmentReport: ['Batchwise Student Report', 'Coursewise Enrollment Report', 'DOEwise Enrollment Report'],
+	enrollmentReport: ['Batchwise Student Report'],
 	paymentReport: ['Collection Report', 'DOEwise balance outstanding report']
 };
 
@@ -104,7 +107,8 @@ class Reports extends Component {
 					contactNumber: studentInfo.contactNumber,
 					email: studentInfo.email,
 					batchCode: batchCodes,
-					doe: payment.createdAt.format('DD/MM/YY'),
+					// FIXME: createdAt should be reurned by every payment
+					doe: payment.createdAt ? payment.createdAt.format('DD/MM/YY') : moment().format('DD/MM/YY'),
 					courseCode: payment.courseCode,
 					fee: payment.courseFee,
 					discount: payment.discountAmount,
@@ -174,32 +178,35 @@ class Reports extends Component {
 		const tableJsx = this.getTable();
 
 		return (
-			<div className="container">
-				<Row className="mb-3" type="flex" align="middle" justify="center">
-					<Col span={24} className="p-1">
-						<Select
-							allowClear
-							className="w-100"
-							onChange={this.handleTypeOfReportSelectChange}
-							placeholder="Type Of Report">
-							<Select.Option value="enrollmentReport">Enrollment Report</Select.Option>
-							<Select.Option value="paymentReport">Payment Report</Select.Option>
-						</Select>
-					</Col>
-					<Col span={24} className="p-1">
-						<Select
-							allowClear
-							className="w-100"
-							onChange={this.handleNameOfReportSelectChange}
-							placeholder="Report Name"
-							value={nameOfReport}>
-							{nameOfReports.map(name => <Select.Option key={name} value={name}>{name}</Select.Option>)}
-						</Select>
-					</Col>
-					{dynamicSelectJsx}
-					{tableJsx}
-				</Row>
-			</div>
+			<>
+				<Navbar renderBackBtn={true}/>
+				<div className="container mt-5">
+					<Row className="mb-3" type="flex" align="middle" justify="center">
+						<Col span={24} className="p-1">
+							<Select
+								allowClear
+								className="w-100"
+								onChange={this.handleTypeOfReportSelectChange}
+								placeholder="Type Of Report">
+								<Select.Option value="enrollmentReport">Enrollment Report</Select.Option>
+								{/* <Select.Option value="paymentReport">Payment Report</Select.Option> */}
+							</Select>
+						</Col>
+						<Col span={24} className="p-1">
+							<Select
+								allowClear
+								className="w-100"
+								onChange={this.handleNameOfReportSelectChange}
+								placeholder="Report Name"
+								value={nameOfReport}>
+								{nameOfReports.map(name => <Select.Option key={name} value={name}>{name}</Select.Option>)}
+							</Select>
+						</Col>
+						{dynamicSelectJsx}
+						{tableJsx}
+					</Row>
+				</div>
+			</>
 		);
 	}
 }
