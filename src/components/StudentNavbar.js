@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import {
 	Avatar,
-	Card,
+	Col,
 	Drawer,
 	Icon,
 	List,
@@ -18,10 +18,6 @@ import fetchAll from '../redux/actions/fetchAllAction';
 import getTuitionIdFromUrl from '../scripts/getTuitionIdFromUrl';
 
 import { tuitionName, primaryColor } from '../config.json';
-import fallbackDp from '../fallback-dp.svg';
-
-const { Meta } = Card;
-
 
 const headerStyle = {
 	height: '40px',
@@ -61,10 +57,13 @@ class Navbar extends Component {
 	render() {
 		const { match: { url }, navText, renderBackBtn = false, user } = this.props;
 		const tuitionId = getTuitionIdFromUrl(url);
-		const DrawerHeader = <Meta
-			avatar={<Avatar src={fallbackDp} />}
-			title={<span className="text-capitalize">{user.firstName}</span>}
-			description="Role: Student" />;
+		const DrawerHeader = (
+			<Row>
+				<Col className="mb-1" span={24}><Avatar size={64} style={{ backgroundColor: '#00bcd4' }}>{user.firstName ? user.firstName.slice(0, 1).toUpperCase() : ''}</Avatar></Col>
+				<Col span={24}>{user.firstName ? user.firstName : ''}</Col>
+				<Col span={24}><small className="text-capitalize">Role: Student</small></Col>
+			</Row>
+		);
 
 		return (
 			<>
@@ -89,17 +88,23 @@ class Navbar extends Component {
 						}
 					</div>
 				</nav>
-				<Drawer
+				{!renderBackBtn && <Drawer
+					bodyStyle={{ paddingTop: 8 }}
 					title={DrawerHeader}
 					placement="left"
 					closable={true}
 					onClose={this.onClose}
 					visible={this.state.visible}>
-					<List split={true} style={{ fontSize: 18 }}>
-						<Link to={`/${tuitionId}/edit-profile/${user._id}`}><span style={{ color: '#000' }}><NavListItem iconType="edit" content="Edit Profile" /></span></Link>
-						<NavListItem iconType="logout" content="Logout" onClick={this.handleLogout} />
-					</List>
-				</Drawer>
+					<>
+						<List split={true} style={{ fontSize: 18 }}>
+							<Link to={`/app/${tuitionId}/edit-profile/${user._id}`}><span style={{ color: '#000' }}><NavListItem iconType="edit" content="Edit Profile" /></span></Link>
+							<Link to={`/app/${tuitionId}/student/enrollment-fee`}><span style={{ color: '#000' }}><NavListItem iconType="dollar" content="Enrollment And Fee" /></span></Link>
+							<Link to={`/app/${tuitionId}/student/test-report`}><span style={{ color: '#000' }}><NavListItem iconType="line-chart" content="Test Reports" /></span></Link>
+							<NavListItem iconType="logout" content="Logout" onClick={this.handleLogout} />
+						</List>
+						<small style={{ position: 'absolute', bottom: 24 }}>Made with <Icon style={{ color: 'red' }} theme="filled" type="heart" /> at eduatlas</small>
+					</>
+				</Drawer>}
 			</>
 		);
 	}

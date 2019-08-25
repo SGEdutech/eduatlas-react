@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
+import scrollToTop from '../../scripts/scrollToTop';
 
 import { inverseMinutesFromMidnight } from '../../scripts/minutesToMidnight';
 
@@ -46,6 +47,9 @@ const columns = [{
 }];
 
 export default class Attendance extends Component {
+	componentDidMount() {
+		scrollToTop();
+	}
 	render() {
 		const { batches, schedules, studentInfo } = this.props;
 		const studentBatches = batches.filter(batch => Boolean(batch.students.find(student => student === studentInfo._id)));
@@ -72,8 +76,8 @@ export default class Attendance extends Component {
 				}
 				schedule.dateAndTime = {};
 				schedule.dateAndTime.parsedDate = schedule.date.format('DD/MM/YY');
-				schedule.dateAndTime.fromTime = Boolean(schedule.fromTime) === true ? inverseMinutesFromMidnight(schedule.fromTime).format('LT'): <Tag className="mx-0" color={'blue'}>NA</Tag>;
-				schedule.dateAndTime.toTime = Boolean(schedule.toTime) === true ? inverseMinutesFromMidnight(schedule.toTime).format('LT'): <Tag className="mx-0" color={'blue'}>NA</Tag>;
+				schedule.dateAndTime.fromTime = Boolean(schedule.fromTime) === true ? inverseMinutesFromMidnight(schedule.fromTime).format('LT') : <Tag className="mx-0" color={'blue'}>NA</Tag>;
+				schedule.dateAndTime.toTime = Boolean(schedule.toTime) === true ? inverseMinutesFromMidnight(schedule.toTime).format('LT') : <Tag className="mx-0" color={'blue'}>NA</Tag>;
 			});
 
 			return <Panel

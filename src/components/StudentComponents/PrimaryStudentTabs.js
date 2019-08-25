@@ -7,12 +7,15 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
 import Attendance from './Attendance';
-import EnrollmentAndFee from './EnrollmentAndFee';
 import Notifications from './Notifications';
-import PerformanceReport from './PerformanceReport';
 import ViewOrDeleteMaterials from './../TuitionComponents/StudyMaterial/ViewOrDeleteMaterials';
 
 import { readNotification } from '../../redux/actions/notificationActions';
+
+import {
+	Icon,
+	Row
+} from 'antd';
 
 class PrimaryTuitionTabs extends Component {
 	state = { value: 0 };
@@ -22,7 +25,7 @@ class PrimaryTuitionTabs extends Component {
 	leftSwipe = () => {
 		this.setState(prevState => {
 			const minValue = 0;
-			const maxValue = 4;
+			const maxValue = 2;
 			let value = prevState.value + 1;
 			if (value < minValue) value = maxValue;
 			if (value > maxValue) value = minValue;
@@ -33,7 +36,7 @@ class PrimaryTuitionTabs extends Component {
 	rightSwipe = () => {
 		this.setState(prevState => {
 			const minValue = 0;
-			const maxValue = 4;
+			const maxValue = 2;
 			let value = prevState.value - 1;
 			if (value < minValue) value = maxValue;
 			if (value > maxValue) value = minValue;
@@ -52,26 +55,37 @@ class PrimaryTuitionTabs extends Component {
 			<>
 				<AppBar position="fixed" style={{ top: 40 }} className="z101">
 					<Tabs
-						style={{ background: '#f6f6f6' }}
+						className="tabBar"
 						value={value}
 						onChange={this.handleChange}
 						indicatorColor="primary"
 						textColor="primary"
-						variant="scrollable">
-						<Tab label="Notifications" />
-						<Tab label="Attendance and Schedule" />
-						<Tab label="Enrollment and Fee" />
-						<Tab label="Tests and Reports" />
-						<Tab label="Study Material" />
+						variant="fullWidth">
+						<Tab label={
+							<>
+								<Row><Icon type="notification" /></Row>
+								<Row><small>Notifications</small></Row>
+							</>
+						} />
+						<Tab label={
+							<>
+								<Row><Icon type="schedule" /></Row>
+								<Row><small>Attendance and Schedule</small></Row>
+							</>
+						} />
+						<Tab label={
+							<>
+								<Row><Icon type="file-text" /></Row>
+								<Row><small>Study Material</small></Row>
+							</>
+						} />
 					</Tabs>
 				</AppBar>
 				<Swipeable delta={20} onSwipedLeft={this.leftSwipe} onSwipedRight={this.rightSwipe} style={{ minHeight: '80vh' }}>
 					<div className="py-3">
 						{value === 0 && <Notifications messageInfo={messageInfo} notifications={notifications} readNotification={readNotification} studentEmail={studentInfo.email} />}
 						{value === 1 && <Attendance batches={batches} schedules={schedules} studentInfo={studentInfo} />}
-						{value === 2 && <EnrollmentAndFee courses={courses} studentInfo={studentInfo} />}
-						{value === 3 && <PerformanceReport batches={batches} studentInfo={studentInfo} tests={tests} />}
-						{value === 4 && <ViewOrDeleteMaterials messageInfo={messageInfo} resources={resources} showDelete={false} />}
+						{value === 2 && <ViewOrDeleteMaterials messageInfo={messageInfo} resources={resources} showDelete={false} />}
 					</div>
 				</Swipeable>
 			</>

@@ -110,7 +110,7 @@ class Navbar extends Component {
 						}
 					</div>
 				</nav>
-				<Drawer
+				{!renderBackBtn && <Drawer
 					bodyStyle={{ paddingTop: 8 }}
 					title={DrawerHeader}
 					placement="left"
@@ -137,7 +137,7 @@ class Navbar extends Component {
 						</List>
 						<small style={{ position: 'absolute', bottom: 24 }}>Made with <Icon style={{ color: 'red' }} theme="filled" type="heart" /> at eduatlas</small>
 					</>
-				</Drawer>
+				</Drawer>}
 			</>
 		);
 	}

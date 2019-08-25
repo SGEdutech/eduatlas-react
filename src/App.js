@@ -42,8 +42,10 @@ import Signup from './components/Signup';
 import ReceiptConfig from './components/ReceiptConfig';
 
 // Student components
+import EnrollmentAndFee from './components/StudentComponents/EnrollmentAndFee';
 import StudentManager from './components/StudentComponents/StudentManager';
 import FreeResource from './components/StudentComponents/FreeResource';
+import StudentPerformanceReport from './components/StudentComponents/PerformanceReport';
 import SendRequest from './components/StudentComponents/SendRequest';
 
 // AntD Components
@@ -95,7 +97,9 @@ class App extends Component {
 	}
 
 	render() {
-		const { match: { url }, students, courses, batches } = this.props;
+		const { match: { url }, students, courses, batches, tests, user } = this.props;
+		const { primaryEmail } = user;
+		const studentInfo = students.find(student => student.email === primaryEmail);
 		return (
 			<PullRefresh
 				onRefresh={this.handleRefresh}
@@ -123,6 +127,8 @@ class App extends Component {
 						<Route exact path={url + '/signup'} component={Signup}></Route>
 						<Route exact path={url + '/student'} component={StudentManager}></Route>
 						<Route exact path={url + '/student/free-resource'} render={() => <FreeResource messageInfo={this.props.messageInfo} resources={this.props.resources} />}></Route>
+						<Route exact path={url + '/student/enrollment-fee'} render={() => <EnrollmentAndFee courses={courses} studentInfo={studentInfo} />}></Route>
+						<Route exact path={url + '/student/test-report'} render={() => <StudentPerformanceReport batches={batches} studentInfo={studentInfo} tests={tests} />}></Route>
 						<Route exact path={url + '/receipt-config'} component={ReceiptConfig}></Route>
 						<Route exact path={url + '/tuition/performance-report/add-test'} component={AddOrEditTest}></Route>
 						<Route exact path={url + '/tuition/performance-report/edit-test/:testId'} render={() => <AddOrEditTest edit={true} />}></Route>
@@ -155,6 +161,7 @@ function mapStateToProps(state) {
 		resources: state.resource.resources,
 		roles: state.role.roles,
 		students: state.student.students,
+		tests: state.test.tests,
 		user: state.user.userInfo
 	};
 }

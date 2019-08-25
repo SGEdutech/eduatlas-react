@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import scrollToTop from '../../scripts/scrollToTop';
 import { tuitionName } from '../../config.json';
 
 import eduatlasLogo from '../../fallback-dp.svg';
@@ -18,6 +19,10 @@ const dateNTimeLayout = { xs: 24, md: 4 };
 const messageLayout = { xs: 24, md: 20 };
 
 export default class Notifications extends Component {
+	componentDidMount() {
+		scrollToTop();
+	}
+
 	onClose = id => {
 		const { readNotification } = this.props;
 		readNotification({ ids: [id] });
