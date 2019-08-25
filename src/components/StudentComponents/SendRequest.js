@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-
+import { Link } from 'react-router-relative-link';
 import StudentNavbar from '../StudentNavbar';
 
 import {
+	Button,
 	Col,
 	Empty,
 	Icon,
@@ -49,6 +50,9 @@ class SendRequest extends Component {
 					<Empty className="mt-4"
 						image="https://gw.alipayobjects.com/mdn/miniapp_social/afts/img/A*pevERLJC9v0AAAAAAAAAAABjAQAAAQ/original"
 						description={<span>Your request is pending ...</span>}></Empty>
+				</Row>
+				<Row type="flex" align="bottom" justify="center">
+					<Link to="../student/free-resource"><Button type="primary">View Free Study Materials</Button></Link>
 				</Row>
 			</>
 		);

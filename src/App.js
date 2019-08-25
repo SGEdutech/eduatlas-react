@@ -42,6 +42,7 @@ import ReceiptConfig from './components/ReceiptConfig';
 
 // Student components
 import StudentManager from './components/StudentComponents/StudentManager';
+import FreeResource from './components/StudentComponents/FreeResource';
 import SendRequest from './components/StudentComponents/SendRequest';
 
 // AntD Components
@@ -120,6 +121,7 @@ class App extends Component {
 						<Route exact path={url + '/login'} component={Login}></Route>
 						<Route exact path={url + '/signup'} component={Signup}></Route>
 						<Route exact path={url + '/student'} component={StudentManager}></Route>
+						<Route exact path={url + '/student/free-resource'} render={() => <FreeResource messageInfo={this.props.messageInfo} resources={this.props.resources} />}></Route>
 						<Route exact path={url + '/receipt-config'} component={ReceiptConfig}></Route>
 						<Route exact path={url + '/tuition/performance-report/add-test'} component={AddOrEditTest}></Route>
 						<Route exact path={url + '/tuition/performance-report/edit-test/:testId'} render={() => <AddOrEditTest edit={true} />}></Route>
