@@ -100,6 +100,7 @@ class ViewOrDeleteMaterials extends Component {
 							<Select.Option className="text-uppercase" value="homework">Homework</Select.Option>
 							<Select.Option className="text-uppercase" value="test">Assignment/Test</Select.Option>
 							<Select.Option className="text-uppercase" value="video">Video</Select.Option>
+							<Select.Option className="text-uppercase" value="free">Free</Select.Option>
 						</Select>
 					</Col>
 				</Row>

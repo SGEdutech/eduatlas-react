@@ -236,6 +236,7 @@ class AddStudyMaterial extends Component {
 											<Option className="text-uppercase" value="homework">Homework</Option>
 											<Option className="text-uppercase" value="test">Assignment/Test</Option>
 											<Option className="text-uppercase" value="video">Video</Option>
+											<Option className="text-uppercase" value="free">Free</Option>
 										</Select>
 									)}
 								</Form.Item>
