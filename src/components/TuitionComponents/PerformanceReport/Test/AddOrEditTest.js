@@ -145,13 +145,13 @@ class AddOrEditTest extends Component {
 								</Form.Item>
 							</Col>
 							<Col {...colLayout}>
-								<Form.Item
-									label="From Time"
-									hasFeedback={true}>
-									{getFieldDecorator('fromTime', {
-										initialValue: fromTime
-									})(
-										window.cordova ? (
+								{window.cordova ? (
+									<Form.Item
+										label="From Time"
+										hasFeedback={true}>
+										{getFieldDecorator('fromTime', {
+											initialValue: fromTime && fromTime.toDate()
+										})(
 											<DatePickerM
 												mode="time"
 												minuteStep={2}
@@ -159,20 +159,28 @@ class AddOrEditTest extends Component {
 												locale={enUs}>
 												<List.Item style={{ border: '1px solid #D3D3D3', borderRadius: '5px' }} arrow="horizontal"></List.Item>
 											</DatePickerM>
-										) : (
+										)}
+									</Form.Item>
+								) : (
+										<Form.Item
+											label="From Time"
+											hasFeedback={true}>
+											{getFieldDecorator('fromTime', {
+												initialValue: fromTime
+											})(
 												<TimePicker className="w-100" use12Hours format="h:mm a" />
-											)
+											)}
+										</Form.Item>
 									)}
-								</Form.Item>
 							</Col>
 							<Col {...colLayout}>
 								<Form.Item
 									label="To Time"
 									hasFeedback={true}>
-									{getFieldDecorator('toTime', {
-										initialValue: toTime
-									})(
-										window.cordova ? (
+									{window.cordova ? (
+										getFieldDecorator('toTime', {
+											initialValue: toTime && toTime.toDate()
+										})(
 											<DatePickerM
 												mode="time"
 												minuteStep={2}
@@ -180,10 +188,14 @@ class AddOrEditTest extends Component {
 												locale={enUs}>
 												<List.Item style={{ border: '1px solid #D3D3D3', borderRadius: '5px' }} arrow="horizontal"></List.Item>
 											</DatePickerM>
-										) : (
+										)
+									) : (
+											getFieldDecorator('toTime', {
+												initialValue: toTime && toTime
+											})(
 												<TimePicker className="w-100" use12Hours format="h:mm a" />
 											)
-									)}
+										)}
 								</Form.Item>
 							</Col>
 							<Col {...colLayout}>
