@@ -39,8 +39,13 @@ class ViewOrDeleteMaterials extends Component {
 
 	render() {
 		let { resources } = this.props;
+		const { showFreeOnly } = this.props;
 		const { deleteResource, messageInfo, showDelete } = this.props;
 		const { filterResourceType } = this.state;
+
+		if (showFreeOnly) {
+			resources = resources.filter(resource => resource.type === 'free');
+		}
 
 		// filter out resources based on filter values
 		if (filterResourceType.length !== 0) {
@@ -96,10 +101,11 @@ class ViewOrDeleteMaterials extends Component {
 							mode="multiple"
 							allowClear
 							placeholder="Filter Study Materials">
-							<Select.Option className="text-uppercase" value="reference material">Reference Material</Select.Option>
-							<Select.Option className="text-uppercase" value="homework">Homework</Select.Option>
-							<Select.Option className="text-uppercase" value="test">Assignment/Test</Select.Option>
-							<Select.Option className="text-uppercase" value="video">Video</Select.Option>
+							{!showFreeOnly && <Select.Option className="text-uppercase" value="reference material">Reference Material</Select.Option>}
+							{!showFreeOnly && <Select.Option className="text-uppercase" value="homework">Homework</Select.Option>}
+							{!showFreeOnly && <Select.Option className="text-uppercase" value="test">Assignment/Test</Select.Option>}
+							{!showFreeOnly && <Select.Option className="text-uppercase" value="video">Video</Select.Option>}
+							<Select.Option className="text-uppercase" value="free">Free</Select.Option>
 						</Select>
 					</Col>
 				</Row>

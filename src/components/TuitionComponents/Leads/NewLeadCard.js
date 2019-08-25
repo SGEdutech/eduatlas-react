@@ -141,7 +141,7 @@ class NewLeadCard extends Component {
 					<Row className="text-secondary">
 						<Col span={8}><small>Phone:</small> </Col>
 						<Col className="one-line-ellipsis" span={16}>
-							<small>{leadInfo.phone}</small>
+							<small>{leadInfo.phone === -1 ? '' : leadInfo.phone}</small>
 						</Col>
 					</Row>
 					<Row className="text-secondary">
@@ -177,7 +177,7 @@ class NewLeadCard extends Component {
 						<small>{leadInfo.name}</small>
 					</Row>
 					<Row className="text-secondary">
-						<small>{leadInfo.phone}</small>
+						<small>{leadInfo.phone === -1 ? '' : leadInfo.phone}</small>
 					</Row>
 					<Row className="text-secondary">
 						<small>{leadInfo.email}</small>

@@ -92,11 +92,11 @@ class Requests extends Component {
 		const { requestInfo: request } = this.state;
 		const { addLead, deleteRequest, match: { url } } = this.props;
 		const tuitionId = getTuitionIdFromUrl(url);
-		const { _id, name, email, phone } = request;
+		const { _id, name, email, phone = -1 } = request;
 		try {
 			if (Boolean(phone) === false) message.warning('No phone number found');
-			const data = await addLead(tuitionId, { name, phone, email });
-			const deleteData = await deleteRequest(tuitionId, _id);
+			await addLead(tuitionId, { name, phone, email });
+			await deleteRequest(tuitionId, _id);
 		} catch (err) {
 			console.log(err);
 		}

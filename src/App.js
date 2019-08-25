@@ -33,6 +33,7 @@ import Students from './components/TuitionComponents/Students';
 import TuitionManager from './components/TuitionComponents/TuitionManager';
 import ViewAnnouncement from './components/TuitionComponents/Communicator/Announcements/ViewAnnouncement';
 import ViewOrEditStudent from './components/TuitionComponents/Students/ViewOrEditStudent';
+import Reports from './components/TuitionComponents/Reports';
 
 // Shared components
 import Loading from './components/Loading';
@@ -94,7 +95,7 @@ class App extends Component {
 	}
 
 	render() {
-		const { url } = this.props.match;
+		const { match: { url }, students, courses, batches } = this.props;
 		return (
 			<PullRefresh
 				onRefresh={this.handleRefresh}
@@ -136,6 +137,7 @@ class App extends Component {
 						<Route exact path={url + '/tuition/app-downloads'} render={() => <Requests addLead={this.props.addLead} students={this.props.students} requests={this.props.requests} addStudent={this.props.addStudent} deleteRequest={this.props.deleteRequest} batches={this.props.batches} courses={this.props.courses} />}></Route>
 						<Route exact path={url + '/tuition/leads'} component={Leads}></Route>
 						<Route exact path={url + '/tuition/edit-institute'} component={EditInstituteProfile}></Route>
+						<Route exact path={url + '/tuition/reports'} render={props => <Reports {...props} courses={courses} batches={batches} students={students} />}></Route>
 					</Switch>
 				</Router>
 			</PullRefresh>

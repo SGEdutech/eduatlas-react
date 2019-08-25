@@ -39,7 +39,7 @@ class PrimaryTuitionTabs extends Component {
 	leftSwipe = () => {
 		const { changeTabs, navigation: { primaryTabsValue } } = this.props;
 		const minValue = 0;
-		const maxValue = 2;
+		const maxValue = 3;
 		let newPrimaryTabsValue = primaryTabsValue + 1;
 		if (newPrimaryTabsValue < minValue) newPrimaryTabsValue = maxValue;
 		if (newPrimaryTabsValue > maxValue) newPrimaryTabsValue = minValue;
@@ -49,7 +49,7 @@ class PrimaryTuitionTabs extends Component {
 	rightSwipe = () => {
 		const { changeTabs, navigation: { primaryTabsValue } } = this.props;
 		const minValue = 0;
-		const maxValue = 2;
+		const maxValue = 3;
 		let newPrimaryTabsValue = primaryTabsValue - 1;
 		if (newPrimaryTabsValue < minValue) newPrimaryTabsValue = maxValue;
 		if (newPrimaryTabsValue > maxValue) newPrimaryTabsValue = minValue;
