@@ -13,8 +13,65 @@ function getDate() {
 }
 
 function getDescription(installmentInfo) {
-	const names = ['Course Code/Name: ', 'Mode Of Payment: '];
-	const values = [installmentInfo.courseCode, installmentInfo.modeOfPayment];
+	const names = ['Course Code/Name: ', 'Course Fee:', 'ADD: GST @ ' + installmentInfo.courseGstPercentage];
+	const gstAmount = (installmentInfo.courseFee * installmentInfo.courseGstPercentage) / 100
+	const values = [installmentInfo.courseCode, installmentInfo.courseFee, gstAmount];
+
+	/* 	names.push('Mode Of Payment: ')
+		values.push(installmentInfo.modeOfPayment) */
+
+	/* if (installmentInfo.modeOfPayment === 'card') {
+		const { bank, transactionId } = installmentInfo;
+		if (bank) {
+			names.push('Bank Name');
+			values.push(bank);
+		}
+		if (transactionId) {
+			names.push('Transaction ID');
+			values.push(transactionId);
+		}
+	} else if (installmentInfo.modeOfPayment === 'cheque') {
+		const { date, bank, chequeNumber } = installmentInfo;
+		if (date) {
+			names.push('Date of Cheque');
+			values.push(date.format('MMM Do YY'));
+		}
+		if (bank) {
+			names.push('Bank Name');
+			values.push(bank);
+		}
+		if (chequeNumber) {
+			names.push('Cheque Number');
+			values.push(chequeNumber);
+		}
+	} else {
+		const { transactionId } = installmentInfo;
+		if (transactionId) {
+			names.push('Transaction ID');
+			values.push(transactionId);
+		}
+	} */
+
+	return [
+		{
+			width: '*',
+			stack: names,
+			style: 'm1'
+		},
+		{
+			alignment: 'right',
+			width: '*',
+			stack: values,
+			style: 'm1'
+		}];
+}
+
+function getPaymentMethodDetails(installmentInfo) {
+	const names = []
+	const values = []
+	names.push('Mode Of Payment:')
+	values.push(installmentInfo.modeOfPayment)
+
 	if (installmentInfo.modeOfPayment === 'card') {
 		const { bank, transactionId } = installmentInfo;
 		if (bank) {
@@ -61,37 +118,39 @@ function getDescription(installmentInfo) {
 		}];
 }
 
-function getFromAndToDetails(receiptConfig, studentInfo) {
-	const toReturn = [{ text: 'From', style: 'bigger' }];
+function getTotalFee(installmentInfo) {
+	const gstAmount = (installmentInfo.courseFee * installmentInfo.courseGstPercentage) / 100
+	const totalFee = installmentInfo.courseFee + gstAmount
+	return Math.round(totalFee * 100) / 100
+}
+
+function getTuitionDetails(receiptConfig) {
+	const toReturn = [];
 	const { receiptConfigBusinessName, receiptConfigAddressLine1, receiptConfigAddressLine2, receiptConfigCity, receiptConfigState, receiptConfigPinCode, receiptConfigGstNumber } = receiptConfig;
-	if (receiptConfigBusinessName) toReturn.push(receiptConfigBusinessName);
+	if (receiptConfigBusinessName) toReturn.push({ text: receiptConfigBusinessName, style: 'bigger' });
 	if (receiptConfigAddressLine1) toReturn.push(receiptConfigAddressLine1);
 	if (receiptConfigAddressLine2) toReturn.push(receiptConfigAddressLine2);
 	if (receiptConfigCity) toReturn.push(receiptConfigCity);
 	if (receiptConfigState) toReturn.push(receiptConfigState);
 	if (receiptConfigPinCode) toReturn.push(receiptConfigPinCode);
-	if (receiptConfigGstNumber) toReturn.push('Tax/GST ID: ' + receiptConfigGstNumber);
+	if (receiptConfigGstNumber) toReturn.push({ text: 'Tax/GST No. : ' + receiptConfigGstNumber, style: 'mb1' });
 
-	toReturn.push({ text: 'To', style: 'bigger' });
+	return toReturn;
+	/* {text: 'Tuition Name', style: 'bigger'},
+	'Address',
+	'Contact Number',
+	'Website',
+	{text: 'GST No.', style: 'mb1'} */
+}
+
+function getStudentDetails(studentInfo) {
+	const toReturn = [{ text: 'Student details', style: 'bigger' }]
 	toReturn.push(
 		titleCase(studentInfo.name),
 		'Roll No: ' + studentInfo.rollNumber,
 		'Email: ' + studentInfo.email
 	);
 	return toReturn;
-	/* return [
-		{ text: 'From', style: 'bigger' },
-		'SG Edutech',
-		'Palam Vihar, Gurgaon',
-		'Haryana, 122017',
-		'India',
-		'Tax ID: 23534654765876',
-		{ text: 'To', style: 'bigger' },
-		'Navjot Singh',
-		'Roll No: 23',
-		'Email: navjotsidhu234@gmail.com',
-		'EA ID: EA000132'
-	]; */
 }
 
 function getTermsNConditions(receiptInfo) {
@@ -116,6 +175,19 @@ export function getDocDef(receiptConfig, studentInfo, installmentInfo) {
 		},
 		content: [
 			{
+				style: 'mb1',
+				table: {
+					headerRows: 1,
+					widths: ['*'],
+					body: [
+						[{
+							alignment: 'center',
+							stack: getTuitionDetails(receiptConfig)
+						}],
+					]
+				}
+			},
+			{
 				margin: [0, 0, 0, 30],
 				alignment: 'center',
 				style: 'header',
@@ -126,7 +198,7 @@ export function getDocDef(receiptConfig, studentInfo, installmentInfo) {
 				columns: [
 					{
 						width: '*',
-						stack: getFromAndToDetails(receiptConfig, studentInfo)
+						stack: getStudentDetails(studentInfo)
 
 					},
 					{
@@ -141,13 +213,43 @@ export function getDocDef(receiptConfig, studentInfo, installmentInfo) {
 					headerRows: 1,
 					widths: ['*', 'auto'],
 					body: [
-						[{ alignment: 'center', text: 'Details/Description', bold: true, style: 'my1' },
-						{ alignment: 'center', text: 'Amount', bold: true, style: 'm1' }],
-						[{
-							columns: getDescription(installmentInfo)
-						}, { alignment: 'center', text: getAmountCollected(installmentInfo), style: 'm1' }],
-						[{ alignment: 'center', text: 'Total', bold: true, style: 'my1' }, { alignment: 'center', text: getAmountCollected(installmentInfo), bold: true, style: 'm1' }]
+						[
+							{ alignment: 'center', text: 'Details/Description', bold: true, style: 'my1' },
+							{ alignment: 'center', text: 'Amount', bold: true, style: 'm1' }
+						],
+						[
+							{ columns: getDescription(installmentInfo) },
+							{ alignment: 'center', text: getAmountCollected(installmentInfo), style: 'm1' }
+						],
+						[
+							{
+								columns: [{
+									width: '*',
+									stack: [{ text: 'Total', bold: true, style: 'my1' }],
+									style: 'm1'
+								},
+								{
+									alignment: 'right',
+									width: '*',
+									stack: [{ text: getTotalFee(installmentInfo), bold: true, style: 'my1' }],
+									style: 'm1'
+								}]
+							},
+							{ alignment: 'center', text: getAmountCollected(installmentInfo), bold: true, style: 'm1' }
+						]
 					]
+				}
+			},
+			{
+				style: 'mt1',
+				table: {
+					headerRows: 1,
+					widths: ['*'],
+					body: [
+						[{
+							columns: getPaymentMethodDetails(installmentInfo)
+						}],
+					],
 				}
 			},
 			{

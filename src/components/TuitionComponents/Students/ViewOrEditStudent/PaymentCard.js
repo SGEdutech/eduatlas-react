@@ -99,7 +99,7 @@ class PaymentCard extends Component {
 		const { editable } = this.state;
 		const { students, mailReceipt, tuitionInfo } = this.props;
 		const { getFieldDecorator } = this.props.form;
-		const { _id: paymentId, courseCode, courseFee, taxAmount = 0, discountAmount = 0, discountReason, installments } = this.props.payment;
+		const { _id: paymentId, courseCode, courseFee, courseGstPercentage, taxAmount = 0, discountAmount = 0, discountReason, installments } = this.props.payment;
 		const nextInstallmentDate = moment(this.props.payment.nextInstallmentDate);
 		const totalFeeCollected = this.getTotalFeeCollected(installments);
 		return (
@@ -229,7 +229,8 @@ class PaymentCard extends Component {
 									<InstallmentCollapse
 										index={index} paymentId={paymentId} installment={installment}
 										deleteInstallment={this.props.deleteInstallment} editInstallment={this.props.editInstallment}
-										key={installment._id} students={students} courseCode={courseCode}
+										key={installment._id} students={students}
+										courseCode={courseCode} courseFee={courseFee} courseGstPercentage={courseGstPercentage}
 										mailReceipt={mailReceipt} tuitionInfo={tuitionInfo}
 									/>
 								</Panel>

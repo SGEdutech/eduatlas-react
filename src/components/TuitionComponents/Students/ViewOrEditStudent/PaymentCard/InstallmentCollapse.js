@@ -37,8 +37,10 @@ class InstallmentCollapse extends Component {
 	}
 
 	handleDownloadReceiptBtnClick = () => {
-		const { installment, match, students, courseCode, tuitionInfo } = this.props;
+		const { installment, match, students, courseCode, courseFee, courseGstPercentage, tuitionInfo } = this.props;
 		installment.courseCode = courseCode;
+		installment.courseFee = courseFee;
+		installment.courseGstPercentage = courseGstPercentage;
 		const { studentId } = match.params;
 		const studentInfo = students.find(student => studentId === student._id);
 		const docDefinition = getDocDef(tuitionInfo, studentInfo, installment);
