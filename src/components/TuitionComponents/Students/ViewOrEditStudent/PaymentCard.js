@@ -230,7 +230,8 @@ class PaymentCard extends Component {
 										index={index} paymentId={paymentId} installment={installment}
 										deleteInstallment={this.props.deleteInstallment} editInstallment={this.props.editInstallment}
 										key={installment._id} students={students}
-										courseCode={courseCode} courseFee={courseFee} courseGstPercentage={courseGstPercentage}
+										courseCode={courseCode} courseFee={courseFee} taxAmount={taxAmount}
+										discountAmount={discountAmount} discountReason={discountReason}
 										mailReceipt={mailReceipt} tuitionInfo={tuitionInfo}
 									/>
 								</Panel>

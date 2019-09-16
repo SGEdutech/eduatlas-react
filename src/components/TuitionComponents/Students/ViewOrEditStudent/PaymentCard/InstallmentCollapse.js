@@ -37,10 +37,12 @@ class InstallmentCollapse extends Component {
 	}
 
 	handleDownloadReceiptBtnClick = () => {
-		const { installment, match, students, courseCode, courseFee, courseGstPercentage, tuitionInfo } = this.props;
+		const { discountAmount, discountReason, installment, match, students, courseCode, courseFee, taxAmount, tuitionInfo } = this.props;
 		installment.courseCode = courseCode;
 		installment.courseFee = courseFee;
-		installment.courseGstPercentage = courseGstPercentage;
+		installment.taxAmount = taxAmount;
+		installment.discountAmount = discountAmount;
+		installment.discountReason = discountReason;
 		const { studentId } = match.params;
 		const studentInfo = students.find(student => studentId === student._id);
 		const docDefinition = getDocDef(tuitionInfo, studentInfo, installment);
@@ -48,8 +50,12 @@ class InstallmentCollapse extends Component {
 	}
 
 	handleMailReceiptBtnClick = () => {
-		const { installment, match, mailReceipt, students, courseCode, tuitionInfo } = this.props;
+		const { discountAmount, discountReason, installment, match, mailReceipt, students, courseCode, courseFee, taxAmount, tuitionInfo } = this.props;
 		installment.courseCode = courseCode;
+		installment.courseFee = courseFee;
+		installment.taxAmount = taxAmount;
+		installment.discountAmount = discountAmount;
+		installment.discountReason = discountReason;
 		const { studentId } = match.params;
 		const studentInfo = students.find(student => studentId === student._id);
 		const docDefinition = getDocDef(tuitionInfo, studentInfo, installment);

@@ -13,9 +13,8 @@ function getDate() {
 }
 
 function getDescription(installmentInfo) {
-	const names = ['Course Code/Name: ', 'Course Fee:', 'ADD: GST @ ' + installmentInfo.courseGstPercentage];
-	const gstAmount = (installmentInfo.courseFee * installmentInfo.courseGstPercentage) / 100
-	const values = [installmentInfo.courseCode, installmentInfo.courseFee, gstAmount];
+	const names = ['Course Code/Name: ', 'Course Fee:', 'GST/Tax:', 'Discount:'];
+	const values = [installmentInfo.courseCode, installmentInfo.courseFee, installmentInfo.taxAmount, installmentInfo.discountAmount];
 
 	/* 	names.push('Mode Of Payment: ')
 		values.push(installmentInfo.modeOfPayment) */
@@ -119,8 +118,7 @@ function getPaymentMethodDetails(installmentInfo) {
 }
 
 function getTotalFee(installmentInfo) {
-	const gstAmount = (installmentInfo.courseFee * installmentInfo.courseGstPercentage) / 100
-	const totalFee = installmentInfo.courseFee + gstAmount
+	const totalFee = installmentInfo.courseFee + installmentInfo.taxAmount - installmentInfo.discountAmount
 	return Math.round(totalFee * 100) / 100
 }
 
@@ -164,7 +162,7 @@ function getTermsNConditions(receiptInfo) {
 export function getDocDef(receiptConfig, studentInfo, installmentInfo) {
 	const docDefinition = {
 		pageSize: 'A4',
-		pageMargins: [40, 60, 40, 60],
+		pageMargins: [40, 20, 40, 60],
 		footer: {
 			fontSize: 10,
 			margin: [40, 0, 0, 0],
@@ -215,27 +213,27 @@ export function getDocDef(receiptConfig, studentInfo, installmentInfo) {
 					body: [
 						[
 							{ alignment: 'center', text: 'Details/Description', bold: true, style: 'my1' },
-							{ alignment: 'center', text: 'Amount', bold: true, style: 'm1' }
+							{ alignment: 'right', text: 'Amount Paid', bold: true, style: 'm1' }
 						],
 						[
 							{ columns: getDescription(installmentInfo) },
-							{ alignment: 'center', text: getAmountCollected(installmentInfo), style: 'm1' }
+							{ alignment: 'right', text: getAmountCollected(installmentInfo), style: 'm1' }
 						],
 						[
 							{
 								columns: [{
 									width: '*',
-									stack: [{ text: 'Total', bold: true, style: 'my1' }],
+									stack: [{ text: 'Total', bold: true }],
 									style: 'm1'
 								},
 								{
 									alignment: 'right',
 									width: '*',
-									stack: [{ text: getTotalFee(installmentInfo), bold: true, style: 'my1' }],
+									stack: [{ text: getTotalFee(installmentInfo), bold: true }],
 									style: 'm1'
 								}]
 							},
-							{ alignment: 'center', text: getAmountCollected(installmentInfo), bold: true, style: 'm1' }
+							{ alignment: 'right', text: getAmountCollected(installmentInfo), bold: true, style: 'm1' }
 						]
 					]
 				}
@@ -277,6 +275,9 @@ export function getDocDef(receiptConfig, studentInfo, installmentInfo) {
 			},
 			mt1: {
 				margin: [0, 10, 0, 0]
+			},
+			mb1: {
+				margin: [0, 0, 0, 10]
 			},
 			my1: {
 				margin: [0, 10, 0, 10]
