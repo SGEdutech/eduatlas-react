@@ -5,14 +5,13 @@ function getTaxDetails(installmentInfo) {
   const toReturn = [];
 
   const feeCollected = installmentInfo.feeCollected;
-  const feeCollectedRounded = Math.round(feeCollected * 100) / 100;
   const withOutTax = feeCollected / 1.18;
   const withOutTaxRounded = Math.round(withOutTax * 100) / 100;
   const totalTax = feeCollected - withOutTaxRounded;
   const halfTax = totalTax / 2;
   const halfTaxRounded = Math.round(halfTax * 100) / 100;
 
-  toReturn.push(feeCollectedRounded);
+  toReturn.push(" ");
   toReturn.push(withOutTaxRounded);
   toReturn.push(halfTaxRounded);
   toReturn.push(halfTaxRounded);
@@ -24,9 +23,9 @@ function getDateAndReceiptNumber() {
   const dateMilliSec = moment().valueOf();
   return [
     { text: "Dated", style: "bigger" },
-    { text: date, style: "mb1" },
+    { text: date },
     { text: "Receipt Number", style: "bigger" },
-    { text: dateMilliSec, style: "mb1" },
+    { text: dateMilliSec },
     { text: "Place of Supply", style: "bigger" },
     "Delhi"
   ];
@@ -209,7 +208,7 @@ export function getDocDef(receiptConfig, studentInfo, installmentInfo) {
         }
       },
       {
-        margin: [0, 0, 0, 30],
+        margin: [0, 0, 0, 5],
         alignment: "center",
         style: "header",
         text: "Receipt"
@@ -238,14 +237,12 @@ export function getDocDef(receiptConfig, studentInfo, installmentInfo) {
               {
                 alignment: "center",
                 text: "Details/Description",
-                bold: true,
-                style: "my1"
+                bold: true
               },
               {
                 alignment: "right",
-                text: "Amount Collected",
-                bold: true,
-                style: "m1"
+                text: "Amount",
+                bold: true
               }
             ],
             [
@@ -262,7 +259,7 @@ export function getDocDef(receiptConfig, studentInfo, installmentInfo) {
                   {
                     width: "*",
                     stack: [{ text: "Total after tax", bold: true }],
-                    style: "m1"
+                    style: "mx1"
                   }
                 ]
               },
@@ -270,7 +267,24 @@ export function getDocDef(receiptConfig, studentInfo, installmentInfo) {
                 alignment: "right",
                 text: getTotalCollection(installmentInfo),
                 bold: true,
-                style: "m1"
+                style: "mx1"
+              }
+            ],
+            [
+              {
+                columns: [
+                  {
+                    width: "*",
+                    stack: [{ text: "Amount collected", bold: true }],
+                    style: "mx1"
+                  }
+                ]
+              },
+              {
+                alignment: "right",
+                text: getTotalCollection(installmentInfo),
+                bold: true,
+                style: "mx1"
               }
             ]
           ]
@@ -291,14 +305,29 @@ export function getDocDef(receiptConfig, studentInfo, installmentInfo) {
         }
       },
       {
+        style: "mb1",
         table: {
           headerRows: 1,
           widths: ["*"],
           body: [
             [
               {
-                text: "Remarks",
-                style: "mb3"
+                text: "Amount Collected in words:",
+                style: "m1"
+              }
+            ]
+          ]
+        }
+      },
+      {
+        table: {
+          headerRows: 1,
+          widths: ["*"],
+          body: [
+            [
+              {
+                text: "Remarks:",
+                margin: [10, 10, 10, 30],
               }
             ]
           ]
@@ -325,7 +354,7 @@ export function getDocDef(receiptConfig, studentInfo, installmentInfo) {
       bigger: {
         fontSize: 13,
         bold: true,
-        margin: [0, 10, 0, 0]
+        margin: [0, 5, 0, 0]
       },
       mt2: {
         margin: [0, 20, 0, 0]
@@ -341,6 +370,9 @@ export function getDocDef(receiptConfig, studentInfo, installmentInfo) {
       },
       my1: {
         margin: [0, 10, 0, 10]
+      },
+      mx1: {
+        margin: [10, 0, 10, 0]
       },
       m1: {
         margin: [10, 10, 10, 10]
